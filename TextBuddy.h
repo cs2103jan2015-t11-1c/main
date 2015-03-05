@@ -1,3 +1,4 @@
+//Hello~~~
 #pragma once
 class TextBuddy
 {
