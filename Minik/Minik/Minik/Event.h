@@ -19,6 +19,6 @@ public:
 	void changeDate ( string newDate );
 	void changeTime ( string newTime);
 	void changeDetails (string newdetails);
-
+	string readEvent();
 };
 

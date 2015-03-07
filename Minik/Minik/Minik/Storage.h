@@ -4,11 +4,20 @@
 class Storage
 {
 private:
-	Eventlist _eventInStorage;
+	Event _currentEvent;
+	Eventlist _activeEvent;
+	Eventlist _doneEvent;
+	Eventlist _deletedEvent;
 public:
 	Storage(void);
 	~Storage(void);
-	void addEvent (Event newEvent);
+
+	Storage(string newTitle, string newDate, string newTime);
+	void addEvent (string newTitle, string newDate, string newTime);
 	void deleteEvent (int index);
+	void updateEvent (int index, Event newEvent);
+	Eventlist displayEvent (void);
+	Event getEvent(int index);
+
 };
 

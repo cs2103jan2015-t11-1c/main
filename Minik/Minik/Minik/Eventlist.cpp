@@ -17,6 +17,17 @@ void Eventlist::addEvent(Event newEvent)
 }
 
 void Eventlist::deleteEvent(int index)
-{	_allEvent.erase(_allEvent.begin()+index-1);
+{	list<Event>::iterator deleteposition;
+	deleteposition = _allEvent.begin();
+	advance (deleteposition, index-1);
+	_allEvent.erase(deleteposition);
 }
+
+Event Eventlist::getEvent(int index)
+{	list<Event>::iterator eventPosition;
+	eventPosition = _allEvent.begin();
+	advance (eventPosition, index-1);
+	return *eventPosition;
+}
+
 
