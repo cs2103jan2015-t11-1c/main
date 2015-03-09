@@ -1,26 +1,26 @@
-#pragma once
+//#pragma once
 
 #ifndef UI_H
 #define UI_H
 
-#include "Logic.h"
+//#include "Logic.h"
 #include <cstring>
 #include <string>
 #include <string.h>
 #include <iostream>
-#include "LOGIC.h"
+//#include "LOGIC.h"
 class UI{
     private:
 		std::string _commandWord;
 		std::string _toDoList;
 		std::string _line;
+	
 
     public:
 		UI(void);
 		~UI(void);
 		std::string getCommandWord();
 		std::string getToDoList();
-
 		void showWelcomeMessage();
 	    void readCommand();
 	    bool isCompletedAction(std::string & line);
