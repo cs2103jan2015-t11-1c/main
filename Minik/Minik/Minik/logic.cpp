@@ -63,22 +63,29 @@ string logic::getEventTitle(string &buffer){
 	int TIndex;
     string title;
 
-	TIndex = buffer.find_first_of("by, @");
+	TIndex = buffer.find("by");
 	title = buffer.substr(0, TIndex);
-	buffer = buffer.substr(TIndex+1);
+	buffer = buffer.substr(TIndex+3);
 
 	return title;
 }
 
-//assume no spaces within the date input
+//assume one space within the date input
 string logic::getEventDate(string &buffer){
 	int TIndex;
 	string date;
+	string day;
+	string month;
 
 	TIndex = buffer.find_first_of(" ");
-	date = buffer.substr(0, TIndex);
+	day = buffer.substr(0, TIndex);
 	buffer = buffer.substr(TIndex+1);
 
+	TIndex = buffer.find_first_of(" ");
+	month = buffer.substr(0, TIndex);
+	buffer = buffer.substr(TIndex+1);
+
+	date = day + " " + month;
 	return date;
 }
 
