@@ -163,6 +163,6 @@ string logic::cmdUpdate(){
 	Event eventToUpdate = _storage.getEvent(taskNumber);
 	Event newEvent = getEventInformation();
 	_storage.updateEvent(taskNumber, newEvent);
-	_feedback = "\"" + eventToUpdate.readEvent() + "\" is updated to " + newEvent.readEvent() +"\n";
+	_feedback = "\"" + eventToUpdate.readEvent() + "\" is updated to " + "\"" + newEvent.readEvent() +"\" \n";
 	return _feedback;
 }
