@@ -30,12 +30,12 @@ logic::CommandType logic::determineCommandType() {
 
 bool logic::executeCommand() {
 	
-	CommandType commandType = determineCommandType(_commandWord);
+	CommandType commandType = determineCommandType();
 	
 	switch (commandType)
 	{
 		case ADD:
-			return addEventWithDeadline(_toDoList);
+			return addEventWithDeadline();
 		
 		case DISPLAY:
 			return;
@@ -110,7 +110,7 @@ string logic::getEventTime(string &buffer){
 //Acceptable add commands
 //add <title> by/@ <date> <time>
 bool logic::addEventWithDeadline(){
-	Event newEvent = getEventInformation(_toDoList);
+	Event newEvent = getEventInformation();
 	storage->addEvent(newEvent);
 	return true;
 }
