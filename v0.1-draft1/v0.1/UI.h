@@ -2,13 +2,11 @@
 
 #ifndef UI_H
 #define UI_H
-
 #include"Event.h"
 #include "logic.h"
 #include <cstring>
 #include <string>
 #include <iostream>
-
 
 class UI{
     private:
@@ -17,7 +15,6 @@ class UI{
 		std::string _line;
 		logic _logic;
 	
-
     public:
 		UI(void);
 		~UI(void);
@@ -25,8 +22,6 @@ class UI{
 		std::string getToDoList();
 		void showWelcomeMessage();
 	    bool readCommand();
-	  //  bool isCompletedAction(std::string & line);
-	   // void determineCommandWordnToDoList();
 		bool validityOfUserInput();
 		string callToLogic();
 };

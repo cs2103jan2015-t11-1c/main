@@ -5,20 +5,18 @@
 #include "logic.h"
 using namespace std;
 
-static const string INVALID_DELETION_MESSAGE = "Sorry, wrong user input. Please key in delete, a space and the index of the task\neg: delete 234\n If you do not know the index, key in display.";
-static const string INVALID_UPDATE_MESSAGE = "Sorry, wrong user input. Please key in the command update, a space and the index of the task\neg: update 234\nIf you do not know the index, kewy in display."; 
+static const string INVALID_DELETION_MESSAGE = "Sorry, wrong user input. Please key in delete, a space and the index of the task\neg: delete 234\n If you do not know the index, key in display.\n";
+static const string INVALID_UPDATE_MESSAGE = "Sorry, wrong user input. Please key in the command update, a space and the index of the task\neg: update 234\nIf you do not know the index, kewy in display.\n"; 
 static const  string WELCOME_MESSAGE = "Welcome to Minik!";
-static const  string INVALID_ADD_MESSAGE ="Sorry, wrong user input. To do list cannot be empty. Please key in add, a space and your to do list.";
-static const  string INVALID_DISPLAY_MESSAGE = "Sorry, wrong user input. Please only key in the word display.";
-static const  string INVALID_INPUT_MESSAGE = "Sorry, wrong user input.";
+static const  string INVALID_ADD_MESSAGE ="Sorry, wrong user input. To do list cannot be empty. Please key in add, a space and your to do list.\n";
+static const  string INVALID_DISPLAY_MESSAGE = "Sorry, wrong user input. Please only key in the word display.\n";
+static const  string INVALID_INPUT_MESSAGE = "Sorry, wrong user input.\n";
 
 //UI initialize a single user input.
 UI::UI(){
 	_commandWord="";
 	_toDoList="";
 	_line="";
-	
-
 }
 
 bool UI:: readCommand(){
@@ -27,6 +25,7 @@ bool UI:: readCommand(){
 	if(!_line.empty()){
 		isEmpty=false;
 	}
+
 	return isEmpty;
 }
 
@@ -51,13 +50,12 @@ bool UI::validityOfUserInput(){
 	_commandWord = _line.substr(0, endPositionOfCommandWord);
 	string commandWord = _commandWord;
 	bool isValid = false;
-
 	if (commandWord == "add"){
 		if(_line.size()!=commandWord.size()){
 			int startingPositionOfToDoList = endPositionOfCommandWord+1;
 			_toDoList=_line.substr(startingPositionOfToDoList);
 			isValid=true;
-		string toDoList = _toDoList;
+		    string toDoList = _toDoList;
 		}
 
 		else{
@@ -71,13 +69,14 @@ bool UI::validityOfUserInput(){
 		isValid= true;
 	}
 
-	else if(commandWord=="update"||"delete"||"exit"){
+	else if(commandWord=="update"||commandWord=="delete"||commandWord=="exit"){
 		isValid =true;
 	}
-	else if(commandWord!="update"||"delete"||"exit"||"add"||"display"){
-		cout << INVALID_INPUT_MESSAGE <<endl;
+
+	else{
+		cout<<INVALID_INPUT_MESSAGE;
 	}
-	
+
 	return isValid;
 }
 

@@ -12,10 +12,7 @@ int main(){
 	while(1)
 	{
 	mnk.readCommand();
-	if(!mnk.validityOfUserInput()){
-		cout << "invalid\n";
-	}
-	else{
+	if(mnk.validityOfUserInput()){
 		cout << mnk.callToLogic();
 	}
 	}
