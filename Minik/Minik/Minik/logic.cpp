@@ -4,10 +4,16 @@ logic::logic(){
 	storage = new Storage();
 }
 
+logic::logic(string commandWord, string toDoList){
+	storage = new Storage();
+	_commandWord = commandWord;
+	_toDoList = toDoList;
+}
+
 logic::~logic(){
 }
 
-logic::CommandType logic::determineCommandType(string _commandWord) {
+logic::CommandType logic::determineCommandType() {
 	if (_commandWord == "add"){
 		return ADD;
 	}
@@ -22,7 +28,7 @@ logic::CommandType logic::determineCommandType(string _commandWord) {
 	}
 }
 
-void logic::executeCommand(string _commandWord, string _toDoList) {
+bool logic::executeCommand() {
 	
 	CommandType commandType = determineCommandType(_commandWord);
 	
@@ -46,7 +52,7 @@ void logic::executeCommand(string _commandWord, string _toDoList) {
 	
 }
 
-Event logic::getEventInformation(string _toDoList){
+Event logic::getEventInformation(){
 	string title;
 	string date;
 	string time;
@@ -103,8 +109,8 @@ string logic::getEventTime(string &buffer){
 
 //Acceptable add commands
 //add <title> by/@ <date> <time>
-void logic::addEventWithDeadline(string _toDoList){
+bool logic::addEventWithDeadline(){
 	Event newEvent = getEventInformation(_toDoList);
 	storage->addEvent(newEvent);
-	return;
+	return true;
 }

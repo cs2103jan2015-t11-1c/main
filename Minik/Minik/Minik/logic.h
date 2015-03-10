@@ -12,6 +12,9 @@
 using namespace std;
 
 class logic{
+private:
+	string _commandWord;
+	string _toDoList;
 public:
 	//VARIABLES
 	Storage* storage;
@@ -19,13 +22,14 @@ public:
 
 	//METHODS
 	logic();
+	logic(string commandWord, string toDoList);
 	~logic();
-	CommandType determineCommandType(string _commandWord);
-	Event getEventInformation(string _toDoList);
+	CommandType determineCommandType();
+	Event getEventInformation();
 	string getEventTitle(string &buffer);
 	string getEventDate(string &buffer);
 	string getEventTime(string &buffer);
-	void executeCommand(string _commandWord, string _toDoList);
-	void addEventWithDeadline(string _toDoList);
+	bool executeCommand();
+	bool addEventWithDeadline();
 }
 #endif
