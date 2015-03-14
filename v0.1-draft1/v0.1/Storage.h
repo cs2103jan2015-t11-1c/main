@@ -16,7 +16,9 @@ public:
 	void addEvent (Event newEvent);
 	void deleteEvent (int index);
 	void updateEvent (int index, Event newEvent);
+	void markEventAsDone (int index);
 	Eventlist displayEvent (void);
+	Eventlist displayDoneEvent (void);
 	Event getEvent(int index);
 
 };

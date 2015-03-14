@@ -17,26 +17,26 @@ void Eventlist::addEvent(Event newEvent)
 }
 
 void Eventlist::deleteEvent(int index)
-{	list<Event>::iterator deleteposition;
+{	std::list<Event>::iterator deleteposition;
 	deleteposition = _allEvent.begin();
 	advance (deleteposition, index-1);
 	_allEvent.erase(deleteposition);
 }
 
 Event Eventlist::getEvent(int index)
-{	list<Event>::iterator eventPosition;
+{	std::list<Event>::iterator eventPosition;
 	eventPosition = _allEvent.begin();
 	advance (eventPosition, index-1);
 	return *eventPosition;
 }
 
 void Eventlist::updateEvent (int index, Event newEvent){
-	list<Event>::iterator eventPosition;
+	std::list<Event>::iterator eventPosition;
 	eventPosition = _allEvent.begin();
 	advance (eventPosition, index-1);
 	*eventPosition = newEvent;
 }
 
-list<Event> Eventlist:: returnAllEvent()
+std::list<Event> Eventlist:: returnAllEvent()
 { return _allEvent;
 }

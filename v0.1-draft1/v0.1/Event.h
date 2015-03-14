@@ -3,24 +3,24 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
+
 class Event
 {
 private:
-
+	std::string _title;
+	std::string _date;
+	std::string _time;
+	std::string _details;
 
 public:
-	string _title;
-	string _date;
-	string _time;
-	string _details;
+	
 	Event(void);
-	Event(string newTitle, string newDate, string newTime);
+	Event(std::string newTitle, std::string newDate, std::string newTime);
 	~Event(void);
-	void changeTitle( string newTitle );
-	void changeDate ( string newDate );
-	void changeTime ( string newTime);
-	void changeDetails (string newdetails);
-	string readEvent();
+	void changeTitle(std:: string newTitle );
+	void changeDate (std::string newDate );
+	void changeTime (std::string newTime);
+	void changeDetails (std::string newdetails);
+	std::string readEvent();
 };
 

@@ -6,7 +6,7 @@ Event::Event(void)
 }
 
 
-Event::Event(string newTitle, string newDate, string newTime)
+Event::Event(std::string newTitle, std::string newDate, std::string newTime)
 {	_title = newTitle;
 	_date = newDate;
 	_time = newTime;
@@ -17,23 +17,23 @@ Event::~Event(void)
 {
 }
 
-string Event::readEvent()
+std::string Event::readEvent()
 {	return _title + " is due " + _date + " " + _time;
 }
 
-void Event::changeTitle( string newTitle )
+void Event::changeTitle(std:: string newTitle )
 {	_title = newTitle; 
 }
 
-void Event::changeDate ( string newDate )
+void Event::changeDate (std:: string newDate )
 {	_date = newDate;
 }
 
-void Event::changeTime ( string newTime)
+void Event::changeTime (std:: string newTime)
 {	_time = newTime;
 }
 
-void Event::changeDetails (string newdetails)
+void Event::changeDetails (std::string newdetails)
 {	_details = newdetails;
 }
 
