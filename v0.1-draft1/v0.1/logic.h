@@ -18,7 +18,7 @@ private:
 	string _feedback;
 public:
 	//VARIABLE
-	enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT};
+	enum CommandType {ADD, DELETE, DISPLAY, DISPLAY_DONE, UPDATE, DONE, COMPLETED, EXIT};
 
 	//METHODS
 	logic();
@@ -32,8 +32,10 @@ public:
 	string executeCommand();
 	string addEventWithDeadline();
 	string cmdDisplay();
+	string cmdDisplayDone();
 	string cmdDelete();
 	string cmdUpdate();
+	string cmdMarkAsDone();
 	void setCommand (string commandWord, string toDoList);
 };
 #endif
