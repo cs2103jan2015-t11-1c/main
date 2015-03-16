@@ -22,5 +22,6 @@ public:
 	void changeTime (std::string newTime);
 	void changeDetails (std::string newdetails);
 	std::string readEvent();
+	std::string getDeadline();
 };
 

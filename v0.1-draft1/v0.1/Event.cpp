@@ -21,6 +21,11 @@ std::string Event::readEvent()
 {	return _title + " is due " + _date + " " + _time;
 }
 
+std::string Event::getDeadline()
+{	return _date + _time;
+}
+
+
 void Event::changeTitle(std:: string newTitle )
 {	_title = newTitle; 
 }

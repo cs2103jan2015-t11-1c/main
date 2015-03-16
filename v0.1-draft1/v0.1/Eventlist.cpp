@@ -40,3 +40,12 @@ void Eventlist::updateEvent (int index, Event newEvent){
 std::list<Event> Eventlist:: returnAllEvent()
 { return _allEvent;
 }
+
+int Eventlist::getTotalNumberOfEvents (void)
+{	return _allEvent.size();
+}
+
+void Eventlist::sortEvent(void)
+{ 
+}
+
