@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <iostream>
 const static string EXIT_MESSAGE = "Thank you for using Minik:)";
-const static string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.\n";
+const static string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.";
 
 logic::logic(){
 	_storage = Storage();
@@ -212,7 +212,7 @@ string logic::cmdDelete(){
 	string waste;
 	getline(cin, waste);
 	try{
-	if(taskNumber>activeEvents.eventNumber())
+	if(taskNumber>activeEvents.getTotalNumberOfEvents())
 		throw EXCEPTION_INVALID_INDEX;
 	Event eventToDelete = _storage.getEvent(taskNumber);
 	_storage.deleteEvent(taskNumber);
@@ -220,7 +220,7 @@ string logic::cmdDelete(){
 	return _feedback;
 	}catch(string EXCEPTION_INVALID_INDEX){
 		cout << EXCEPTION_INVALID_INDEX;
-	}
+		return "\n";
 	}
 }
 
@@ -270,7 +270,7 @@ string logic::cmdUpdate(){
 	eventNumber = getEventNumber();
 	Event eventToUpdate; 
 	eventToUpdate= _storage.getEvent(eventNumber);
-    string Tempt = eventToUpdate.readEvent()£»
+    string Tempt = eventToUpdate.readEvent();
 	
 	if(isUpdateTitle(buffer)){
 		string newTitle;
