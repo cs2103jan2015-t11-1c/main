@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <iostream>
 const static string EXIT_MESSAGE = "Thank you for using Minik:)";
-const static string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.";
+const static string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.\n";
 
 logic::logic(){
 	_storage = Storage();
@@ -50,7 +50,7 @@ string logic::executeCommand() {
 	switch (commandType)
 	{
 		case ADD:
-			return addEventWithDeadline();
+			return cmdAdd();
 		
 		case DISPLAY:
 			return cmdDisplay();
@@ -88,12 +88,6 @@ Event logic::getEventInformation(){
 
 	Event newEvent = Event(title, date, time);
 	return newEvent;
-}
-
-bool logic::isFloatingTask(string &buffer){
-	bool isFloatingTask = false;
-
-
 }
 
 string logic::getEventTitle(string &buffer){
@@ -138,11 +132,10 @@ string logic::getEventTime(string &buffer){
 	return time;
 }
 
-int logic::getEventNumber(){
+int logic::getEventNumber(string &buffer){
 	int eventNumber;
 	int TIndex;
 	string TString;
-	string &buffer = _toDoList;
 
 	TIndex = _toDoList.find_first_of(" ");
 	TString = _toDoList.substr(0, TIndex);
@@ -204,6 +197,35 @@ string logic::addEventWithDeadline(){
 	return _feedback;
 }
 
+bool logic::isFloatingTask(){
+	bool isFloatingTask = false;
+	int TIndex;
+	
+	TIndex = _toDoList.find("by");
+	if(TIndex = string::npos){
+		isFloatingTask = true;
+	}
+
+	return isFloatingTask;
+}
+
+string logic::addEventWithoutDeadline(){
+	Event newEvent(_toDoList, "", "");
+	_storage.addEvent(newEvent);
+	_feedback = "\"" + newEvent.readEvent() + "\" is added successfully.\n";
+	return _feedback;
+}
+
+string logic::cmdAdd(){
+	if(isFloatingTask()){
+		_feedback = addEventWithoutDeadline();
+	}else{
+		_feedback = addEventWithDeadline();
+	}
+
+	return _feedback;
+}
+
 string logic::cmdDelete(){
 	cmdDisplay();
 	int taskNumber;;
@@ -212,7 +234,7 @@ string logic::cmdDelete(){
 	string waste;
 	getline(cin, waste);
 	try{
-	if(taskNumber>activeEvents.getTotalNumberOfEvents())
+	if(taskNumber>activeEvents.eventNumber())
 		throw EXCEPTION_INVALID_INDEX;
 	Event eventToDelete = _storage.getEvent(taskNumber);
 	_storage.deleteEvent(taskNumber);
@@ -220,7 +242,7 @@ string logic::cmdDelete(){
 	return _feedback;
 	}catch(string EXCEPTION_INVALID_INDEX){
 		cout << EXCEPTION_INVALID_INDEX;
-		return "\n";
+	}
 	}
 }
 
@@ -267,7 +289,8 @@ string logic::cmdDisplayDone(){
 
 string logic::cmdUpdate(){
 	int eventNumber;
-	eventNumber = getEventNumber();
+	string &buffer = _toDoList;
+	eventNumber = getEventNumber(buffer);
 	Event eventToUpdate; 
 	eventToUpdate= _storage.getEvent(eventNumber);
     string Tempt = eventToUpdate.readEvent();
