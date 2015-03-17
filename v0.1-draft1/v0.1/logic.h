@@ -26,9 +26,15 @@ public:
 	~logic();
 	CommandType determineCommandType();
 	Event getEventInformation();
+	bool isFloatingTask(string &buffer);
 	string getEventTitle(string &buffer);
 	string getEventDate(string &buffer);
 	string getEventTime(string &buffer);
+	string getUpdateType(string &buffer);
+	int getEventNumber();
+	bool isUpdateTitle(string &buffer);
+	string getNewTitle(string &buffer);
+	bool isUpdateDeadline(string &buffer);
 	string executeCommand();
 	string addEventWithDeadline();
 	string cmdDisplay();

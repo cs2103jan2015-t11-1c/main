@@ -90,6 +90,12 @@ Event logic::getEventInformation(){
 	return newEvent;
 }
 
+bool logic::isFloatingTask(string &buffer){
+	bool isFloatingTask = false;
+
+
+}
+
 string logic::getEventTitle(string &buffer){
 	int TIndex;
     string title;
@@ -131,6 +137,63 @@ string logic::getEventTime(string &buffer){
 
 	return time;
 }
+
+int logic::getEventNumber(){
+	int eventNumber;
+	int TIndex;
+	string TString;
+	string &buffer = _toDoList;
+
+	TIndex = _toDoList.find_first_of(" ");
+	TString = _toDoList.substr(0, TIndex);
+	eventNumber = stoi(TString);
+	buffer = buffer.substr(TIndex+1);
+
+	return eventNumber;
+}
+
+string logic::getUpdateType(string &buffer){
+	int TIndex;
+	string updateType;
+
+	TIndex = buffer.find_first_of(" ");
+	updateType = buffer.substr(0, TIndex);
+	buffer = buffer.substr(TIndex+1);
+
+	return updateType;
+}
+
+bool logic::isUpdateTitle(string &buffer){
+	string updateType;
+	bool isUpdateTitle = false;
+
+	updateType = getUpdateType(buffer);
+	if(updateType == ".name"){
+		isUpdateTitle = true;
+	}
+
+	return isUpdateTitle;
+}
+
+string logic::getNewTitle(string &buffer){
+	string newTitle;
+	newTitle = buffer;
+	
+	return newTitle;
+}
+/*
+bool logic::isUpdateDeadline(string &buffer){
+	string updateType;
+	bool isUpdateDeadline = false;
+
+	updateType = getUpdateType(buffer);
+	if(updateType == ".end"){
+		isUpdateDeadline = true;
+	}
+
+	return isUpdateDeadline;
+}
+*/
 
 //Acceptable add commands
 //add <title> by/@ <date> <time>
@@ -203,18 +266,23 @@ string logic::cmdDisplayDone(){
 }
 
 string logic::cmdUpdate(){
-	cmdDisplay();
-	int taskNumber;
-	cin >> taskNumber;
-	Eventlist activeEvents;
-    string updateDetails;
-	getline(cin, updateDetails);
-	getline(cin, updateDetails);
-	_toDoList = updateDetails;
-	Event eventToUpdate = _storage.getEvent(taskNumber);
-	Event newEvent = getEventInformation();
-	_storage.updateEvent(taskNumber, newEvent);
-	_feedback = "\"" + eventToUpdate.readEvent() + "\" is updated to " + "\"" + newEvent.readEvent() +"\" \n";
+	int eventNumber;
+	eventNumber = getEventNumber();
+	Event eventToUpdate; 
+	eventToUpdate= _storage.getEvent(eventNumber);
+    string Tempt = eventToUpdate.readEvent()£»
+	
+	if(isUpdateTitle(buffer)){
+		string newTitle;
+		newTitle = getNewTitle(buffer);
+		eventToUpdate.changeTitle(newTitle);
+		_feedback = "\"" + Tempt + "\" 's title is updated to " + "\"" + newTitle +"\" \n";
+	}else{	
+	Event newEvent;
+	newEvent= getEventInformation();
+	_storage.updateEvent(eventNumber, newEvent);
+	_feedback = "\"" + Tempt + "\" is updated to " + "\"" + newEvent.readEvent() +"\" \n";
+	}
 	return _feedback;
 
 }
