@@ -226,11 +226,12 @@ string logic::cmdAdd(){
 	return _feedback;
 }
 
+
 string logic::cmdDelete(){
-	string &buffer = _toDoList;
-	int eventNumber = getEventNumber(buffer);
+	int eventNumber = stoi(_toDoList);
 	Eventlist activeEvents = _storage.displayEvent();
-	try{
+	return "delete: " + eventNumber;
+	/*try{
 	if(eventNumber>activeEvents.getTotalNumberOfEvents())
 		throw EXCEPTION_INVALID_INDEX;
 	Event eventToDelete = _storage.getEvent(eventNumber);
@@ -239,7 +240,7 @@ string logic::cmdDelete(){
 	return _feedback;
 	}catch(string EXCEPTION_INVALID_INDEX){
 		cout << EXCEPTION_INVALID_INDEX;
-	}
+	}*/
 }
 
 //mark a task as done
