@@ -50,7 +50,7 @@ bool UI::validityOfUserInput(){
 	_commandWord = _line.substr(0, endPositionOfCommandWord);
 	string commandWord = _commandWord;
 	bool isValid = false;
-	if (commandWord == "add"){
+	if (commandWord == "add"||commandWord =="delete"||commandWord == "update"){
 		if(_line.size()!=commandWord.size()){
 			int startingPositionOfToDoList = endPositionOfCommandWord+1;
 			_toDoList=_line.substr(startingPositionOfToDoList);
@@ -69,7 +69,7 @@ bool UI::validityOfUserInput(){
 		isValid= true;
 	}
 
-	else if(commandWord=="update"||commandWord=="delete"||commandWord=="exit"){
+	else if(commandWord=="exit"){
 		isValid =true;
 	}
 
