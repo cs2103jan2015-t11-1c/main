@@ -25,7 +25,7 @@ public:
 	logic(string commandWord, string toDoList);
 	~logic();
 	CommandType determineCommandType();
-	Event getEventInformation();
+	Event getEventInformation(string &buffer);
 	bool isFloatingTask();
 	string getEventTitle(string &buffer);
 	string getEventDate(string &buffer);

@@ -77,11 +77,10 @@ string logic::executeCommand() {
 	
 }
 
-Event logic::getEventInformation(){
+Event logic::getEventInformation(string &buffer){
 	string title;
 	string date;
 	string time;
-	string &buffer = _toDoList;
 	title = getEventTitle(buffer);
     date = getEventDate(buffer);
 	time = getEventTime(buffer);
@@ -191,7 +190,8 @@ bool logic::isUpdateDeadline(string &buffer){
 //Acceptable add commands
 //add <title> by/@ <date> <time>
 string logic::addEventWithDeadline(){
-	Event newEvent = getEventInformation();
+	string &buffer = _toDoList;
+	Event newEvent = getEventInformation(buffer);
 	_storage.addEvent(newEvent);
 	_feedback = "\"" + newEvent.readEvent() + "\" is added successfully.\n";
 	return _feedback;
@@ -202,7 +202,7 @@ bool logic::isFloatingTask(){
 	int TIndex;
 	
 	TIndex = _toDoList.find("by");
-	if(TIndex = string::npos){
+	if(TIndex == string::npos){
 		isFloatingTask = true;
 	}
 
@@ -218,6 +218,7 @@ string logic::addEventWithoutDeadline(){
 
 string logic::cmdAdd(){
 	if(isFloatingTask()){
+		cout << "hello" <<endl;
 		_feedback = addEventWithoutDeadline();
 	}else{
 		_feedback = addEventWithDeadline();
@@ -286,18 +287,21 @@ string logic::cmdUpdate(){
 	int eventNumber;
 	string &buffer = _toDoList;
 	eventNumber = getEventNumber(buffer);
+	
 	Event eventToUpdate; 
 	eventToUpdate= _storage.getEvent(eventNumber);
     string Tempt = eventToUpdate.readEvent();
-	
+	cout << buffer <<endl;
 	if(isUpdateTitle(buffer)){
 		string newTitle;
 		newTitle = getNewTitle(buffer);
 		eventToUpdate.changeTitle(newTitle);
+		_storage.updateEvent(eventNumber, eventToUpdate);
 		_feedback = "\"" + Tempt + "\" 's title is updated to " + "\"" + newTitle +"\" \n";
 	}else{	
 	Event newEvent;
-	newEvent= getEventInformation();
+	cout << buffer << endl;
+	newEvent= getEventInformation(buffer);
 	_storage.updateEvent(eventNumber, newEvent);
 	_feedback = "\"" + Tempt + "\" is updated to " + "\"" + newEvent.readEvent() +"\" \n";
 	}
