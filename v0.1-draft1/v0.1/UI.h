@@ -12,20 +12,18 @@ class UI{
     private:
 		std::string _commandWord;
 		std::string _toDoList;
-		std::string _line;
 		logic _logic;
 	
     public:
+		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, PENDING, DISPLAYDONE,DISPLAYPENDING};
 		UI(void);
 		~UI(void);
-		std::string getCommandWord();
-		std::string getToDoList();
+	    bool isNumber();
+	    CommandType determineCommandType();
 		void showWelcomeMessage();
 	    bool readCommand();
 		bool validityOfUserInput();
 		string callToLogic();
 };
-	  
-	    bool isNumber(std::string);
 		
 #endif

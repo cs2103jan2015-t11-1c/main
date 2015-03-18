@@ -11,77 +11,157 @@ static const  string WELCOME_MESSAGE = "Welcome to Minik!";
 static const  string INVALID_ADD_MESSAGE ="Sorry, wrong user input. To do list cannot be empty. Please key in add, a space and your to do list.\n";
 static const  string INVALID_DISPLAY_MESSAGE = "Sorry, wrong user input. Please only key in the word display.\n";
 static const  string INVALID_INPUT_MESSAGE = "Sorry, wrong user input.\n";
+static const string INVALID_DONE_MESSAGE = "Sorry, wrong user input. Please key in the command done, a space and the index of the task\neg: done 234\nIf you do not know the index, kewy in display.\n"; 
+static const string INVALID_PENDING_MESSAGE = "Sorry, wrong user input. Please key in the command pending, a space and the index of the task\neg: pending 234\nIf you do not know the index, kewy in display.\n"; 
 
 //UI initialize a single user input.
 UI::UI(){
 	_commandWord="";
 	_toDoList="";
-	_line="";
+	
 }
 
+ 
 bool UI:: readCommand(){
 	bool isEmpty=true;
-	getline(cin, _line);
-	if(!_line.empty()){
+	cin >> _commandWord;
+	if(!_commandWord.empty()){
 		isEmpty=false;
 	}
 
 	return isEmpty;
 }
+UI::CommandType UI::determineCommandType() {
+	if (_commandWord == "add"){
+		return ADD;
+	}
+	else if (_commandWord == "display") {
+		return DISPLAY;
+	}
+	else if (_commandWord == "delete") {
+		return DELETE;
+	}
+	else if (_commandWord == "update") {
+		return UPDATE;
+	}
+	else if (_commandWord == "exit") {
+		return EXIT;
+	}
+	else if (_commandWord == "done"){
+		return DONE;
+	}
+	else if (_commandWord == "pending"){
+		return PENDING;
+	}
 
+	else if (_commandWord == "displayDone"){
+		return DISPLAYDONE;
+	}
+	else if (_commandWord == "displayPending"){
+		return DISPLAYPENDING;
+	}
+	
+}
 void UI::showWelcomeMessage(){
 	cout << WELCOME_MESSAGE <<endl;
 }
 
 
 //Check whether the toDoList is merely a number
- bool isNumber(string toDoList) {
-	 for(unsigned int i=0;i < toDoList.size();i++){
-		 if(!isdigit(toDoList[i])){
+bool UI::isNumber() {
+	 for(int i=0;i<_toDoList.size();i++){
+		 if(!isdigit(_toDoList[i])){
 			 return false;
 		 }
 	 }
 	 return true;
  }
-
+ 
 //Primary check on the validity of user input.
 bool UI::validityOfUserInput(){
-	int endPositionOfCommandWord = _line.find_first_of(" ");
-	_commandWord = _line.substr(0, endPositionOfCommandWord);
-	string commandWord = _commandWord;
-	bool isValid = false;
-	if (commandWord == "add"){
-		if(_line.size()!=commandWord.size()){
-			int startingPositionOfToDoList = endPositionOfCommandWord+1;
-			_toDoList=_line.substr(startingPositionOfToDoList);
-			isValid=true;
-		    string toDoList = _toDoList;
-		}
-
-		else{
-			cout << INVALID_ADD_MESSAGE;
-		}
-	}
 	
-	else if(commandWord == "display"){
-		_toDoList="";
-		string toDoList = _toDoList;
-		isValid= true;
+	CommandType commandType = determineCommandType();
+	bool isValid = false;
+	
+	switch (commandType)
+	{
+		case ADD:
+			getline(cin, _toDoList);
+			if(_toDoList!=""){
+				isValid=true;
+			}
+			else{
+			cout << INVALID_ADD_MESSAGE;
+			}
+			return isValid;
+		
+		case DISPLAY:
+			_toDoList="";
+			isValid= true;
+			return isValid;
+		
+		case DELETE:
+			cin >> _toDoList;
+			if(isNumber()){
+				isValid= true;
+			}
+			else{
+				cout << INVALID_DELETION_MESSAGE;
+			}
+				
+			return isValid;
+		
+		case UPDATE:
+			getline(cin, _toDoList);
+			if(!_toDoList.empty()){
+				isValid= true;
+			}
+			else{
+				cout << INVALID_UPDATE_MESSAGE;
+			}
+			
+			return isValid;
+		
+		case DONE:
+			cin >> _toDoList;
+			if(isNumber()){
+				isValid= true;
+			}
+			else{
+				cout << INVALID_DONE_MESSAGE;
+			}
+				
+			return isValid;
+			
+		case PENDING:
+			cin >> _toDoList;
+			if(isNumber()){
+				isValid= true;
+			}
+			else{
+				cout << INVALID_PENDING_MESSAGE;
+			}
+			return isValid;
+			
+		case DISPLAYDONE:
+			_toDoList="";
+			isValid= true;
+			return isValid;
+			
+		case DISPLAYPENDING:
+			_toDoList="";
+			isValid= true;
+			return isValid;
+			
+		case EXIT:
+			exit(0);
+			
+		default:
+			cout<<INVALID_INPUT_MESSAGE;
+			break;
+			
+		}
 	}
-
-	else if(commandWord=="update"||commandWord=="delete"||commandWord=="exit"){
-		isValid =true;
-	}
-
-	else{
-		cout<<INVALID_INPUT_MESSAGE;
-	}
-
-	return isValid;
-}
-
-UI::~UI(void){}
-
 
 // Call logic to proceed on
 string UI::callToLogic(){
@@ -90,53 +170,5 @@ string UI::callToLogic(){
 	return feedback;		
 }
 
-/*
-//need to figure out with logic:P
- bool UI::isCompletedAction(string & line){
-	 bool isCompleted = false;
-	 if(logic.done()){
-		 isCompleted = true;
-	 }
+UI::~UI(void){}
 
-	 return isCompleted;
- }
-*/
-
-
-
-/*if (commandWord == "delete"){
-		if(!isNumber(toDoList)){
-			cout << INVALID_DELETION_MESSAGE;
-		}
-		else{
-			isValid = true;
-		}
-	}
-
-	else if (commandWord == "update"){
-		if(!isNumber(toDoList)){
-			cout << INVALID_UPDATE_MESSAGE;
-		}
-		else{
-			isValid = true;
-		}
-	}
-
-	else
-	*/
-
-/*
-//determineCommandWordnToDoList() separates the command word and whatever words following the command word.
-void UI::determineCommandWordnToDoList(){
-	int endPositionOfCommandWord = _line.find_first_of(" ");
-	_commandWord = _line.substr(0, endPositionOfCommandWord);
-
-	if(_commandWord.size()==_line.size()){
-		_toDoList="";
-	}
-	else{
-		int startingPositionOfToDoList = endPositionOfCommandWord+1;
-		_toDoList=_line.substr(startingPositionOfToDoList);
-	}
-}
-*/
