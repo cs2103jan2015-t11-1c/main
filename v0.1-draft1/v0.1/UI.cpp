@@ -82,6 +82,7 @@ bool UI::validityOfUserInput(){
 	
 	CommandType commandType = determineCommandType();
 	bool isValid = false;
+<<<<<<< HEAD
 	
 	switch (commandType)
 	{
@@ -91,6 +92,17 @@ bool UI::validityOfUserInput(){
 				isValid=true;
 			}
 			else{
+=======
+	if (commandWord == "add"||commandWord =="delete"||commandWord == "update"){
+		if(_line.size()!=commandWord.size()){
+			int startingPositionOfToDoList = endPositionOfCommandWord+1;
+			_toDoList=_line.substr(startingPositionOfToDoList);
+			isValid=true;
+		    string toDoList = _toDoList;
+		}
+
+		else{
+>>>>>>> b0ea122f573296d8a751dfbd91fa841d6b040c27
 			cout << INVALID_ADD_MESSAGE;
 			}
 			return isValid;
@@ -162,6 +174,29 @@ bool UI::validityOfUserInput(){
 			
 		}
 	}
+<<<<<<< HEAD
+=======
+	
+	else if(commandWord == "display"){
+		_toDoList="";
+		string toDoList = _toDoList;
+		isValid= true;
+	}
+
+	else if(commandWord=="exit"){
+		isValid =true;
+	}
+
+	else{
+		cout<<INVALID_INPUT_MESSAGE;
+	}
+
+	return isValid;
+}
+
+UI::~UI(void){}
+
+>>>>>>> b0ea122f573296d8a751dfbd91fa841d6b040c27
 
 // Call logic to proceed on
 string UI::callToLogic(){
