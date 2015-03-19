@@ -233,11 +233,10 @@ string logic::cmdDelete(){
 	Eventlist activeEvents = _storage.displayEvent();
 
 	try{
-<<<<<<< HEAD
-		if(taskNumber>activeEvents.getTotalNumberOfEvents())
-=======
+		if(eventNumber>activeEvents.getTotalNumberOfEvents())
+
 	if(eventNumber>activeEvents.getTotalNumberOfEvents()){
->>>>>>> 611cdf71ed9339c5416335080cb3014f954cd2ba
+
 		throw EXCEPTION_INVALID_INDEX;
 	}
 	Event eventToDelete = _storage.getEvent(eventNumber);
@@ -248,13 +247,9 @@ string logic::cmdDelete(){
 		cout << EXCEPTION_INVALID_INDEX;
 		return "\n";
 	}
-<<<<<<< HEAD
 
-
-
-=======
 }
->>>>>>> 611cdf71ed9339c5416335080cb3014f954cd2ba
+
 //mark a task as done
 string logic::cmdMarkAsDone(){
 	Eventlist activeEvents = _storage.displayEvent();
