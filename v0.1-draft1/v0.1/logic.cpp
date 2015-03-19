@@ -73,6 +73,7 @@ string logic::executeCommand() {
 		
 		default:
 			break;
+			assert(false);
 	}
 	
 }
@@ -240,6 +241,7 @@ string logic::cmdDelete(){
 	return _feedback;
 	}catch(string EXCEPTION_INVALID_INDEX){
 		cout << EXCEPTION_INVALID_INDEX;
+		return "\n";
 	}
 }
 
@@ -287,7 +289,6 @@ string logic::cmdUpdate(){
 	int eventNumber;
 	string &buffer = _toDoList;
 	eventNumber = getEventNumber(buffer);
-	
 	Event eventToUpdate; 
 	eventToUpdate= _storage.getEvent(eventNumber);
     string Tempt = eventToUpdate.readEvent();
