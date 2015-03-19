@@ -113,15 +113,14 @@ bool UI::validityOfUserInput(){
 			return isValid;
 		
 		case UPDATE:
-			cin >> _toDoList;
-			if(isNumber()){
-				isValid= true;
+			getline (cin,_toDoList);
+			if(_toDoList!=""){
+				isValid=true;
 				_toDoList=_toDoList.substr(1);
 			}
 			else{
-				cout << INVALID_UPDATE_MESSAGE;
+			cout << INVALID_ADD_MESSAGE;
 			}
-			
 			return isValid;
 		
 		case DONE:

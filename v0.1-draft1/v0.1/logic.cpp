@@ -288,7 +288,6 @@ string logic::cmdUpdate(){
 	Event eventToUpdate; 
 	eventToUpdate= _storage.getEvent(eventNumber);
     string Tempt = eventToUpdate.readEvent();
-	cout << buffer <<endl;
 	if(isUpdateTitle(buffer)){
 		string newTitle;
 		newTitle = getNewTitle(buffer);
