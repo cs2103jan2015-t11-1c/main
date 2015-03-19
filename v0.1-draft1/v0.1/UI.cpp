@@ -89,6 +89,7 @@ bool UI::validityOfUserInput(){
 			getline(cin, _toDoList);
 			if(_toDoList!=""){
 				isValid=true;
+				_toDoList=_toDoList.substr(1);
 			}
 			else{
 			cout << INVALID_ADD_MESSAGE;
@@ -115,6 +116,7 @@ bool UI::validityOfUserInput(){
 			cin >> _toDoList;
 			if(isNumber()){
 				isValid= true;
+				_toDoList=_toDoList.substr(1);
 			}
 			else{
 				cout << INVALID_UPDATE_MESSAGE;
