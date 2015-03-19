@@ -3,11 +3,10 @@
 #include <iostream>
 #include <ctype.h>
 #include "logic.h"
-#include "assert.h"
 using namespace std;
 
 static const string INVALID_DELETION_MESSAGE = "Sorry, wrong user input. Please key in delete, a space and the index of the task\neg: delete 234\n If you do not know the index, key in display.\n";
-static const string INVALID_UPDATE_MESSAGE = "Sorry, wrong user input. Please key in the command update, a space and the index of the task\ne.g.: update 234\nIf you do not know the index, key in display.\n"; 
+static const string INVALID_UPDATE_MESSAGE = "Sorry, wrong user input. Please key in the command update, a space and the index of the task\neg: update 234\nIf you do not know the index, kewy in display.\n"; 
 static const  string WELCOME_MESSAGE = "Welcome to Minik!";
 static const  string INVALID_ADD_MESSAGE ="Sorry, wrong user input. To do list cannot be empty. Please key in add, a space and your to do list.\n";
 static const  string INVALID_DISPLAY_MESSAGE = "Sorry, wrong user input. Please only key in the word display.\n";
@@ -113,8 +112,8 @@ bool UI::validityOfUserInput(){
 			return isValid;
 		
 		case UPDATE:
-			getline(cin, _toDoList);
-			if(!_toDoList.empty()){
+			cin >> _toDoList;
+			if(isNumber()){
 				isValid= true;
 			}
 			else{
@@ -130,7 +129,6 @@ bool UI::validityOfUserInput(){
 			}
 			else{
 				cout << INVALID_DONE_MESSAGE;
-				assert(false);
 			}
 				
 			return isValid;
