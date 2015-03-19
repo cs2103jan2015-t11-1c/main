@@ -73,7 +73,6 @@ string logic::executeCommand() {
 		
 		default:
 			break;
-			assert(false);
 	}
 	
 }
@@ -232,9 +231,11 @@ string logic::cmdAdd(){
 string logic::cmdDelete(){
 	int eventNumber = stoi(_toDoList);
 	Eventlist activeEvents = _storage.displayEvent();
+
 	try{
-	if(eventNumber>activeEvents.getTotalNumberOfEvents())
+	if(eventNumber>activeEvents.getTotalNumberOfEvents()){
 		throw EXCEPTION_INVALID_INDEX;
+	}
 	Event eventToDelete = _storage.getEvent(eventNumber);
 	_storage.deleteEvent(eventNumber);
 	_feedback = "\"" + eventToDelete.readEvent() + "\" is deleted.\n";
@@ -244,17 +245,12 @@ string logic::cmdDelete(){
 		return "\n";
 	}
 }
-
 //mark a task as done
 string logic::cmdMarkAsDone(){
-	cmdDisplay();
-	int taskNumber;
 	Eventlist activeEvents = _storage.displayEvent();
-	cin>>taskNumber;
-	string buffer;
-	getline(cin, buffer);
-	Event eventDone = _storage.getEvent(taskNumber);
-	_storage.markEventAsDone(taskNumber);
+	int number = stoi(_toDoList);
+	Event eventDone = _storage.getEvent(number);
+	_storage.markEventAsDone(number);
 	_feedback = "\"" + eventDone.readEvent() + "\" is marked as done.\n";
 	return _feedback;
 	}
