@@ -112,8 +112,8 @@ bool UI::validityOfUserInput(){
 			return isValid;
 		
 		case UPDATE:
-			cin >> _toDoList;
-			if(isNumber()){
+			getline(cin, _toDoList);
+			if(!_toDoList.empty()){
 				isValid= true;
 			}
 			else{
