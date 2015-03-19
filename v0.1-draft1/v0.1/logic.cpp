@@ -149,7 +149,7 @@ string logic::cmdDelete(){
 	string waste;
 	getline(cin, waste);
 	try{
-	if(taskNumber>activeEvents.eventNumber())
+		if(taskNumber>activeEvents.getTotalNumberOfEvents())
 		throw EXCEPTION_INVALID_INDEX;
 	Event eventToDelete = _storage.getEvent(taskNumber);
 	_storage.deleteEvent(taskNumber);
@@ -159,7 +159,7 @@ string logic::cmdDelete(){
 		cout << EXCEPTION_INVALID_INDEX;
 	}
 	}
-}
+
 
 
 //mark a task as done
