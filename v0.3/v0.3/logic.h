@@ -11,7 +11,7 @@
 using namespace std;
 
 class logic{
-private:
+protected:
 	string _commandWord;
 	string _toDoList;
 	Storage _storage;
@@ -24,26 +24,7 @@ public:
 	logic();
 	logic(string commandWord, string toDoList);
 	~logic();
-	CommandType determineCommandType();
-	Event getEventInformation(string &buffer);
-	bool isFloatingTask();
-	string getEventTitle(string &buffer);
-	string getEventDate(string &buffer);
-	string getEventTime(string &buffer);
-	string getUpdateType(string &buffer);
-	int getEventNumber(string &buffer);
-	bool isUpdateTitle(string &buffer);
-	string getNewTitle(string &buffer);
-	bool isUpdateDeadline(string &buffer);
-	string executeCommand();
-	string addEventWithDeadline();
-	string addEventWithoutDeadline();
-	string cmdAdd();
-	string cmdDisplay();
-	string cmdDisplayDone();
-	string cmdDelete();
-	string cmdUpdate();
-	string cmdMarkAsDone();
+
 	void setCommand (string commandWord, string toDoList);
 };
 #endif
