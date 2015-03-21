@@ -64,17 +64,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="cmdAdd.h" />
+    <ClInclude Include="cmdClear.h" />
+    <ClInclude Include="cmdDelete.h" />
+    <ClInclude Include="cmdDisplay.h" />
+    <ClInclude Include="cmdMarkAsDone.h" />
+    <ClInclude Include="cmdSearch.h" />
+    <ClInclude Include="cmdUndo.h" />
+    <ClInclude Include="cmdUpdate.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Eventlist.h" />
     <ClInclude Include="logic.h" />
+    <ClInclude Include="Parser.h" />
     <ClInclude Include="Storage.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cmdAdd.cpp" />
+    <ClCompile Include="cmdClear.cpp" />
+    <ClCompile Include="cmdDelete.cpp" />
+    <ClCompile Include="cmdDisplay.cpp" />
+    <ClCompile Include="cmdMarkAsDone.cpp" />
+    <ClCompile Include="cmdSearch.cpp" />
+    <ClCompile Include="cmdUndo.cpp" />
+    <ClCompile Include="cmdUpdate.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Eventlist.cpp" />
     <ClCompile Include="logic.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Storage.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
