@@ -1,12 +1,10 @@
-#include "logic.h"
+//#include "logic.h"
 #include "UI.h"
-#include "Storage.h"
 #include <assert.h>
 #include <iostream>
 using namespace std;
 #include <cstdlib>
 
-/*void analyze_string( string * string);*/
 
 int main(){
 	string msg;
@@ -15,20 +13,10 @@ int main(){
 
 	while(1)
 	{
-	mnk.readCommand();
-	if(mnk.validityOfUserInput()){
-		msg = mnk.callToLogic();
-		cout << msg;
+	mnk.readCommand(); 
+	msg = mnk.callToParser();
+	cout << msg;
 	}
-	/*analyze_string(msg);*/
-	}
-	 return 0;
-	system("pause");	
+	system("pause");
+    return 0;	
 }
-/*
-//Test output string to see wether it is NULL or empty.
-void analyze_string(string *string){
-	assert( string !=NULL);
-	assert ( *string != '\0');
-}
-*/

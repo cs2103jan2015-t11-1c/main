@@ -5,14 +5,8 @@
 #include "Parser.h"
 using namespace std;
 
-static const string INVALID_DELETION_MESSAGE = "Sorry, wrong user input. Please key in delete, a space and the index of the task\neg: delete 234\n If you do not know the index, key in display.\n";
-static const string INVALID_UPDATE_MESSAGE = "Sorry, wrong user input. Please key in the command update, a space and the index of the task\neg: update 234\nIf you do not know the index, kewy in display.\n"; 
+static const string INVALID_INPUT_MESSAGE = "Sorry, wrong user input.";
 static const  string WELCOME_MESSAGE = "Welcome to Minik!";
-static const  string INVALID_ADD_MESSAGE ="Sorry, wrong user input. To do list cannot be empty. Please key in add, a space and your to do list.\n";
-static const  string INVALID_DISPLAY_MESSAGE = "Sorry, wrong user input. Please only key in the word display.\n";
-static const  string INVALID_INPUT_MESSAGE = "Sorry, wrong user input.\n";
-static const string INVALID_DONE_MESSAGE = "Sorry, wrong user input. Please key in the command done, a space and the index of the task\neg: done 234\nIf you do not know the index, kewy in display.\n"; 
-static const string INVALID_PENDING_MESSAGE = "Sorry, wrong user input. Please key in the command pending, a space and the index of the task\neg: pending 234\nIf you do not know the index, kewy in display.\n"; 
 
 UI::UI(){
 	_commandWord="";
@@ -72,33 +66,30 @@ void UI::showWelcomeMessage(){
 string UI::callToParser(){
 	CommandType commandType = determineCommandType();
 	int index;
+
 	switch (commandType)
 	{
 		case ADD:
 			getline(cin, _toDoList);
-			index = _toDoList.find_first_not_of(" ");
-			_toDoList = _toDoList.substr(index);
+			_toDoList = _toDoList.substr(1);
 			_Parser.addEvent(_toDoList);			
 		
 		case DISPLAY:
-			_Parser.deleteEvent("display");
+			_Parser.displayEvent("display");
 		
 		case DELETE:
 			getline(cin, _toDoList);
-			index = _toDoList.find_first_not_of(" ");
-			_toDoList = _toDoList.substr(index);
+			_toDoList = _toDoList.substr(1);
 			_Parser.deleteEvent(_toDoList);			
 		
 		case UPDATE:
 			getline(cin, _toDoList);
-			index = _toDoList.find_first_not_of(" ");
-			_toDoList = _toDoList.substr(index);
+			_toDoList = _toDoList.substr(1);
 			_Parser.updateEvent(_toDoList);			
 		
 		case DONE:
 			getline(cin, _toDoList);
-			index = _toDoList.find_first_not_of(" ");
-			_toDoList = _toDoList.substr(index);
+			_toDoList = _toDoList.substr(1);
 			_Parser.markAsDone(_toDoList);
 			
 		case DISPLAYDONE:
@@ -118,8 +109,7 @@ string UI::callToParser(){
 
 		case SEARCH:
 			getline(cin, _toDoList);
-			index = _toDoList.find_first_not_of(" ");
-			_toDoList = _toDoList.substr(index);
+			_toDoList = _toDoList.substr(1);
 			_Parser.searchEvent(_toDoList);
 
 		default:

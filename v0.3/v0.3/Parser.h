@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include "logic.h"
+//#include "logic.h"
 #include "Parser.h"
 #include <string>
 #include <list>
@@ -10,6 +10,7 @@ using namespace std;
 
 class Parser
 {
+
 private:
 	string _taskName;
 	string _startingTime;
@@ -17,7 +18,8 @@ private:
 	string _startingDate;
 	string _endingDate;
 	list<int> _taskNumberList;
-	logic _logic;
+//	logic _logic;
+
 public:
 	Parser(void);
 	~Parser(void);
@@ -41,5 +43,3 @@ public:
 	string deleteEvent(string numberList);
 	void getNumberList(string numberList);
 };
-
-#endif

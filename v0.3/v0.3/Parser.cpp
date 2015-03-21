@@ -10,7 +10,7 @@ Parser::Parser(void)
 	_endingTime="";
 	_startingDate="";
 	_endingDate="";
-	_taskNumberList.clear();
+	_taskNumberList;
 }
 
 Parser::~Parser(void)
@@ -22,7 +22,9 @@ Parser::~Parser(void)
 //**************************************************************************
 
 string Parser::callToLogic(string command){
-	return _logic.executeCommand( command , _taskName, _startingDate, _startingTime,_endingDate, _endingTime, _taskNumberList);
+	//return _logic.executeCommand( command , _taskName, _startingDate, _startingTime,_endingDate, _endingTime, _taskNumberList);
+	cout <<"command:"<<command <<endl <<"taskname:" <<_taskName <<endl <<"starttime:"<<_startingTime <<endl <<"startdate:"<<_startingDate<<endl <<"enddate:"<< _endingDate <<endl <<"endtime:" <<_endingTime <<endl;
+	return "";
 }
 
 //*******************************************************************************************************
@@ -36,20 +38,17 @@ string Parser::addEvent(string toDoList){
 	else if (isTaskWithDeadline(toDoList)){
 		return addEventWithDeadline(toDoList);
 	}
-	else{
-		return addFloatingEvent(toDoList);
-	}
+
+	return addFloatingEvent(toDoList);
 
 }
 
 string Parser::addTimedEvent(string toDoList){
 	string &buffer =toDoList;
 	_taskName=getEventTitle(buffer);
-	int sPosition = buffer.find_first_of(":") + 2;
-	buffer = buffer.substr(sPosition);
 	_startingDate = getEventDate(buffer);
 	_startingTime = getEventTime(buffer);
-	int ePosition = buffer.find_first_not_of(":") + 2;
+	int ePosition = buffer.find_first_of(":") + 2;
 	buffer = buffer.substr(ePosition);
 	_endingDate = getEventDate(buffer);
 	_endingTime = getEventTime(buffer);
@@ -59,11 +58,9 @@ string Parser::addTimedEvent(string toDoList){
 string Parser::addEventWithDeadline(string toDoList){
 	string &buffer = toDoList;
 	_taskName=getEventTitle(buffer);
-	int ePosition = buffer.find_first_of(":") + 2;
-	buffer = buffer.substr(ePosition);
 	_endingDate = getEventDate(buffer);
 	_endingTime = getEventTime(buffer);
-	callToLogic("addEventWithDeadline");
+	return callToLogic("addEventWithDeadline");
 }
 
 string Parser::addFloatingEvent(string toDoList){
@@ -87,6 +84,7 @@ bool Parser::isTimedTask(string toDoList){
 	if(TIndex != string::npos){
 		isTimedTask = true;
 	}
+	return isTimedTask;
 }
 
 //*****************************************************************************************
@@ -95,24 +93,27 @@ bool Parser::isTimedTask(string toDoList){
 
 string Parser::getEventTitle(string &buffer){
 	int TIndex;
+
     string taskName;
-	TIndex = buffer.find_first_of("from:");
-	if(TIndex!=string::npos){
+	TIndex = buffer.find("from:");
+	if(TIndex!=string::npos && TIndex >=0){
 	taskName = buffer.substr(0, TIndex-1);
 	buffer = buffer.substr(TIndex+6);
 	return taskName;
 	}
-	else{
-		TIndex=buffer.find_first_of("by:");
-		if(TIndex!=string::npos){
-			taskName = buffer.substr(0, TIndex-1);
-			buffer = buffer.substr(TIndex+4);
-			return taskName;
-		}
-		else{
-			return buffer;
-		}
+
+	TIndex=buffer.find("by:");
+	cout << TIndex;
+	
+	if(TIndex!=string::npos&&TIndex >=0){
+		taskName = buffer.substr(0, TIndex-1);
+		buffer = buffer.substr(TIndex+4);
+		return taskName;
 	}
+
+	return buffer;
+
+
 }
 
 string Parser::getEventDate(string &buffer){
@@ -145,14 +146,15 @@ string Parser::getEventTime(string &buffer){
 	return time;
 }
 
+
 //****************************************************************************************************************
 //Update event has 3 types: update task name, update ending time and date, and update starting time and date.
 //****************************************************************************************************************
 
 string Parser::updateEvent(string toDoList){
-	string &buffer;
+	string & buffer=toDoList;
 	string command;
-	int upDateEventNumber = _getUpdateEventNumber(buffer);
+	int upDateEventNumber = getUpdateEventNumber(buffer);
 	_taskNumberList.push_back(upDateEventNumber);
 	int index = buffer.find_first_of(" ");
 	string updateType = buffer.substr(0, index);

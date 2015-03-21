@@ -2,8 +2,6 @@
 
 #ifndef UI_H
 #define UI_H
-#include"Event.h"
-#include "logic.h"
 #include <cstring>
 #include <string>
 #include <iostream>
@@ -22,6 +20,7 @@ class UI{
 	    CommandType determineCommandType();
 		void showWelcomeMessage();
 	    bool readCommand();
-		string callToParser();
+		string UI::callToParser();
 };
 		
+#endif
