@@ -10,7 +10,7 @@ Parser::Parser(void)
 	_endingTime="";
 	_startingDate="";
 	_endingDate="";
-	_taskNumberList;
+	_taskNumberList.clear();
 }
 
 Parser::~Parser(void)
@@ -22,8 +22,14 @@ Parser::~Parser(void)
 //**************************************************************************
 
 string Parser::callToLogic(string command){
-	//return _logic.executeCommand( command , _taskName, _startingDate, _startingTime,_endingDate, _endingTime, _taskNumberList);
-	cout <<"command:"<<command <<endl <<"taskname:" <<_taskName <<endl <<"starttime:"<<_startingTime <<endl <<"startdate:"<<_startingDate<<endl <<"enddate:"<< _endingDate <<endl <<"endtime:" <<_endingTime <<endl;
+	string feedback=_logic.executeCommand( command , _taskName, _startingDate, _startingTime,_endingDate, _endingTime, _taskNumberList);
+	//cout <<"command:"<<command <<endl <<"taskname:" <<_taskName <<endl <<"starttime:"<<_startingTime <<endl <<"startdate:"<<_startingDate<<endl <<"enddate:"<< _endingDate <<endl <<"endtime:" <<_endingTime <<endl;
+	_taskName ="";
+	_startingTime="";
+	_endingTime="";
+	_startingDate="";
+	_endingDate="";
+	_taskNumberList.clear();
 	return "";
 }
 
@@ -103,8 +109,6 @@ string Parser::getEventTitle(string &buffer){
 	}
 
 	TIndex=buffer.find("by:");
-	cout << TIndex;
-	
 	if(TIndex!=string::npos&&TIndex >=0){
 		taskName = buffer.substr(0, TIndex-1);
 		buffer = buffer.substr(TIndex+4);
@@ -240,6 +244,6 @@ void Parser::getNumberList(string numberList){
 		eventNumber = stoi(TString);
 		_taskNumberList.push_back(eventNumber);
 		numberList=numberList.substr(TIndex+1);
-		TIndex=numberList.find_first_not_of(" ");
+		TIndex=numberList.find_first_of(" ");
 	}
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-//#include "logic.h"
+#include "logic.h"
 #include "Parser.h"
 #include <string>
 #include <list>
@@ -18,7 +18,7 @@ private:
 	string _startingDate;
 	string _endingDate;
 	list<int> _taskNumberList;
-//	logic _logic;
+	logic _logic;
 
 public:
 	Parser(void);

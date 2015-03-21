@@ -11,6 +11,7 @@ static const  string WELCOME_MESSAGE = "Welcome to Minik!";
 UI::UI(){
 	_commandWord="";
 	_toDoList="";
+	
 }
 
 bool UI:: readCommand(){
@@ -72,45 +73,45 @@ string UI::callToParser(){
 		case ADD:
 			getline(cin, _toDoList);
 			_toDoList = _toDoList.substr(1);
-			_Parser.addEvent(_toDoList);			
+			return _Parser.addEvent(_toDoList);			
 		
 		case DISPLAY:
-			_Parser.displayEvent("display");
+			return _Parser.displayEvent("display");
 		
 		case DELETE:
 			getline(cin, _toDoList);
 			_toDoList = _toDoList.substr(1);
-			_Parser.deleteEvent(_toDoList);			
+			return _Parser.deleteEvent(_toDoList);			
 		
 		case UPDATE:
 			getline(cin, _toDoList);
 			_toDoList = _toDoList.substr(1);
-			_Parser.updateEvent(_toDoList);			
+			return _Parser.updateEvent(_toDoList);			
 		
 		case DONE:
 			getline(cin, _toDoList);
 			_toDoList = _toDoList.substr(1);
-			_Parser.markAsDone(_toDoList);
+			return _Parser.markAsDone(_toDoList);
 			
 		case DISPLAYDONE:
-			_Parser.displayEvent("displayDone");
+			return _Parser.displayEvent("displayDone");
 						
 		case DISPLAYTODAY:
-			_Parser.displayEvent("displayToday");
+			return _Parser.displayEvent("displayToday");
 
 		case EXIT:
 			exit(0);
 			
 		case UNDO:
-			_Parser.unDo();
+			return _Parser.unDo();
 
 		case CLEAR:
-			_Parser.clearEvent();
+			return _Parser.clearEvent();
 
 		case SEARCH:
 			getline(cin, _toDoList);
 			_toDoList = _toDoList.substr(1);
-			_Parser.searchEvent(_toDoList);
+			return _Parser.searchEvent(_toDoList);
 
 		default:
 			cout<<INVALID_INPUT_MESSAGE;
