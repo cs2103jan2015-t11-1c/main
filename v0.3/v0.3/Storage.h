@@ -9,11 +9,12 @@ private:
 	Eventlist _activeEvent;
 	Eventlist _doneEvent;
 	Eventlist _deletedEvent;
+	bool _possibleToUnDo;
+	enum COMMAND_TYPE { ADD,DELETE,UPDATE,DONE,CLEARDONE,CLEARACTIVE,INVALID};
+	COMMAND_TYPE findCommandType(std::string currentCommand);
 public:
 	Storage(void);
 	~Storage(void);
-
-	Storage(Event newEvent);
 	void addEvent (Event newEvent);
 	void unDoAddEvent ();
 	void deleteEvent (std::list<int> allIndex);
@@ -26,6 +27,7 @@ public:
 	void unDoClearActiveEvent();
 	void clearDoneEvent();
 	void unDoClearDoneEvent();
+	bool unDopreviousActions(std::string);
 	Eventlist displayEvent (void);
 	Eventlist displayDoneEvent (void);
 	Event getEvent(int index);
