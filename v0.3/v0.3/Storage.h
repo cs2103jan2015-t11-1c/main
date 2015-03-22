@@ -4,6 +4,7 @@
 class Storage
 {
 private:
+	int _numberForUndo;
 	Event _currentEvent;
 	Eventlist _activeEvent;
 	Eventlist _doneEvent;
@@ -14,9 +15,17 @@ public:
 
 	Storage(Event newEvent);
 	void addEvent (Event newEvent);
-	void deleteEvent (int index);
+	void unDoAddEvent ();
+	void deleteEvent (std::list<int> allIndex);
+	void unDoDeleteEvent ();
 	void updateEvent (int index, Event newEvent);
-	void markEventAsDone (int index);
+	void unDoUpdateEvent ();
+	void markEventAsDone (std::list<int> allIndex);
+	void unDomarkEventAsDone();
+	void clearActiveEvent();
+	void unDoClearActiveEvent();
+	void clearDoneEvent();
+	void unDoClearDoneEvent();
 	Eventlist displayEvent (void);
 	Eventlist displayDoneEvent (void);
 	Event getEvent(int index);

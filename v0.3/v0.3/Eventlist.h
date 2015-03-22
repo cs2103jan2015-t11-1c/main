@@ -11,6 +11,7 @@ private:
 public:
 	Eventlist(void);
 	~Eventlist(void);
+	void clearEventlist();
 	void addEvent (Event newEvent);
 	void deleteEvent (int index);
 	int getTotalNumberOfEvents (void);

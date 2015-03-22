@@ -17,6 +17,9 @@ Eventlist::~Eventlist(void)
 {
 }
 
+void Eventlist::clearEventlist()
+{ delete this;
+}
 
 void Eventlist::addEvent(Event newEvent)
 {	_allEvent.push_back(newEvent); 

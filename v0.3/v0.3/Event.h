@@ -8,9 +8,11 @@ class Event
 {
 private:
 	std::string _title;
-	std::string _date;
-	std::string _time;
+	std::string _endDate;
+	std::string _endTime;
 	std::string _details;
+	std::string _startDate;
+	std::string _startTime;
 
 public:
 	
@@ -18,8 +20,10 @@ public:
 	Event(std::string newTitle, std::string newDate, std::string newTime);
 	~Event(void);
 	void changeTitle(std:: string newTitle );
-	void changeDate (std::string newDate );
-	void changeTime (std::string newTime);
+	void changeStartDate (std::string newDate );
+	void changeStartTime (std::string newTime);
+	void changeEndDate (std::string newDate );
+	void changeEndTime (std::string newTime);
 	void changeDetails (std::string newdetails);
 	std::string readEvent();
 	std::string getDeadline();
