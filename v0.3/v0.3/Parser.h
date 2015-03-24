@@ -7,6 +7,7 @@
 #include <list>
 #include <string>
 using namespace std;
+enum MonthType {JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER,MONTHNOTASSIGNED};
 
 class Parser
 {
@@ -15,31 +16,34 @@ private:
 	string _taskName;
 	string _startingTime;
 	string _endingTime;
-	string _startingDate;
-	string _endingDate;
+	int _startingDate;
+	int _endingDate;
+	MonthType _startingMonth;
+	MonthType _endingMonth;
 	list<int> _taskNumberList;
 	logic _logic;
-
 public:
+	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, HELP};
 	Parser(void);
 	~Parser(void);
-    string callToLogic(string command);
-    string addEvent(string toDoList);
-    string addTimedEvent(string toDoList);
-	string addEventWithDeadline(string toDoList);
-	string addFloatingEvent(string toDoList);
-	bool isTaskWithDeadline(string toDoList);
-	bool isTimedTask(string toDoList);
-	string getEventTitle(string &buffer);
-	string getEventDate(string &buffer);
-	string getEventTime(string &buffer);
-	string updateEvent(string toDoList);
-	int getUpdateEventNumber(string &buffer);
-	string searchEvent(string part);
+    string callToLogic(CommandType );
+    string addEvent(string );
+    string addTimedEvent(string );
+	string addEventWithDeadline(string );
+	string addFloatingEvent(string );
+	MonthType determineMonthType(string );
+	bool isTaskWithDeadline(string );
+	bool isTimedTask(string );
+	string getEventTitle(string &);
+	void getEventDate(string &, int &, MonthType &);
+	string getEventTime(string &);
+	string updateEvent(string );
+	int getUpdateEventNumber(string &);
+	string searchEvent(string );
 	string unDo();
-	string displayEvent(string command);
+	string displayEvent(string );
 	string clearEvent();
-	string markAsDone(string numberList);
-	string deleteEvent(string numberList);
-	void getNumberList(string numberList);
+	string markAsDone(string );
+	string deleteEvent(string );
+	void getNumberList(string );
 };
