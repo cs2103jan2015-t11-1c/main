@@ -8,28 +8,32 @@ class Event
 {
 private:
 	std::string _title;
-	std::string _endDay;
-	std::string _endMonth;
-	std::string _endTime;
+	int _endDay;
+	int _endMonth;
+	int _endTime;
 	std::string _details;
-	std::string _startDay;
-	std::string _startMonth;
-	std::string _startTime;
+	int _startDay;
+	int _startMonth;
+	int _startTime;
+	bool _durationEvent;
+	int _dueRanking;
 
 public:
 	
 	Event(void);
-	Event(std::string newTitle, std::string newDay, std::string newMonth, std::string newTime);
+	Event(std::string newTitle, int newDay, int newMonth, int newTime);
 	~Event(void);
 	void changeTitle(std:: string newTitle );
-	void changeStartDay (std::string newDay );
-	void changeStartMonth (std::string newMonth );
-	void changeStartTime (std::string newTime);
-	void changeEndDay (std::string newDay );
-	void changeEndMonth (std::string newMonth );
-	void changeEndTime (std::string newTime);
+	void changeStartDay (int newDay );
+	void changeStartMonth (int newMonth );
+	void changeStartTime (int newTime);
+	void changeEndDay (int newDay );
+	void changeEndMonth (int newMonth );
+	void changeEndTime (int newTime);
 	void changeDetails (std::string newdetails);
 	std::string readEvent();
 	std::string getDeadline();
+	void updateDueRanking ();
+	int getDueRanking();
 };
 

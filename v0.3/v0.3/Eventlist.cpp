@@ -64,7 +64,11 @@ int Eventlist::getTotalNumberOfEvents (void)
 {	return _allEvent.size();
 }
 
+bool Eventlist::compareDueRanking(const Event& firstEvent, const Event& secondEvent)
+{	return firstEvent.updateDueRanking < secondEvent.getDueRanking;
+}
+
 void Eventlist::sortEvent(void)
-{ 
+{   _allEvent.sort(compareDueRanking);
 }
 

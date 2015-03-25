@@ -28,6 +28,8 @@ public:
 	void clearDoneEvent();
 	void unDoClearDoneEvent();
 	bool unDopreviousActions(std::string);
+	void sortActiveEventlist();
+	void sortDoneEventlist();
 	Eventlist displayEvent (void);
 	Eventlist displayDoneEvent (void);
 	Event getEvent(int index);

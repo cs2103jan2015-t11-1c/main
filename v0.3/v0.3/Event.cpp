@@ -6,11 +6,13 @@ Event::Event(void)
 }
 
 
-Event::Event(std::string newTitle, std::string newDay, std::string newMonth, std::string newTime)
+Event::Event(std::string newTitle, int newDay, int newMonth, int newTime)
 {	_title = newTitle;
-	_endDay=newDay;
-	_endMonth=newMonth;
+	_endDay= newDay;
+	_endMonth = newMonth;
 	_endTime = newTime;
+	updateDueRanking();
+	_durationEvent = false;
 }
 
 
@@ -19,15 +21,17 @@ Event::~Event(void)
 }
 
 std::string Event::readEvent()
-{	if( _startDay == "" && _startMonth == "" && _startTime == "")
-	return _title + " is due " + _endDay + " " + _endMonth + " " + _endTime;
-	else return _title + " start from " + _startDay + " " + _startMonth + " " +
-	_startTime + " is due " + _endDay + " " + _endMonth + " " + _endTime;
+{	if( _durationEvent == true)
+	return _title + " is due " + std::to_string(_endDay) + " " + std::to_string(_endMonth)
+	+ " " + std::to_string(_endTime);
+	else return _title + " start from " + std::to_string(_startDay) + " " + 
+	std::to_string(_startMonth) + " " + std::to_string(_startTime) + " is due " 
+	+ std::to_string(_endDay) + " " + std::to_string(_endMonth) + " " + std::to_string(_endTime);
 
 }
 
 std::string Event::getDeadline()
-{	return _endDay +_endMonth + _endTime;
+{	return std::to_string(_endDay) + std::to_string(_endMonth) + std::to_string(_endTime);
 }
 
 
@@ -35,31 +39,45 @@ void Event::changeTitle(std:: string newTitle )
 {	_title = newTitle; 
 }
 
-void Event::changeEndDay(std:: string newDay)
+void Event::changeEndDay(int newDay)
 {	_endDay = newDay;
+	updateDueRanking();
 }
 
-void Event::changeEndMonth (std:: string newMonth )
+void Event::changeEndMonth (int newMonth )
 {	_endMonth = newMonth;
+	updateDueRanking();
 }
 
-void Event::changeEndTime (std:: string newTime)
+void Event::changeEndTime (int newTime)
 {	_endTime = newTime;
+	updateDueRanking();
 }
 
-void Event::changeStartDay (std::string newDay )
+void Event::changeStartDay (int newDay )
 {	_startDay = newDay;	
+	_durationEvent = true;
+	
 }
 
-void Event::changeStartMonth (std::string newMonth)
+void Event::changeStartMonth (int newMonth)
 {	_startMonth=newMonth;
+	_durationEvent = true;
 }
 
-void Event::changeStartTime (std::string newTime)
+void Event::changeStartTime (int newTime)
 {	_startTime= newTime;
+	_durationEvent = true;
 }
 
 void Event::changeDetails (std::string newdetails)
 {	_details = newdetails;
 }
 
+void Event::updateDueRanking()
+{	_dueRanking = _endMonth*1000000 + _endDay*10000 + _endTime;
+}
+
+int Event::getDueRanking()
+{	return _dueRanking;
+}

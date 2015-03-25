@@ -19,5 +19,6 @@ public:
 	std::list<Event> returnAllEvent();
 	void updateEvent (int index, Event newEvent);
 	void sortEvent(void);
+	bool compareDueRanking (const Event& firstEvent, const Event& secondEvent);
 };
 
