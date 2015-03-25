@@ -6,9 +6,10 @@ Event::Event(void)
 }
 
 
-Event::Event(std::string newTitle, std::string newDate, std::string newTime)
+Event::Event(std::string newTitle, std::string newDay, std::string newMonth, std::string newTime)
 {	_title = newTitle;
-	_endDate = newDate;
+	_endDay=newDay;
+	_endMonth=newMonth;
 	_endTime = newTime;
 }
 
@@ -18,11 +19,11 @@ Event::~Event(void)
 }
 
 std::string Event::readEvent()
-{	return _title + " is due " + _endDate + " " + _endTime;
+{	return _title + " is due " + _endDay + " " + _endDay + " " + _endTime;
 }
 
 std::string Event::getDeadline()
-{	return _endDate + _endTime;
+{	return _endDay +_endMonth + _endTime;
 }
 
 
@@ -30,16 +31,24 @@ void Event::changeTitle(std:: string newTitle )
 {	_title = newTitle; 
 }
 
-void Event::changeEndDate (std:: string newDate )
-{	_endDate = newDate;
+void Event::changeEndDay(std:: string newDay)
+{	_endDay = newDay;
+}
+
+void Event::changeEndMonth (std:: string newMonth )
+{	_endMonth = newMonth;
 }
 
 void Event::changeEndTime (std:: string newTime)
 {	_endTime = newTime;
 }
 
-void Event::changeStartDate (std::string newDate )
-{	_startDate = newDate;	
+void Event::changeStartDay (std::string newDay )
+{	_startDay = newDay;	
+}
+
+void Event::changeStartMonth (std::string newMonth)
+{	_startMonth=newMonth;
 }
 
 void Event::changeStartTime (std::string newTime)
