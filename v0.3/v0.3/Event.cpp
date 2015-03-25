@@ -19,7 +19,11 @@ Event::~Event(void)
 }
 
 std::string Event::readEvent()
-{	return _title + " is due " + _endDay + " " + _endDay + " " + _endTime;
+{	if( _startDay == "" && _startMonth == "" && _startTime == "")
+	return _title + " is due " + _endDay + " " + _endMonth + " " + _endTime;
+	else return _title + " start from " + _startDay + " " + _startMonth + " " +
+	_startTime + " is due " + _endDay + " " + _endMonth + " " + _endTime;
+
 }
 
 std::string Event::getDeadline()
