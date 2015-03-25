@@ -6,6 +6,10 @@ class cmdUpdate :
 public:
 	cmdUpdate(void);
 	~cmdUpdate(void);
-	string exercutecmdUpdate();
+	string executecmdUpdate();
+	string updateName(Event, int);
+	string updateEndingTime(Event, int);
+	string updateStartingTime(Event, int);
+	string printFeedback(string, Event);
 };
 

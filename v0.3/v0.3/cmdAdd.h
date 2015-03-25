@@ -6,9 +6,10 @@ class cmdAdd :
 public:
 	cmdAdd(void);
 	~cmdAdd(void);
-	string exercutecmdAdd();
+	string executecmdAdd();
 	string addEventWithDeadline();
 	string addEventWithoutDeadline();
 	string addTimedEvent();
+	string printFeedback(Event);
 };
 

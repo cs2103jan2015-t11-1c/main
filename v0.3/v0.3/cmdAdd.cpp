@@ -1,39 +1,48 @@
 #include "cmdAdd.h"
 
-
-cmdAdd::cmdAdd(void)
-{
+cmdAdd::cmdAdd(void){
 }
 
 
-cmdAdd::~cmdAdd(void)
-{
+cmdAdd::~cmdAdd(void){
 }
 
-string cmdAdd::exercutecmdAdd(){
-	if(isFloatingTask()){
-		cout << "hello" <<endl;
-		_feedback = addEventWithoutDeadline();
-	}else{
+string cmdAdd::executecmdAdd(){
+	switch (_commandWord)
+	{
+	case ADDEVENTWITHDEADLINE:
 		_feedback = addEventWithDeadline();
-	}
-
-	return _feedback;
-
+	case ADDFLOATINGEVENT:
+		_feedback = addEventWithoutDeadline();
+	case ADDTIMEDEVENT:
+		_feedback = addTimedEvent();
+	default:
+		break;
+	} 
 }
+
 string cmdAdd::addEventWithDeadline(){
-	string &buffer = _toDoList;
-	Event newEvent = getEventInformation(buffer);
+	Event newEvent = Event(_taskName, _endingDate, _endingMonth, _endingTime); //need to change
 	_storage.addEvent(newEvent);
-	_feedback = "\"" + newEvent.readEvent() + "\" is added successfully.\n";
+	_feedback = printFeedback(newEvent);
 	return _feedback;
 }
-string cmdAdd::addEventWithoutDeadline(){
-	Event newEvent(_toDoList, "", "");
-	_storage.addEvent(newEvent);
-	_feedback = "\"" + newEvent.readEvent() + "\" is added successfully.\n";
-	return _feedback;
-}
-string cmdAdd::addTimedEvent(){
 
+string cmdAdd::addEventWithoutDeadline(){
+	Event newEvent = Event(_taskName, "", ""); //need to change
+	_storage.addEvent(newEvent);
+	_feedback = printFeedback(newEvent);
+	return _feedback;
+}
+
+string cmdAdd::addTimedEvent(){
+	Event newEvent = Event(_taskName, _startingDate, _startingTime, _endingDate, _endingTime); //need to change!
+	_storage.addEvent(newEvent);
+	_feedback = printFeedback(newEvent);
+	return _feedback;
+}
+
+string cmdAdd::printFeedback(Event event){
+	string feedback = "\"" + event.readEvent() + "\" is added successfully.\n";
+	return feedback;
 }

@@ -1,50 +1,62 @@
 #include "cmdUpdate.h"
 
 
-cmdUpdate::cmdUpdate(void)
-{
+cmdUpdate::cmdUpdate(void){
 }
 
 
-cmdUpdate::~cmdUpdate(void)
-{
+cmdUpdate::~cmdUpdate(void){
 }
 
-string cmdUpdate::exercutecmdUpdate(){
+string cmdUpdate::executecmdUpdate(){
 	int eventNumber;
-	string &buffer = _toDoList;
-	eventNumber = getEventNumber(buffer);
+	eventNumber= _taskNumberList.front();
 	Event eventToUpdate; 
 	eventToUpdate= _storage.getEvent(eventNumber);
-    string Tempt = eventToUpdate.readEvent();
-	if(isUpdateTitle(buffer)){
-		string newTitle;
-		newTitle = getNewTitle(buffer);
-		eventToUpdate.changeTitle(newTitle);
-		_storage.updateEvent(eventNumber, eventToUpdate);
-		_feedback = "\"" + Tempt + "\" 's title is updated to " + "\"" + newTitle +"\" \n";
-	}else{	
-	Event newEvent;
+ 	
+	switch(_commandWord){
+	case UPDATENAME:
+		return updateName(eventToUpdate, eventNumber);
+	case UPDATESTARTINGTIME:
+		return updateStartingTime(eventToUpdate, eventNumber);
+	case UPDATEENDINGTIME:
+		return updateEndingTime(eventToUpdate, eventNumber);
+	default:
+		break;
+	}	
+}
+/*	Event newEvent;
 	cout << buffer << endl;
 	newEvent= getEventInformation(buffer);
 	_storage.updateEvent(eventNumber, newEvent);
 	_feedback = "\"" + Tempt + "\" is updated to " + "\"" + newEvent.readEvent() +"\" \n";
 	}
-	return _feedback;
+	return _feedback;*/
 
-
+string cmdUpdate::updateName(Event eventToUpdate, int eventNumber){
+	string Tempt = eventToUpdate.readEvent();
+	eventToUpdate.changeTitle(_taskName);
+	_storage.updateEvent(eventNumber, eventToUpdate);
+	_feedback = printFeedback(Tempt, eventToUpdate);
 }
 
-/*
-bool logic::isUpdateDeadline(string &buffer){
-	string updateType;
-	bool isUpdateDeadline = false;
-
-	updateType = getUpdateType(buffer);
-	if(updateType == ".end"){
-		isUpdateDeadline = true;
-	}
-
-	return isUpdateDeadline;
+string cmdUpdate::updateEndingTime(Event eventToUpdate, int eventNumber){
+	string Tempt = eventToUpdate.readEvent();
+	eventToUpdate.changeStartDate(_startingDate); //separate to day and month, date is int now
+	eventToUpdate.changeStartDate(_startingTime);
+	_storage.updateEvent(eventNumber, eventToUpdate);
+	_feedback = printFeedback(Tempt, eventToUpdate);
 }
-*/
+
+string cmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber){
+	string Tempt = eventToUpdate.readEvent();
+	eventToUpdate.changeEndDate(_endingDate); //separate to day and month
+	eventToUpdate.changeEndDate(_endingTime);
+	_storage.updateEvent(eventNumber, eventToUpdate);
+	_feedback = printFeedback(Tempt, eventToUpdate);
+}
+
+string cmdUpdate::printFeedback(string Tempt, Event eventToUpdate){
+	string feedback = "\"" + Tempt + "\" is updated to " + "\"" + eventToUpdate.readEvent() +"\" \n";
+	return feedback;
+}

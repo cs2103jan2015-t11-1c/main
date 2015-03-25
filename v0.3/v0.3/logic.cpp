@@ -8,19 +8,32 @@ logic::logic(){
 	_storage = Storage();
 }
 
-logic::logic(string commandWord, string toDoList){
-	//_storage = Storage();
+/*logic::logic(string commandWord, string toDoList){
 	_commandWord = commandWord;
 	_toDoList = toDoList;
-}
+}*/
 
 logic::~logic(){
 }
-
-void logic:: setCommand (string commandWord, string toDoList){
-	_commandWord = commandWord;
-	_toDoList = toDoList;
+//need to modified
+void logic:: setCommand (string taskName, int startingDate, string startingTime, int endingDate, string endingTime, list<int> taskNumerlist){
+	_taskName = taskName;
+	_startingDate = startingDate;
+	_startingTime = startingTime;
+	_endingDate = endingDate;
+	_endingTime = endingTime;
+	_taskNumberList = taskNumerlist;
 }
 
+string logic::exercuteCommand(CommandType command ,string taskName, int startingDate, string startingTime, int endingDate, string endingTime, list<int> taskNumerlist){
+	setCommand(taskName, startingDate, startingTime, endingDate, endingTime, taskNumerlist);
+	if (command == ADDEVENTWITHDEADLINE || command == ADDFLOATINGEVENT || command == ADDTIMEDEVENT){
+		return _add.executecmdAdd();
+	}else if(command == UPDATEENDINGTIME || command == UPDATENAME || command == UPDATESTARTINGTIME){
+		return _update.executecmdUpdate();
+	}else if(command == DELETE){
+		return _delete.executecmdDelete();
+	}
+}
 
 
