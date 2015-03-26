@@ -2,7 +2,8 @@
 
 
 Storage::Storage(void)
-{
+{	_filename = "Minic.txt";
+	readFile();
 }
 
 Storage::~Storage(void)
@@ -11,7 +12,7 @@ Storage::~Storage(void)
 
 bool Storage::unDopreviousActions(std::string unDoCommand)
 {	
-	if (_possibleToUnDo=false)
+	if (_possibleToUnDo = false)
 		return false;
 	else {
 		COMMAND_TYPE command = findCommandType(unDoCommand);
@@ -178,4 +179,124 @@ void Storage::sortActiveEventlist()
 
 void Storage::sortDoneEventlist()
 {	_doneEvent.sortEvent();
+}
+
+void Storage::writeFile(std::string eventToFile)
+{	std::ofstream destination;
+	destination.open(_filename, std::ofstream::app);
+	destination << eventToFile << std::endl;
+	destination.close();
+}
+
+void Storage::saveActiveEventsToFile(){
+	std::list<Event> currentList = _activeEvent.returnAllEvent();
+	std::list<Event>::iterator iter;
+	for(iter = currentList.begin(); iter != currentList.end(); ++iter){
+		writeFile("Incomplete tasks: " + (*iter).readEvent());
+	}
+}
+
+void Storage::saveDoneEventsToFile(){
+	std::list<Event> currentList = _doneEvent.returnAllEvent();
+	std::list<Event>::iterator iter;
+	for(iter = currentList.begin(); iter != currentList.end(); ++iter){
+		writeFile("Done tasks: " + (*iter).readEvent());
+	}
+}
+
+void Storage::synchronizeDrive(){
+	clearLocalDrive();
+	saveDoneEventsToFile();
+	saveActiveEventsToFile();
+}
+
+void Storage::clearLocalDrive(){
+	std::ofstream outputFile;
+	outputFile.open(_filename);
+	outputFile.close();
+}
+
+void Storage::readFile(){
+	std::ifstream textFile;
+	std::string currentLine;
+	textFile.open(_filename);
+	while(getline(textFile,currentLine)){
+		readEventsFromFile(currentLine);
+	}
+	textFile.close();
+}
+
+void Storage::readEventsFromFile(std::string currentEventLine){
+	int index;
+	std::string doneEventidentifier = "Done tasks: ";
+	std::string activeEventidentifier = "Incomplete tasks: ";
+	std::size_t found = currentEventLine.find(doneEventidentifier);
+	std::size_t startingEvent;
+	std::string title;
+	std::string startday;
+	std::string startmonth;
+	std::string starttime;
+	std::string endday;
+	std::string endmonth;
+	std::string endtime;
+	bool isActive = false;
+	bool hasStartInfo = false;
+
+	if (found == std::string::npos){
+		currentEventLine.substr(12);
+		startingEvent = currentEventLine.find(" start from ");
+		if (startingEvent == std::string::npos)
+		{	index = currentEventLine.find(" start from ");
+			title = currentEventLine.substr(0, index-1);
+			currentEventLine.substr(index+12);
+			startday = currentEventLine.substr(1);
+			startmonth = currentEventLine.substr(3,4);
+			starttime = currentEventLine.substr(6,9);
+			endday = currentEventLine.substr(17,18);
+			endmonth = currentEventLine.substr(20,21);
+			endtime = currentEventLine.substr(23,26);
+			hasStartInfo = true;
+		}
+		else {	index = currentEventLine.find(" is due ");
+				title = currentEventLine.substr(0, index-1);
+				currentEventLine.substr(index+8);
+				endday = currentEventLine.substr(1);
+				endmonth = currentEventLine.substr(3,4);
+				endtime = currentEventLine.substr(6,9);
+		}
+	} else {
+		isActive = true;
+		currentEventLine.substr(18);
+		startingEvent = currentEventLine.find(" start from ");
+		if (startingEvent == std::string::npos)
+		{	index = currentEventLine.find(" start from ");
+			title = currentEventLine.substr(0, index-1);
+			currentEventLine.substr(index+12);
+			startday = currentEventLine.substr(1);
+			startmonth = currentEventLine.substr(3,4);
+			starttime = currentEventLine.substr(6,9);
+			endday = currentEventLine.substr(17,18);
+			endmonth = currentEventLine.substr(20,21);
+			endtime = currentEventLine.substr(23,26);
+			hasStartInfo = true;
+		}
+		else {	index = currentEventLine.find(" is due ");
+				title = currentEventLine.substr(0, index-1);
+				currentEventLine.substr(index+8);
+				endday = currentEventLine.substr(1);
+				endmonth = currentEventLine.substr(3,4);
+				endtime = currentEventLine.substr(6,9);
+		}
+	}
+	Event newEvent(title,stoi(endday), stoi(endmonth),stoi(endtime));
+	if (hasStartInfo)
+	{	newEvent.changeStartDay(stoi(startday));
+		newEvent.changeStartMonth(stoi(startmonth));
+		newEvent.changeStartTime(stoi(starttime));
+	}
+	if (isActive){	
+		_activeEvent.addEvent(newEvent);}
+	else _doneEvent.addEvent(newEvent);
+
+
 }

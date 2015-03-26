@@ -1,5 +1,6 @@
 #pragma once
 #include "Eventlist.h"
+#include <fstream>
 
 class Storage
 {
@@ -12,6 +13,8 @@ private:
 	bool _possibleToUnDo;
 	enum COMMAND_TYPE { ADD,DELETE,UPDATE,DONE,CLEARDONE,CLEARACTIVE,INVALID};
 	COMMAND_TYPE findCommandType(std::string currentCommand);
+	std::string _filename;
+
 public:
 	Storage(void);
 	~Storage(void);
@@ -33,6 +36,13 @@ public:
 	Eventlist displayEvent (void);
 	Eventlist displayDoneEvent (void);
 	Event getEvent(int index);
+	void writeFile(std::string eventToFile);
+	void saveActiveEventsToFile();
+	void saveDoneEventsToFile();
+	void synchronizeDrive();
+	void clearLocalDrive();
+	void readFile();
+	void readEventsFromFile(std::string currentEventLine);
 
 };
 

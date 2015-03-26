@@ -35,5 +35,6 @@ public:
 	std::string getDeadline();
 	void updateDueRanking ();
 	int getDueRanking();
+
 };
 
