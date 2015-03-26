@@ -19,14 +19,54 @@ Parser::~Parser(void)
 {
 }
 
+int Parser::convertMonthTypeToInteger(MonthType monthType){
+	int month;
+
+	switch(monthType){
+	case JANUARY:
+		month = 1;
+	case FEBRUARY:
+		month = 2;
+	case MARCH:
+		month = 3;
+	case APRIL:
+		month = 4;
+	case MAY:
+		month = 5;
+	case JUNE:
+		month = 6;
+	case JULY:
+		month = 7;
+	case AUGUST:
+		month = 8;
+	case SEPTEMBER:
+		month = 9;
+	case OCTOBER:
+		month = 10;
+	case NOVEMBER:
+		month = 11;
+	case DECEMBER:
+		month = 12;
+	case MONTHNOTASSIGNED:
+		month = 13;
+	}
+
+	return month;
+}
+
 //**************************************************************************
 //Pass all the informations of the user input to logic to execute the command.
 //**************************************************************************
-
 string Parser::callToLogic(CommandType command){
-	string feedback=_logic.executeCommand( command , _taskName, _startingDate, _startingTime,_endingDate, _endingTime, _taskNumberList);
+	int startingMonth=convertMonthTypeToInteger(_startingMonth);
+	int endingMonth = convertMonthTypeToInteger(_endingMonth);
+	int integerStartingTime = stoi(_startingTime);
+	int integerEndingTime = stoi(_endingTime);
+	
+	string feedback=_logic.executeCommand( command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
 	
 //	cout <<"command:"<<command <<endl <<"taskname:" <<_taskName <<endl <<"starttime:"<<_startingTime <<endl <<"startdate:"<<_startingDate<<endl<<"startingmonth:" <<_startingMonth <<endl <<"enddate:"<< _endingDate <<endl <<"endingMonth:"<<_endingMonth <<endl<<"endtime:" <<_endingTime <<endl;
+	//Reset the value of all private attributes.
 	_taskName ="";
 	_startingTime="";
 	_endingTime="";

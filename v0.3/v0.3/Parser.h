@@ -26,6 +26,7 @@ public:
 	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, HELP};
 	Parser(void);
 	~Parser(void);
+	int convertMonthTypeToInteger(MonthType);
     string callToLogic(CommandType );
     string addEvent(string );
     string addTimedEvent(string );
