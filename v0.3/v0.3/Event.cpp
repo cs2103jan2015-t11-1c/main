@@ -21,7 +21,7 @@ Event::~Event(void)
 }
 
 std::string Event::readEvent()
-{	if( _durationEvent == true)
+{	if( _durationEvent == false)
 	return _title + " is due " + std::to_string(_endDay) + " " + std::to_string(_endMonth)
 	+ " " + std::to_string(_endTime);
 	else return _title + " start from " + std::to_string(_startDay) + " " + 
@@ -81,3 +81,4 @@ void Event::updateDueRanking()
 int Event::getDueRanking()
 {	return _dueRanking;
 }
+
