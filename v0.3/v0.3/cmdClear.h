@@ -6,5 +6,6 @@ class cmdClear :
 public:
 	cmdClear(void);
 	~cmdClear(void);
+	std::string clear();
 };
 
