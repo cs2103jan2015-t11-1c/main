@@ -6,5 +6,7 @@ class cmdUndo :
 public:
 	cmdUndo(void);
 	~cmdUndo(void);
+	string undo();
+	string printUndoMessage();
 };
 
