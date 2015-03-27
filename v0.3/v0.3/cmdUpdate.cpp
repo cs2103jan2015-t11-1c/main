@@ -42,16 +42,18 @@ string cmdUpdate::updateName(Event eventToUpdate, int eventNumber){
 
 string cmdUpdate::updateEndingTime(Event eventToUpdate, int eventNumber){
 	string Tempt = eventToUpdate.readEvent();
-	eventToUpdate.changeStartDate(_startingDate); //separate to day and month, date is int now
-	eventToUpdate.changeStartDate(_startingTime);
+	eventToUpdate.changeEndDay(_endingDate);
+	eventToUpdate.changeEndMonth(_endingMonth);
+	eventToUpdate.changeEndTime(_endingTime);
 	_storage.updateEvent(eventNumber, eventToUpdate);
 	_feedback = printFeedback(Tempt, eventToUpdate);
 }
 
 string cmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber){
 	string Tempt = eventToUpdate.readEvent();
-	eventToUpdate.changeEndDate(_endingDate); //separate to day and month
-	eventToUpdate.changeEndDate(_endingTime);
+	eventToUpdate.changeStartDay(_startingDate);
+	eventToUpdate.changeStartMonth(_startingMonth);
+	eventToUpdate.changeStartTime(_startingTime);
 	_storage.updateEvent(eventNumber, eventToUpdate);
 	_feedback = printFeedback(Tempt, eventToUpdate);
 }

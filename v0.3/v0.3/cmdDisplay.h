@@ -6,7 +6,9 @@ class cmdDisplay :
 public:
 	cmdDisplay(void);
 	~cmdDisplay(void);
-	string exercutecmdDisplay();
+	string executecmdDisplay();
 	string cmdDisplayDone();
+	string cmdDisplayActive();
+	string cmdDisplayToday();
 };
 

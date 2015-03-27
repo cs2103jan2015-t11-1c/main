@@ -23,12 +23,12 @@ protected:
 	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, HELP};
 	CommandType _commandWord;
 	string _taskName;
-	string _startingTime;
-	string _endingTime;
+	int _startingTime;
+	int _endingTime;
 	int _startingDate;
 	int _endingDate;
-	MonthType _startingMonth;
-	MonthType _endingMonth;
+	int _startingMonth;
+	int _endingMonth;
 	list<int> _taskNumberList;
 	Storage _storage;
 	string _feedback;
@@ -47,7 +47,7 @@ public:
 	logic();
 	logic(string commandWord, string toDoList);
 	~logic();
-	void setCommand (string, int, string, int, string, list<int>);
-	string exercuteCommand(CommandType, string, int, string, int, string, list<int>);
+	void setCommand (string, int, int, int, int, int, int, list<int>);
+	string executeCommand(CommandType, string, int, int, int, int, int, int, list<int>);
 };
 #endif

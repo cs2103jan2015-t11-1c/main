@@ -6,6 +6,7 @@ class cmdDelete :
 public:
 	cmdDelete(void);
 	~cmdDelete(void);
-	string exercutecmdDelete();
+	string executecmdDelete();
+	string printFeedback(list<int>);
 };
 

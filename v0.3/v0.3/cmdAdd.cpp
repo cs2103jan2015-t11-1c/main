@@ -1,6 +1,7 @@
 #include "cmdAdd.h"
 
 cmdAdd::cmdAdd(void){
+	_newEvent = Event(_taskName, _endingDate, _endingMonth, _endingTime);
 }
 
 
@@ -22,23 +23,23 @@ string cmdAdd::executecmdAdd(){
 }
 
 string cmdAdd::addEventWithDeadline(){
-	Event newEvent = Event(_taskName, _endingDate, _endingMonth, _endingTime); //need to change
-	_storage.addEvent(newEvent);
-	_feedback = printFeedback(newEvent);
+	_storage.addEvent(_newEvent);
+	_feedback = printFeedback(_newEvent);
 	return _feedback;
 }
 
 string cmdAdd::addEventWithoutDeadline(){
-	Event newEvent = Event(_taskName, "", ""); //need to change
-	_storage.addEvent(newEvent);
-	_feedback = printFeedback(newEvent);
+	_storage.addEvent(_newEvent);
+	_feedback = printFeedback(_newEvent);
 	return _feedback;
 }
 
 string cmdAdd::addTimedEvent(){
-	Event newEvent = Event(_taskName, _startingDate, _startingTime, _endingDate, _endingTime); //need to change!
-	_storage.addEvent(newEvent);
-	_feedback = printFeedback(newEvent);
+	_newEvent.changeStartDay(_startingDate);
+	_newEvent.changeStartMonth(_startingMonth);
+	_newEvent.changeStartTime(_startingTime);
+	_storage.addEvent(_newEvent);
+	_feedback = printFeedback(_newEvent);
 	return _feedback;
 }
 
