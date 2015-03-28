@@ -82,3 +82,7 @@ int Event::getDueRanking()
 {	return _dueRanking;
 }
 
+std::string Event::getTaskName()
+{	return _title;
+}
+

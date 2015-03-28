@@ -31,6 +31,7 @@ public:
 	void changeEndMonth (int newMonth );
 	void changeEndTime (int newTime);
 	void changeDetails (std::string newdetails);
+	std::string getTaskName();
 	std::string readEvent();
 	std::string getDeadline();
 	void updateDueRanking ();
