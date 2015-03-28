@@ -16,7 +16,7 @@ private:
 	int _startMonth;
 	int _startTime;
 	bool _durationEvent;
-	int _dueRanking;
+	
 
 public:
 	
@@ -36,6 +36,6 @@ public:
 	std::string getDeadline();
 	void updateDueRanking ();
 	int getDueRanking();
-
+	int _dueRanking;
 };
 

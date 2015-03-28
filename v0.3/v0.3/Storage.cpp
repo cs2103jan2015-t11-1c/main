@@ -21,19 +21,19 @@ bool Storage::unDopreviousActions(std::string unDoCommand)
 		unDoAddEvent();
 		return true;
 	case DONE:
-		unDomarkEventAsDone;
+		unDomarkEventAsDone();
 		return true;
 	case DELETE:
-		unDoDeleteEvent;
+		unDoDeleteEvent();
 		return true;
 	case UPDATE:
-		unDoUpdateEvent;
+		unDoUpdateEvent();
 		return true;
 	case CLEARACTIVE:
-		unDoClearActiveEvent;
+		unDoClearActiveEvent();
 		return true;
 	case CLEARDONE:
-		unDoClearDoneEvent;
+		unDoClearDoneEvent();
 		return true;
 	case INVALID:
 		return false;
