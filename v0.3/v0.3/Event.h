@@ -34,8 +34,8 @@ public:
 	std::string getTaskName();
 	std::string readEvent();
 	std::string getDeadline();
+	std::string convertNumberToString(int number);
 	void updateDueRanking ();
-	int getDueRanking();
 	int _dueRanking;
 };
 

@@ -22,13 +22,23 @@ Event::~Event(void)
 
 std::string Event::readEvent()
 {	if( _durationEvent == false)
-	return _title + " is due " + std::to_string(_endDay) + " " + std::to_string(_endMonth)
+	return _title + " is due " + convertNumberToString(_endDay) + " " 
+	+ convertNumberToString(_endMonth) + " " + std::to_string(_endTime);
+	else return _title + " start from " + convertNumberToString(_startDay) + " " + 
+	convertNumberToString(_startMonth) + " " + convertNumberToString(_startTime) + 
+	" is due " + convertNumberToString(_endDay) + " " + convertNumberToString(_endMonth)
 	+ " " + std::to_string(_endTime);
-	else return _title + " start from " + std::to_string(_startDay) + " " + 
-	std::to_string(_startMonth) + " " + std::to_string(_startTime) + " is due " 
-	+ std::to_string(_endDay) + " " + std::to_string(_endMonth) + " " + std::to_string(_endTime);
 
 }
+std::string Event::convertNumberToString(int number){
+	
+	if (number/10 == 0){
+		std::string tempString;
+		tempString = std::to_string(number);
+		return "0" + tempString;}
+	else return std::to_string(number);
+}
+
 
 std::string Event::getDeadline()
 {	return std::to_string(_endDay) + std::to_string(_endMonth) + std::to_string(_endTime);
@@ -76,10 +86,6 @@ void Event::changeDetails (std::string newdetails)
 
 void Event::updateDueRanking()
 {	_dueRanking = _endMonth*1000000 + _endDay*10000 + _endTime;
-}
-
-int Event::getDueRanking()
-{	return _dueRanking;
 }
 
 std::string Event::getTaskName()
