@@ -9,9 +9,10 @@ private:
 	Event _currentEvent;
 	Eventlist _activeEvent;
 	Eventlist _doneEvent;
-	Eventlist _deletedEvent;
+	Eventlist _deletedActiveEvent;
+	Eventlist _deletedDoneEvent;
 	bool _possibleToUnDo;
-	enum COMMAND_TYPE { ADD,DELETE,UPDATE,DONE,CLEARDONE,CLEARACTIVE,INVALID};
+	enum COMMAND_TYPE { ADD,DELETE,UPDATE,DONE,CLEARDONE,CLEARACTIVE,CLEAR,INVALID};
 	COMMAND_TYPE findCommandType(std::string currentCommand);
 	std::string _filename;
 

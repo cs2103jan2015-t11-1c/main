@@ -31,6 +31,7 @@ void logic:: setCommand (string taskName, int startingDate, int startingMonth, i
 
 string logic::executeCommand(CommandType command ,string taskName, int startingDate, int startingMonth, int startingTime, int endingDate, int endingMonth, int endingTime, list<int> taskNumerlist){
 	_commandWord = command;
+	vectorCommand.push_back(command);
 	if (command == ADDEVENTWITHDEADLINE || command == ADDFLOATINGEVENT || command == ADDTIMEDEVENT){
 		_add.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _add.executecmdAdd(_storage);
@@ -42,7 +43,7 @@ string logic::executeCommand(CommandType command ,string taskName, int startingD
 		return _delete.executecmdDelete(_storage);
 	}else if(command == UNDO){
 		_undo.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
-		return _undo.undo(_storage);
+		return _undo.undo(_storage, vectorCommand);
 	}else if(command == CLEAR){
 		_clear.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _clear.executeClear(_storage);

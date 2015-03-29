@@ -17,24 +17,29 @@ string cmdUndo::printUndoMessage(){
 }
 
 //undo last command based on the last command word from the user
-string cmdUndo::undo(Storage& _storage){
-	CommandType lastCommand = vectorCommand[noOfCommand];
-	if(lastCommand == ADDEVENTWITHDEADLINE || lastCommand == ADDFLOATINGEVENT || lastCommand == ADDTIMEDEVENT){
-		_storage.unDoAddEvent();
-		//printUndoMessage();
-	}else if(lastCommand == DELETE){
-		_storage.unDoDeleteEvent();
-		//printUndoMessage();
-	}else if(lastCommand == UPDATEENDINGTIME || lastCommand == UPDATENAME || lastCommand == UPDATESTARTINGTIME){
-		_storage.unDoUpdateEvent();
-		//printUndoMessage();
-	}else if(lastCommand == CLEAR){
-		_storage.unDoClearActiveEvent();
-		_storage.unDoClearDoneEvent();
-		//printUndoMessage();
-	}else if(lastCommand == MARKASDONE){
-		_storage.unDomarkEventAsDone();
-		//printUndoMessage();
+string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStored){
+	CommandType lastCommand = commandStored.back();
+	
+	while (lastCommand == UNDO || lastCommand == DISPLAY || lastCommand == DISPLAYDONE){
+		commandStored.pop_back();
+		lastCommand = commandStored.back();
 	}
-		return printUndoMessage();
+	commandStored.pop_back();
+	std::string lastCommandString;
+
+	if(lastCommand == ADDEVENTWITHDEADLINE || lastCommand == ADDFLOATINGEVENT || lastCommand == ADDTIMEDEVENT){
+		lastCommandString = "add";
+	}else if(lastCommand == DELETE){
+		lastCommandString = "delete";
+	}else if(lastCommand == UPDATEENDINGTIME || lastCommand == UPDATENAME || lastCommand == UPDATESTARTINGTIME){
+		lastCommandString = "update";
+	}else if(lastCommand == CLEAR){
+		lastCommandString = "clear";
+	}else if(lastCommand == MARKASDONE){
+		lastCommandString = "done";
+	}
+	if (_storage.unDopreviousActions(lastCommandString)) {	
+	_storage.synchronizeDrive();
+	return printUndoMessage();}
+	else return "unsuccessful";
 	}

@@ -12,7 +12,7 @@ Storage::~Storage(void)
 
 bool Storage::unDopreviousActions(std::string unDoCommand)
 {	
-	if (_possibleToUnDo = false)
+	if (_possibleToUnDo == false)
 		return false;
 	else {
 		COMMAND_TYPE command = findCommandType(unDoCommand);
@@ -33,6 +33,10 @@ bool Storage::unDopreviousActions(std::string unDoCommand)
 		unDoClearActiveEvent();
 		return true;
 	case CLEARDONE:
+		unDoClearDoneEvent();
+		return true;
+	case CLEAR:
+		unDoClearActiveEvent();
 		unDoClearDoneEvent();
 		return true;
 	case INVALID:
@@ -62,28 +66,31 @@ Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand)
 		else if (currentCommand == "clearactive"){
 			return CLEARACTIVE;
 		}
+		else if (currentCommand == "clear"){
+			return CLEAR;
+		}
 		else return INVALID;
 }
 
 void Storage::clearActiveEvent()
-{	_deletedEvent = _activeEvent;
-	_activeEvent.clearEventlist();
+{	_deletedActiveEvent = _activeEvent;
+	_activeEvent = Eventlist();
 	_possibleToUnDo = true;
 }
 
 void Storage::clearDoneEvent()
-{	_deletedEvent = _doneEvent;
-	_doneEvent.clearEventlist();
+{	_deletedDoneEvent = _doneEvent;
+	_doneEvent = Eventlist();
 	_possibleToUnDo = true;
 }
 
 void Storage::unDoClearActiveEvent()
-{	_activeEvent = _deletedEvent;
+{	_activeEvent = _deletedActiveEvent;
 	_possibleToUnDo = false;
 }
 
 void Storage::unDoClearDoneEvent()
-{	_doneEvent = _deletedEvent;
+{	_doneEvent = _deletedDoneEvent;
 	_possibleToUnDo = false;
 }
 
@@ -133,16 +140,16 @@ void Storage::deleteEvent(std::list<int> allIndex)
 	i=allIndex.back();
 	_currentEvent = _activeEvent.getEvent(i);
 	_activeEvent.deleteEvent(i);
-	_deletedEvent.addEvent(_currentEvent);
+	_deletedActiveEvent.addEvent(_currentEvent);
 	allIndex.pop_back();
 	}
 	_possibleToUnDo = true;
 }
 void Storage::unDoDeleteEvent ()
 {	while(_numberForUndo>0){
-	int lastEventNumber = _deletedEvent.getTotalNumberOfEvents();
-	Event unDoEvent = _deletedEvent.getEvent(lastEventNumber);
-	_deletedEvent.deleteEvent(lastEventNumber);
+	int lastEventNumber = _deletedActiveEvent.getTotalNumberOfEvents();
+	Event unDoEvent = _deletedActiveEvent.getEvent(lastEventNumber);
+	_deletedActiveEvent.deleteEvent(lastEventNumber);
 	_activeEvent.addEvent(unDoEvent);
 	_numberForUndo--;
 	}
