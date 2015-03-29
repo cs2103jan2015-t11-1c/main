@@ -1,15 +1,15 @@
 #pragma once
-#include "logic.h"
+#include "logicBaseClass.h"
 class cmdUpdate :
-	public logic
+	public logicBaseClass
 {
 public:
 	cmdUpdate(void);
 	~cmdUpdate(void);
-	string executecmdUpdate();
-	string updateName(Event, int);
-	string updateEndingTime(Event, int);
-	string updateStartingTime(Event, int);
-	string printFeedback(string, Event);
+	std::string executecmdUpdate();
+	std::string updateName(Event, int);
+	std::string updateEndingTime(Event, int);
+	std::string updateStartingTime(Event, int);
+	std::string printFeedback(std::string, Event);
 };
 

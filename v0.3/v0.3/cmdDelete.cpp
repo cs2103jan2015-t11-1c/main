@@ -1,9 +1,9 @@
 #include "cmdDelete.h"
 #include <sstream>
-const static string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.";
+const static std::string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.";
 const static int ONE_EVENT = 1;
-const static string MESSAGE_DELETE_ONE_EVENT = "The following event is deleted: \n";
-const static string MESSAGE_DELETE_MUTIPLE_EVENTS = "The following events are deleted: \n";
+const static std::string MESSAGE_DELETE_ONE_EVENT = "The following event is deleted: \n";
+const static std::string MESSAGE_DELETE_MUTIPLE_EVENTS = "The following events are deleted: \n";
 
 cmdDelete::cmdDelete(void){
 }
@@ -12,7 +12,7 @@ cmdDelete::cmdDelete(void){
 cmdDelete::~cmdDelete(void){
 }
 
-string cmdDelete::executecmdDelete(){
+std::string cmdDelete::executecmdDelete(){
 	int eventNumber = _taskNumberList.size();
 	Eventlist activeEvents = _storage.displayEvent();
 
@@ -24,15 +24,15 @@ string cmdDelete::executecmdDelete(){
 	_storage.deleteEvent(_taskNumberList);
 	return _feedback;
 
-	}catch(string EXCEPTION_INVALID_INDEX){
-		cout << EXCEPTION_INVALID_INDEX;
+	}catch(std::string EXCEPTION_INVALID_INDEX){
+		std::cout << EXCEPTION_INVALID_INDEX;
 		return "\n";
 	}
 
 }
 
-string cmdDelete::printFeedback(list<int> taskNumberList){
-	ostringstream feedback;
+std::string cmdDelete::printFeedback(std::list<int> taskNumberList){
+	std::ostringstream feedback;
 	Event eventDeleted;
 	if(taskNumberList.size() == ONE_EVENT){
 		eventDeleted = _storage.getEvent(taskNumberList.front());

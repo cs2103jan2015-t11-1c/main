@@ -1,11 +1,11 @@
 #pragma once
-#include "logic.h"
+#include "logicBaseClass.h"
 class cmdMarkAsDone :
-	public logic
+	public logicBaseClass
 {
 public:
 	cmdMarkAsDone(void);
 	~cmdMarkAsDone(void);
-	string exercuteMarkAsDone();
+	std::string exercuteMarkAsDone();
 };
 

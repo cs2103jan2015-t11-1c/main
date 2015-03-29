@@ -8,7 +8,7 @@ cmdAdd::cmdAdd(void){
 cmdAdd::~cmdAdd(void){
 }
 
-string cmdAdd::executecmdAdd(){
+std:: string cmdAdd::executecmdAdd(){
 	switch (_commandWord)
 	{
 	case ADDEVENTWITHDEADLINE:
@@ -20,21 +20,22 @@ string cmdAdd::executecmdAdd(){
 	default:
 		break;
 	} 
+	return _feedback;
 }
 
-string cmdAdd::addEventWithDeadline(){
+std::string cmdAdd::addEventWithDeadline(){
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
 	return _feedback;
 }
 
-string cmdAdd::addEventWithoutDeadline(){
+std::string cmdAdd::addEventWithoutDeadline(){
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
 	return _feedback;
 }
 
-string cmdAdd::addTimedEvent(){
+std::string cmdAdd::addTimedEvent(){
 	_newEvent.changeStartDay(_startingDate);
 	_newEvent.changeStartMonth(_startingMonth);
 	_newEvent.changeStartTime(_startingTime);
@@ -43,7 +44,7 @@ string cmdAdd::addTimedEvent(){
 	return _feedback;
 }
 
-string cmdAdd::printFeedback(Event event){
-	string feedback = "\"" + event.readEvent() + "\" is added successfully.\n";
+std::string cmdAdd::printFeedback(Event event){
+	std::string feedback = "\"" + event.readEvent() + "\" is added successfully.\n";
 	return feedback;
 }

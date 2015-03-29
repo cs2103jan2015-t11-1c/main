@@ -8,7 +8,7 @@ cmdDisplay::cmdDisplay(void){
 cmdDisplay::~cmdDisplay(void){
 }
 
-string cmdDisplay::executecmdDisplay(){
+std::string cmdDisplay::executecmdDisplay(){
 	switch (_commandWord)
 	{
 	case DISPLAY:
@@ -20,14 +20,15 @@ string cmdDisplay::executecmdDisplay(){
 	default:
 		break;
 	} 	
+	return _feedback;
 }
 //display active events
-string cmdDisplay::cmdDisplayActive(){
-	ostringstream display;
+std::string cmdDisplay::cmdDisplayActive(){
+	std::ostringstream display;
 	Eventlist activeEvents = _storage.displayEvent();
 	int i = 1;
-	list<Event> currentList = activeEvents.returnAllEvent();
-	list<Event>::iterator iter;
+	std::list<Event> currentList = activeEvents.returnAllEvent();
+	std::list<Event>::iterator iter;
 	for(iter = currentList.begin(); iter != currentList.end(); ++iter){
 		display << i << "." << (*iter).readEvent() << "\n";
 		i++;
@@ -36,12 +37,12 @@ string cmdDisplay::cmdDisplayActive(){
 }
 
 //display completed events
-string cmdDisplay::cmdDisplayDone(){
-	ostringstream display;
+std::string cmdDisplay::cmdDisplayDone(){
+	std::ostringstream display;
 	Eventlist doneEvents = _storage.displayDoneEvent();
 	int i = 1;
-	list<Event> currentList = doneEvents.returnAllEvent();
-	list<Event>::iterator iter;
+	std::list<Event> currentList = doneEvents.returnAllEvent();
+	std::list<Event>::iterator iter;
 	for(iter = currentList.begin(); iter != currentList.end(); ++iter){
 		display << i << "." << (*iter).readEvent() << "\n";
 		i++;
@@ -50,5 +51,6 @@ string cmdDisplay::cmdDisplayDone(){
 }
 
 //display events today
-string cmdDisplay::cmdDisplayToday(){
+std::string cmdDisplay::cmdDisplayToday(){
+	return "hahaha";
 }

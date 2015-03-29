@@ -1,14 +1,14 @@
 #pragma once
-#include "logic.h"
+#include "logicBaseClass.h"
 class cmdDisplay :
-	public logic
+	public logicBaseClass
 {
 public:
 	cmdDisplay(void);
 	~cmdDisplay(void);
-	string executecmdDisplay();
-	string cmdDisplayDone();
-	string cmdDisplayActive();
-	string cmdDisplayToday();
+	std::string executecmdDisplay();
+	std::string cmdDisplayDone();
+	std::string cmdDisplayActive();
+	std::string cmdDisplayToday();
 };
 

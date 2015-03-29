@@ -1,17 +1,18 @@
 #pragma once
-#include "logic.h"
-class cmdAdd :
-	public logic
+#include "logicBaseClass.h"
+
+class cmdAdd: 
+	public logicBaseClass
 {
 private:
 	Event _newEvent;
 public:
 	cmdAdd(void);
 	~cmdAdd(void);
-	string executecmdAdd();
-	string addEventWithDeadline();
-	string addEventWithoutDeadline();
-	string addTimedEvent();
-	string printFeedback(Event);
+	std::string executecmdAdd();
+	std::string addEventWithDeadline();
+	std::string addEventWithoutDeadline();
+	std::string addTimedEvent();
+	std::string printFeedback(Event);
 };
 

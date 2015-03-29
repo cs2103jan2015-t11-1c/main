@@ -26,8 +26,9 @@ public:
 	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, HELP};
 	Parser(void);
 	~Parser(void);
+	logic::CommandType changeToLogicCommandType(CommandType command);
 	int convertMonthTypeToInteger(MonthType);
-    string callToLogic(CommandType );
+    string callToLogic(CommandType);
     string addEvent(string );
     string addTimedEvent(string );
 	string addEventWithDeadline(string );
@@ -47,4 +48,5 @@ public:
 	string markAsDone(string );
 	string deleteEvent(string );
 	void getNumberList(string );
+
 };

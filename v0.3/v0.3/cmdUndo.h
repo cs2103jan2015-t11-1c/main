@@ -1,12 +1,12 @@
 #pragma once
-#include "logic.h"
+#include "logicBaseClass.h"
 class cmdUndo :
-	public logic
+	public logicBaseClass
 {
 public:
 	cmdUndo(void);
 	~cmdUndo(void);
-	string undo();
-	string printUndoMessage();
+	std::string undo();
+	std::string printUndoMessage();
 };
 

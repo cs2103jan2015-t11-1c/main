@@ -1,7 +1,7 @@
 #include "cmdSearch.h"
 #include <sstream>
 
-const static string MESSAGE_EVENT_NOT_FOUND = "Sorry! No relevant event found."; 
+const static std::string MESSAGE_EVENT_NOT_FOUND = "Sorry! No relevant event found."; 
 
 cmdSearch::cmdSearch(void){
 }
@@ -10,13 +10,13 @@ cmdSearch::cmdSearch(void){
 cmdSearch::~cmdSearch(void){
 }
 
-string cmdSearch::executecmdSearch(){
+std::string cmdSearch::executecmdSearch(){
 	Eventlist events = _storage.displayEvent();
-	list<Event> allEvents = events.returnAllEvent();
+	std::list<Event> allEvents = events.returnAllEvent();
 	int eventsNumber = events.getTotalNumberOfEvents();
-	string keyword = _taskName;
-	list<Event>::iterator Tcount;
-	string taskName;
+	std::string keyword = _taskName;
+	std::list<Event>::iterator Tcount;
+	std::string taskName;
 	int Tindex;
 	Event currentEvent;
 
@@ -24,7 +24,7 @@ string cmdSearch::executecmdSearch(){
 		currentEvent = *Tcount;
 		taskName = currentEvent.getTaskName();
 		Tindex = taskName.find(keyword);
-		if(Tindex != string::npos){
+		if(Tindex !=std:: string::npos){
 			_eventFound.addEvent(currentEvent);
 		}
 	}
@@ -39,11 +39,11 @@ string cmdSearch::executecmdSearch(){
 
 }
 
-string cmdSearch::printEventFound(){
-	ostringstream feedback;
-	list<Event>::iterator Tcount;
+std::string cmdSearch::printEventFound(){
+	std::ostringstream feedback;
+	std::list<Event>::iterator Tcount;
 	Event currentEvent;
-	list<Event> eventFound = _eventFound.returnAllEvent();
+	std::list<Event> eventFound = _eventFound.returnAllEvent();
 	
 	for(Tcount = eventFound.begin(); Tcount != eventFound.end(); Tcount++){
 		currentEvent = *Tcount;

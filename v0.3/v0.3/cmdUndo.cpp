@@ -4,6 +4,7 @@
 
 cmdUndo::cmdUndo(void)
 {
+	noOfCommand = 0;
 }
 
 
@@ -20,20 +21,20 @@ string cmdUndo::undo(){
 	CommandType lastCommand = vectorCommand[noOfCommand];
 	if(lastCommand == ADDEVENTWITHDEADLINE || lastCommand == ADDFLOATINGEVENT || lastCommand == ADDTIMEDEVENT){
 		_storage.unDoAddEvent();
-		printUndoMessage();
+		//printUndoMessage();
 	}else if(lastCommand == DELETE){
 		_storage.unDoDeleteEvent();
-		printUndoMessage();
+		//printUndoMessage();
 	}else if(lastCommand == UPDATEENDINGTIME || lastCommand == UPDATENAME || lastCommand == UPDATESTARTINGTIME){
 		_storage.unDoUpdateEvent();
-		printUndoMessage();
+		//printUndoMessage();
 	}else if(lastCommand == CLEAR){
 		_storage.unDoClearActiveEvent();
 		_storage.unDoClearDoneEvent();
-		printUndoMessage();
+		//printUndoMessage();
 	}else if(lastCommand == MARKASDONE){
 		_storage.unDomarkEventAsDone();
-		printUndoMessage();
+		//printUndoMessage();
 	}
-
-}
+		return printUndoMessage();
+	}

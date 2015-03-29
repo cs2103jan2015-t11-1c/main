@@ -1,7 +1,7 @@
 #pragma once
-#include "logic.h"
+#include "logicBaseClass.h"
 class cmdClear :
-	public logic
+	public logicBaseClass
 {
 public:
 	cmdClear(void);

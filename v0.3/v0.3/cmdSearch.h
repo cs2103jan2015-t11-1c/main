@@ -1,14 +1,14 @@
 #pragma once
-#include "logic.h"
+#include "logicBaseClass.h"
 class cmdSearch :
-	public logic
+	public logicBaseClass
 {
 private:
 	Eventlist _eventFound;
 public:
 	cmdSearch(void);
 	~cmdSearch(void);
-	string executecmdSearch();
-	string printEventFound();
+	std::string executecmdSearch();
+	std::string printEventFound();
 };
 

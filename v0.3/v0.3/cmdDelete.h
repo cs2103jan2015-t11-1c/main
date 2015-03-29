@@ -1,12 +1,12 @@
 #pragma once
-#include "logic.h"
+#include "logicBaseClass.h"
 class cmdDelete :
-	public logic
+	public logicBaseClass
 {
 public:
 	cmdDelete(void);
 	~cmdDelete(void);
-	string executecmdDelete();
-	string printFeedback(list<int>);
+	std::string executecmdDelete();
+	std::string printFeedback(std::list<int>);
 };
 

@@ -39,6 +39,7 @@ bool Storage::unDopreviousActions(std::string unDoCommand)
 		return false;
 		}
 	}
+	return false;
 
 }
 

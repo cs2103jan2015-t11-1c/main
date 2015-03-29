@@ -65,10 +65,9 @@ void UI::showWelcomeMessage(){
 }
 
 string UI::callToParser(){
-	CommandType commandType = determineCommandType();
-	int index;
+	CommandType typeOfCommand = determineCommandType();
 
-	switch (commandType)
+	switch (typeOfCommand)
 	{
 		case ADD:
 			getline(cin, _toDoList);

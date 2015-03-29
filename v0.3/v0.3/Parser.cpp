@@ -57,13 +57,48 @@ int Parser::convertMonthTypeToInteger(MonthType monthType){
 //**************************************************************************
 //Pass all the informations of the user input to logic to execute the command.
 //**************************************************************************
+logic::CommandType Parser::changeToLogicCommandType(CommandType command){
+	switch (command){
+	case ADDEVENTWITHDEADLINE:
+		return logic::ADDEVENTWITHDEADLINE;
+	case ADDFLOATINGEVENT:
+		return logic::ADDFLOATINGEVENT;
+	case ADDTIMEDEVENT:
+		return logic::ADDTIMEDEVENT;
+	case UPDATENAME:
+		return logic::UPDATEENDINGTIME;
+	case UPDATEENDINGTIME:
+		return logic::UPDATEENDINGTIME;
+	case UPDATESTARTINGTIME:
+		return logic::UPDATESTARTINGTIME;
+	case DELETE:
+		return logic::DELETE;
+	case DISPLAY:
+		return logic::DISPLAY;
+	case DISPLAYTODAY:
+		return logic::DISPLAYTODAY;
+	case DISPLAYDONE:
+		return logic::DISPLAYDONE;
+	case SEARCH:
+		return logic::SEARCH;
+	case UNDO:
+		return logic::UNDO;
+	case MARKASDONE:
+		return logic::MARKASDONE;
+	case CLEAR:
+		return logic::CLEAR;
+	case HELP:
+		return logic::HELP;
+	}
+}
 string Parser::callToLogic(CommandType command){
 	int startingMonth=convertMonthTypeToInteger(_startingMonth);
 	int endingMonth = convertMonthTypeToInteger(_endingMonth);
 	int integerStartingTime = stoi(_startingTime);
 	int integerEndingTime = stoi(_endingTime);
-	
-	string feedback=_logic.executeCommand( command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+	logic::CommandType _command;
+	_command = changeToLogicCommandType(command);
+	string feedback=_logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
 	
 //	cout <<"command:"<<command <<endl <<"taskname:" <<_taskName <<endl <<"starttime:"<<_startingTime <<endl <<"startdate:"<<_startingDate<<endl<<"startingmonth:" <<_startingMonth <<endl <<"enddate:"<< _endingDate <<endl <<"endingMonth:"<<_endingMonth <<endl<<"endtime:" <<_endingTime <<endl;
 	//Reset the value of all private attributes.
