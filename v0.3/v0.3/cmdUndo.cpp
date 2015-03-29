@@ -17,7 +17,7 @@ string cmdUndo::printUndoMessage(){
 }
 
 //undo last command based on the last command word from the user
-string cmdUndo::undo(){
+string cmdUndo::undo(Storage& _storage){
 	CommandType lastCommand = vectorCommand[noOfCommand];
 	if(lastCommand == ADDEVENTWITHDEADLINE || lastCommand == ADDFLOATINGEVENT || lastCommand == ADDTIMEDEVENT){
 		_storage.unDoAddEvent();

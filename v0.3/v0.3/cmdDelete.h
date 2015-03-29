@@ -6,7 +6,7 @@ class cmdDelete :
 public:
 	cmdDelete(void);
 	~cmdDelete(void);
-	std::string executecmdDelete();
-	std::string printFeedback(std::list<int>);
+	std::string executecmdDelete(Storage& _storage);
+	std::string printFeedback(std::list<int>, Storage& _storage);
 };
 

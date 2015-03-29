@@ -37,25 +37,25 @@ string logic::executeCommand(CommandType command ,string taskName, int startingD
 		return _add.executecmdAdd(_storage);
 	}else if(command == UPDATEENDINGTIME || command == UPDATENAME || command == UPDATESTARTINGTIME){
 		_update.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
-		return _update.executecmdUpdate();
+		return _update.executecmdUpdate(_storage);
 	}else if(command == DELETE){
 		_delete.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
-		return _delete.executecmdDelete();
+		return _delete.executecmdDelete(_storage);
 	}else if(command == UNDO){
 		_undo.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
-		return _undo.undo();
+		return _undo.undo(_storage);
 	}else if(command == CLEAR){
 		_clear.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
-		return _clear.executeClear();
+		return _clear.executeClear(_storage);
 	}else if(command == SEARCH){
 		_search.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
-		return _search.executecmdSearch();
+		return _search.executecmdSearch(_storage);
 	}else if(command == DISPLAY){
 		_display.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
-		return _display.executecmdDisplay();
+		return _display.executecmdDisplay(_storage);
 	}else if(command == MARKASDONE){
 		_markAsDone.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
-		return _markAsDone.exercuteMarkAsDone();
+		return _markAsDone.exercuteMarkAsDone(_storage);
 	}
 	return "logic error";
 }

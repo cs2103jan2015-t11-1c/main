@@ -8,22 +8,22 @@ cmdDisplay::cmdDisplay(void){
 cmdDisplay::~cmdDisplay(void){
 }
 
-std::string cmdDisplay::executecmdDisplay(){
+std::string cmdDisplay::executecmdDisplay(Storage& _storage){
 	switch (_commandWord)
 	{
 	case DISPLAY:
-		return cmdDisplayActive();
+		return cmdDisplayActive(_storage);
 	case DISPLAYDONE:
-		return cmdDisplayDone();
+		return cmdDisplayDone(_storage);
 	case DISPLAYTODAY:
-		return cmdDisplayToday();
+		return cmdDisplayToday(_storage);
 	default:
 		break;
 	} 	
 	return "";
 }
 //display active events
-std::string cmdDisplay::cmdDisplayActive(){
+std::string cmdDisplay::cmdDisplayActive(Storage& _storage){
 	std::ostringstream display;
 	Eventlist activeEvents = _storage.displayEvent();
 	int i = 1;
@@ -37,7 +37,7 @@ std::string cmdDisplay::cmdDisplayActive(){
 }
 
 //display completed events
-std::string cmdDisplay::cmdDisplayDone(){
+std::string cmdDisplay::cmdDisplayDone(Storage& _storage){
 	std::ostringstream display;
 	Eventlist doneEvents = _storage.displayDoneEvent();
 	int i = 1;
@@ -51,6 +51,6 @@ std::string cmdDisplay::cmdDisplayDone(){
 }
 
 //display events today
-std::string cmdDisplay::cmdDisplayToday(){
+std::string cmdDisplay::cmdDisplayToday(Storage& _storage){
 	return "hahaha";
 }

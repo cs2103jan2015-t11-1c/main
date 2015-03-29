@@ -10,7 +10,7 @@ cmdSearch::cmdSearch(void){
 cmdSearch::~cmdSearch(void){
 }
 
-std::string cmdSearch::executecmdSearch(){
+std::string cmdSearch::executecmdSearch(Storage& _storage){
 	Eventlist events = _storage.displayEvent();
 	std::list<Event> allEvents = events.returnAllEvent();
 	int eventsNumber = events.getTotalNumberOfEvents();

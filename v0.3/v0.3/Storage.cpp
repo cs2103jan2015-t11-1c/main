@@ -3,7 +3,7 @@
 
 Storage::Storage(void)
 {	_filename = "Minic.txt";
-	readFile();
+	//readFile();
 }
 
 Storage::~Storage(void)

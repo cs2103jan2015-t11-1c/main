@@ -6,6 +6,6 @@ class cmdClear :
 public:
 	cmdClear(void);
 	~cmdClear(void);
-	std::string executeClear();
+	std::string executeClear(Storage&);
 };
 

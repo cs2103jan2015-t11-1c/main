@@ -6,6 +6,6 @@ class cmdMarkAsDone :
 public:
 	cmdMarkAsDone(void);
 	~cmdMarkAsDone(void);
-	std::string exercuteMarkAsDone();
+	std::string exercuteMarkAsDone(Storage& _storage);
 };
 

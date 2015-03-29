@@ -6,10 +6,10 @@ class cmdUpdate :
 public:
 	cmdUpdate(void);
 	~cmdUpdate(void);
-	std::string executecmdUpdate();
-	std::string updateName(Event, int);
-	std::string updateEndingTime(Event, int);
-	std::string updateStartingTime(Event, int);
+	std::string executecmdUpdate(Storage&);
+	std::string updateName(Event, int, Storage&);
+	std::string updateEndingTime(Event, int, Storage&);
+	std::string updateStartingTime(Event, int, Storage&);
 	std::string printFeedback(std::string, Event);
 };
 

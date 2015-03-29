@@ -10,7 +10,7 @@ cmdMarkAsDone::~cmdMarkAsDone(void)
 {
 }
 
-std::string cmdMarkAsDone::exercuteMarkAsDone(){
+std::string cmdMarkAsDone::exercuteMarkAsDone(Storage& _storage){
 	Eventlist activeEvents = _storage.displayEvent();
 	//t number = std::stoi(_taskName);
 	//ent eventDone = _storage.getEvent(number);

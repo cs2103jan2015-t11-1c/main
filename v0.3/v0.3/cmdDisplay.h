@@ -6,9 +6,9 @@ class cmdDisplay :
 public:
 	cmdDisplay(void);
 	~cmdDisplay(void);
-	std::string executecmdDisplay();
-	std::string cmdDisplayDone();
-	std::string cmdDisplayActive();
-	std::string cmdDisplayToday();
+	std::string executecmdDisplay(Storage& _storage);
+	std::string cmdDisplayDone(Storage& _storage);
+	std::string cmdDisplayActive(Storage& _storage);
+	std::string cmdDisplayToday(Storage& _storage);
 };
 

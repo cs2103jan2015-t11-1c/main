@@ -8,7 +8,7 @@ private:
 public:
 	cmdSearch(void);
 	~cmdSearch(void);
-	std::string executecmdSearch();
+	std::string executecmdSearch(Storage& _storage);
 	std::string printEventFound();
 };
 

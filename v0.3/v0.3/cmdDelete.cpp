@@ -12,7 +12,7 @@ cmdDelete::cmdDelete(void){
 cmdDelete::~cmdDelete(void){
 }
 
-std::string cmdDelete::executecmdDelete(){
+std::string cmdDelete::executecmdDelete(Storage& _storage){
 	int eventNumber = _taskNumberList.size();
 	Eventlist activeEvents = _storage.displayEvent();
 
@@ -20,7 +20,7 @@ std::string cmdDelete::executecmdDelete(){
 		if(eventNumber>activeEvents.getTotalNumberOfEvents()){
 			throw EXCEPTION_INVALID_INDEX;
 	}
-	_feedback = printFeedback(_taskNumberList);
+	_feedback = printFeedback(_taskNumberList, _storage);
 	_storage.deleteEvent(_taskNumberList);
 	return _feedback;
 
@@ -31,7 +31,7 @@ std::string cmdDelete::executecmdDelete(){
 
 }
 
-std::string cmdDelete::printFeedback(std::list<int> taskNumberList){
+std::string cmdDelete::printFeedback(std::list<int> taskNumberList, Storage& _storage){
 	std::ostringstream feedback;
 	Event eventDeleted;
 	if(taskNumberList.size() == ONE_EVENT){
