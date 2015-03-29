@@ -33,9 +33,9 @@ public:
 
 	//METHODS
 	logic();
-	logic(string commandWord, string toDoList);
+	logic(std::string commandWord,std:: string toDoList);
 	~logic();
-	void setCommand (string, int, int, int, int, int, int, list<int>);
-	string executeCommand(CommandType, string, int, int, int, int, int, int, list<int>);
+	void setCommand (std::string, int, int, int, int, int, int, list<int>);
+	std::string executeCommand(CommandType, string, int, int, int, int, int, int, list<int>);
 };
 #endif
