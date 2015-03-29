@@ -17,8 +17,8 @@ Eventlist::~Eventlist(void)
 {
 }
 
-void Eventlist::clearEventlist()
-{ delete this;
+void Eventlist::clearEventlist(){ 
+	_allEvent.clear();
 }
 
 void Eventlist::addEvent(Event newEvent)
@@ -46,7 +46,7 @@ Event Eventlist::getEvent(int index)
 {	std::list<Event>::iterator eventPosition;
 	eventPosition = _allEvent.begin();
 	advance (eventPosition, index-1);
-	std::cout << "eventlist: " <<std::endl;
+	//std::cout << "eventlist: " <<std::endl;
 	return *eventPosition;
 }
 

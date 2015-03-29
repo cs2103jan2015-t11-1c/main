@@ -67,7 +67,7 @@ logic::CommandType Parser::changeToLogicCommandType(CommandType command){
 	case ADDTIMEDEVENT:
 		return logic::ADDTIMEDEVENT;
 	case UPDATENAME:
-		return logic::UPDATEENDINGTIME;
+		return logic::UPDATENAME;
 	case UPDATEENDINGTIME:
 		return logic::UPDATEENDINGTIME;
 	case UPDATESTARTINGTIME:
@@ -94,14 +94,12 @@ logic::CommandType Parser::changeToLogicCommandType(CommandType command){
 	return logic::HELP;
 }
 string Parser::callToLogic(CommandType command){
-
 	int startingMonth=convertMonthTypeToInteger(_startingMonth);
 	int endingMonth = convertMonthTypeToInteger(_endingMonth);
 	int integerStartingTime = stoi(_startingTime);
 	int integerEndingTime = stoi(_endingTime);
 	logic::CommandType _command;
 	_command = changeToLogicCommandType(command);
-	
 	string feedback=_logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
 	
 
@@ -391,6 +389,8 @@ string Parser::deleteEvent(string numberList){
 //get the list of task numbers input by the user, and store them as integers in a list
 //**************************************************************************************
 void Parser::getNumberList(string numberList){
+	cout<<numberList<<endl;
+
 	int TIndex= numberList.find_first_of(" ");
 	string TString;
 	int eventNumber;
@@ -400,5 +400,8 @@ void Parser::getNumberList(string numberList){
 		_taskNumberList.push_back(eventNumber);
 		numberList=numberList.substr(TIndex+1);
 		TIndex=numberList.find_first_of(" ");
+	}
+	if(numberList.size()!=0){		
+		_taskNumberList.push_back(stoi(numberList));
 	}
 }

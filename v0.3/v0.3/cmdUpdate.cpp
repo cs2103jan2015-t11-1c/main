@@ -11,10 +11,9 @@ cmdUpdate::~cmdUpdate(void){
 std::string cmdUpdate::executecmdUpdate(Storage& _storage){
 	int eventNumber;
 	eventNumber= _taskNumberList.front();
-	std::cerr<< eventNumber;
 	Event eventToUpdate; 
 	eventToUpdate= _storage.getEvent(eventNumber);
-	std::cout << eventToUpdate.readEvent();
+	std::cout << _commandWord;
 	switch(_commandWord){
 	case UPDATENAME:
 		return updateName(eventToUpdate, eventNumber, _storage);

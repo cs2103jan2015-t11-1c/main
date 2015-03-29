@@ -34,7 +34,9 @@ std::string cmdSearch::executecmdSearch(Storage& _storage){
 	}else{
 		_feedback = MESSAGE_EVENT_NOT_FOUND;
 	}
-
+	/*for(int j=_eventFound.getTotalNumberOfEvents(); j > 0; j--){
+		_eventFound.deleteEvent(j);}*/
+	_eventFound.clearEventlist();
 	return _feedback;
 
 }

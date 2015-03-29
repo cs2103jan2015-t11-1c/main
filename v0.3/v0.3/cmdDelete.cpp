@@ -14,8 +14,8 @@ cmdDelete::~cmdDelete(void){
 
 std::string cmdDelete::executecmdDelete(Storage& _storage){
 	int eventNumber = _taskNumberList.size();
+	std::cout << "eventno: " << eventNumber <<std::endl;
 	Eventlist activeEvents = _storage.displayEvent();
-
 	try{
 		if(eventNumber>activeEvents.getTotalNumberOfEvents()){
 			throw EXCEPTION_INVALID_INDEX;
