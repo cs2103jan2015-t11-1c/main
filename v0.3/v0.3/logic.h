@@ -40,7 +40,8 @@ protected:
 	cmdSearch _search;
 	cmdUndo _undo;
 	cmdDelete _delete;
-
+	vector<CommandType> vectorCommand;
+	int noOfCommand=0;
 public:
 
 	//METHODS
