@@ -46,6 +46,7 @@ Event Eventlist::getEvent(int index)
 {	std::list<Event>::iterator eventPosition;
 	eventPosition = _allEvent.begin();
 	advance (eventPosition, index-1);
+	std::cout << "eventlist: " <<std::endl;
 	return *eventPosition;
 }
 

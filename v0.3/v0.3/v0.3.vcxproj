@@ -75,6 +75,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="Eventlist.h" />
     <ClInclude Include="logic.h" />
+    <ClInclude Include="logicBaseClass.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Storage.h" />
     <ClInclude Include="UI.h" />
@@ -91,6 +92,7 @@
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Eventlist.cpp" />
     <ClCompile Include="logic.cpp" />
+    <ClCompile Include="logicBaseClass.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Storage.cpp" />

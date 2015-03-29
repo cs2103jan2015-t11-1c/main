@@ -28,13 +28,15 @@ private:
 	cmdSearch _search;
 	cmdUndo _undo;
 	cmdDelete _delete;
-	
+	//Storage _storage;
+
 public:
 
 	//METHODS
 	logic();
-	logic(std::string commandWord,std:: string toDoList);
+	logic(CommandType commandWord);
 	~logic();
+	//void logicStorage ();
 	void setCommand (std::string, int, int, int, int, int, int, list<int>);
 	std::string executeCommand(CommandType, string, int, int, int, int, int, int, list<int>);
 };

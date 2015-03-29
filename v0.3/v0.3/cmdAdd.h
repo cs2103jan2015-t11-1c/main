@@ -9,7 +9,7 @@ private:
 public:
 	cmdAdd(void);
 	~cmdAdd(void);
-	std::string executecmdAdd();
+	std::string executecmdAdd(Storage&);
 	std::string addEventWithDeadline();
 	std::string addEventWithoutDeadline();
 	std::string addTimedEvent();

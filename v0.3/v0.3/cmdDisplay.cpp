@@ -12,15 +12,15 @@ std::string cmdDisplay::executecmdDisplay(){
 	switch (_commandWord)
 	{
 	case DISPLAY:
-		_feedback = cmdDisplayActive();
+		return cmdDisplayActive();
 	case DISPLAYDONE:
-		_feedback = cmdDisplayDone();
+		return cmdDisplayDone();
 	case DISPLAYTODAY:
-		_feedback = cmdDisplayToday();
+		return cmdDisplayToday();
 	default:
 		break;
 	} 	
-	return _feedback;
+	return "";
 }
 //display active events
 std::string cmdDisplay::cmdDisplayActive(){

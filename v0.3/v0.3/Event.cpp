@@ -21,14 +21,16 @@ Event::~Event(void)
 }
 
 std::string Event::readEvent()
-{	if( _durationEvent == false)
+{
+	if( _durationEvent == false){
 	return _title + " is due " + convertNumberToString(_endDay) + " " 
-	+ convertNumberToString(_endMonth) + " " + std::to_string(_endTime);
-	else return _title + " start from " + convertNumberToString(_startDay) + " " + 
+		+ convertNumberToString(_endMonth) + " " + std::to_string(_endTime);
+	}
+	else { return _title + " start from " + convertNumberToString(_startDay) + " " + 
 	convertNumberToString(_startMonth) + " " + convertNumberToString(_startTime) + 
 	" is due " + convertNumberToString(_endDay) + " " + convertNumberToString(_endMonth)
 	+ " " + std::to_string(_endTime);
-
+	}
 }
 std::string Event::convertNumberToString(int number){
 	

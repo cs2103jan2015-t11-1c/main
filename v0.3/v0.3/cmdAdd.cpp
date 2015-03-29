@@ -1,29 +1,34 @@
 #include "cmdAdd.h"
+#include <iostream>
+using namespace std;
 
 cmdAdd::cmdAdd(void){
-	_newEvent = Event(_taskName, _endingDate, _endingMonth, _endingTime);
+
 }
 
 
 cmdAdd::~cmdAdd(void){
 }
 
-std:: string cmdAdd::executecmdAdd(){
+std:: string cmdAdd::executecmdAdd(Storage& storage){
+	_storage = storage;
+	_newEvent = Event(_taskName, _endingDate, _endingMonth, _endingTime);
 	switch (_commandWord)
 	{
-	case ADDEVENTWITHDEADLINE:
-		_feedback = addEventWithDeadline();
+	case ADDEVENTWITHDEADLINE:	
+		return addEventWithDeadline();
 	case ADDFLOATINGEVENT:
-		_feedback = addEventWithoutDeadline();
+		return addEventWithoutDeadline();
 	case ADDTIMEDEVENT:
-		_feedback = addTimedEvent();
+		return addTimedEvent();
 	default:
 		break;
 	} 
-	return _feedback;
+	return "";
 }
 
 std::string cmdAdd::addEventWithDeadline(){
+	
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
 	return _feedback;
@@ -44,7 +49,7 @@ std::string cmdAdd::addTimedEvent(){
 	return _feedback;
 }
 
-std::string cmdAdd::printFeedback(Event event){
-	std::string feedback = "\"" + event.readEvent() + "\" is added successfully.\n";
+std::string cmdAdd::printFeedback(Event newEvent){
+	std::string feedback = "\"" + newEvent.readEvent() + "\" is added successfully.\n";
 	return feedback;
 }

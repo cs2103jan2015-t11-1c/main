@@ -6,8 +6,8 @@ using namespace std;
 Parser::Parser(void)
 {
 	_taskName ="";
-	_startingTime=""; 
-	_endingTime="";
+	_startingTime="2400"; 
+	_endingTime="2400";
 	_startingDate=0;//starting date is not assigned when _startingDate = 0
 	_endingDate=0;//edinging date is not assigned when _endingDate = -1
 	_startingMonth=MONTHNOTASSIGNED;
@@ -20,38 +20,38 @@ Parser::~Parser(void)
 }
 
 int Parser::convertMonthTypeToInteger(MonthType monthType){
-	int month;
 
 	switch(monthType){
 	case JANUARY:
-		month = 1;
+		return 1;
+		
+		
 	case FEBRUARY:
-		month = 2;
+		return 2;
 	case MARCH:
-		month = 3;
+		return 3;
 	case APRIL:
-		month = 4;
+		return 4;
 	case MAY:
-		month = 5;
+		return 5;
 	case JUNE:
-		month = 6;
+		return 6;
 	case JULY:
-		month = 7;
+		return 7;
 	case AUGUST:
-		month = 8;
+		return 8;
 	case SEPTEMBER:
-		month = 9;
+		return 9;
 	case OCTOBER:
-		month = 10;
+		return 10;
 	case NOVEMBER:
-		month = 11;
+		return 11;
 	case DECEMBER:
-		month = 12;
+		return 12;
 	case MONTHNOTASSIGNED:
-		month = 13;
+		return 13;
 	}
-
-	return month;
+	return 13;
 }
 
 //**************************************************************************
@@ -59,6 +59,7 @@ int Parser::convertMonthTypeToInteger(MonthType monthType){
 //**************************************************************************
 logic::CommandType Parser::changeToLogicCommandType(CommandType command){
 	switch (command){
+		
 	case ADDEVENTWITHDEADLINE:
 		return logic::ADDEVENTWITHDEADLINE;
 	case ADDFLOATINGEVENT:
@@ -90,21 +91,24 @@ logic::CommandType Parser::changeToLogicCommandType(CommandType command){
 	case HELP:
 		return logic::HELP;
 	}
+	return logic::HELP;
 }
 string Parser::callToLogic(CommandType command){
+
 	int startingMonth=convertMonthTypeToInteger(_startingMonth);
 	int endingMonth = convertMonthTypeToInteger(_endingMonth);
 	int integerStartingTime = stoi(_startingTime);
 	int integerEndingTime = stoi(_endingTime);
 	logic::CommandType _command;
 	_command = changeToLogicCommandType(command);
+	
 	string feedback=_logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
 	
-//	cout <<"command:"<<command <<endl <<"taskname:" <<_taskName <<endl <<"starttime:"<<_startingTime <<endl <<"startdate:"<<_startingDate<<endl<<"startingmonth:" <<_startingMonth <<endl <<"enddate:"<< _endingDate <<endl <<"endingMonth:"<<_endingMonth <<endl<<"endtime:" <<_endingTime <<endl;
+
 	//Reset the value of all private attributes.
 	_taskName ="";
-	_startingTime="";
-	_endingTime="";
+	_startingTime="2400";
+	_endingTime="2400";
 	_startingDate=0;
 	_endingDate=0;
 	_startingMonth=MONTHNOTASSIGNED;
@@ -277,6 +281,7 @@ MonthType Parser :: determineMonthType( string TMonth){
 	else if (TMonth == "dec"){
 		return DECEMBER;
 	}
+	return MONTHNOTASSIGNED;
 }
 //****************************************************************************************************************
 //Update event has 3 types: update task name, update ending time and date, and update starting time and date.
@@ -317,7 +322,7 @@ string Parser::updateEvent(string toDoList){
 		_startingTime = getEventTime(buffer);
 		return callToLogic(UPDATESTARTINGTIME);
 	}
-		
+		return "no";
 }
 
 int Parser :: getUpdateEventNumber(string &buffer){

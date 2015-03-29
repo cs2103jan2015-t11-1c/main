@@ -171,7 +171,8 @@ void Storage::unDoUpdateEvent ()
 }
 
 Event Storage::getEvent(int index)
-{	return _activeEvent.getEvent(index);
+{	
+	return _activeEvent.getEvent(index);
 }
 
 void Storage::sortActiveEventlist()
@@ -243,9 +244,12 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 	bool isActive = false;
 	bool hasStartInfo = false;
 
-	if (found == std::string::npos){
-		currentEventLine.substr(12);
+
+	if (found < std::string::npos){
+		std::cout <<"testing1";
+		currentEventLine = currentEventLine.substr(12);
 		startingEvent = currentEventLine.find(" start from ");
+		std::cout <<"testing2";
 		if (startingEvent == std::string::npos)
 		{	index = currentEventLine.find(" start from ");
 			title = currentEventLine.substr(0, index-1);
@@ -257,8 +261,10 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 			endmonth = currentEventLine.substr(20,21);
 			endtime = currentEventLine.substr(23,26);
 			hasStartInfo = true;
+			std::cout <<"testing3";
 		}
-		else {	index = currentEventLine.find(" is due ");
+		else {	std::cout <<"testing4";
+			index = currentEventLine.find(" is due ");
 				title = currentEventLine.substr(0, index-1);
 				currentEventLine.substr(index+8);
 				endday = currentEventLine.substr(1);
@@ -267,10 +273,12 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 		}
 	} else {
 		isActive = true;
-		currentEventLine.substr(18);
+		currentEventLine = currentEventLine.substr(18);
+		std::cout << currentEventLine <<std::endl;
 		startingEvent = currentEventLine.find(" start from ");
-		if (startingEvent == std::string::npos)
-		{	index = currentEventLine.find(" start from ");
+		if (startingEvent < std::string::npos)
+		{	
+			index = currentEventLine.find(" start from ");
 			title = currentEventLine.substr(0, index-1);
 			currentEventLine.substr(index+12);
 			startday = currentEventLine.substr(1);
@@ -281,14 +289,18 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 			endtime = currentEventLine.substr(23,26);
 			hasStartInfo = true;
 		}
-		else {	index = currentEventLine.find(" is due ");
-				title = currentEventLine.substr(0, index-1);
-				currentEventLine.substr(index+8);
+		else {	
+				index = currentEventLine.find(" is due ");
+				title = currentEventLine.substr(0, index);
+				currentEventLine = currentEventLine.substr(index+8);
 				endday = currentEventLine.substr(1);
 				endmonth = currentEventLine.substr(3,4);
 				endtime = currentEventLine.substr(6,9);
 		}
 	}
+	
+	std::cout <<"title:" <<title << " endday: " << endday << "endmonth: " << endmonth << " endtime: " <<endtime;
+	system("paused");
 	Event newEvent(title,stoi(endday), stoi(endmonth),stoi(endtime));
 	if (hasStartInfo)
 	{	newEvent.changeStartDay(stoi(startday));

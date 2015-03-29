@@ -18,7 +18,7 @@ class logicBaseClass
 	int _startingMonth;
 	int _endingMonth;
 	std::list<int> _taskNumberList;
-	Storage _storage;
+	Storage &_storage;
 	std::string _feedback;
 	
 	int noOfCommand;
@@ -26,6 +26,7 @@ public:
 	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, HELP};
 	CommandType _commandWord;
 	std::vector<CommandType> vectorCommand;
+	void initialise (CommandType,std::string, int, int, int, int, int, int, std::list<int>);
 	logicBaseClass(void);
 	~logicBaseClass(void);
 };

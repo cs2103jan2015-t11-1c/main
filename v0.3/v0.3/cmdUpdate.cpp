@@ -11,9 +11,10 @@ cmdUpdate::~cmdUpdate(void){
 std::string cmdUpdate::executecmdUpdate(){
 	int eventNumber;
 	eventNumber= _taskNumberList.front();
+	std::cerr<< eventNumber;
 	Event eventToUpdate; 
 	eventToUpdate= _storage.getEvent(eventNumber);
- 	
+	std::cout << eventToUpdate.readEvent();
 	switch(_commandWord){
 	case UPDATENAME:
 		return updateName(eventToUpdate, eventNumber);
@@ -23,7 +24,8 @@ std::string cmdUpdate::executecmdUpdate(){
 		return updateEndingTime(eventToUpdate, eventNumber);
 	default:
 		break;
-	}	
+	}
+	return "no";
 }
 /*	Event newEvent;
 	cout << buffer << endl;

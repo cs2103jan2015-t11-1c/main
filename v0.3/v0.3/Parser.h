@@ -22,6 +22,7 @@ private:
 	MonthType _endingMonth;
 	list<int> _taskNumberList;
 	logic _logic;
+	logicBaseClass _logicBaseClass;
 public:
 	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, HELP};
 	Parser(void);
