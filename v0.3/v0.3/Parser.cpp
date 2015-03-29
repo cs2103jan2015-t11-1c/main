@@ -9,7 +9,7 @@ Parser::Parser(void)
 	_startingTime="2400"; 
 	_endingTime="2400";
 	_startingDate=0;//starting date is not assigned when _startingDate = 0
-	_endingDate=0;//edinging date is not assigned when _endingDate = -1
+	_endingDate=-1;//edinging date is not assigned when _endingDate = -1
 	_startingMonth=MONTHNOTASSIGNED;
 	_endingMonth = MONTHNOTASSIGNED;
 	_taskNumberList.clear();
@@ -108,7 +108,7 @@ string Parser::callToLogic(CommandType command){
 	_startingTime="2400";
 	_endingTime="2400";
 	_startingDate=0;
-	_endingDate=0;
+	_endingDate=-1;
 	_startingMonth=MONTHNOTASSIGNED;
 	_endingMonth = MONTHNOTASSIGNED;
 	_taskNumberList.clear();

@@ -232,7 +232,9 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 	int index;
 	std::string doneEventidentifier = "Done tasks: ";
 	std::string activeEventidentifier = "Incomplete tasks: ";
+	std::string floatingEventidentifier = " no specific deadline";
 	std::size_t found = currentEventLine.find(doneEventidentifier);
+	std::size_t floatingEventFinder;
 	std::size_t startingEvent;
 	std::string title;
 	std::string startday;
@@ -241,12 +243,19 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 	std::string endday;
 	std::string endmonth;
 	std::string endtime;
+	Event newEvent;
 	bool isActive = false;
 	bool hasStartInfo = false;
+	bool hasNoDeadline = false;
 
 
 	if (found < std::string::npos){
 		currentEventLine = currentEventLine.substr(12);
+		floatingEventFinder = currentEventLine.find(floatingEventidentifier);
+		if (floatingEventFinder < std::string::npos)
+		{	title = currentEventLine.substr(0,floatingEventFinder);
+			hasNoDeadline = true;}
+		else {
 		startingEvent = currentEventLine.find(" start from ");
 		if (startingEvent < std::string::npos)
 		{	
@@ -268,10 +277,15 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 				endmonth = currentEventLine.substr(3,2);
 				endtime = currentEventLine.substr(6,4);
 		}
+		}
 	} else {
 		isActive = true;
 		currentEventLine = currentEventLine.substr(18);
-		std::cout << currentEventLine <<std::endl;
+		floatingEventFinder = currentEventLine.find(floatingEventidentifier);
+		if (floatingEventFinder < std::string::npos)
+		{	title = currentEventLine.substr(0,floatingEventFinder);
+		hasNoDeadline = true;}
+		else {
 		startingEvent = currentEventLine.find(" start from ");
 		if (startingEvent < std::string::npos)
 		{	index = currentEventLine.find(" start from ");
@@ -293,7 +307,12 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 				endtime = currentEventLine.substr(6,4);
 		}
 	}
-	Event newEvent(title,stoi(endday), stoi(endmonth),stoi(endtime));
+	}
+	if(hasNoDeadline) {
+		newEvent = Event(title,-1,-1,-1);}
+	else {
+		newEvent = Event(title,stoi(endday), stoi(endmonth),stoi(endtime));}
+
 	if (hasStartInfo)
 	{	newEvent.changeStartDay(stoi(startday));
 		newEvent.changeStartMonth(stoi(startmonth));

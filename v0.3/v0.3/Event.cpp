@@ -22,7 +22,9 @@ Event::~Event(void)
 
 std::string Event::readEvent()
 {
-	if( _durationEvent == false){
+	if (_endDay == -1){
+		return _title + " no specific deadline";}
+	else if( _durationEvent == false){
 	return _title + " is due " + convertNumberToString(_endDay) + " " 
 		+ convertNumberToString(_endMonth) + " " + std::to_string(_endTime);
 	}
@@ -43,7 +45,8 @@ std::string Event::convertNumberToString(int number){
 
 
 std::string Event::getDeadline()
-{	return std::to_string(_endDay) + std::to_string(_endMonth) + std::to_string(_endTime);
+{	return convertNumberToString(_endDay) + convertNumberToString(_endMonth)	
+	+ std::to_string(_endTime);
 }
 
 
@@ -87,7 +90,10 @@ void Event::changeDetails (std::string newdetails)
 }
 
 void Event::updateDueRanking()
-{	_dueRanking = _endMonth*1000000 + _endDay*10000 + _endTime;
+{	if(_endDay == 1)
+	_dueRanking = 0;
+	else
+	_dueRanking = _endMonth*1000000 + _endDay*10000 + _endTime;
 }
 
 std::string Event::getTaskName()

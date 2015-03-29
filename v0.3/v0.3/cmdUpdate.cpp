@@ -38,6 +38,8 @@ std::string cmdUpdate::updateName(Event eventToUpdate, int eventNumber, Storage&
 	std::string Tempt = eventToUpdate.readEvent();
 	eventToUpdate.changeTitle(_taskName);
 	_storage.updateEvent(eventNumber, eventToUpdate);
+	_storage.sortActiveEventlist();
+	_storage.synchronizeDrive();
 	_feedback = printFeedback(Tempt, eventToUpdate);
 	return _feedback;
 }
@@ -48,6 +50,8 @@ std::string cmdUpdate::updateEndingTime(Event eventToUpdate, int eventNumber, St
 	eventToUpdate.changeEndMonth(_endingMonth);
 	eventToUpdate.changeEndTime(_endingTime);
 	_storage.updateEvent(eventNumber, eventToUpdate);
+	_storage.sortActiveEventlist();
+	_storage.synchronizeDrive();
 	_feedback = printFeedback(Tempt, eventToUpdate);
 	return _feedback; 
 }
@@ -58,6 +62,8 @@ std::string cmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber, 
 	eventToUpdate.changeStartMonth(_startingMonth);
 	eventToUpdate.changeStartTime(_startingTime);
 	_storage.updateEvent(eventNumber, eventToUpdate);
+	_storage.sortActiveEventlist();
+	_storage.synchronizeDrive();
 	_feedback = printFeedback(Tempt, eventToUpdate);
 	return _feedback;
 }
