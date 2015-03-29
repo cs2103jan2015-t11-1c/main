@@ -30,12 +30,14 @@ std::string cmdAdd::addEventWithDeadline(Storage& _storage){
 	
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
+	_storage.saveActiveEventsToFile();
 	return _feedback;
 }
 
 std::string cmdAdd::addEventWithoutDeadline(Storage& _storage){
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
+	_storage.saveActiveEventsToFile();
 	return _feedback;
 }
 
@@ -44,6 +46,7 @@ std::string cmdAdd::addTimedEvent(Storage& _storage){
 	_newEvent.changeStartMonth(_startingMonth);
 	_newEvent.changeStartTime(_startingTime);
 	_storage.addEvent(_newEvent);
+	_storage.saveActiveEventsToFile();
 	_feedback = printFeedback(_newEvent);
 	return _feedback;
 }

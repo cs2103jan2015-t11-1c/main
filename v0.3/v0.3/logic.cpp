@@ -5,10 +5,11 @@ const static string EXIT_MESSAGE = "Thank you for using Minik:)";
 const static string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.";
 
 logic::logic(){
-	//logicStorage();
+	_storage.readFile();
 }
 logic::logic(CommandType command){
 	_commandWord = command;
+	_storage.readFile();
 }
 logic::~logic(){
 }

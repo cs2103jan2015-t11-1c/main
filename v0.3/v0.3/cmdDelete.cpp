@@ -22,6 +22,7 @@ std::string cmdDelete::executecmdDelete(Storage& _storage){
 	}
 	_feedback = printFeedback(_taskNumberList, _storage);
 	_storage.deleteEvent(_taskNumberList);
+	_storage.synchronizeDrive();
 	return _feedback;
 
 	}catch(std::string EXCEPTION_INVALID_INDEX){
