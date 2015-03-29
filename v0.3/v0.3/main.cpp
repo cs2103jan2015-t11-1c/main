@@ -9,6 +9,7 @@ using namespace std;
 int main(){
 	string msg;
 	UI mnk;
+	std::cout <<"main" <<std::endl;
 	mnk.showWelcomeMessage();
 
 	while(1)

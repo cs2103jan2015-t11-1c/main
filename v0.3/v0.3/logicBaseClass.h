@@ -18,7 +18,7 @@ class logicBaseClass
 	int _startingMonth;
 	int _endingMonth;
 	std::list<int> _taskNumberList;
-	Storage &_storage;
+	Storage _storage;
 	std::string _feedback;
 	
 	int noOfCommand;
@@ -28,6 +28,7 @@ public:
 	std::vector<CommandType> vectorCommand;
 	void initialise (CommandType,std::string, int, int, int, int, int, int, std::list<int>);
 	logicBaseClass(void);
+	logicBaseClass(Storage &storage);
 	~logicBaseClass(void);
 };
 

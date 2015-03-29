@@ -3,11 +3,14 @@
 
 logicBaseClass::logicBaseClass(void){
 }
+logicBaseClass::logicBaseClass(Storage &storage){
 
+}
 
 logicBaseClass::~logicBaseClass(void)
 {
 }
+
 
 void logicBaseClass:: initialise(CommandType typeOfCommand, std::string taskName, int startingDate, int startingMonth, int startingTime, int endingDate, int endingMonth, int endingTime, std::list<int> taskNumerlist){
 	_commandWord = typeOfCommand;
