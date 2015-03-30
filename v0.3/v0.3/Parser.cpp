@@ -387,7 +387,7 @@ string Parser::deleteEvent(string numberList){
 //get the list of task numbers input by the user, and store them as integers in a list
 //**************************************************************************************
 void Parser::getNumberList(string numberList){
-	cout<<numberList<<endl;
+	//cout<<numberList<<endl;
 
 	int TIndex= numberList.find_first_of(" ");
 	string TString;
