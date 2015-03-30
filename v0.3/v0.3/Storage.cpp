@@ -61,7 +61,7 @@ Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand)
 			return DONE;
 		}
 		else if (currentCommand == "cleardone"){
-			return CLEARACTIVE;
+			return CLEARDONE;
 		}
 		else if (currentCommand == "clearactive"){
 			return CLEARACTIVE;

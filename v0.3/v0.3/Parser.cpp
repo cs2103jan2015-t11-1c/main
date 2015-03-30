@@ -243,40 +243,40 @@ string Parser::getEventTime(string &buffer){
 
 MonthType Parser :: determineMonthType( string TMonth){
 
-	if(TMonth == "jan"){
+	if(TMonth == "jan" || TMonth == "Jan" || TMonth == "JAN"){
 		return JANUARY;
 	}
-	else if(TMonth == "feb"){
+	else if(TMonth == "feb" || TMonth == "Feb" || TMonth == "FEB"){
 		return FEBRUARY;
 	}
-	else if(TMonth == "mar"){
+	else if(TMonth == "mar" || TMonth == "Mar" || TMonth == "MAR"){
 		return MARCH;
 	}
-	else if(TMonth == "apr"){
+	else if(TMonth == "apr" || TMonth == "Apr" || TMonth == "APR"){
 		return APRIL;
 	}
-	else if( TMonth == "may"){
+	else if( TMonth == "may" || TMonth == "May" || TMonth == "MAY"){
 		return MAY;
 	}
-	else if (TMonth == "jun"){
+	else if (TMonth == "jun" || TMonth == "Jun" || TMonth == "JUNE"){
 		return JUNE;
 	}
-	else if (TMonth == "jul"){
+	else if (TMonth == "jul" || TMonth == "Jul" ||TMonth == "JULY"){
 		return JULY;
 	}
-	else if (TMonth == "aug"){
+	else if (TMonth == "aug" || TMonth == "Aug" || TMonth == "AUG"){
 		return AUGUST;
 	}
-	else if (TMonth == "sep"){
+	else if (TMonth == "sep" || TMonth == "Sep" || TMonth == "SEP"){
 		return SEPTEMBER;
 	}
-	else if (TMonth == "oct"){
+	else if (TMonth == "oct" || TMonth == "Oct" || TMonth == "OCT"){
 		return OCTOBER;
 	}
-	else if (TMonth == "nov"){
+	else if (TMonth == "nov" || TMonth == "Nov" || TMonth == "NOV"){
 		return NOVEMBER;
 	}
-	else if (TMonth == "dec"){
+	else if (TMonth == "dec" || TMonth == "Dec" || TMonth == "DEC"){
 		return DECEMBER;
 	}
 	return MONTHNOTASSIGNED;
@@ -320,7 +320,7 @@ string Parser::updateEvent(string toDoList){
 		_startingTime = getEventTime(buffer);
 		return callToLogic(UPDATESTARTINGTIME);
 	}
-		return "no";
+		//return "no";
 }
 
 int Parser :: getUpdateEventNumber(string &buffer){
