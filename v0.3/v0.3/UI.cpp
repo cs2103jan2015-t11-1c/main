@@ -6,8 +6,7 @@
 using namespace std;
 
 static const string INVALID_INPUT_MESSAGE = "Sorry, wrong user input.";
-static const  string WELCOME_MESSAGE = "Welcome to Minik!What would you like to do today?\n ============================================\n";
-
+static const  string WELCOME_MESSAGE = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n";
 UI::UI(){
 	_commandWord="";
 	_toDoList="";
@@ -15,13 +14,18 @@ UI::UI(){
 }
 
 bool UI:: readCommand(){
-	bool isEmpty=true;
+	bool isValid=true;
 	cin >> _commandWord;
-	if(!_commandWord.empty()){
-		isEmpty=false;
+	if(_commandWord.empty()){
+		isValid = false;
+	}
+	else
+	{
+		_commandWord = _verificationCommand.lowercaseCommandWord(_commandWord);
+		isValid = _verificationCommand.isValidCommandWord(_commandWord);
 	}
 
-	return isEmpty;
+	return isValid;
 }
 UI::CommandType UI::determineCommandType() {
 	if (_commandWord == "add"){
@@ -57,7 +61,9 @@ UI::CommandType UI::determineCommandType() {
 	else if (_commandWord == "search"){
 		return SEARCH;
 	}
-	
+	else{
+		return HELP;
+	}
 }
 
 void UI::showWelcomeMessage(){
@@ -113,7 +119,7 @@ string UI::callToParser(){
 			return _Parser.searchEvent(_toDoList);
 
 		default:
-			cout<<INVALID_INPUT_MESSAGE;
+			return INVALID_INPUT_MESSAGE;
 			break;
 			
 		}

@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 #include <cstdlib>
-
+const static string INVALID_COMMAND_MESSAGE ="Sorry, invalid command.\n";
 
 int main(){
 	string msg;
@@ -14,9 +14,16 @@ int main(){
 
 	while(1)
 	{
-	mnk.readCommand(); 
-	msg = mnk.callToParser();
-	cout << msg;
+	if(mnk.readCommand()){
+		msg = mnk.callToParser();
+		cout << msg;
+	}
+	else{
+		cout << INVALID_COMMAND_MESSAGE;
+	}
+	{
+
+	}
 	}
 	system("pause");
     return 0;	

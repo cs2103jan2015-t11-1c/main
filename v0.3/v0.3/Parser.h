@@ -2,12 +2,15 @@
 
 #include <iostream>
 #include "logic.h"
-#include "Parser.h"
+#include "VerificationDateTimeMonth.h"
 #include <string>
 #include <list>
 #include <string>
 using namespace std;
 enum MonthType {JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER,MONTHNOTASSIGNED};
+const static string INVALID_TIMED_DATE_MONTH_MESSAGE =" Please check your user input time, date and month.\n\n";
+const static string INVALID_INPUT = "Invalid user input.\n\n";
+
 
 class Parser
 {
@@ -23,11 +26,14 @@ private:
 	list<int> _taskNumberList;
 	logic _logic;
 	logicBaseClass _logicBaseClass;
+	VerificationDateTimeMonth _verificationDateTimeMonth;
+
 public:
-	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, HELP};
+	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, HELP, EXIT};
 	Parser(void);
 	~Parser(void);
 	logic::CommandType changeToLogicCommandType(CommandType command);
+	void resetAttributesValue();
 	int convertMonthTypeToInteger(MonthType);
     string callToLogic(CommandType);
     string addEvent(string );
@@ -38,7 +44,7 @@ public:
 	bool isTaskWithDeadline(string );
 	bool isTimedTask(string );
 	string getEventTitle(string &);
-	void getEventDate(string &, int &, MonthType &);
+	bool getEventDate(string &, int &, MonthType &);
 	string getEventTime(string &);
 	string updateEvent(string );
 	int getUpdateEventNumber(string &);

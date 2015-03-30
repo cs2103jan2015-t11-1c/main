@@ -6,14 +6,17 @@
 #include <string>
 #include <iostream>
 #include "Parser.h"
+#include "VerificationCommand.h"
 
 class UI{
     private:
 		string _commandWord;
 		string _toDoList;
 		Parser _Parser;
+		VerificationCommand _verificationCommand;
 		
     public:
+		
 		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, HELP};
 		UI(void);
 		~UI(void);

@@ -91,17 +91,9 @@ logic::CommandType Parser::changeToLogicCommandType(CommandType command){
 	}
 	return logic::HELP;
 }
-string Parser::callToLogic(CommandType command){
-	int startingMonth=convertMonthTypeToInteger(_startingMonth);
-	int endingMonth = convertMonthTypeToInteger(_endingMonth);
-	int integerStartingTime = stoi(_startingTime);
-	int integerEndingTime = stoi(_endingTime);
-	logic::CommandType _command;
-	_command = changeToLogicCommandType(command);
-	string feedback=_logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
-	
 
-	//Reset the value of all private attributes.
+//Reset the value of all private attributes.
+void Parser :: resetAttributesValue(){
 	_taskName ="";
 	_startingTime="2400";
 	_endingTime="2400";
@@ -110,7 +102,81 @@ string Parser::callToLogic(CommandType command){
 	_startingMonth=MONTHNOTASSIGNED;
 	_endingMonth = MONTHNOTASSIGNED;
 	_taskNumberList.clear();
-	return feedback;
+}
+
+string Parser::callToLogic(CommandType command){
+
+	int startingMonth=convertMonthTypeToInteger(_startingMonth);
+	int endingMonth = convertMonthTypeToInteger(_endingMonth);
+
+	for (int i = _endingTime.size()-1; i>=0; i--){
+		if(!isdigit(_endingTime[i])){
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
+	}
+
+	for(int j = _startingTime.size()-1; j>=0; j--){
+		if(!isdigit(_endingTime[j])){
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
+	}
+
+	int integerStartingTime = stoi(_startingTime);
+	int integerEndingTime = stoi(_endingTime);
+	logic::CommandType _command;
+	_command = changeToLogicCommandType(command);
+	string feedback = "";
+
+
+	switch(command){
+	case UPDATEENDINGTIME:
+	case ADDEVENTWITHDEADLINE:
+		if(_verificationDateTimeMonth.isDateMonthTimeValid(_endingDate, endingMonth, integerEndingTime)){ 
+				feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+				resetAttributesValue();
+				return feedback;
+		}
+		else{
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
+
+	case UPDATESTARTINGTIME:
+		if(_verificationDateTimeMonth.isDateMonthTimeValid(_startingDate, startingMonth, integerStartingTime)){ 
+				 feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+				resetAttributesValue();
+				return feedback;
+		}
+		else{
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
+
+	case ADDTIMEDEVENT:
+		if(_verificationDateTimeMonth.isEndingLaterThanStarting(integerStartingTime, startingMonth, _startingDate, integerEndingTime, endingMonth, _endingDate)){
+			feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+			resetAttributesValue();
+			return feedback;
+		}
+		else{
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
+
+	case DELETE:
+	case UPDATENAME:
+	case UNDO:
+	case ADDFLOATINGEVENT:
+	case SEARCH:
+	case EXIT:
+	case HELP:
+	case CLEAR:
+	case DISPLAY:
+	case DISPLAYTODAY:
+	case MARKASDONE:
+		feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+		resetAttributesValue();
+		return feedback;
+	default:
+		return INVALID_INPUT;
+	}
 }
 
 //*******************************************************************************************************
@@ -136,13 +202,17 @@ string Parser::addTimedEvent(string toDoList){
 	MonthType notAssigned = MONTHNOTASSIGNED;
 	MonthType &month= notAssigned;
 	_taskName=getEventTitle(buffer);
-	getEventDate(buffer,date, month);
+	if (!getEventDate(buffer,date, month)){
+		return INVALID_TIMED_DATE_MONTH_MESSAGE;
+	}
 	_startingDate = date; 
 	_startingMonth = month; 
 	_startingTime = getEventTime(buffer);
 	int ePosition = buffer.find_first_of(":") + 2;
 	buffer = buffer.substr(ePosition);
-	getEventDate(buffer,date, month);
+	if( !getEventDate(buffer,date, month)){
+		return INVALID_TIMED_DATE_MONTH_MESSAGE;
+	}
 	_endingDate = date;
 	_endingMonth = month;
 	_endingTime = getEventTime(buffer);
@@ -156,7 +226,9 @@ string Parser::addEventWithDeadline(string toDoList){
 	int &date= integer;
 	MonthType notAssigned = MONTHNOTASSIGNED;
 	MonthType &month= notAssigned;
-	getEventDate(buffer,date, month);
+	if(!getEventDate(buffer,date, month)){
+		return INVALID_TIMED_DATE_MONTH_MESSAGE;
+	}
 	_endingDate = date;
 	_endingMonth = month;
 	_endingTime = getEventTime(buffer);
@@ -214,18 +286,24 @@ string Parser::getEventTitle(string &buffer){
 
 }
 
-void Parser::getEventDate(string &buffer,int &date,MonthType &month){
+bool Parser::getEventDate(string &buffer,int &date,MonthType &month){
 	int TIndex;
 	string TDate;
 	string TMonth;
 	TIndex = buffer.find_first_of(" ");
 	TDate = buffer.substr(0, TIndex);
+	for(int i = TDate.size()-1; i >= 0; i--){
+		if(!isdigit(TDate[i])){
+			return false;			
+		}
+	}
 	date = stoi(TDate);
 	buffer = buffer.substr(TIndex+1);
 	TIndex = buffer.find_first_of(" ");
 	TMonth = buffer.substr(0, TIndex);
 	month = determineMonthType(TMonth);
 	buffer = buffer.substr(TIndex+1);
+	return true;
 }
 
 //assume no spaces within the time input
@@ -241,40 +319,42 @@ string Parser::getEventTime(string &buffer){
 
 MonthType Parser :: determineMonthType( string TMonth){
 
-	if(TMonth == "jan" || TMonth == "Jan" || TMonth == "january" || TMonth == "January" ){
+	TMonth = _verificationDateTimeMonth.lowercaseMonth(TMonth);
+
+	if(TMonth == "jan" ||  TMonth == "january" || TMonth == "01" || TMonth == "1" ){
 		return JANUARY;
 	}
-	else if(TMonth == "feb" || TMonth == "Feb" || TMonth == "february" || TMonth == "February"){
+	else if(TMonth == "feb" || TMonth == "february"|| TMonth == "02" || TMonth == "2"){
 		return FEBRUARY;
 	}
-	else if(TMonth == "mar" || TMonth == "Mar" || TMonth == "march" || TMonth == "March"){
+	else if(TMonth == "mar" || TMonth == "march" || TMonth == "03" || TMonth == "3"){
 		return MARCH;
 	}
-	else if(TMonth == "apr" || TMonth == "Apr" || TMonth == "april" || TMonth == "April"){
+	else if(TMonth == "apr" || TMonth == "april" || TMonth == "04" || TMonth == "4"){
 		return APRIL;
 	}
-	else if( TMonth == "may" || TMonth == "May" || TMonth == "may"){
+	else if( TMonth == "may" ||  TMonth == "may" || TMonth == "05" || TMonth == "5"){
 		return MAY;
 	}
-	else if (TMonth == "jun" || TMonth == "Jun" || TMonth == "June" || TMonth == "june"){
+	else if (TMonth == "jun" || TMonth == "june"|| TMonth == "06" || TMonth == "6"){
 		return JUNE;
 	}
-	else if (TMonth == "jul" || TMonth == "Jul" ||TMonth == "July" || TMonth == "july"){
+	else if (TMonth == "jul" || TMonth == "july" || TMonth =="07" || TMonth =="7" ){
 		return JULY;
 	}
-	else if (TMonth == "aug" || TMonth == "Aug" || TMonth == "August" || TMonth == "august"){
+	else if (TMonth == "aug" || TMonth == "august" || TMonth == "08" || TMonth == "8"){
 		return AUGUST;
 	}
-	else if (TMonth == "sep" || TMonth == "Sep" || TMonth == "September" || TMonth == "september"){
+	else if (TMonth == "sep" || TMonth == "september" || TMonth == "09" || TMonth == "9"){
 		return SEPTEMBER;
 	}
-	else if (TMonth == "oct" || TMonth == "Oct" || TMonth == "Ocotober" || TMonth == "october"){
+	else if (TMonth == "oct" ||  TMonth == "october" || TMonth =="10"){
 		return OCTOBER;
 	}
-	else if (TMonth == "nov" || TMonth == "Nov" || TMonth == "November" || TMonth == "november"){
+	else if (TMonth == "nov" || TMonth == "november" || TMonth == "11"){
 		return NOVEMBER;
 	}
-	else if (TMonth == "dec" || TMonth == "Dec" || TMonth == "December" || TMonth == "december"){
+	else if (TMonth == "dec" || TMonth == "december" || TMonth == "12"){
 		return DECEMBER;
 	}
 	return MONTHNOTASSIGNED;
@@ -301,7 +381,9 @@ string Parser::updateEvent(string toDoList){
 		int &date= integer;
 		MonthType notAssigned = MONTHNOTASSIGNED;
 		MonthType &month= notAssigned;
-		getEventDate(buffer,date, month);
+		if(!getEventDate(buffer,date, month)){
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
 		_endingDate = date;
 		_endingMonth = month;
 		_endingTime=getEventTime(buffer);
@@ -312,13 +394,14 @@ string Parser::updateEvent(string toDoList){
 		int &date= integer;
 		MonthType notAssigned = MONTHNOTASSIGNED;
 		MonthType &month= notAssigned;
-		getEventDate(buffer,date, month);
+		if(!getEventDate(buffer,date, month)){
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
 		_startingDate=date;
 		_startingMonth = month;
 		_startingTime = getEventTime(buffer);
 		return callToLogic(UPDATESTARTINGTIME);
 	}
-		//return "no";
 }
 
 int Parser :: getUpdateEventNumber(string &buffer){
