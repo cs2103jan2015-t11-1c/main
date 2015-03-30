@@ -79,6 +79,8 @@
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Storage.h" />
     <ClInclude Include="UI.h" />
+    <ClInclude Include="VerificationCommand.h" />
+    <ClInclude Include="VerificationDateTimeMonth.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cmdAdd.cpp" />
@@ -97,6 +99,8 @@
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Storage.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="VerificationCommand.cpp" />
+    <ClCompile Include="VerificationDateTimeMonth.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
