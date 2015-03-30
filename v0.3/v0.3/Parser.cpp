@@ -243,40 +243,40 @@ string Parser::getEventTime(string &buffer){
 
 MonthType Parser :: determineMonthType( string TMonth){
 
-	if(TMonth == "jan" || TMonth == "Jan" || TMonth == "JAN"){
+	if(TMonth == "jan" || TMonth == "Jan" || TMonth == "january" || TMonth == "January" ){
 		return JANUARY;
 	}
-	else if(TMonth == "feb" || TMonth == "Feb" || TMonth == "FEB"){
+	else if(TMonth == "feb" || TMonth == "Feb" || TMonth == "february" || TMonth == "February"){
 		return FEBRUARY;
 	}
-	else if(TMonth == "mar" || TMonth == "Mar" || TMonth == "MAR"){
+	else if(TMonth == "mar" || TMonth == "Mar" || TMonth == "march" || TMonth == "March"){
 		return MARCH;
 	}
-	else if(TMonth == "apr" || TMonth == "Apr" || TMonth == "APR"){
+	else if(TMonth == "apr" || TMonth == "Apr" || TMonth == "april" || TMonth == "April"){
 		return APRIL;
 	}
-	else if( TMonth == "may" || TMonth == "May" || TMonth == "MAY"){
+	else if( TMonth == "may" || TMonth == "May" || TMonth == "may"){
 		return MAY;
 	}
-	else if (TMonth == "jun" || TMonth == "Jun" || TMonth == "JUNE"){
+	else if (TMonth == "jun" || TMonth == "Jun" || TMonth == "June" || TMonth == "june"){
 		return JUNE;
 	}
-	else if (TMonth == "jul" || TMonth == "Jul" ||TMonth == "JULY"){
+	else if (TMonth == "jul" || TMonth == "Jul" ||TMonth == "July" || TMonth == "july"){
 		return JULY;
 	}
-	else if (TMonth == "aug" || TMonth == "Aug" || TMonth == "AUG"){
+	else if (TMonth == "aug" || TMonth == "Aug" || TMonth == "August" || TMonth == "august"){
 		return AUGUST;
 	}
-	else if (TMonth == "sep" || TMonth == "Sep" || TMonth == "SEP"){
+	else if (TMonth == "sep" || TMonth == "Sep" || TMonth == "September" || TMonth == "september"){
 		return SEPTEMBER;
 	}
-	else if (TMonth == "oct" || TMonth == "Oct" || TMonth == "OCT"){
+	else if (TMonth == "oct" || TMonth == "Oct" || TMonth == "Ocotober" || TMonth == "october"){
 		return OCTOBER;
 	}
-	else if (TMonth == "nov" || TMonth == "Nov" || TMonth == "NOV"){
+	else if (TMonth == "nov" || TMonth == "Nov" || TMonth == "November" || TMonth == "november"){
 		return NOVEMBER;
 	}
-	else if (TMonth == "dec" || TMonth == "Dec" || TMonth == "DEC"){
+	else if (TMonth == "dec" || TMonth == "Dec" || TMonth == "December" || TMonth == "december"){
 		return DECEMBER;
 	}
 	return MONTHNOTASSIGNED;
