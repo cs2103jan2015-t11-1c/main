@@ -32,6 +32,12 @@ public:
 	void changeEndTime (int newTime);
 	void changeDetails (std::string newdetails);
 	std::string getTaskName();
+	int getStartMonth();
+	int getEndMonth();
+	int getStartDate();
+	int getEndDate();
+	int getStartTime();
+	int getEndTime();
 	std::string readEvent();
 	std::string getDeadline();
 	std::string convertNumberToString(int number);

@@ -100,3 +100,27 @@ std::string Event::getTaskName()
 {	return _title;
 }
 
+int Event::getStartMonth()
+{	return _startMonth;
+}
+
+int Event::getStartDate()
+{	return _startDay;
+}
+
+int Event::getEndMonth()
+{	return _endMonth;
+}
+
+int Event::getEndDate()
+{	return _endDay;
+}
+
+int Event::getStartTime()
+{   return _startTime;
+}
+
+int Event::getEndTime()
+{   return _endTime;
+}
+
