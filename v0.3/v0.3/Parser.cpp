@@ -24,8 +24,6 @@ int Parser::convertMonthTypeToInteger(MonthType monthType){
 	switch(monthType){
 	case JANUARY:
 		return 1;
-		
-		
 	case FEBRUARY:
 		return 2;
 	case MARCH:

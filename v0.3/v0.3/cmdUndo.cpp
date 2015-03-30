@@ -13,7 +13,7 @@ cmdUndo::~cmdUndo(void)
 }
 
 string cmdUndo::printUndoMessage(){
-	return "Undo last action successfully";
+	return "Undo last action successfully\n\n";
 }
 
 //undo last command based on the last command word from the user
@@ -41,5 +41,5 @@ string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStored){
 	if (_storage.unDopreviousActions(lastCommandString)) {	
 	_storage.synchronizeDrive();
 	return printUndoMessage();}
-	else return "unsuccessful";
+	else return "unsuccessful\n\n";
 	}

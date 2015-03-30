@@ -69,6 +69,6 @@ std::string cmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber, 
 }
 
 std::string cmdUpdate::printFeedback(std::string Tempt, Event eventToUpdate){
-	std::string feedback = "\"" + Tempt + "\" is updated to " + "\"" + eventToUpdate.readEvent() +"\" \n";
+	std::string feedback = "\"" + Tempt + "\" is updated to " + "\"" + eventToUpdate.readEvent() +"\" \n\n";
 	return feedback;
 }

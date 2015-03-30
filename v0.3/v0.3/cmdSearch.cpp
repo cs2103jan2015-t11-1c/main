@@ -49,7 +49,7 @@ std::string cmdSearch::printEventFound(){
 	
 	for(Tcount = eventFound.begin(); Tcount != eventFound.end(); Tcount++){
 		currentEvent = *Tcount;
-		feedback << currentEvent.readEvent() << "\n";
+		feedback << currentEvent.readEvent() << "\n\n";
 	}
 	return feedback.str();	
 }

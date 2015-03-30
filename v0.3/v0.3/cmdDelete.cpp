@@ -14,7 +14,7 @@ cmdDelete::~cmdDelete(void){
 
 std::string cmdDelete::executecmdDelete(Storage& _storage){
 	int eventNumber = _taskNumberList.size();
-	std::cout << "eventno: " << eventNumber <<std::endl;
+	//std::cout << "eventno: " << eventNumber <<std::endl;
 	Eventlist activeEvents = _storage.displayEvent();
 	try{
 		if(eventNumber>activeEvents.getTotalNumberOfEvents()){
@@ -37,7 +37,7 @@ std::string cmdDelete::printFeedback(std::list<int> taskNumberList, Storage& _st
 	Event eventDeleted;
 	if(taskNumberList.size() == ONE_EVENT){
 		eventDeleted = _storage.getEvent(taskNumberList.front());
-		feedback << MESSAGE_DELETE_ONE_EVENT << eventDeleted.readEvent() << "\n";
+		feedback << MESSAGE_DELETE_ONE_EVENT << eventDeleted.readEvent() << "\n\n";
 	}else{
 		feedback << MESSAGE_DELETE_MUTIPLE_EVENTS;
 		while(!taskNumberList.empty()){
@@ -46,5 +46,6 @@ std::string cmdDelete::printFeedback(std::list<int> taskNumberList, Storage& _st
 			taskNumberList.pop_back();
 		}
 	}
-	return feedback.str();
+	std::cout<<feedback.str();
+	return "\n";
 }

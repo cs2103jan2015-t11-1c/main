@@ -55,6 +55,7 @@ std::string cmdAdd::addTimedEvent(Storage& _storage){
 }
 
 std::string cmdAdd::printFeedback(Event newEvent){
-	std::string feedback = "\"" + newEvent.readEvent() + "\" is added successfully.\n";
+	std::string feedback = "\"" + newEvent.readEvent() + "\" is added successfully.\n\n";
+
 	return feedback;
 }

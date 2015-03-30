@@ -6,7 +6,7 @@
 using namespace std;
 
 static const string INVALID_INPUT_MESSAGE = "Sorry, wrong user input.";
-static const  string WELCOME_MESSAGE = "Welcome to Minik!";
+static const  string WELCOME_MESSAGE = "Welcome to Minik!What would you like to do today?\n ============================================\n";
 
 UI::UI(){
 	_commandWord="";

@@ -33,7 +33,8 @@ std::string cmdDisplay::cmdDisplayActive(Storage& _storage){
 		display << i << "." << (*iter).readEvent() << "\n";
 		i++;
 	}
-	return display.str();
+	std::cout<<display.str();
+	return "\n";
 }
 
 //display completed events
@@ -47,6 +48,7 @@ std::string cmdDisplay::cmdDisplayDone(Storage& _storage){
 		display << i << "." << (*iter).readEvent() << "\n";
 		i++;
 	}
+	std::cout<< std::endl;
 	return display.str();
 }
 
