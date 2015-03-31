@@ -1,5 +1,6 @@
 #include "cmdDisplay.h"
 #include <sstream>
+const static std::string EMPTY_ACTIVE_EVENTS = "Currently no active event. \n\n";
 
 cmdDisplay::cmdDisplay(void){
 }
@@ -8,7 +9,20 @@ cmdDisplay::cmdDisplay(void){
 cmdDisplay::~cmdDisplay(void){
 }
 
+bool cmdDisplay::isEmptyEventsStorage(Storage& _storage){
+	bool isEmpty = false;
+	Eventlist activeEvents = _storage.displayEvent();
+	if(activeEvents.getTotalNumberOfEvents() == 0){
+		isEmpty = true;
+	}
+
+	return isEmpty;
+}
 std::string cmdDisplay::executecmdDisplay(Storage& _storage){
+	if(isEmptyEventsStorage(_storage)){
+		return EMPTY_ACTIVE_EVENTS;
+	}
+
 	switch (_commandWord)
 	{
 	case DISPLAY:
