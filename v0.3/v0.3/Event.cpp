@@ -26,16 +26,15 @@ std::string Event::readEvent()
 		return _title + " no specific deadline";}
 	else if( _durationEvent == false){
 	return _title + " is due " + convertNumberToString(_endDay) + " " 
-		+ convertNumberToString(_endMonth) + " " + std::to_string(_endTime);
+		+ convertNumberToString(_endMonth) + " " + convertTimeToString(_endTime);
 	}
 	else { return _title + " start from " + convertNumberToString(_startDay) + " " + 
 	convertNumberToString(_startMonth) + " " + convertNumberToString(_startTime) + 
 	" is due " + convertNumberToString(_endDay) + " " + convertNumberToString(_endMonth)
-	+ " " + std::to_string(_endTime);
+	+ " " + convertTimeToString(_endTime);
 	}
 }
 std::string Event::convertNumberToString(int number){
-	
 	if (number/10 == 0){
 		std::string tempString;
 		tempString = std::to_string(number);
@@ -43,10 +42,23 @@ std::string Event::convertNumberToString(int number){
 	else return std::to_string(number);
 }
 
+std::string Event::convertTimeToString(int number){
+	std::string tempString;
+	tempString = std::to_string(number);
+	if (number /10 == 0)
+		return "000" + tempString;
+	else if (number/100 == 0)
+		return "00" + tempString;
+	else if (number/1000 == 0)
+		return "0" + tempString;
+
+	return tempString;
+}
+
 
 std::string Event::getDeadline()
 {	return convertNumberToString(_endDay) + convertNumberToString(_endMonth)	
-	+ std::to_string(_endTime);
++ convertTimeToString(_endTime);
 }
 
 
@@ -90,7 +102,7 @@ void Event::changeDetails (std::string newdetails)
 }
 
 void Event::updateDueRanking()
-{	if(_endDay == 1)
+{	if(_endDay < 0 || _endDay > 31)
 	_dueRanking = 0;
 	else
 	_dueRanking = _endMonth*1000000 + _endDay*10000 + _endTime;

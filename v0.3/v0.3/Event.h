@@ -41,6 +41,7 @@ public:
 	std::string readEvent();
 	std::string getDeadline();
 	std::string convertNumberToString(int number);
+	std::string convertTimeToString(int number);
 	void updateDueRanking ();
 	int _dueRanking;
 };
