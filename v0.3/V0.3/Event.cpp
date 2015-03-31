@@ -22,7 +22,7 @@ Event::~Event(void)
 
 std::string Event::readEvent()
 {
-	if (_endDay == -1){
+	if (_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 ){
 		return _title + " no specific deadline";}
 	else if( _durationEvent == false){
 	return _title + " is due " + convertNumberToString(_endDay) + " " 
