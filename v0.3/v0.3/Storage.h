@@ -12,7 +12,7 @@ private:
 	Eventlist _deletedActiveEvent;
 	Eventlist _deletedDoneEvent;
 	bool _possibleToUnDo;
-	enum COMMAND_TYPE { ADD,DELETE,UPDATE,DONE,CLEARDONE,CLEARACTIVE,CLEAR,INVALID};
+	enum COMMAND_TYPE { ADD,UPDATE,DELETEEVENT,DONE,CLEARDONE,CLEARACTIVE,CLEAR,INVALID};
 	COMMAND_TYPE findCommandType(std::string currentCommand);
 	std::string _filename;
 
@@ -44,6 +44,7 @@ public:
 	void clearLocalDrive();
 	void readFile();
 	void readEventsFromFile(std::string currentEventLine);
+	void changeCurrentDirectory(const char* newDirectory);
 
 };
 

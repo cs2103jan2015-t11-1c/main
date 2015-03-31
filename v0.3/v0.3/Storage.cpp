@@ -1,4 +1,5 @@
 #include "Storage.h"
+#include "windows.h"
 
 
 Storage::Storage(void)
@@ -23,7 +24,7 @@ bool Storage::unDopreviousActions(std::string unDoCommand)
 	case DONE:
 		unDomarkEventAsDone();
 		return true;
-	case DELETE:
+	case DELETEEVENT:
 		unDoDeleteEvent();
 		return true;
 	case UPDATE:
@@ -55,7 +56,7 @@ Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand)
 			return UPDATE;
 		}
 		else if (currentCommand == "delete"){
-			return DELETE;
+			return DELETEEVENT;
 		} 
 		else if (currentCommand == "done"){
 			return DONE;
@@ -329,3 +330,27 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 		_activeEvent.addEvent(newEvent);}
 	else _doneEvent.addEvent(newEvent);
 }
+
+void Storage::changeCurrentDirectory(const char* newDirectory){
+	const int bufferSize = MAX_PATH;
+    char oldDir[bufferSize];
+	GetCurrentDirectory(bufferSize, oldDir);
+	std::cout << "Current directory: " << oldDir << '\n';
+	const char* newDir = newDirectory;
+	SetCurrentDirectory(newDir);
+	std::cout << "Set current directory to " << newDir << '\n';
+
+}
+
+/*const int bufferSize = MAX_PATH;
+    char oldDir[bufferSize];
+	GetCurrentDirectory(bufferSize, oldDir);
+	std::cout << "Current directory: " << oldDir << '\n';
+	const char* newDir;
+	char newdir[100];
+	cin >> newdir;
+	newDir = newdir;
+	SetCurrentDirectory(newDir);
+	std::cout << "Set current directory to " << newDir << '\n';
+
+	*/
