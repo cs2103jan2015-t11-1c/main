@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9CD9EE25-126F-485A-92EA-8279F60072DD}</ProjectGuid>
-    <RootNamespace>V03</RootNamespace>
+    <RootNamespace>v03</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -64,51 +64,43 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\cmdAdd.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\cmdClear.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\cmdDelete.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\cmdDisplay.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\cmdMarkAsDone.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\cmdSearch.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\cmdUndo.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\cmdUpdate.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\Event.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\Eventlist.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\logic.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\logicBaseClass.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\main.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\Parser.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\Storage.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\UI.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\VerificationCommand.cpp" />
-    <ClCompile Include="..\..\..\main\V0.3\v0.3\VerificationDateTimeMonth.cpp" />
+    <ClInclude Include="cmdAdd.h" />
+    <ClInclude Include="cmdClear.h" />
+    <ClInclude Include="cmdDelete.h" />
+    <ClInclude Include="cmdDisplay.h" />
+    <ClInclude Include="cmdMarkAsDone.h" />
+    <ClInclude Include="cmdSearch.h" />
+    <ClInclude Include="cmdUndo.h" />
+    <ClInclude Include="cmdUpdate.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="Eventlist.h" />
+    <ClInclude Include="logic.h" />
+    <ClInclude Include="logicBaseClass.h" />
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="Storage.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="VerificationCommand.h" />
+    <ClInclude Include="VerificationDateTimeMonth.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\cmdAdd.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\cmdClear.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\cmdDelete.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\cmdDisplay.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\cmdMarkAsDone.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\cmdSearch.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\cmdUndo.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\cmdUpdate.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\Event.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\Eventlist.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\logic.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\logicBaseClass.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\Parser.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\Storage.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\UI.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\VerificationCommand.h" />
-    <ClInclude Include="..\..\..\main\V0.3\v0.3\VerificationDateTimeMonth.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\..\main\V0.3\v0.3\log.txt" />
-    <Text Include="..\..\..\main\V0.3\v0.3\Minic.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\main\V0.3\v0.3\v0.3.vcxproj" />
-    <None Include="..\..\..\main\V0.3\v0.3\v0.3.vcxproj.filters" />
+    <ClCompile Include="cmdAdd.cpp" />
+    <ClCompile Include="cmdClear.cpp" />
+    <ClCompile Include="cmdDelete.cpp" />
+    <ClCompile Include="cmdDisplay.cpp" />
+    <ClCompile Include="cmdMarkAsDone.cpp" />
+    <ClCompile Include="cmdSearch.cpp" />
+    <ClCompile Include="cmdUndo.cpp" />
+    <ClCompile Include="cmdUpdate.cpp" />
+    <ClCompile Include="Event.cpp" />
+    <ClCompile Include="Eventlist.cpp" />
+    <ClCompile Include="logic.cpp" />
+    <ClCompile Include="logicBaseClass.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="Storage.cpp" />
+    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="VerificationCommand.cpp" />
+    <ClCompile Include="VerificationDateTimeMonth.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
