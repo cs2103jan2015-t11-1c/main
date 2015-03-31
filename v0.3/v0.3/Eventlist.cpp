@@ -69,3 +69,6 @@ void Eventlist::sortEvent(void)
 {   _allEvent.sort([](const Event & a, const Event & b) { return a._dueRanking < b._dueRanking; });
 }
 
+void Eventlist::copyFromNewList(std::list<Event> newList){
+	_allEvent.assign(newList.begin(), newList.end());
+}

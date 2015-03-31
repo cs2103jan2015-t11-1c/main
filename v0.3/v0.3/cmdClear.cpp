@@ -13,6 +13,8 @@ cmdClear::~cmdClear(void)
 
 //this function clears all events in the storage
 std::string cmdClear::executeClear(Storage& _storage){
-	_storage.clearLocalDrive();
+	_storage.clearActiveEvent();
+	_storage.clearDoneEvent();
+	_storage.synchronizeDrive();
 	return CLEAR_MESSAGE;
 }

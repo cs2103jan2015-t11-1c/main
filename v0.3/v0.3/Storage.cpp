@@ -73,24 +73,24 @@ Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand)
 }
 
 void Storage::clearActiveEvent()
-{	_deletedActiveEvent = _activeEvent;
+{	_deletedActiveEvent.copyFromNewList (_activeEvent.returnAllEvent());
 	_activeEvent = Eventlist();
 	_possibleToUnDo = true;
 }
 
 void Storage::clearDoneEvent()
-{	_deletedDoneEvent = _doneEvent;
+{	_deletedDoneEvent.copyFromNewList(_doneEvent.returnAllEvent());
 	_doneEvent = Eventlist();
 	_possibleToUnDo = true;
 }
 
 void Storage::unDoClearActiveEvent()
-{	_activeEvent = _deletedActiveEvent;
+{	_activeEvent.copyFromNewList (_deletedActiveEvent.returnAllEvent());
 	_possibleToUnDo = false;
 }
 
 void Storage::unDoClearDoneEvent()
-{	_doneEvent = _deletedDoneEvent;
+{	_doneEvent.copyFromNewList (_deletedDoneEvent.returnAllEvent());
 	_possibleToUnDo = false;
 }
 

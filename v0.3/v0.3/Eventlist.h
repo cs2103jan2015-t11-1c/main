@@ -20,5 +20,6 @@ public:
 	void updateEvent (int index, Event newEvent);
 	void sortEvent(void);
 	bool compareDueRanking (const Event& firstEvent,const Event& secondEvent);
+	void copyFromNewList( std::list<Event> newList);
 };
 

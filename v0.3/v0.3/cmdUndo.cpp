@@ -41,5 +41,5 @@ string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStored){
 	if (_storage.unDopreviousActions(lastCommandString)) {	
 	_storage.synchronizeDrive();
 	return printUndoMessage();}
-	else return "unsuccessful\n\n";
+	else return "Undo unsuccessful\n\n";
 	}
