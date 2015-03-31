@@ -66,6 +66,9 @@ bool VerificationDateTimeMonth::isEndingLaterThanStarting(int startingTime, int 
 			areValidTime = true;
 		}
 	}
+	else if(startingMonth == endingMonth && startingDate < endingDate){
+		areValidTime = true;
+	}
 
 	if(areValidDates && areValidMonths && areValidTime){
 		isEndingLaterThanStarting = true;

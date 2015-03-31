@@ -12,10 +12,11 @@ int main(){
     char oldDir[bufferSize];
 	GetCurrentDirectory(bufferSize, oldDir);
 	std::cout << "Current directory: " << oldDir << '\n';
-	std::cout << "Enter any number to start Minic, enter 0 to change directory\n";
-	int i;
-	std::cin >> i;
-	if (i == 0){
+	std::cout << "Enter Y to start, enter N to change directory\n";
+	string str;
+	getline(std::cin, str);
+	if (str == "N"){
+	cout << "Please enter your new directory:\n";
 	const char* newDir;
 	char newdir[100];
 	cin >> newdir;
@@ -23,6 +24,10 @@ int main(){
 	SetCurrentDirectory(newDir);
 	std::cout << "Set current directory to " << newDir << '\n';
 	}
+	else if(str != "N" && str!= "Y"){
+		cout << "Invalid input. System assumes that there is no change in directory.\n";
+	}
+
 	string msg;
 	UI mnk;
 	//std::cout <<"main" <<std::endl;
