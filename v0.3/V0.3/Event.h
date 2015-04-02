@@ -2,6 +2,8 @@
 
 #include <string>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 
 
 class Event
@@ -38,7 +40,9 @@ public:
 	int getEndDate();
 	int getStartTime();
 	int getEndTime();
+	std::string convertToMonth(int);
 	std::string readEvent();
+	std::string displayEvent();
 	std::string getDeadline();
 	std::string convertNumberToString(int number);
 	std::string convertTimeToString(int number);

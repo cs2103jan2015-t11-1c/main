@@ -44,7 +44,7 @@ std::string cmdDisplay::cmdDisplayActive(Storage& _storage){
 	std::list<Event> currentList = activeEvents.returnAllEvent();
 	std::list<Event>::iterator iter;
 	for(iter = currentList.begin(); iter != currentList.end(); ++iter){
-		display << i << "." << (*iter).readEvent() << "\n";
+		display  << std::setw(3) << i << "." << (*iter).displayEvent() << "\n";
 		i++;
 	}
 	std::cout<<display.str();
@@ -59,7 +59,7 @@ std::string cmdDisplay::cmdDisplayDone(Storage& _storage){
 	std::list<Event> currentList = doneEvents.returnAllEvent();
 	std::list<Event>::iterator iter;
 	for(iter = currentList.begin(); iter != currentList.end(); ++iter){
-		display << i << "." << (*iter).readEvent() << "\n";
+		display << std::setw(3) << i << "."  << (*iter).displayEvent() << "\n";
 		i++;
 	}
 	std::cout<< std::endl;

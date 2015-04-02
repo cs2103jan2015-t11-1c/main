@@ -20,6 +20,45 @@ Event::~Event(void)
 {
 }
 
+std::string Event::displayEvent(){
+	std::ostringstream Ostring;
+	Ostring << "[";
+	if (_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 || _endTime < 0 || _endTime >2359 ) {
+		Ostring << std::setfill('-') << std::setw(29) <<  "] ";
+		Ostring << _title; }
+	else if(_durationEvent == false) {
+		Ostring << "by " << convertNumberToString(_endDay);
+		Ostring << " " << convertToMonth(_endMonth);
+		int hour;
+		int minute;
+		hour = _endTime / 100;
+		minute = _endTime % 100;
+		Ostring << " " << convertNumberToString(hour) << ":" << convertNumberToString(minute);
+		Ostring << std::setw(14) << "] ";
+		Ostring << _title; 
+	}
+	else {
+		Ostring << convertNumberToString(_startDay);
+		Ostring << " " << convertToMonth(_startMonth);
+		int hour;
+		int minute;
+		hour = _startTime / 100;
+		minute = _startTime % 100;
+		Ostring << " " << convertNumberToString(hour) << ":" << convertNumberToString(minute);
+		Ostring << " - ";
+		Ostring << convertNumberToString(_endDay);
+		Ostring << " " << convertToMonth(_endMonth);
+		hour = _endTime / 100;
+		minute = _endTime % 100;
+		Ostring << " " << convertNumberToString(hour) << ":" << convertNumberToString(minute);
+		Ostring << "] ";
+		Ostring << _title;
+	}
+
+	return Ostring.str();
+
+}
+
 std::string Event::readEvent()
 {
 	if (_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 ){
@@ -40,6 +79,36 @@ std::string Event::convertNumberToString(int number){
 		tempString = std::to_string(number);
 		return "0" + tempString;}
 	else return std::to_string(number);
+}
+
+
+std::string Event::convertToMonth(int i){
+	if(i == 1) {
+		return "Jan"; }
+	else if (i == 2) {
+		return "Feb"; }
+	else if (i == 3) {
+		return "Mar"; }
+	else if (i == 4) {
+		return "Apr"; }
+	else if (i == 5) {
+		return "May"; }
+	else if (i == 6) {
+		return "Jun"; }
+	else if (i == 7) {
+		return "Jul"; }
+	else if (i == 8) {
+		return "Aug"; }
+	else if (i == 9) {
+		return "Sep"; }
+	else if (i == 10) {
+		return "Oct"; }
+	else if (i == 11) {
+		return "Nov"; }
+	else if (i == 12) {
+		return "Dec"; }
+
+	return "invalid month";
 }
 
 std::string Event::convertTimeToString(int number){
