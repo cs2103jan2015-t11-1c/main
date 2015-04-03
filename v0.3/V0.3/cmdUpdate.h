@@ -10,6 +10,8 @@ public:
 	std::string updateName(Event, int, Storage&);
 	std::string updateEndingTime(Event, int, Storage&);
 	std::string updateStartingTime(Event, int, Storage&);
+	std::string clearStartingTime(Event, int, Storage&);
+	std::string clearEndingTime(Event, int, Storage&);
 	std::string printFeedback(std::string, Event);
 };
 
