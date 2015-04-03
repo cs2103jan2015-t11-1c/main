@@ -53,6 +53,9 @@ string logic::executeCommand(CommandType command ,string taskName, int startingD
 	}else if(command == DISPLAY){
 		_display.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _display.executecmdDisplay(_storage);
+	}else if(command == DISPLAYDONE){
+		_display.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+	     return _display.cmdDisplayDone(_storage);
 	}else if(command == MARKASDONE){
 		_markAsDone.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _markAsDone.executeMarkAsDone(_storage);

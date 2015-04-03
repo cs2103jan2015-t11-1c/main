@@ -24,7 +24,6 @@ static const int NOASSIGNEDMONTH = 13;
 
 //Pass all the informations of the user input to logic to execute the command.
 string Parser::callToLogic(CommandType command){
-
 	int startingMonth=convertMonthTypeToInteger(_startingMonth);
 	int endingMonth = convertMonthTypeToInteger(_endingMonth);
 	bool isTimeInteger = (isTimeAnInteger(_startingTime) && isTimeAnInteger(_endingTime));
@@ -96,6 +95,8 @@ string Parser::callToLogic(CommandType command){
 	case DISPLAY:
 
 	case DISPLAYTODAY:
+
+	case DISPLAYDONE:
 
 	case MARKASDONE:
 		feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
@@ -395,18 +396,17 @@ string Parser::unDo(){
 //********************************************************************************************************************
 
 string Parser::displayEvent(string command){
-	CommandType commandT;
+	CommandType commandT = DISPLAY;
 
-	if(command == "displayDone"){
+	if(command == "displaydone"){
 		commandT = DISPLAYDONE;
 	}
-	else if (command == "displayToday"){
+	else if (command == "displaytoday"){
 		commandT = DISPLAYTODAY;
 	}
 	else if (command == "display"){
 		commandT = DISPLAY;
 	}
-	
 	return callToLogic(commandT);
 }
 

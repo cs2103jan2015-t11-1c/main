@@ -46,10 +46,10 @@ UI::CommandType UI::determineCommandType() {
 	else if (_commandWord == "done"){
 		return DONE;
 	}
-	else if (_commandWord == "displayDone"){
+	else if (_commandWord == "displaydone"){
 		return DISPLAYDONE;
 	}
-	else if (_commandWord == "displayToday"){
+	else if (_commandWord == "displaytoday"){
 		return DISPLAYTODAY;
 	}
 	else if(_commandWord == "undo"){
@@ -64,9 +64,9 @@ UI::CommandType UI::determineCommandType() {
 	else if(_commandWord == "help"){
 		return HELP;
 	}
-	else{ 
-		return HELP;
-	}
+	//else{ 
+		//return HELP;
+	//}
 }
 
 void UI::showWelcomeMessage(){
@@ -75,7 +75,6 @@ void UI::showWelcomeMessage(){
 
 string UI::callToParser(){
 	CommandType typeOfCommand = determineCommandType();
-
 	switch (typeOfCommand)
 	{
 		case ADD:
@@ -102,10 +101,10 @@ string UI::callToParser(){
 			return _Parser.markAsDone(_toDoList);
 			
 		case DISPLAYDONE:
-			return _Parser.displayEvent("displayDone");
+			return _Parser.displayEvent("displaydone");
 						
 		case DISPLAYTODAY:
-			return _Parser.displayEvent("displayToday");
+			return _Parser.displayEvent("displaytoday");
 
 		case HELP:
 			return _Parser.printHelp();

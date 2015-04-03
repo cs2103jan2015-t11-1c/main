@@ -1,8 +1,8 @@
 #include "cmdUndo.h"
 #include "UI.h"
 
-const static std::string UNDO_ERROR_MESSAGE = "There is no action to undo. Enter a command again.";
-const static std::string BLANK_LINES = "\n\n";
+const static std::string UNDO_ERROR_MESSAGE = "There is no action to undo. Enter a command again.\n\n";
+const static std::string UNDO_MESSAGE = "Undo last action successfully\n\n";
 
 cmdUndo::cmdUndo(void)
 {
@@ -15,17 +15,17 @@ cmdUndo::~cmdUndo(void)
 }
 
 string cmdUndo::printUndoMessage(){
-	return "Undo last action successfully\n\n";
+	return UNDO_MESSAGE;
 }
 
 //undo last command based on the last command word from the user
 string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStored){
 	CommandType lastCommand = commandStored.back();
 	if(lastCommand == UNDO && commandStored.size()==1){
-		return UNDO_ERROR_MESSAGE + BLANK_LINES;
+		return UNDO_ERROR_MESSAGE;
 	}
 	else{
-	while (lastCommand == UNDO || lastCommand == DISPLAY || lastCommand == DISPLAYDONE){
+	while (lastCommand == UNDO){
 		commandStored.pop_back();
 		lastCommand = commandStored.back();
 	}

@@ -63,7 +63,8 @@ std::string cmdDisplay::cmdDisplayDone(Storage& _storage){
 		i++;
 	}
 	std::cout<< std::endl;
-	return display.str();
+	std::cout<<display.str();
+	return "\n";
 }
 
 //display events today
