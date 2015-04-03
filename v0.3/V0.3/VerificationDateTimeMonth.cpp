@@ -1,13 +1,4 @@
 #include "VerificationDateTimeMonth.h"
-using namespace std;
-#include <iostream>
-VerificationDateTimeMonth::VerificationDateTimeMonth(void)
-{
-}
-
-VerificationDateTimeMonth::~VerificationDateTimeMonth(void)
-{
-}
 
 const int MAX_MINUTE = 60;
 const int MAX_HOUR = 23;
@@ -20,28 +11,33 @@ const int MIN_TIME = 0000;
 const int DATE_29 = 29;
 const int DATE_30 = 30;
 
+VerificationDateTimeMonth::VerificationDateTimeMonth(void)
+{
+}
 
+VerificationDateTimeMonth::~VerificationDateTimeMonth(void)
+{
+}
 
-string VerificationDateTimeMonth::lowercaseMonth(string month){
+std::string VerificationDateTimeMonth::lowercaseMonth(std::string month){
 	int n = month.size();
+
 	for( int i = 0; i < n; i++){
-		if(month[i] <='Z' && month[i] >= 'A'){
+		if(month[i] <= 'Z' && month[i] >= 'A'){
 			month[i] = month[i] - ('Z'-'z');
 		}
 	}
   return month;
 }
 
-
 //checking for timedtasks whether ending time is later than starting time.
 bool VerificationDateTimeMonth::isEndingLaterThanStarting(int startingTime, int startingMonth, int startingDate, int endingTime, int endingMonth, int endingDate){
 	bool isEndingLaterThanStarting = false;
 	bool areValidMonths = false;
 	bool areValidDates = false;
-    bool areValidTime = false;
-
-	bool isStartingDateMonthTimeValid = VerificationDateTimeMonth::isDateMonthTimeValid(startingDate, startingMonth, startingTime);
-	bool isEndingingDateMonthTimeValid = VerificationDateTimeMonth::isDateMonthTimeValid(endingDate, endingMonth, endingTime);
+	bool areValidTime = false;
+	bool isStartingDateMonthTimeValid = isDateMonthTimeValid(startingDate, startingMonth, startingTime);
+	bool isEndingingDateMonthTimeValid = isDateMonthTimeValid(endingDate, endingMonth, endingTime);
 
 	if(!isStartingDateMonthTimeValid || !isEndingingDateMonthTimeValid){
 		return false;
@@ -50,11 +46,19 @@ bool VerificationDateTimeMonth::isEndingLaterThanStarting(int startingTime, int 
 	if(startingMonth <= endingMonth){
 		areValidMonths = true;
 	}
+	else{
+		areValidMonths = false;
+	}
 
 	if(areValidMonths && startingMonth == endingMonth){
+
 		if(startingDate <= endingDate ){
 			areValidDates = true;
 		}
+		else{
+			areValidDates = false;
+		}
+
 	}
 	else if(areValidMonths && startingMonth < endingMonth){
 		areValidDates = true;
@@ -62,9 +66,14 @@ bool VerificationDateTimeMonth::isEndingLaterThanStarting(int startingTime, int 
 	}
 	
 	if( startingMonth == endingMonth && startingDate == endingDate){
+		
 		if(startingTime < endingTime){
 			areValidTime = true;
 		}
+		else{
+			areValidTime = false;
+		}
+
 	}
 	else if(startingMonth == endingMonth && startingDate < endingDate){
 		areValidTime = true;
@@ -73,34 +82,37 @@ bool VerificationDateTimeMonth::isEndingLaterThanStarting(int startingTime, int 
 	if(areValidDates && areValidMonths && areValidTime){
 		isEndingLaterThanStarting = true;
 	}
+	else{
+		isEndingLaterThanStarting = false;
+	}
 
 	return isEndingLaterThanStarting;
 }
 
-
-
 //check whether a single date, month and time input is valid
 bool VerificationDateTimeMonth::isDateMonthTimeValid(int date, int month, int time){
-	bool is_MonthValid = VerificationDateTimeMonth::isMonthValid(month);
-	bool is_DateValid; 
-	if(is_MonthValid){
-		is_DateValid = VerificationDateTimeMonth::isDateValid(date,month);
+	bool isTMonthValid = isMonthValid(month);
+	bool isTDateValid = false; 
+	bool isTDateMonthTimeValid = false;
+
+	if(isTMonthValid){
+		isTDateValid = isDateValid(date,month);
 	}
 	else{
-		is_DateValid = false;
+		isTDateValid = false;
 	}
 	
-	bool is_TimeValid = VerificationDateTimeMonth::isTimeValid(time);
-
-	bool is_DateMonthTimeValid = false;
-
-	if(is_DateValid && is_MonthValid && is_TimeValid){
-		is_DateMonthTimeValid = true;
+	bool isTTimeValid = isTimeValid(time);
+	
+	if(isTDateValid && isTMonthValid && isTTimeValid){
+		isTDateMonthTimeValid = true;
+	}
+	else{
+		isTDateMonthTimeValid = false;
 	}
 
-	return is_DateMonthTimeValid;
+	return isTDateMonthTimeValid;
 }
-
 
 bool VerificationDateTimeMonth::isTimeValid(int time){
 	bool isTimeValid = true;
@@ -121,13 +133,25 @@ bool VerificationDateTimeMonth::isTimeValid(int time){
 			if(minute >= MAX_MINUTE){
 				isTimeValid = false;
 			}
+			else{
+				isTimeValid = true;
+			}
+
 		}
 		else if(time / 10000 == 0){
 			int minute = time % 100;
 			int hour = time / 100;
+
 			if(minute >= MAX_MINUTE || hour > MAX_HOUR){
 				isTimeValid = false;
 			}
+			else{
+				isTimeValid = true;
+			}
+
+		}
+		else{
+			isTimeValid = false;
 		}
 
 	}
@@ -137,9 +161,14 @@ bool VerificationDateTimeMonth::isTimeValid(int time){
 
 bool VerificationDateTimeMonth::isMonthValid(int month){
 	bool isMonthValid = false;
+
 	if(month >= MIN_MONTH && month <= MAX_MONTH){
 		isMonthValid = true;
 	}
+	else{
+		isMonthValid = false;
+	}
+
 	return isMonthValid;
 }
 
@@ -147,11 +176,17 @@ bool VerificationDateTimeMonth::isDateValid(int date, int month){
     
 	switch(month){
 	case 1:
+
 	case 3:
+
 	case 5:
+
 	case 7:
+
 	case 8:
+
 	case 10:
+
 	case 12:
 		if (date >= MIN_DATE && date <= MAX_DATE){
 			return true;
@@ -159,6 +194,7 @@ bool VerificationDateTimeMonth::isDateValid(int date, int month){
 		else{
 			return false;
 		}
+
 	case 2:
 		if(date >= MIN_DATE && date <= DATE_29){
 			return true;
@@ -168,8 +204,11 @@ bool VerificationDateTimeMonth::isDateValid(int date, int month){
 		}
 		
 	case 4:
+
 	case 6:
+
 	case 9:
+
 	case 11:
 		if(date >= MIN_DATE && date <= DATE_30){
 			return true;
@@ -181,6 +220,5 @@ bool VerificationDateTimeMonth::isDateValid(int date, int month){
 	default:
 		return false;
 	}
-
 
 }
