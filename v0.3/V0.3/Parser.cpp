@@ -1,10 +1,9 @@
 #include "Parser.h"
 #include <string>
 #include <iostream>
-using namespace std;
-static const string EMPTYSTRING = "";
-static const string TIMENOTASSIGNED = "2400";
-static const string TASKNAMENOTASSIGNED = "";
+static const std::string EMPTYSTRING = "";
+static const std::string TIMENOTASSIGNED = "2400";
+static const std::string TASKNAMENOTASSIGNED = "";
 static const int DATENOTEASSIGNED = 0;
 static const int JAN = 1;
 static const int FEB = 2;
@@ -20,12 +19,12 @@ static const int NOV = 11;
 static const int DEC = 12;
 static const int NOASSIGNEDMONTH = 13; 
 
-string Parser::changeDirectory(string directory){
-	return callToLogic(CHANGEDIRECTORY);
+std::string Parser::changeDirectory(std::string directory){
+	return finalVerificationAndCallToLogic(CHANGEDIRECTORY);
 }
 
 string Parser::addTimedEvent(string toDoList){
-	string buffer =toDoList;
+	std:: string buffer =toDoList;
 	int date = 0;
 	MonthType month = MONTHNOTASSIGNED;
 
@@ -49,17 +48,15 @@ string Parser::addTimedEvent(string toDoList){
 		_endingDate = date;
 		_endingMonth = month;
 		_endingTime = getEventTime(buffer);
-		return callToLogic(ADDTIMEDEVENT);
+		return finalVerificationAndCallToLogic(ADDTIMEDEVENT);
 	}
 }
 
-string Parser::addEventWithDeadline(string toDoList){
-	string &buffer =toDoList;
+std::string Parser::addEventWithDeadline(std::string toDoList){
+	std::string buffer =toDoList;
 	_taskName=getEventTitle(buffer);
-	int integer=-1;
-	int &date= integer;
-	MonthType notAssigned = MONTHNOTASSIGNED;
-	MonthType &month= notAssigned;
+	int date= 0;
+	MonthType month= MONTHNOTASSIGNED;
 
 	if(!isAbleToGetEventDateAndMonth(buffer,date, month)){
 		return INVALID_TIMED_DATE_MONTH_MESSAGE;
@@ -68,17 +65,17 @@ string Parser::addEventWithDeadline(string toDoList){
 		_endingDate = date;
 		_endingMonth = month;
 		_endingTime = getEventTime(buffer);
-		return callToLogic(ADDEVENTWITHDEADLINE);
+		return finalVerificationAndCallToLogic(ADDEVENTWITHDEADLINE);
 	}
 }
 
-string Parser::addFloatingEvent(string toDoList){
-	string& buffer = toDoList;
+std::string Parser::addFloatingEvent(std::string toDoList){
+	std::string buffer = toDoList;
 	_taskName=getEventTitle(buffer);
-	return callToLogic(ADDFLOATINGEVENT);
+	return finalVerificationAndCallToLogic(ADDFLOATINGEVENT);
 }
 
-bool Parser::isTaskWithDeadline(string toDoList){
+bool Parser::isTaskWithDeadline(std::string toDoList){
 	bool isTaskWithDeadline = false;
 	int TIndex = toDoList.find("by:");
 
@@ -88,11 +85,11 @@ bool Parser::isTaskWithDeadline(string toDoList){
 
 	return isTaskWithDeadline;
 }
-bool Parser::isTimedTask(string toDoList){
+bool Parser::isTimedTask(std::string toDoList){
 	bool isTimedTask = false;
 	int TIndex = toDoList.find("from:");
 
-	if(TIndex != string::npos){
+	if(TIndex != std::string::npos){
 		isTimedTask = true;
 	}
 
@@ -100,7 +97,7 @@ bool Parser::isTimedTask(string toDoList){
 }
 
 bool Parser::isValidIndex(int TIndex){
-	if(TIndex!=string::npos && TIndex >=0){
+	if(TIndex!=std::string::npos && TIndex >=0){
 		return true;
 	}
 	else{
@@ -110,10 +107,10 @@ bool Parser::isValidIndex(int TIndex){
 
 
 
-string Parser::getEventTitle(string &buffer){
+std::string Parser::getEventTitle(std::string &buffer){
 	int TIndex;
 
-    string taskName;
+    std::string taskName;
 	TIndex = buffer.find("from:");
 
 	if(isValidIndex(TIndex)){
@@ -135,17 +132,17 @@ string Parser::getEventTitle(string &buffer){
 
 }
 
-int Parser::firstIndexThatIsNotASpace(string str){
+int Parser::firstIndexThatIsNotASpace(std::string str){
 	return str.find_first_not_of(" ");
 }
 
-int Parser::firstIndextThatIsASpace(string str){
+int Parser::firstIndextThatIsASpace(std::string str){
 	return str.find_first_of(" ");
 }
 
 bool Parser::isAbleToGetEventDateAndMonth(string &buffer,int &date,MonthType &month){
-	string TDate;
-	string TMonth;
+	std::string TDate;
+	std::string TMonth;
 	TDate = buffer.substr(0, firstIndextThatIsASpace(buffer));
 	
 	for(int i = TDate.size()-1; i >= 0; i--){
@@ -164,15 +161,15 @@ bool Parser::isAbleToGetEventDateAndMonth(string &buffer,int &date,MonthType &mo
 }
 
 //assume no spaces within the time input
-string Parser::getEventTime(string &buffer){
-	string time;
+std::string Parser::getEventTime(std::string &buffer){
+	std::string time;
 	int TIndex = firstIndexThatIsNotASpace(buffer);
 	time = buffer.substr(TIndex, 4);
 	buffer = buffer.substr(TIndex+3);
 	return time;
 }
 
-MonthType Parser :: determineMonthType( string TMonth){
+MonthType Parser :: determineMonthType(std::string TMonth){
 
 	TMonth = _verificationDateTimeMonth.lowercaseMonth(TMonth);
 
@@ -217,28 +214,28 @@ MonthType Parser :: determineMonthType( string TMonth){
 	}
 }
 
-string Parser::updateEvent(string toDoList){
-	string buffer=toDoList;
-	string command;
+std::string Parser::updateEvent(std::string toDoList){
+	std::string buffer=toDoList;
+	std::string command;
 	int upDateEventNumber = getUpdateEventNumber(buffer);
 	_taskNumberList.push_back(upDateEventNumber);
 	buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
 	int index = firstIndextThatIsASpace(buffer);
-	string updateType = buffer.substr(0, index);
+	std::string updateType = buffer.substr(0, index);
 	buffer = buffer. substr(index + 1 );
 
 	if(updateType =="name"){
 		_taskName=buffer;
-		return callToLogic(UPDATENAME);
+		return finalVerificationAndCallToLogic(UPDATENAME);
 	}
 	else if( updateType == "clear"){
 		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
-		string clearType = buffer.substr(0,firstIndextThatIsASpace(buffer));
+		std::string clearType = buffer.substr(0,firstIndextThatIsASpace(buffer));
 		if(clearType == "end"){
-			return callToLogic(CLEAREND);
+			return finalVerificationAndCallToLogic(CLEAREND);
 		}
 		else if(clearType == "start"){
-			return callToLogic(CLEARSTART);
+			return finalVerificationAndCallToLogic(CLEARSTART);
 		}
 		else{
 			return INVALID_INPUT;
@@ -255,7 +252,7 @@ string Parser::updateEvent(string toDoList){
 			_endingDate = date;
 			_endingMonth = month;
 			_endingTime=getEventTime(buffer);
-			return callToLogic(UPDATEENDINGTIME);
+			return finalVerificationAndCallToLogic(UPDATEENDINGTIME);
 		}
 
 	}
@@ -270,7 +267,7 @@ string Parser::updateEvent(string toDoList){
 			_startingDate=date;
 			_startingMonth = month;
 			_startingTime = getEventTime(buffer);
-			return callToLogic(UPDATESTARTINGTIME);
+			return finalVerificationAndCallToLogic(UPDATESTARTINGTIME);
 		}
 
 	}
@@ -280,9 +277,9 @@ string Parser::updateEvent(string toDoList){
 	}
 }
 
-int Parser :: getUpdateEventNumber(string &buffer){
+int Parser :: getUpdateEventNumber(std::string &buffer){
 	int index;
-	string TString;
+	std::string TString;
 	buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
 	TString=buffer.substr(0, firstIndextThatIsASpace(buffer));
 
@@ -293,17 +290,17 @@ int Parser :: getUpdateEventNumber(string &buffer){
 	return eventNumber;
 }
 
-string Parser::searchEvent(string part){
+std::string Parser::searchEvent(std::string part){
 	_taskName=part;
-	return callToLogic(SEARCH);
+	return finalVerificationAndCallToLogic(SEARCH);
 }
 
-string Parser::unDo(){
-	return callToLogic(UNDO);
+std::string Parser::unDo(){
+	return finalVerificationAndCallToLogic(UNDO);
 }
 
 
-string Parser::displayEvent(string command){
+std::string Parser::displayEvent(std::string command){
 	CommandType commandT;
 
 	if(command == "displaydone"){
@@ -316,36 +313,36 @@ string Parser::displayEvent(string command){
 		commandT = DISPLAY;
 	}
 	
-	return callToLogic(commandT);
+	return finalVerificationAndCallToLogic(commandT);
 }
 
-string Parser::clearEvent(){
-	return callToLogic(CLEAR);
+std::string Parser::clearEvent(){
+	return finalVerificationAndCallToLogic(CLEAR);
 }
 
 
-string Parser::markAsDone(string numberList){
+std::string Parser::markAsDone(std::string numberList){
 	getNumberList(numberList);
-	return callToLogic(MARKASDONE);
+	return finalVerificationAndCallToLogic(MARKASDONE);
 }
 
-string Parser::deleteEvent(string numberList){
+std::string Parser::deleteEvent(std::string numberList){
 	getNumberList(numberList);
-	return callToLogic(DELETE);
+	return finalVerificationAndCallToLogic(DELETE);
 }
 
-void Parser::getNumberList(string numberList){
-	//cout<<numberList<<endl;
-
-	int TIndex= numberList.find_first_of(" ");
-	string TString;
+void Parser::getNumberList(std::string numberList){
+	numberList = numberList.substr(firstIndexThatIsNotASpace(numberList));
+	int TIndex= firstIndextThatIsASpace(numberList);
+	std::string TString;
 	int eventNumber;
 	while(TIndex!=string::npos){
 		TString=numberList.substr(0,TIndex);
 		eventNumber = stoi(TString);
 		_taskNumberList.push_back(eventNumber);
 		numberList=numberList.substr(TIndex+1);
-		TIndex=numberList.find_first_of(" ");
+		numberList = numberList.substr(firstIndexThatIsNotASpace(numberList));
+		TIndex=firstIndextThatIsASpace(numberList);
 	}
 	if(numberList.size()!=0){		
 		_taskNumberList.push_back(stoi(numberList));
@@ -492,26 +489,32 @@ void Parser :: resetAttributesValue(){
 	_taskNumberList.clear();
 }
 
-bool Parser::isTimeAnInteger(string time){
-	for (int i = time.size()-1; i>=0; i--){
-		if(!isdigit(time[i])){
+bool Parser::isStringAnInteger(string str){
+	for (int i = str.size()-1; i>=0; i--){
+		if(!isdigit(str[i])){
 			return false;
 		}
 	}
 	return true;
 }
 
+int Parser::changeFromStringToInteger(std::string str){
+	return stoi(str);
+}
+
+
 //Pass all the informations of the user input to logic to execute the command.
-string Parser::callToLogic(CommandType command){
-	int startingMonth=convertMonthTypeToInteger(_startingMonth);
-	int endingMonth = convertMonthTypeToInteger(_endingMonth);
-	bool isTimeInteger = (isTimeAnInteger(_startingTime) && isTimeAnInteger(_endingTime));
-	int integerStartingTime = 2400;
-	int integerEndingTime = 2400;
+string Parser::finalVerificationAndCallToLogic(CommandType command){
+
+	int integerStartingMonth=convertMonthTypeToInteger(_startingMonth);
+	int integerEndingMonth = convertMonthTypeToInteger(_endingMonth);
+	bool isTimeInteger = (isStringAnInteger(_startingTime) && isStringAnInteger(_endingTime));
+	int integerStartingTime;
+	int integerEndingTime;
 
 	if(isTimeInteger){
-		integerStartingTime = stoi(_startingTime);
-		integerEndingTime = stoi(_endingTime);
+		integerStartingTime = changeFromStringToInteger(_startingTime);
+		integerEndingTime = changeFromStringToInteger(_endingTime);
 	}
 	else{
 		return INVALID_TIMED_DATE_MONTH_MESSAGE;
@@ -526,8 +529,8 @@ string Parser::callToLogic(CommandType command){
 	case UPDATEENDINGTIME:
 
 	case ADDEVENTWITHDEADLINE:
-		if(_verificationDateTimeMonth.isDateMonthTimeValid(_endingDate, endingMonth, integerEndingTime)){ 
-				feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+		if(_verificationDateTimeMonth.isDateMonthTimeValid(_endingDate, integerEndingMonth, integerEndingTime)){ 
+				feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
 				resetAttributesValue();
 				return feedback;
 		}
@@ -536,8 +539,8 @@ string Parser::callToLogic(CommandType command){
 		}
 
 	case UPDATESTARTINGTIME:
-		if(_verificationDateTimeMonth.isDateMonthTimeValid(_startingDate, startingMonth, integerStartingTime)){ 
-				 feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+		if(_verificationDateTimeMonth.isDateMonthTimeValid(_startingDate, integerStartingMonth, integerStartingTime)){ 
+				 feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
 				resetAttributesValue();
 				return feedback;
 		}
@@ -546,8 +549,8 @@ string Parser::callToLogic(CommandType command){
 		}
 
 	case ADDTIMEDEVENT:
-		if(_verificationDateTimeMonth.isEndingLaterThanStarting(integerStartingTime, startingMonth, _startingDate, integerEndingTime, endingMonth, _endingDate)){
-			feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+		if(_verificationDateTimeMonth.isEndingLaterThanStarting(integerStartingTime, integerStartingMonth, _startingDate, integerEndingTime, integerEndingMonth, _endingDate)){
+			feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
 			resetAttributesValue();
 			return feedback;
 		}
@@ -584,7 +587,7 @@ string Parser::callToLogic(CommandType command){
 	case DISPLAYDONE:
 
 	case MARKASDONE:
-		feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+		feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
 		resetAttributesValue();
 		return feedback;
 
@@ -607,7 +610,7 @@ string Parser::addEvent(string toDoList){
 }
 
 bool Parser::isEmpty(string str){
-		if(str.empty()){
+	if(str.empty()){
 		return true;
 	}
 	else{
