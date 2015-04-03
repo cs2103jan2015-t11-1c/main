@@ -37,12 +37,12 @@ std::string cmdMarkAsDone::printFeedback(std::list<int> taskNumberList, Storage&
 	Event eventMarkedDone;
 	if(taskNumberList.size() == ONE_EVENT){
 		eventMarkedDone = _storage.getEvent(taskNumberList.front());
-		feedback << MESSAGE_MarkDone_ONE_EVENT << eventMarkedDone.readEvent() << "\n";
+		feedback << MESSAGE_MarkDone_ONE_EVENT << eventMarkedDone.displayEvent() << "\n";
 	}else{
 		feedback << MESSAGE_MarkDone_MUTIPLE_EVENTS;
 		while(!taskNumberList.empty()){
 			eventMarkedDone = _storage.getEvent(taskNumberList.back());
-			feedback << eventMarkedDone.readEvent() << "\n";
+			feedback << eventMarkedDone.displayEvent() << "\n";
 			taskNumberList.pop_back();
 		}
 	}

@@ -13,7 +13,6 @@ std::string cmdUpdate::executecmdUpdate(Storage& _storage){
 	eventNumber= _taskNumberList.front();
 	Event eventToUpdate; 
 	eventToUpdate= _storage.getEvent(eventNumber);
-	std::cout << _commandWord;
 	switch(_commandWord){
 	case UPDATENAME:
 		return updateName(eventToUpdate, eventNumber, _storage);
@@ -69,6 +68,6 @@ std::string cmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber, 
 }
 
 std::string cmdUpdate::printFeedback(std::string Tempt, Event eventToUpdate){
-	std::string feedback = "\"" + Tempt + "\" is updated to " + "\"" + eventToUpdate.readEvent() +"\" \n\n";
+	std::string feedback = "\"" + Tempt + "\" is updated to " + "\"" + eventToUpdate.displayEvent() +"\" \n\n";
 	return feedback;
 }

@@ -21,11 +21,12 @@ string cmdUndo::printUndoMessage(){
 //undo last command based on the last command word from the user
 string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStored){
 	CommandType lastCommand = commandStored.back();
-	if(lastCommand == UNDO && commandStored.size()==1){
-		return UNDO_ERROR_MESSAGE;
-	}
-	else{
-	while (lastCommand == UNDO){
+
+	//if(lastCommand == UNDO && commandStored.size() == 1){
+		//return UNDO_ERROR_MESSAGE;
+	//}else{
+	while ((lastCommand == UNDO && commandStored.size()>1) || (lastCommand == DISPLAY && commandStored.size()>1) || 
+		    lastCommand == DISPLAYDONE && commandStored.size()>1){
 		commandStored.pop_back();
 		lastCommand = commandStored.back();
 	}
@@ -42,10 +43,11 @@ string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStored){
 		lastCommandString = "clear";
 	}else if(lastCommand == MARKASDONE){
 		lastCommandString = "done";
+	}else if(lastCommand == DISPLAY){
+		cout<<UNDO_ERROR_MESSAGE;
 	}
 	if (_storage.unDopreviousActions(lastCommandString)) {	
 	_storage.synchronizeDrive();
 	return printUndoMessage();}
 	else return "Undo unsuccessful\n\n";
 	}
-}
