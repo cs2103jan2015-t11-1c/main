@@ -60,6 +60,7 @@ public:
 	bool isDateValid(std::string );
 	bool isStringAnInteger(std::string );
 	bool isEmpty(std::string);
+
 	bool isValidIndex(int );
 	int convertMonthTypeToInteger(MonthType);
 	int firstIndexThatIsNotASpace(std::string );

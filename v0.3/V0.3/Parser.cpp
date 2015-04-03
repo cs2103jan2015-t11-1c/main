@@ -30,7 +30,20 @@ string Parser::addTimedEvent(string toDoList){
 
 	_taskName=getEventTitle(buffer);
 
-	if (!isAbleToGetEventDateAndMonth(buffer,date, month)){
+	if(buffer.size()==1){
+		return INVALID_TIMED_DATE_MONTH_MESSAGE;
+	}
+	else{
+		buffer = buffer.substr(1);
+		if(buffer.empty()){
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
+		else{
+			buffer=buffer.substr(firstIndexThatIsNotASpace(buffer));
+		}
+	}
+
+	if(!isAbleToGetEventDateAndMonth(buffer,date, month)){
 		return INVALID_TIMED_DATE_MONTH_MESSAGE;
 	}
 	else{
@@ -40,8 +53,8 @@ string Parser::addTimedEvent(string toDoList){
 		buffer =buffer.substr(buffer.find_first_of("to:") + 3);
 		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
 	}
-	
-	if( !isAbleToGetEventDateAndMonth(buffer,date, month)){
+
+	if(isEmpty(buffer) || !isAbleToGetEventDateAndMonth(buffer,date, month)){
 		return INVALID_TIMED_DATE_MONTH_MESSAGE;
 	}
 	else{
@@ -79,7 +92,7 @@ bool Parser::isTaskWithDeadline(std::string toDoList){
 	bool isTaskWithDeadline = false;
 	int TIndex = toDoList.find("by:");
 
-	if(TIndex != string::npos && TIndex != -1){
+	if(TIndex != string::npos){
 		isTaskWithDeadline = true;
 	}
 
@@ -115,8 +128,7 @@ std::string Parser::getEventTitle(std::string &buffer){
 
 	if(isValidIndex(TIndex)){
 		taskName = buffer.substr(0, TIndex-1);
-		buffer = buffer.substr(TIndex+5);
-		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
+		buffer = buffer.substr(TIndex+4);
 		return taskName;
 	}
 
@@ -158,6 +170,7 @@ bool Parser::isAbleToGetEventDateAndMonth(string &buffer,int &date,MonthType &mo
 	month = determineMonthType(TMonth);
 	buffer = buffer.substr(firstIndextThatIsASpace(buffer)+1);
 	return true;
+
 }
 
 //assume no spaces within the time input
