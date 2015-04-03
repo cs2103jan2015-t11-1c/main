@@ -580,6 +580,8 @@ string Parser::callToLogic(CommandType command){
 	case DISPLAY:
 
 	case DISPLAYTODAY:
+		
+	case DISPLAYDONE:
 
 	case MARKASDONE:
 		feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
