@@ -37,12 +37,12 @@ std::string cmdDelete::printFeedback(std::list<int> taskNumberList, Storage& _st
 	Event eventDeleted;
 	if(taskNumberList.size() == ONE_EVENT){
 		eventDeleted = _storage.getEvent(taskNumberList.front());
-		feedback << MESSAGE_DELETE_ONE_EVENT << eventDeleted.readEvent() << "\n";
+		feedback << MESSAGE_DELETE_ONE_EVENT << eventDeleted.displayEvent() << "\n";
 	}else{
 		feedback << MESSAGE_DELETE_MUTIPLE_EVENTS;
 		while(!taskNumberList.empty()){
 			eventDeleted = _storage.getEvent(taskNumberList.back());
-			feedback << eventDeleted.readEvent() << "\n";
+			feedback << eventDeleted.displayEvent() << "\n";
 			taskNumberList.pop_back();
 		}
 	}

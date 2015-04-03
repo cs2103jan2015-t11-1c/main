@@ -5,7 +5,7 @@
 #include <Windows.h>
 using namespace std;
 #include <cstdlib>
-const static string INVALID_COMMAND_MESSAGE ="Sorry, invalid command.\n";
+const static string INVALID_COMMAND_MESSAGE ="Sorry, invalid command.\n\n";
 
 int main(){
 	const int bufferSize = MAX_PATH;
