@@ -35,7 +35,7 @@ int main(){
 
 	while(1)
 	{
-	if(mnk.readCommand()){
+	if(mnk.readCommandAndVerifyCommand()){
 		msg = mnk.callToParser();
 		cout << msg;
 	}

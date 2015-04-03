@@ -7,15 +7,23 @@ using namespace std;
 
 static const  string WELCOME_MESSAGE = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n";
 static const string EMPTY_STRING = "";
+
 UI::UI(){
 	_commandWord=EMPTY_STRING;
 	_toDoList=EMPTY_STRING;
 	
 }
 
-bool UI:: readCommand(){
+UI::~UI(void){}
+
+void UI::showWelcomeMessage(){
+	cout << WELCOME_MESSAGE <<endl;
+}
+
+bool UI:: readCommandAndVerifyCommand(){
 	bool isValid=true;
 	cin >> _commandWord;
+
 	if(_commandWord.empty()){
 		isValid = false;
 	}
@@ -70,10 +78,6 @@ UI::CommandType UI::determineCommandType() {
 	}
 }
 
-void UI::showWelcomeMessage(){
-	cout << WELCOME_MESSAGE <<endl;
-}
-
 
 bool UI::isEmpty(string str){
 	if(str.empty()){
@@ -89,24 +93,38 @@ bool UI::isEmpty(string str){
 	return true;
 }
 
+bool UI::getToDoListAndCheckEmpty(){
+	getline(cin, _toDoList);
+	if(isEmpty(_toDoList)){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+void UI:: getTheToDoListWithIndexZeroNotEmpty(){
+
+	int TIndex = _toDoList.find_first_not_of(" ");
+	_toDoList = _toDoList.substr(TIndex);
+}
+
 string UI::callToParser(){
 	CommandType typeOfCommand = determineCommandType();
 
 	switch (typeOfCommand)
 	{
 		case ADD:
-			getline(cin, _toDoList);
-			if(isEmpty(_toDoList)){
+			if(getToDoListAndCheckEmpty()){
 				return INVALID_INPUT;
 			}
 			else{
-				_toDoList = _toDoList.substr(1);
+				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.addEvent(_toDoList);			
 			}
 		
 		case DISPLAY:
-			getline(cin, _toDoList);
-			if(isEmpty(_toDoList)){
+			if(getToDoListAndCheckEmpty()){
 				return _Parser.displayEvent("display");
 			}
 			else{
@@ -114,39 +132,34 @@ string UI::callToParser(){
 			}
 		
 		case DELETE:
-			getline(cin, _toDoList);
-			if(isEmpty(_toDoList)){
+			if(getToDoListAndCheckEmpty()){
 				return INVALID_INPUT;
 			}
 			else{
-				_toDoList = _toDoList.substr(1);
+				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.deleteEvent(_toDoList);	
 			}
 		
 		case UPDATE:
-			getline(cin, _toDoList);
-			if(isEmpty(_toDoList)){
+			if(getToDoListAndCheckEmpty()){
 				return INVALID_INPUT;
 			}
 			else{
-				_toDoList = _toDoList.substr(1);
+				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.updateEvent(_toDoList);		
 			}
 		
 		case DONE:
-			getline(cin, _toDoList);
-			if(isEmpty(_toDoList)){
+			if(getToDoListAndCheckEmpty()){
 				return INVALID_INPUT;
 			}
 			else{
-				_toDoList = _toDoList.substr(1);
+				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.markAsDone(_toDoList);
 			}
 			
 		case DISPLAYDONE:
-			getline(cin, _toDoList);
-			if(isEmpty(_toDoList)){
-				//cout << "uouo";
+			if(getToDoListAndCheckEmpty()){
 				return _Parser.displayEvent("displaydone");
 			}
 			else{
@@ -154,8 +167,7 @@ string UI::callToParser(){
 			}
 						
 		case DISPLAYTODAY:
-			getline(cin, _toDoList);
-			if(isEmpty(_toDoList)){
+			if(getToDoListAndCheckEmpty()){
 				return _Parser.displayEvent("displaytoday");
 			}
 			else{
@@ -163,8 +175,7 @@ string UI::callToParser(){
 			}
 
 		case EXIT:
-			getline(cin, _toDoList);
-			if(isEmpty(_toDoList)){
+			if(getToDoListAndCheckEmpty()){
 				exit(0);
 			}
 			else{
@@ -172,8 +183,7 @@ string UI::callToParser(){
 			}
 			
 		case UNDO:
-			getline(cin, _toDoList);
-			if(isEmpty(_toDoList)){
+			if(getToDoListAndCheckEmpty()){
 				return _Parser.unDo();
 			}
 			else{
@@ -181,8 +191,7 @@ string UI::callToParser(){
 			}
 
 		case CLEAR:
-			getline(cin, _toDoList);
-			if(isEmpty(_toDoList)){
+			if(getToDoListAndCheckEmpty()){
 				return _Parser.clearEvent();
 			}
 			else{
@@ -190,18 +199,16 @@ string UI::callToParser(){
 			}			
 
 		case SEARCH:
-			getline(cin, _toDoList);
-			if(isEmpty(_toDoList)){
+			if(getToDoListAndCheckEmpty()){
 				return INVALID_INPUT;
 			}
 			else{
-				_toDoList = _toDoList.substr(1);
+			getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.searchEvent(_toDoList);
 			}
 
 		case CHANGEDIRECTORY:
-			getline(cin, _toDoList);
-			if(!isEmpty(_toDoList)){
+			if(!getToDoListAndCheckEmpty()){
 				return _Parser.changeDirectory(_toDoList);
 			}
 			else{
@@ -217,5 +224,4 @@ string UI::callToParser(){
 	
 }
 
-UI::~UI(void){}
 
