@@ -9,6 +9,5 @@ public:
 	~VerificationCommand(void);
 	string lowercaseCommandWord(string);
 	bool isValidCommandWord(string);
-
 };
 
