@@ -6,10 +6,10 @@
 using namespace std;
 
 static const  string WELCOME_MESSAGE = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n";
-
+static const string EMPTY_STRING = "";
 UI::UI(){
-	_commandWord="";
-	_toDoList="";
+	_commandWord=EMPTY_STRING;
+	_toDoList=EMPTY_STRING;
 	
 }
 
@@ -47,10 +47,10 @@ UI::CommandType UI::determineCommandType() {
 	else if (_commandWord == "done"){
 		return DONE;
 	}
-	else if (_commandWord == "displayDone"){
+	else if (_commandWord == "displaydone"){
 		return DISPLAYDONE;
 	}
-	else if (_commandWord == "displayToday"){
+	else if (_commandWord == "displaytoday"){
 		return DISPLAYTODAY;
 	}
 	else if(_commandWord == "undo"){
@@ -61,6 +61,9 @@ UI::CommandType UI::determineCommandType() {
 	}
 	else if (_commandWord == "search"){
 		return SEARCH;
+	}
+	else if(_commandWord =="changedirectory"){
+		return CHANGEDIRECTORY;
 	}
 	else{
 		return HELP;
@@ -143,7 +146,8 @@ string UI::callToParser(){
 		case DISPLAYDONE:
 			getline(cin, _toDoList);
 			if(isEmpty(_toDoList)){
-				return _Parser.displayEvent("displayDone");
+				//cout << "uouo";
+				return _Parser.displayEvent("displaydone");
 			}
 			else{
 				return INVALID_INPUT;
@@ -152,7 +156,7 @@ string UI::callToParser(){
 		case DISPLAYTODAY:
 			getline(cin, _toDoList);
 			if(isEmpty(_toDoList)){
-				return _Parser.displayEvent("displayToday");
+				return _Parser.displayEvent("displaytoday");
 			}
 			else{
 				return INVALID_INPUT;
@@ -194,6 +198,16 @@ string UI::callToParser(){
 				_toDoList = _toDoList.substr(1);
 				return _Parser.searchEvent(_toDoList);
 			}
+
+		case CHANGEDIRECTORY:
+			getline(cin, _toDoList);
+			if(!isEmpty(_toDoList)){
+				return _Parser.changeDirectory(_toDoList);
+			}
+			else{
+				return INVALID_INPUT;
+			}
+
 
 		default:
 			return INVALID_INPUT;

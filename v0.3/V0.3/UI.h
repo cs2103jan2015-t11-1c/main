@@ -17,7 +17,7 @@ class UI{
 		
     public:
 		
-		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, HELP};
+		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, DISPLAYDONE, DISPLAYTODAY, CHANGEDIRECTORY, SEARCH, UNDO, CLEAR, HELP};
 		UI(void);
 		~UI(void);
 	    CommandType determineCommandType();

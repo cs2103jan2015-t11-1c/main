@@ -2,7 +2,6 @@
 #include <string>
 #include <iostream>
 using namespace std;
-
 static const string EMPTYSTRING = "";
 static const string TIMENOTASSIGNED = "2400";
 static const string TASKNAMENOTASSIGNED = "";
@@ -21,33 +20,8 @@ static const int NOV = 11;
 static const int DEC = 12;
 static const int NOASSIGNEDMONTH = 13; 
 
-
-
-
-string Parser::addEvent(string toDoList){
-	if(isTimedTask(toDoList)){
-		return addTimedEvent(toDoList);
-	}
-	else if (isTaskWithDeadline(toDoList)){
-		return addEventWithDeadline(toDoList);
-	}
-	else{
-		return addFloatingEvent(toDoList);
-	}
-}
-
-bool Parser::isEmpty(string str){
-		if(str.empty()){
-		return true;
-	}
-	else{
-		for(int i = str.size()-1; i >=0; i--){
-			if(str[i] !=' '){
-				return false;
-			}
-		}
-	}
-	return true;
+string Parser::changeDirectory(string directory){
+	return callToLogic(CHANGEDIRECTORY);
 }
 
 string Parser::addTimedEvent(string toDoList){
@@ -125,6 +99,16 @@ bool Parser::isTimedTask(string toDoList){
 	return isTimedTask;
 }
 
+bool Parser::isValidIndex(int TIndex){
+	if(TIndex!=string::npos && TIndex >=0){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+
 
 string Parser::getEventTitle(string &buffer){
 	int TIndex;
@@ -132,7 +116,7 @@ string Parser::getEventTitle(string &buffer){
     string taskName;
 	TIndex = buffer.find("from:");
 
-	if(TIndex!=string::npos && TIndex >=0){
+	if(isValidIndex(TIndex)){
 		taskName = buffer.substr(0, TIndex-1);
 		buffer = buffer.substr(TIndex+5);
 		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
@@ -140,7 +124,7 @@ string Parser::getEventTitle(string &buffer){
 	}
 
 	TIndex=buffer.find("by:");
-	if(TIndex!=string::npos&&TIndex >=0){
+	if(isValidIndex(TIndex)){
 		taskName = buffer.substr(0, TIndex-1);
 		buffer = buffer.substr(TIndex+3);
 		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
@@ -148,7 +132,6 @@ string Parser::getEventTitle(string &buffer){
 	}
 
 	return buffer;
-
 
 }
 
@@ -250,7 +233,7 @@ string Parser::updateEvent(string toDoList){
 	}
 	else if( updateType == "clear"){
 		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
-		string clearType = buffer.substr(0,firstIndexThatIsNotASpace(buffer));
+		string clearType = buffer.substr(0,firstIndextThatIsASpace(buffer));
 		if(clearType == "end"){
 			return callToLogic(CLEAREND);
 		}
@@ -301,8 +284,7 @@ int Parser :: getUpdateEventNumber(string &buffer){
 	int index;
 	string TString;
 	buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
-	index=buffer.find_first_of(" ");
-	TString=buffer.substr(0, index);
+	TString=buffer.substr(0, firstIndextThatIsASpace(buffer));
 
 	//check whether its a number 
 	int eventNumber=stoi(TString);
@@ -324,10 +306,10 @@ string Parser::unDo(){
 string Parser::displayEvent(string command){
 	CommandType commandT;
 
-	if(command == "displayDone"){
+	if(command == "displaydone"){
 		commandT = DISPLAYDONE;
 	}
-	else if (command == "displayToday"){
+	else if (command == "displaytoday"){
 		commandT = DISPLAYTODAY;
 	}
 	else if (command == "display"){
@@ -440,6 +422,15 @@ int Parser::convertMonthTypeToInteger(MonthType monthType){
 logic::CommandType Parser::changeToLogicCommandType(CommandType command){
 	switch (command){
 		
+	case CHANGEDIRECTORY:
+		return logic::CHANGEDIRECTORY;
+
+	case CLEAREND:
+		return logic::CLEAREND;
+
+	case CLEARSTART:
+		return logic::CLEARSTART;
+
 	case ADDEVENTWITHDEADLINE:
 		return logic::ADDEVENTWITHDEADLINE;
 
@@ -579,6 +570,12 @@ string Parser::callToLogic(CommandType command){
 	case HELP:
 
 	case CLEAR:
+		
+	case CLEAREND:
+		
+	case CHANGEDIRECTORY:
+
+	case CLEARSTART:
 
 	case DISPLAY:
 
@@ -594,3 +591,32 @@ string Parser::callToLogic(CommandType command){
 		return INVALID_INPUT;
 	}
 }
+
+string Parser::addEvent(string toDoList){
+	if(isTimedTask(toDoList)){
+		return addTimedEvent(toDoList);
+	}
+	else if (isTaskWithDeadline(toDoList)){
+		return addEventWithDeadline(toDoList);
+	}
+	else{
+		return addFloatingEvent(toDoList);
+	}
+}
+
+bool Parser::isEmpty(string str){
+		if(str.empty()){
+		return true;
+	}
+	else{
+		for(int i = str.size()-1; i >=0; i--){
+			if(str[i] !=' '){
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+
+

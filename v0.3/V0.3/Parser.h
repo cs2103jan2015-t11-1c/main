@@ -30,10 +30,10 @@ private:
 	VerificationDateTimeMonth _verificationDateTimeMonth;
 
 public:
-	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, CLEAREND, CLEARSTART, HELP, EXIT};
+	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, CLEAREND, CLEARSTART, CHANGEDIRECTORY, HELP, EXIT};
 	Parser(void);
 	~Parser(void);
-
+	bool isValidIndex(int );
 	logic::CommandType changeToLogicCommandType(CommandType );
 	void resetAttributesValue();
 	int convertMonthTypeToInteger(MonthType);
@@ -56,8 +56,9 @@ public:
 	string clearEvent();
 	string markAsDone(string );
 	string deleteEvent(string );
+	string changeDirectory(string );
 	void getNumberList(string );
-
+  
 	bool isMonthValid(string);
 	bool isDateValid(string );
 	bool isTimeAnInteger(string );
