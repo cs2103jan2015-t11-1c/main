@@ -10,16 +10,13 @@
 #include "cmdSearch.h"
 #include "cmdUndo.h"
 #include "cmdUpdate.h"
-
-
+#include "cmdHelp.h"
 
 using namespace std;
-
 class logic :
 public logicBaseClass
 {
-private:
-	
+private:	
 	cmdAdd _add;
 	cmdUpdate _update;
 	cmdDisplay _display;
@@ -28,6 +25,7 @@ private:
 	cmdSearch _search;
 	cmdUndo _undo;
 	cmdDelete _delete;
+	cmdHelp _help;
 	//Storage _storage;
 
 public:
@@ -38,6 +36,6 @@ public:
 	~logic();
 	//void logicStorage ();
 	void setCommand (std::string, int, int, int, int, int, int, list<int>);
-	std::string executeCommand(CommandType, string, int, int, int, int, int, int, list<int>);
+	std::string executeCommand(CommandType, std::string, int, int, int, int, int, int, list<int>);
 };
 #endif
