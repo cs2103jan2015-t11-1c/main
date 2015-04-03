@@ -51,6 +51,7 @@ public:
 	std::string markAsDone(std::string );
 	std::string deleteEvent(std::string );
 	std::string changeDirectory(std::string );
+	std::string help();
 	void getNumberList(std::string );
 	void resetAttributesValue();
 	bool isAbleToGetEventDateAndMonth(std::string &, int &, MonthType &);

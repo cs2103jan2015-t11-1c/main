@@ -312,6 +312,10 @@ std::string Parser::unDo(){
 	return finalVerificationAndCallToLogic(UNDO);
 }
 
+std::string Parser::help(){
+	return finalVerificationAndCallToLogic(HELP);
+}
+
 
 std::string Parser::displayEvent(std::string command){
 	CommandType commandT;

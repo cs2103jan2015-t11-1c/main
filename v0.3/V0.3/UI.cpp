@@ -214,7 +214,13 @@ string UI::callToParser(){
 			else{
 				return INVALID_INPUT;
 			}
-
+		case HELP:
+			if(getToDoListAndCheckEmpty()){
+				return _Parser.help();
+			}
+			else{
+				return false;
+			}
 
 		default:
 			return INVALID_INPUT;
