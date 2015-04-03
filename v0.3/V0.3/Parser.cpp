@@ -22,97 +22,7 @@ static const int DEC = 12;
 static const int NOASSIGNEDMONTH = 13; 
 
 
-//Pass all the informations of the user input to logic to execute the command.
-string Parser::callToLogic(CommandType command){
-	int startingMonth=convertMonthTypeToInteger(_startingMonth);
-	int endingMonth = convertMonthTypeToInteger(_endingMonth);
-	bool isTimeInteger = (isTimeAnInteger(_startingTime) && isTimeAnInteger(_endingTime));
-	int integerStartingTime = 2400;
-	int integerEndingTime = 2400;
 
-	if(isTimeInteger){
-		integerStartingTime = stoi(_startingTime);
-		integerEndingTime = stoi(_endingTime);
-	}
-	else{
-		return INVALID_TIMED_DATE_MONTH_MESSAGE;
-	}
-	
-	logic::CommandType _command;
-	_command = changeToLogicCommandType(command);
-	string feedback = EMPTYSTRING;
-
-	switch(command){
-
-	case UPDATEENDINGTIME:
-
-	case ADDEVENTWITHDEADLINE:
-		if(_verificationDateTimeMonth.isDateMonthTimeValid(_endingDate, endingMonth, integerEndingTime)){ 
-				feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
-				resetAttributesValue();
-				return feedback;
-		}
-		else{
-			return INVALID_TIMED_DATE_MONTH_MESSAGE;
-		}
-
-	case UPDATESTARTINGTIME:
-		if(_verificationDateTimeMonth.isDateMonthTimeValid(_startingDate, startingMonth, integerStartingTime)){ 
-				 feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
-				resetAttributesValue();
-				return feedback;
-		}
-		else{
-			return INVALID_TIMED_DATE_MONTH_MESSAGE;
-		}
-
-	case ADDTIMEDEVENT:
-		if(_verificationDateTimeMonth.isEndingLaterThanStarting(integerStartingTime, startingMonth, _startingDate, integerEndingTime, endingMonth, _endingDate)){
-			feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
-			resetAttributesValue();
-			return feedback;
-		}
-		else{
-			return INVALID_TIMED_DATE_MONTH_MESSAGE;
-		}
-
-	case DELETE:
-
-	case UPDATENAME:
-
-	case UNDO:
-
-	case ADDFLOATINGEVENT:
-
-	case SEARCH:
-
-	case EXIT:
-
-	case HELP:
-
-	case CLEAR:
-
-	case DISPLAY:
-
-	case DISPLAYTODAY:
-
-	case DISPLAYDONE:
-
-	case MARKASDONE:
-		feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
-		resetAttributesValue();
-		return feedback;
-
-	default:
-		resetAttributesValue();
-		return INVALID_INPUT;
-	}
-}
-
-
-//*******************************************************************************************************
-//Add function has 3 different subfunctions:1. addTimedEvent, addFloatingEvent and addEventWithDeadline.
-//*******************************************************************************************************
 
 string Parser::addEvent(string toDoList){
 	if(isTimedTask(toDoList)){
@@ -126,27 +36,39 @@ string Parser::addEvent(string toDoList){
 	}
 }
 
+bool Parser::isEmpty(string str){
+		if(str.empty()){
+		return true;
+	}
+	else{
+		for(int i = str.size()-1; i >=0; i--){
+			if(str[i] !=' '){
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
 string Parser::addTimedEvent(string toDoList){
-	string &buffer =toDoList;
-	int integerdate=0;
-	int &date = integerdate;
-	MonthType notAssigned = MONTHNOTASSIGNED;
-	MonthType &month= notAssigned;
+	string buffer =toDoList;
+	int date = 0;
+	MonthType month = MONTHNOTASSIGNED;
 
 	_taskName=getEventTitle(buffer);
 
-	if (!isAbleToGetEventDate(buffer,date, month)){
+	if (!isAbleToGetEventDateAndMonth(buffer,date, month)){
 		return INVALID_TIMED_DATE_MONTH_MESSAGE;
 	}
 	else{
 		_startingDate = date; 
 		_startingMonth = month; 
 		_startingTime = getEventTime(buffer);
-		int ePosition = buffer.find_first_of(":") + 2;
-		buffer = buffer.substr(ePosition);
+		buffer =buffer.substr(buffer.find_first_of("to:") + 3);
+		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
 	}
 	
-	if( !isAbleToGetEventDate(buffer,date, month)){
+	if( !isAbleToGetEventDateAndMonth(buffer,date, month)){
 		return INVALID_TIMED_DATE_MONTH_MESSAGE;
 	}
 	else{
@@ -165,7 +87,7 @@ string Parser::addEventWithDeadline(string toDoList){
 	MonthType notAssigned = MONTHNOTASSIGNED;
 	MonthType &month= notAssigned;
 
-	if(!isAbleToGetEventDate(buffer,date, month)){
+	if(!isAbleToGetEventDateAndMonth(buffer,date, month)){
 		return INVALID_TIMED_DATE_MONTH_MESSAGE;
 	}
 	else{
@@ -203,9 +125,6 @@ bool Parser::isTimedTask(string toDoList){
 	return isTimedTask;
 }
 
-//*****************************************************************************************
-//Seperate EventTitle,eventdate and event time
-//*****************************************************************************************
 
 string Parser::getEventTitle(string &buffer){
 	int TIndex;
@@ -215,14 +134,16 @@ string Parser::getEventTitle(string &buffer){
 
 	if(TIndex!=string::npos && TIndex >=0){
 		taskName = buffer.substr(0, TIndex-1);
-		buffer = buffer.substr(TIndex+6);
+		buffer = buffer.substr(TIndex+5);
+		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
 		return taskName;
 	}
 
 	TIndex=buffer.find("by:");
 	if(TIndex!=string::npos&&TIndex >=0){
 		taskName = buffer.substr(0, TIndex-1);
-		buffer = buffer.substr(TIndex+4);
+		buffer = buffer.substr(TIndex+3);
+		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
 		return taskName;
 	}
 
@@ -231,13 +152,19 @@ string Parser::getEventTitle(string &buffer){
 
 }
 
-bool Parser::isAbleToGetEventDate(string &buffer,int &date,MonthType &month){
-	int TIndex;
+int Parser::firstIndexThatIsNotASpace(string str){
+	return str.find_first_not_of(" ");
+}
+
+int Parser::firstIndextThatIsASpace(string str){
+	return str.find_first_of(" ");
+}
+
+bool Parser::isAbleToGetEventDateAndMonth(string &buffer,int &date,MonthType &month){
 	string TDate;
 	string TMonth;
-	TIndex = buffer.find_first_of(" ");
-	TDate = buffer.substr(0, TIndex);
-
+	TDate = buffer.substr(0, firstIndextThatIsASpace(buffer));
+	
 	for(int i = TDate.size()-1; i >= 0; i--){
 		if(!isdigit(TDate[i])){
 			return false;			
@@ -245,21 +172,20 @@ bool Parser::isAbleToGetEventDate(string &buffer,int &date,MonthType &month){
 	}
 
 	date = stoi(TDate);
-	buffer = buffer.substr(TIndex+1);
-	TIndex = buffer.find_first_of(" ");
-	TMonth = buffer.substr(0, TIndex);
+	buffer = buffer.substr(firstIndextThatIsASpace(buffer)+1);
+	buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
+	TMonth = buffer.substr(0, firstIndextThatIsASpace(buffer));
 	month = determineMonthType(TMonth);
-	buffer = buffer.substr(TIndex+1);
+	buffer = buffer.substr(firstIndextThatIsASpace(buffer)+1);
 	return true;
 }
 
 //assume no spaces within the time input
 string Parser::getEventTime(string &buffer){
-	int TIndex;
 	string time;
-	TIndex = buffer.find_first_of(" ");
-	time = buffer.substr(0, TIndex);
-	buffer = buffer.substr(TIndex+1);
+	int TIndex = firstIndexThatIsNotASpace(buffer);
+	time = buffer.substr(TIndex, 4);
+	buffer = buffer.substr(TIndex+3);
 	return time;
 }
 
@@ -307,30 +233,39 @@ MonthType Parser :: determineMonthType( string TMonth){
 		return MONTHNOTASSIGNED;
 	}
 }
-//****************************************************************************************************************
-//Update event has 3 types: update task name, update ending time and date, and update starting time and date.
-//****************************************************************************************************************
 
 string Parser::updateEvent(string toDoList){
-	string & buffer=toDoList;
+	string buffer=toDoList;
 	string command;
 	int upDateEventNumber = getUpdateEventNumber(buffer);
 	_taskNumberList.push_back(upDateEventNumber);
-	int index = buffer.find_first_of(" ");
+	buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
+	int index = firstIndextThatIsASpace(buffer);
 	string updateType = buffer.substr(0, index);
-	buffer = buffer. substr(index +1 );
+	buffer = buffer. substr(index + 1 );
 
 	if(updateType =="name"){
 		_taskName=buffer;
 		return callToLogic(UPDATENAME);
 	}
+	else if( updateType == "clear"){
+		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
+		string clearType = buffer.substr(0,firstIndexThatIsNotASpace(buffer));
+		if(clearType == "end"){
+			return callToLogic(CLEAREND);
+		}
+		else if(clearType == "start"){
+			return callToLogic(CLEARSTART);
+		}
+		else{
+			return INVALID_INPUT;
+		}
+	}
 	else if( updateType == "end"){
-		int integer=-1;
-		int &date= integer;
-		MonthType notAssigned = MONTHNOTASSIGNED;
-		MonthType &month= notAssigned;
+		int date= 0;
+		MonthType month= MONTHNOTASSIGNED;
 
-		if(!isAbleToGetEventDate(buffer,date, month)){
+		if(!isAbleToGetEventDateAndMonth(buffer,date, month)){
 			return INVALID_TIMED_DATE_MONTH_MESSAGE;
 		}
 		else{
@@ -342,12 +277,10 @@ string Parser::updateEvent(string toDoList){
 
 	}
 	else if (updateType == "start"){
-		int integer=-1;
-		int &date= integer;
-		MonthType notAssigned = MONTHNOTASSIGNED;
-		MonthType &month= notAssigned;
+		int date= 0;
+		MonthType month= MONTHNOTASSIGNED;
 
-		if(!isAbleToGetEventDate(buffer,date, month)){
+		if(!isAbleToGetEventDateAndMonth(buffer,date, month)){
 			return INVALID_TIMED_DATE_MONTH_MESSAGE;
 		}
 		else{
@@ -358,6 +291,7 @@ string Parser::updateEvent(string toDoList){
 		}
 
 	}
+	
 	else{
 		return INVALID_TIMED_DATE_MONTH_MESSAGE;
 	}
@@ -366,47 +300,40 @@ string Parser::updateEvent(string toDoList){
 int Parser :: getUpdateEventNumber(string &buffer){
 	int index;
 	string TString;
+	buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
 	index=buffer.find_first_of(" ");
 	TString=buffer.substr(0, index);
+
+	//check whether its a number 
 	int eventNumber=stoi(TString);
 	index = buffer.find_first_of(".");
 	buffer=buffer.substr(index+1);
 	return eventNumber;
 }
 
-//******************
-//Search for a task
-//******************
-
 string Parser::searchEvent(string part){
 	_taskName=part;
 	return callToLogic(SEARCH);
 }
 
-//*************************
-//undo the previous action
-//*************************
-
 string Parser::unDo(){
 	return callToLogic(UNDO);
 }
 
-//********************************************************************************************************************
-//3 types of display based on command: display today's tasks, display completed tasks and display all the tasks
-//********************************************************************************************************************
 
 string Parser::displayEvent(string command){
-	CommandType commandT = DISPLAY;
+	CommandType commandT;
 
-	if(command == "displaydone"){
+	if(command == "displayDone"){
 		commandT = DISPLAYDONE;
 	}
-	else if (command == "displaytoday"){
+	else if (command == "displayToday"){
 		commandT = DISPLAYTODAY;
 	}
 	else if (command == "display"){
 		commandT = DISPLAY;
 	}
+	
 	return callToLogic(commandT);
 }
 
@@ -414,9 +341,7 @@ string Parser::clearEvent(){
 	return callToLogic(CLEAR);
 }
 
-string Parser::printHelp(){
-	return callToLogic(HELP);
-}
+
 string Parser::markAsDone(string numberList){
 	getNumberList(numberList);
 	return callToLogic(MARKASDONE);
@@ -427,9 +352,6 @@ string Parser::deleteEvent(string numberList){
 	return callToLogic(DELETE);
 }
 
-//**************************************************************************************
-//get the list of task numbers input by the user, and store them as integers in a list
-//**************************************************************************************
 void Parser::getNumberList(string numberList){
 	//cout<<numberList<<endl;
 
@@ -586,4 +508,89 @@ bool Parser::isTimeAnInteger(string time){
 		}
 	}
 	return true;
+}
+
+//Pass all the informations of the user input to logic to execute the command.
+string Parser::callToLogic(CommandType command){
+	int startingMonth=convertMonthTypeToInteger(_startingMonth);
+	int endingMonth = convertMonthTypeToInteger(_endingMonth);
+	bool isTimeInteger = (isTimeAnInteger(_startingTime) && isTimeAnInteger(_endingTime));
+	int integerStartingTime = 2400;
+	int integerEndingTime = 2400;
+
+	if(isTimeInteger){
+		integerStartingTime = stoi(_startingTime);
+		integerEndingTime = stoi(_endingTime);
+	}
+	else{
+		return INVALID_TIMED_DATE_MONTH_MESSAGE;
+	}
+	
+	logic::CommandType _command;
+	_command = changeToLogicCommandType(command);
+	string feedback = EMPTYSTRING;
+
+	switch(command){
+
+	case UPDATEENDINGTIME:
+
+	case ADDEVENTWITHDEADLINE:
+		if(_verificationDateTimeMonth.isDateMonthTimeValid(_endingDate, endingMonth, integerEndingTime)){ 
+				feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+				resetAttributesValue();
+				return feedback;
+		}
+		else{
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
+
+	case UPDATESTARTINGTIME:
+		if(_verificationDateTimeMonth.isDateMonthTimeValid(_startingDate, startingMonth, integerStartingTime)){ 
+				 feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+				resetAttributesValue();
+				return feedback;
+		}
+		else{
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
+
+	case ADDTIMEDEVENT:
+		if(_verificationDateTimeMonth.isEndingLaterThanStarting(integerStartingTime, startingMonth, _startingDate, integerEndingTime, endingMonth, _endingDate)){
+			feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+			resetAttributesValue();
+			return feedback;
+		}
+		else{
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
+
+	case DELETE:
+
+	case UPDATENAME:
+
+	case UNDO:
+
+	case ADDFLOATINGEVENT:
+
+	case SEARCH:
+
+	case EXIT:
+
+	case HELP:
+
+	case CLEAR:
+
+	case DISPLAY:
+
+	case DISPLAYTODAY:
+
+	case MARKASDONE:
+		feedback = _logic.executeCommand(_command , _taskName, _startingDate, startingMonth,  integerStartingTime,_endingDate, endingMonth, integerEndingTime, _taskNumberList);
+		resetAttributesValue();
+		return feedback;
+
+	default:
+		resetAttributesValue();
+		return INVALID_INPUT;
+	}
 }

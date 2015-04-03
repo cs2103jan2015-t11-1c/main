@@ -30,10 +30,11 @@ private:
 	VerificationDateTimeMonth _verificationDateTimeMonth;
 
 public:
-	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, HELP, EXIT};
+	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, CLEAREND, CLEARSTART, HELP, EXIT};
 	Parser(void);
 	~Parser(void);
-	logic::CommandType changeToLogicCommandType(CommandType command);
+
+	logic::CommandType changeToLogicCommandType(CommandType );
 	void resetAttributesValue();
 	int convertMonthTypeToInteger(MonthType);
     string callToLogic(CommandType);
@@ -45,7 +46,7 @@ public:
 	bool isTaskWithDeadline(string );
 	bool isTimedTask(string );
 	string getEventTitle(string &);
-	bool isAbleToGetEventDate(string &, int &, MonthType &);
+	bool isAbleToGetEventDateAndMonth(string &, int &, MonthType &);
 	string getEventTime(string &);
 	string updateEvent(string );
 	int getUpdateEventNumber(string &);
@@ -55,8 +56,14 @@ public:
 	string clearEvent();
 	string markAsDone(string );
 	string deleteEvent(string );
-	string printHelp();
 	void getNumberList(string );
+
+	bool isMonthValid(string);
+	bool isDateValid(string );
 	bool isTimeAnInteger(string );
+	bool isEmpty(string);
+	int firstIndexThatIsNotASpace(string );
+	int firstIndextThatIsASpace(string );
+	
 
 };

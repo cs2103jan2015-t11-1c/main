@@ -24,6 +24,7 @@ class UI{
 		void showWelcomeMessage();
 	    bool readCommand();
 		string callToParser();
+		bool isEmpty(string );
 };
 		
 #endif

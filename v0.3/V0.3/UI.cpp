@@ -5,8 +5,8 @@
 #include "Parser.h"
 using namespace std;
 
-static const string INVALID_INPUT_MESSAGE = "Sorry, wrong user input.";
 static const  string WELCOME_MESSAGE = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n";
+
 UI::UI(){
 	_commandWord="";
 	_toDoList="";
@@ -27,6 +27,7 @@ bool UI:: readCommand(){
 
 	return isValid;
 }
+
 UI::CommandType UI::determineCommandType() {
 	if (_commandWord == "add"){
 		return ADD;
@@ -46,10 +47,10 @@ UI::CommandType UI::determineCommandType() {
 	else if (_commandWord == "done"){
 		return DONE;
 	}
-	else if (_commandWord == "displaydone"){
+	else if (_commandWord == "displayDone"){
 		return DISPLAYDONE;
 	}
-	else if (_commandWord == "displaytoday"){
+	else if (_commandWord == "displayToday"){
 		return DISPLAYTODAY;
 	}
 	else if(_commandWord == "undo"){
@@ -61,70 +62,141 @@ UI::CommandType UI::determineCommandType() {
 	else if (_commandWord == "search"){
 		return SEARCH;
 	}
-	else if(_commandWord == "help"){
+	else{
 		return HELP;
 	}
-	//else{ 
-		//return HELP;
-	//}
 }
 
 void UI::showWelcomeMessage(){
 	cout << WELCOME_MESSAGE <<endl;
 }
 
+
+bool UI::isEmpty(string str){
+	if(str.empty()){
+		return true;
+	}
+	else{
+		for(int i = str.size()-1; i >=0; i--){
+			if(str[i] !=' '){
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
 string UI::callToParser(){
 	CommandType typeOfCommand = determineCommandType();
+
 	switch (typeOfCommand)
 	{
 		case ADD:
 			getline(cin, _toDoList);
-			_toDoList = _toDoList.substr(1);
-			return _Parser.addEvent(_toDoList);			
+			if(isEmpty(_toDoList)){
+				return INVALID_INPUT;
+			}
+			else{
+				_toDoList = _toDoList.substr(1);
+				return _Parser.addEvent(_toDoList);			
+			}
 		
 		case DISPLAY:
-			return _Parser.displayEvent("display");
+			getline(cin, _toDoList);
+			if(isEmpty(_toDoList)){
+				return _Parser.displayEvent("display");
+			}
+			else{
+				return INVALID_INPUT;
+			}
 		
 		case DELETE:
 			getline(cin, _toDoList);
-			_toDoList = _toDoList.substr(1);
-			return _Parser.deleteEvent(_toDoList);			
+			if(isEmpty(_toDoList)){
+				return INVALID_INPUT;
+			}
+			else{
+				_toDoList = _toDoList.substr(1);
+				return _Parser.deleteEvent(_toDoList);	
+			}
 		
 		case UPDATE:
 			getline(cin, _toDoList);
-			_toDoList = _toDoList.substr(1);
-			return _Parser.updateEvent(_toDoList);			
+			if(isEmpty(_toDoList)){
+				return INVALID_INPUT;
+			}
+			else{
+				_toDoList = _toDoList.substr(1);
+				return _Parser.updateEvent(_toDoList);		
+			}
 		
 		case DONE:
 			getline(cin, _toDoList);
-			_toDoList = _toDoList.substr(1);
-			return _Parser.markAsDone(_toDoList);
+			if(isEmpty(_toDoList)){
+				return INVALID_INPUT;
+			}
+			else{
+				_toDoList = _toDoList.substr(1);
+				return _Parser.markAsDone(_toDoList);
+			}
 			
 		case DISPLAYDONE:
-			return _Parser.displayEvent("displaydone");
+			getline(cin, _toDoList);
+			if(isEmpty(_toDoList)){
+				return _Parser.displayEvent("displayDone");
+			}
+			else{
+				return INVALID_INPUT;
+			}
 						
 		case DISPLAYTODAY:
-			return _Parser.displayEvent("displaytoday");
-
-		case HELP:
-			return _Parser.printHelp();
+			getline(cin, _toDoList);
+			if(isEmpty(_toDoList)){
+				return _Parser.displayEvent("displayToday");
+			}
+			else{
+				return INVALID_INPUT;
+			}
 
 		case EXIT:
-			exit(0);
+			getline(cin, _toDoList);
+			if(isEmpty(_toDoList)){
+				exit(0);
+			}
+			else{
+				return INVALID_INPUT;
+			}
 			
 		case UNDO:
-			return _Parser.unDo();
+			getline(cin, _toDoList);
+			if(isEmpty(_toDoList)){
+				return _Parser.unDo();
+			}
+			else{
+				return INVALID_INPUT;
+			}
 
 		case CLEAR:
-			return _Parser.clearEvent();
+			getline(cin, _toDoList);
+			if(isEmpty(_toDoList)){
+				return _Parser.clearEvent();
+			}
+			else{
+				return INVALID_INPUT;
+			}			
 
 		case SEARCH:
 			getline(cin, _toDoList);
-			_toDoList = _toDoList.substr(1);
-			return _Parser.searchEvent(_toDoList);
+			if(isEmpty(_toDoList)){
+				return INVALID_INPUT;
+			}
+			else{
+				_toDoList = _toDoList.substr(1);
+				return _Parser.searchEvent(_toDoList);
+			}
 
 		default:
-			return INVALID_INPUT_MESSAGE;
+			return INVALID_INPUT;
 			break;
 			
 		}

@@ -24,7 +24,7 @@ string VerificationCommand::lowercaseCommandWord(string commandWord){
 
 bool VerificationCommand::isValidCommandWord(string commandWord){
 	bool isValidCommandWord = false;
-	if(commandWord == "add" || commandWord == "delete" || commandWord == "update" || commandWord =="undo" || commandWord =="done" || commandWord == "display" || commandWord =="help" || commandWord =="exit" || commandWord == "clear" || commandWord == "displaydone" || commandWord =="displaytoday" || commandWord == "help"){
+	if(commandWord == "add" || commandWord == "delete" || commandWord == "update" || commandWord =="undo" || commandWord =="done" || commandWord == "display" || commandWord =="help" || commandWord =="exit" || commandWord == "clear" || commandWord == "displaydone" || commandWord =="displaytoday"|| commandWord == "search"){
 		isValidCommandWord = true;
 	}
 	return isValidCommandWord;
