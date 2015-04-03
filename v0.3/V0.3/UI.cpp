@@ -61,7 +61,10 @@ UI::CommandType UI::determineCommandType() {
 	else if (_commandWord == "search"){
 		return SEARCH;
 	}
-	else{
+	else if(_commandWord == "help"){
+		return HELP;
+	}
+	else{ 
 		return HELP;
 	}
 }
@@ -103,6 +106,9 @@ string UI::callToParser(){
 						
 		case DISPLAYTODAY:
 			return _Parser.displayEvent("displayToday");
+
+		case HELP:
+			return _Parser.printHelp();
 
 		case EXIT:
 			exit(0);

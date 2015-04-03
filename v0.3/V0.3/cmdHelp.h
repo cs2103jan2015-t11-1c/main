@@ -10,4 +10,4 @@ public:
 	cmdHelp(void);
 	~cmdHelp(void);
 	std::string helpMessage();
-}
+};

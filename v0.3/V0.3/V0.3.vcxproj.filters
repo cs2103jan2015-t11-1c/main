@@ -66,6 +66,9 @@
     <ClInclude Include="VerificationDateTimeMonth.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cmdHelp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Event.cpp">
@@ -120,6 +123,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VerificationDateTimeMonth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cmdHelp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

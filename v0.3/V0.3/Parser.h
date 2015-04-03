@@ -55,6 +55,7 @@ public:
 	string clearEvent();
 	string markAsDone(string );
 	string deleteEvent(string );
+	string printHelp();
 	void getNumberList(string );
 	bool isTimeAnInteger(string );
 

@@ -16,7 +16,6 @@ cmdHelp::cmdHelp(void){
 }
 
 cmdHelp::~cmdHelp(void){
-
 }
 
 std::string cmdHelp::helpMessage(){

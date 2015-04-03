@@ -68,6 +68,7 @@
     <ClInclude Include="cmdClear.h" />
     <ClInclude Include="cmdDelete.h" />
     <ClInclude Include="cmdDisplay.h" />
+    <ClInclude Include="cmdHelp.h" />
     <ClInclude Include="cmdMarkAsDone.h" />
     <ClInclude Include="cmdSearch.h" />
     <ClInclude Include="cmdUndo.h" />
@@ -87,6 +88,7 @@
     <ClCompile Include="cmdClear.cpp" />
     <ClCompile Include="cmdDelete.cpp" />
     <ClCompile Include="cmdDisplay.cpp" />
+    <ClCompile Include="cmdHelp.cpp" />
     <ClCompile Include="cmdMarkAsDone.cpp" />
     <ClCompile Include="cmdSearch.cpp" />
     <ClCompile Include="cmdUndo.cpp" />

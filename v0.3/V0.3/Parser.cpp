@@ -414,7 +414,9 @@ string Parser::clearEvent(){
 	return callToLogic(CLEAR);
 }
 
-
+string Parser::printHelp(){
+	return callToLogic(HELP);
+}
 string Parser::markAsDone(string numberList){
 	getNumberList(numberList);
 	return callToLogic(MARKASDONE);
