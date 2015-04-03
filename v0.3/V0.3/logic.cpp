@@ -58,7 +58,12 @@ string logic::executeCommand(CommandType command ,string taskName, int startingD
 		_markAsDone.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _markAsDone.executeMarkAsDone(_storage);
 	}
-	return "logic error\n\n";
+	else if(command == HELP){
+		return _help.helpMessage();
+	}
+	else if(command == CHANGEDIRECTORY){
+	}
+	//return "logic error\n\n";
 }
 
 
