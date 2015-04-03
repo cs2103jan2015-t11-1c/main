@@ -1,6 +1,6 @@
 #include "Parser.h"
 #include <string>
-#include <iostream>
+
 static const std::string EMPTYSTRING = "";
 static const std::string TIMENOTASSIGNED = "2400";
 static const std::string TASKNAMENOTASSIGNED = "";
@@ -22,6 +22,31 @@ static const int NOASSIGNEDMONTH = 13;
 std::string Parser::changeDirectory(std::string directory){
 	return finalVerificationAndCallToLogic(CHANGEDIRECTORY);
 }
+std::string Parser::getEventTitle(std::string &buffer){
+	int TIndex;
+
+    std::string taskName;
+	TIndex = buffer.find("from:");
+
+	if(isValidIndex(TIndex)){
+		taskName = buffer.substr(0, TIndex - 1);
+		buffer = buffer.substr(TIndex + 4);
+		return taskName;
+	}
+	else{
+		TIndex=buffer.find("by:");
+	}
+
+	if(isValidIndex(TIndex)){
+		taskName = buffer.substr(0, TIndex - 1);
+		buffer = buffer.substr(TIndex + 2);
+		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
+		return taskName;
+	}
+	
+	return buffer;
+
+}
 
 string Parser::addTimedEvent(string toDoList){
 	std:: string buffer =toDoList;
@@ -35,7 +60,8 @@ string Parser::addTimedEvent(string toDoList){
 	}
 	else{
 		buffer = buffer.substr(1);
-		if(buffer.empty()){
+		
+		if(isEmpty(buffer)){
 			return INVALID_TIMED_DATE_MONTH_MESSAGE;
 		}
 		else{
@@ -50,11 +76,37 @@ string Parser::addTimedEvent(string toDoList){
 		_startingDate = date; 
 		_startingMonth = month; 
 		_startingTime = getEventTime(buffer);
-		buffer =buffer.substr(buffer.find_first_of("to:") + 3);
-		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
+		int Index = buffer.find_first_of("to:");
+
+		if(isValidIndex(Index)){
+			buffer =buffer.substr(Index + 2);
+			if(buffer.size()== 1){
+				return INVALID_INPUT;
+			}
+			else{
+				buffer = buffer.substr(1);
+			}
+		}
+		else{
+			return INVALID_INPUT;
+		}
 	}
 
-	if(isEmpty(buffer) || !isAbleToGetEventDateAndMonth(buffer,date, month)){
+	if(buffer.size()==1){
+		return INVALID_TIMED_DATE_MONTH_MESSAGE;
+	}
+	else{
+		buffer = buffer.substr(1);
+		
+		if(isEmpty(buffer)){
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
+		else{
+			buffer=buffer.substr(firstIndexThatIsNotASpace(buffer));
+		}
+	}
+
+	if(!isAbleToGetEventDateAndMonth(buffer,date, month)){
 		return INVALID_TIMED_DATE_MONTH_MESSAGE;
 	}
 	else{
@@ -71,6 +123,19 @@ std::string Parser::addEventWithDeadline(std::string toDoList){
 	int date= 0;
 	MonthType month= MONTHNOTASSIGNED;
 
+	if(buffer.size()==1){
+		return INVALID_TIMED_DATE_MONTH_MESSAGE;
+	}
+	else{
+		buffer = buffer.substr(1);
+		if(isEmpty(buffer)){
+			return INVALID_TIMED_DATE_MONTH_MESSAGE;
+		}
+		else{
+			buffer=buffer.substr(firstIndexThatIsNotASpace(buffer));
+		}
+	}
+
 	if(!isAbleToGetEventDateAndMonth(buffer,date, month)){
 		return INVALID_TIMED_DATE_MONTH_MESSAGE;
 	}
@@ -80,6 +145,13 @@ std::string Parser::addEventWithDeadline(std::string toDoList){
 		_endingTime = getEventTime(buffer);
 		return finalVerificationAndCallToLogic(ADDEVENTWITHDEADLINE);
 	}
+}
+std::string Parser::getEventTime(std::string &buffer){
+	std::string time;
+	int TIndex = firstIndexThatIsNotASpace(buffer);
+	time = buffer.substr(TIndex, 4);
+	buffer = buffer.substr(TIndex+3);
+	return time;
 }
 
 std::string Parser::addFloatingEvent(std::string toDoList){
@@ -120,67 +192,59 @@ bool Parser::isValidIndex(int TIndex){
 
 
 
-std::string Parser::getEventTitle(std::string &buffer){
-	int TIndex;
-
-    std::string taskName;
-	TIndex = buffer.find("from:");
-
-	if(isValidIndex(TIndex)){
-		taskName = buffer.substr(0, TIndex-1);
-		buffer = buffer.substr(TIndex+4);
-		return taskName;
-	}
-
-	TIndex=buffer.find("by:");
-	if(isValidIndex(TIndex)){
-		taskName = buffer.substr(0, TIndex-1);
-		buffer = buffer.substr(TIndex+3);
-		buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
-		return taskName;
-	}
-
-	return buffer;
-
-}
-
-int Parser::firstIndexThatIsNotASpace(std::string str){
-	return str.find_first_not_of(" ");
-}
-
-int Parser::firstIndextThatIsASpace(std::string str){
-	return str.find_first_of(" ");
-}
 
 bool Parser::isAbleToGetEventDateAndMonth(string &buffer,int &date,MonthType &month){
 	std::string TDate;
 	std::string TMonth;
-	TDate = buffer.substr(0, firstIndextThatIsASpace(buffer));
+	int TIndex = firstIndextThatIsASpace(buffer);
+	if(isValidIndex(TIndex)){
+		TDate = buffer.substr(0, TIndex);
+	}
+	else{
+		return false;
+	}
 	
-	for(int i = TDate.size()-1; i >= 0; i--){
-		if(!isdigit(TDate[i])){
+	if(!isStringAnInteger(TDate)){
 			return false;			
 		}
+	else{
+		date = changeFromStringToInteger(TDate);
 	}
 
-	date = stoi(TDate);
-	buffer = buffer.substr(firstIndextThatIsASpace(buffer)+1);
-	buffer = buffer.substr(firstIndexThatIsNotASpace(buffer));
-	TMonth = buffer.substr(0, firstIndextThatIsASpace(buffer));
+	buffer = buffer.substr(TIndex+1);
+
+	TIndex = firstIndexThatIsNotASpace(buffer);
+	int EIndex;
+	if(isValidIndex(TIndex)){
+		buffer = buffer.substr(TIndex);
+		 EIndex = firstIndextThatIsASpace(buffer);
+		if(isValidIndex(EIndex)){
+			TMonth = buffer.substr(0, EIndex);
+		}
+		else{
+			return false;
+		}
+	}
+	else{
+		return false;
+	}
+
 	month = determineMonthType(TMonth);
-	buffer = buffer.substr(firstIndextThatIsASpace(buffer)+1);
+	
+	buffer = buffer.substr(EIndex);
+	TIndex = firstIndexThatIsNotASpace(buffer);
+
+	if(isValidIndex(TIndex)){
+		buffer = buffer.substr(TIndex);
+	}
+	else{
+		return false;
+	}
 	return true;
 
 }
 
 //assume no spaces within the time input
-std::string Parser::getEventTime(std::string &buffer){
-	std::string time;
-	int TIndex = firstIndexThatIsNotASpace(buffer);
-	time = buffer.substr(TIndex, 4);
-	buffer = buffer.substr(TIndex+3);
-	return time;
-}
 
 MonthType Parser :: determineMonthType(std::string TMonth){
 
@@ -297,73 +361,44 @@ int Parser :: getUpdateEventNumber(std::string &buffer){
 	TString=buffer.substr(0, firstIndextThatIsASpace(buffer));
 
 	//check whether its a number 
-	int eventNumber=stoi(TString);
+	int eventNumber=changeFromStringToInteger(TString);
 	index = buffer.find_first_of(".");
 	buffer=buffer.substr(index+1);
 	return eventNumber;
 }
 
-std::string Parser::searchEvent(std::string part){
-	_taskName=part;
-	return finalVerificationAndCallToLogic(SEARCH);
-}
-
-std::string Parser::unDo(){
-	return finalVerificationAndCallToLogic(UNDO);
-}
-
-std::string Parser::help(){
-	return finalVerificationAndCallToLogic(HELP);
-}
 
 
-std::string Parser::displayEvent(std::string command){
-	CommandType commandT;
 
-	if(command == "displaydone"){
-		commandT = DISPLAYDONE;
-	}
-	else if (command == "displaytoday"){
-		commandT = DISPLAYTODAY;
-	}
-	else if (command == "display"){
-		commandT = DISPLAY;
-	}
-	
-	return finalVerificationAndCallToLogic(commandT);
-}
-
-std::string Parser::clearEvent(){
-	return finalVerificationAndCallToLogic(CLEAR);
-}
-
-
-std::string Parser::markAsDone(std::string numberList){
-	getNumberList(numberList);
-	return finalVerificationAndCallToLogic(MARKASDONE);
-}
-
-std::string Parser::deleteEvent(std::string numberList){
-	getNumberList(numberList);
-	return finalVerificationAndCallToLogic(DELETE);
-}
-
-void Parser::getNumberList(std::string numberList){
+bool Parser::getNumberList(std::string numberList){
 	numberList = numberList.substr(firstIndexThatIsNotASpace(numberList));
 	int TIndex= firstIndextThatIsASpace(numberList);
 	std::string TString;
 	int eventNumber;
+
 	while(TIndex!=string::npos){
 		TString=numberList.substr(0,TIndex);
-		eventNumber = stoi(TString);
-		_taskNumberList.push_back(eventNumber);
-		numberList=numberList.substr(TIndex+1);
-		numberList = numberList.substr(firstIndexThatIsNotASpace(numberList));
-		TIndex=firstIndextThatIsASpace(numberList);
+		if(!isStringAnInteger(TString)){
+			return false;
+		}
+		else{
+			eventNumber = changeFromStringToInteger(TString);
+			_taskNumberList.push_back(eventNumber);
+			numberList=numberList.substr(TIndex+1);
+			numberList = numberList.substr(firstIndexThatIsNotASpace(numberList));
+			TIndex=firstIndextThatIsASpace(numberList);
+		}
 	}
+
 	if(numberList.size()!=0){		
-		_taskNumberList.push_back(stoi(numberList));
+		if(!isStringAnInteger(numberList)){
+			return false;
+		}
+		else{
+			_taskNumberList.push_back(changeFromStringToInteger(numberList));
+		}
 	}
+	return true;
 }
 
 //All attributes are initialized with their respective NOTASSIGNED value. Assume 24:00 as time not assigned, "" as task not assigned, 0 as date not assigned.
@@ -640,5 +675,64 @@ bool Parser::isEmpty(string str){
 	return true;
 }
 
+int Parser::firstIndexThatIsNotASpace(std::string str){
+	return str.find_first_not_of(" ");
+}
+
+int Parser::firstIndextThatIsASpace(std::string str){
+	return str.find_first_of(" ");
+}
 
 
+std::string Parser::clearEvent(){
+	return finalVerificationAndCallToLogic(CLEAR);
+}
+
+
+std::string Parser::markAsDone(std::string numberList){
+	if(!getNumberList(numberList)){
+		return INVALID_INPUT;
+	}
+	else{
+		return finalVerificationAndCallToLogic(MARKASDONE);
+	}
+}
+
+std::string Parser::deleteEvent(std::string numberList){
+	if(!getNumberList(numberList)){
+		return INVALID_INPUT;
+	}
+	else{
+		return finalVerificationAndCallToLogic(DELETE);
+	}
+}
+
+std::string Parser::searchEvent(std::string part){
+	_taskName=part;
+	return finalVerificationAndCallToLogic(SEARCH);
+}
+
+std::string Parser::unDo(){
+	return finalVerificationAndCallToLogic(UNDO);
+}
+
+std::string Parser::help(){
+	return finalVerificationAndCallToLogic(HELP);
+}
+
+
+std::string Parser::displayEvent(std::string command){
+	CommandType commandT;
+
+	if(command == "displaydone"){
+		commandT = DISPLAYDONE;
+	}
+	else if (command == "displaytoday"){
+		commandT = DISPLAYTODAY;
+	}
+	else if (command == "display"){
+		commandT = DISPLAY;
+	}
+	
+	return finalVerificationAndCallToLogic(commandT);
+}

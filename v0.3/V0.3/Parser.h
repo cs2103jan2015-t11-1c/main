@@ -52,7 +52,7 @@ public:
 	std::string deleteEvent(std::string );
 	std::string changeDirectory(std::string );
 	std::string help();
-	void getNumberList(std::string );
+	bool getNumberList(std::string );
 	void resetAttributesValue();
 	bool isAbleToGetEventDateAndMonth(std::string &, int &, MonthType &);
     bool isTaskWithDeadline(std::string );
