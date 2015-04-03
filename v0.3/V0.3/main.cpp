@@ -8,26 +8,6 @@ using namespace std;
 const static string INVALID_COMMAND_MESSAGE ="Sorry, invalid command.\n\n";
 
 int main(){
-	const int bufferSize = MAX_PATH;
-    char oldDir[bufferSize];
-	GetCurrentDirectory(bufferSize, oldDir);
-	std::cout << "Current directory: " << oldDir << '\n';
-	std::cout << "Enter Y to start, enter N to change directory\n";
-	string str;
-	getline(std::cin, str);
-	if (str == "N"){
-	cout << "Please enter your new directory:\n";
-	const char* newDir;
-	char newdir[100];
-	cin >> newdir;
-	newDir = newdir;
-	SetCurrentDirectory(newDir);
-	std::cout << "Set current directory to " << newDir << '\n';
-	}
-	else if(str != "N" && str!= "Y"){
-		cout << "Invalid input. System assumes that there is no change in directory.\n";
-	}
-
 	string msg;
 	UI mnk;
 	//std::cout <<"main" <<std::endl;
