@@ -50,17 +50,13 @@ string logic::executeCommand(CommandType command ,string taskName, int startingD
 	}else if(command == SEARCH){
 		_search.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _search.executecmdSearch(_storage);
-	}else if(command == DISPLAY){
+	}else if(command == DISPLAY || command ==DISPLAYTODAY || command
+		== DISPLAYDONE){
 		_display.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _display.executecmdDisplay(_storage);
-	}else if(command == DISPLAYDONE){
-		_display.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
-	     return _display.cmdDisplayDone(_storage);
 	}else if(command == MARKASDONE){
 		_markAsDone.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _markAsDone.executeMarkAsDone(_storage);
-	}else if(command == HELP){
-		return _help.helpMessage();
 	}
 	return "logic error\n\n";
 }
