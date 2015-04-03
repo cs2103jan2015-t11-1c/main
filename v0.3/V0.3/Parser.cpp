@@ -149,8 +149,16 @@ std::string Parser::addEventWithDeadline(std::string toDoList){
 std::string Parser::getEventTime(std::string &buffer){
 	std::string time;
 	int TIndex = firstIndexThatIsNotASpace(buffer);
-	time = buffer.substr(TIndex, 4);
-	buffer = buffer.substr(TIndex+3);
+
+	buffer=buffer.substr(TIndex);
+	TIndex = firstIndextThatIsASpace(buffer);
+	if(isValidIndex(TIndex)){
+		time = buffer.substr(0, TIndex);
+		buffer = buffer.substr(TIndex);
+	}
+	else if(!isEmpty(buffer)){
+		time = buffer;
+	}
 	return time;
 }
 

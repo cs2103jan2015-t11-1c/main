@@ -122,6 +122,7 @@ bool VerificationDateTimeMonth::isTimeValid(int time){
 	}
 	else{
 		if(time / 10 == 0 ){
+			
 			isTimeValid = true;
 		}
 		else if(time / 100 == 0 && time >= MAX_MINUTE){
