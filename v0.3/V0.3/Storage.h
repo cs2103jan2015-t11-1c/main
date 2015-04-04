@@ -8,13 +8,11 @@
 class Storage
 {
 private:
-	int _numberForUndo;
 	Event _currentEvent;
 	Eventlist _activeEvent;
 	Eventlist _doneEvent;
-	Eventlist _deletedActiveEvent;
-	Eventlist _deletedDoneEvent;
-	bool _possibleToUnDo;
+	std::list<Eventlist> _previousActiveEvent;
+	std::list<Eventlist> _previousDoneEvent;
 	enum COMMAND_TYPE { ADD,UPDATE,DELETEEVENT,DONE,CLEARDONE,CLEARACTIVE,CLEAR,INVALID};
 	COMMAND_TYPE findCommandType(std::string currentCommand);
 	std::string _filename;
@@ -44,6 +42,10 @@ public:
 	void readFile();
 	void readEventsFromFile(std::string);
 	void changeCurrentDirectory(const char*);
+	void saveCurrentActiveEventList();
+	void saveCurrentDoneEventList();
+	void changeToPreviousActiveEventList();
+	void changeToPreviousDoneEventList();
 	bool unDopreviousActions(std::string);
 	Eventlist displayEvent (void);
 	Eventlist displayDoneEvent (void);

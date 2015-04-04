@@ -10,12 +10,8 @@ Storage::~Storage(void){
 }
 
 //Take in the previous command and perform the necessary undo functions
-//Boolen value is added to stop successive undo.
 bool Storage::unDopreviousActions(std::string unDoCommand){	
-	if (_possibleToUnDo == false)
-		return false;
-	else {
-		COMMAND_TYPE command = findCommandType(unDoCommand);
+	COMMAND_TYPE command = findCommandType(unDoCommand);
 		switch (command) {
 	case ADD:
 		unDoAddEvent();
@@ -42,7 +38,6 @@ bool Storage::unDopreviousActions(std::string unDoCommand){
 	case INVALID:
 		return false;
 		}
-	}
 	return false;
 }
 
@@ -72,45 +67,59 @@ Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand){
 		else return INVALID;
 }
 
-//When clear functions are called, current Eventlist is backed up by another list for undo purpose.
+//When clear functions are called, current Eventlist is saved for undo purpose.
 void Storage::clearActiveEvent(){	
-	_deletedActiveEvent.copyFromNewList (_activeEvent.returnAllEvent());
+	saveCurrentActiveEventList();
 	_activeEvent = Eventlist();
-	_possibleToUnDo = true;
 }
 
 void Storage::clearDoneEvent(){	
-	_deletedDoneEvent.copyFromNewList(_doneEvent.returnAllEvent());
+	saveCurrentDoneEventList();
 	_doneEvent = Eventlist();
-	_possibleToUnDo = true;
 }
 
 void Storage::unDoClearActiveEvent(){	
-	_activeEvent.copyFromNewList (_deletedActiveEvent.returnAllEvent());
-	_possibleToUnDo = false;
+	changeToPreviousActiveEventList();
 }
 
 void Storage::unDoClearDoneEvent(){
-	_doneEvent.copyFromNewList (_deletedDoneEvent.returnAllEvent());
-	_possibleToUnDo = false;
+	changeToPreviousDoneEventList();
+}
+
+void Storage::saveCurrentActiveEventList(){
+	_previousActiveEvent.push_back(_activeEvent);
+}
+
+void Storage::saveCurrentDoneEventList(){
+	_previousDoneEvent.push_back(_doneEvent);
+}
+
+void Storage::changeToPreviousActiveEventList(){
+	_activeEvent = _previousActiveEvent.back();
+	_previousActiveEvent.pop_back();
+}
+
+void Storage::changeToPreviousDoneEventList(){
+	_doneEvent = _previousDoneEvent.back();
+	_previousDoneEvent.pop_back();
 }
 
 void Storage::addEvent(Event newEvent){
+	saveCurrentActiveEventList();
 	_currentEvent = newEvent;
 	_activeEvent.addEvent(_currentEvent); 
-	_possibleToUnDo = true;
 }
 
 void Storage::unDoAddEvent (){
-	int index = _activeEvent.getTotalNumberOfEvents();
-	_activeEvent.deleteEvent(index);
-	_possibleToUnDo = false;
+	changeToPreviousActiveEventList();
 }
 
 //Transfer the list of index Events from active Eventlist to done Eventlist.
 void Storage::markEventAsDone (std::list<int> allIndex){
+	saveCurrentActiveEventList();
+	saveCurrentDoneEventList();
 	int i;
-	_numberForUndo=allIndex.size();
+	allIndex.sort();
 	while(!allIndex.empty()){
 	i=allIndex.back();
 	_currentEvent = _activeEvent.getEvent(i);
@@ -118,48 +127,29 @@ void Storage::markEventAsDone (std::list<int> allIndex){
 	_doneEvent.addEvent(_currentEvent);
 	allIndex.pop_back();
 	}
-	_possibleToUnDo = true;
 }
 
-//Transfer the last few Events from done Eventlist back to active Eventlist.
 void Storage::unDomarkEventAsDone(){	
-	while(_numberForUndo>0) {
-	int lastEventNumber = _doneEvent.getTotalNumberOfEvents();
-	Event unDoEvent = _doneEvent.getEvent(lastEventNumber);
-	_doneEvent.deleteEvent(lastEventNumber);
-	_activeEvent.addEvent(unDoEvent);
-	_numberForUndo--;
-	}
-	_possibleToUnDo = false;
+	changeToPreviousActiveEventList();
+	changeToPreviousDoneEventList();
 }
 
 //Delete Events from the back of the active Eventlist.
-//Push the deleted Events to deleted Eventlist for undo purpose.
 void Storage::deleteEvent(std::list<int> allIndex){	
+	saveCurrentActiveEventList();
 	int i;
-	_numberForUndo=allIndex.size();
+	allIndex.sort();
 	while(!allIndex.empty()){
 	i=allIndex.back();
 	_currentEvent = _activeEvent.getEvent(i);
 	_activeEvent.deleteEvent(i);
-	_deletedActiveEvent.addEvent(_currentEvent);
 	allIndex.pop_back();
 	}
-	_possibleToUnDo = true;
 }
 
-//unDo the deleted Eventlist by pushing the Events back to active Eventlist.
 void Storage::unDoDeleteEvent (){	
-	while(_numberForUndo>0){
-	int lastEventNumber = _deletedActiveEvent.getTotalNumberOfEvents();
-	Event unDoEvent = _deletedActiveEvent.getEvent(lastEventNumber);
-	_deletedActiveEvent.deleteEvent(lastEventNumber);
-	_activeEvent.addEvent(unDoEvent);
-	_numberForUndo--;
-	}
-	_possibleToUnDo = false;
+	changeToPreviousActiveEventList();
 }
-
 
 Eventlist Storage::displayEvent(void) {	
 	return _activeEvent;
@@ -170,15 +160,12 @@ Eventlist Storage::displayDoneEvent (void){
 }
 
 void Storage::updateEvent (int index, Event newEvent){	
-	_currentEvent = _activeEvent.getEvent(index);
-	_numberForUndo = index;
+	saveCurrentActiveEventList();
 	_activeEvent.updateEvent(index,newEvent);
-	_possibleToUnDo = true;
 }
 
 void Storage::unDoUpdateEvent (){   
-	_activeEvent.updateEvent(_numberForUndo,_currentEvent);
-	_possibleToUnDo = false;
+	changeToPreviousActiveEventList();
 }
 
 Event Storage::getEvent(int index){
