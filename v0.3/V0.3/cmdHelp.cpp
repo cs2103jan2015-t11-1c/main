@@ -10,7 +10,7 @@ const static std::string HELP_UPDATE_CLEAR_START = "update <task number> .clear 
 const static std::string HELP_UPDATE_CLEAR_END = "update <task number> .clear end\ne.g. update 2 .end 2 02 1211\n\n";
 const static std::string HELP_UPDATE_END = "update <task number> .start new end time\ne.g. update 1 .end 1 mar 1211\n\n";
 const static std::string HELP_MARKASDONE = "mark task(s) as done\ne.g. done 1   done 1 2 3\n\n";
-const static std::string HELP_UNDO = "undo last action: undo\n\n";
+const static std::string HELP_UNDO = "undo last action(up to last two actions): undo\n\n";
 const static std::string HELP_SEARCH = "search <key words>\ne.g. search homework\n\n";
 const static std::string LINE = "================================================\n";
 

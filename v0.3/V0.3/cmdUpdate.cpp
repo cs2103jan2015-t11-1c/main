@@ -2,6 +2,7 @@
 static const int INVALID_DATE = 0;
 static const int INVALID_MONTH = 13;
 static const int INVALID_TIME = 2400;
+const static std::string UPDATE_MESSAGE = "\" is updated to ";
 
 cmdUpdate::cmdUpdate(void){
 }
@@ -99,6 +100,6 @@ std::string cmdUpdate::clearEndingTime(Event eventToUpdate, int eventNumber, Sto
 	return _feedback; 
 }
 std::string cmdUpdate::printFeedback(std::string Tempt, Event eventToUpdate){
-	std::string feedback = "\"" + Tempt + "\" is updated to " + "\"" + eventToUpdate.displayEvent() +"\" \n\n";
+	std::string feedback = "\"" + Tempt + UPDATE_MESSAGE + "\"" + eventToUpdate.displayEvent() +"\" \n\n";
 	return feedback;
 }
