@@ -216,6 +216,10 @@ void Storage::saveDoneEventsToFile(){
 
 void Storage::synchronizeDrive(){
 	clearLocalDrive();
+	const int bufferSize = MAX_PATH;
+    char oldDir[bufferSize];
+	GetCurrentDirectory(bufferSize, oldDir);
+	writeFile(oldDir);
 	saveDoneEventsToFile();
 	saveActiveEventsToFile();
 }
@@ -230,8 +234,14 @@ void Storage::readFile(){
 	std::ifstream textFile;
 	std::string currentLine;
 	textFile.open(_filename);
+	getline(textFile,currentLine);
+	if (!currentLine.empty()) {
+	const char * oldDirectory = currentLine.c_str();
+	changeCurrentDirectory(oldDirectory);
+	
 	while(getline(textFile,currentLine)){
 		readEventsFromFile(currentLine);
+	}
 	}
 	textFile.close();
 }
@@ -255,7 +265,6 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 	bool isActive = false;
 	bool hasStartInfo = false;
 	bool hasNoDeadline = false;
-
 
 	if (found < std::string::npos){
 		currentEventLine = currentEventLine.substr(12);
@@ -335,10 +344,9 @@ void Storage::changeCurrentDirectory(const char* newDirectory){
 	const int bufferSize = MAX_PATH;
     char oldDir[bufferSize];
 	GetCurrentDirectory(bufferSize, oldDir);
-	std::cout << "Current directory: " << oldDir << '\n';
 	const char* newDir = newDirectory;
 	SetCurrentDirectory(newDir);
-	std::cout << "Set current directory to " << newDir << '\n';
+	/*std::cout << "Set current directory to " << newDir << '\n'; */
 
 }
 

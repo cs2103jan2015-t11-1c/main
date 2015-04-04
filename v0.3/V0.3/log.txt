@@ -3616,3 +3616,137 @@ Fri Apr 03 00:27:18 2015
 booking flight tickets no specific deadlineAdd Event successfully
 Fri Apr 03 00:27:18 2015
 transfer money to Delft University no specific deadlineAdd Event successfully
+Sat Apr 04 21:24:20 2015
+event no specific deadlineAdd Event successfully
+Sat Apr 04 21:24:20 2015
+taks is due 21 03 1023Add Event successfully
+Sat Apr 04 21:24:20 2015
+CS meeting no specific deadlineAdd Event successfully
+Sat Apr 04 21:24:20 2015
+return book to clb is due 11 04 2115Add Event successfully
+Sat Apr 04 21:24:20 2015
+task is due 12 04 0000Add Event successfully
+Sat Apr 04 21:24:20 2015
+IE2150 report is due 13 04 2359Add Event successfully
+Sat Apr 04 21:24:20 2015
+lesson start from 02 05 2100 is due 02 05 2200Add Event successfully
+Sat Apr 04 21:24:20 2015
+welcome dinner start from 02 07 1700 is due 02 07 2159Add Event successfully
+Sat Apr 04 21:24:20 2015
+summer holiday camp no specific deadlineAdd Event successfully
+Sat Apr 04 21:24:20 2015
+Home sweet Home!!! start from 11 05 759 is due 01 08 0000Add Event successfully
+Sat Apr 04 21:24:20 2015
+inform school about module mapping is due 09 09 2359Add Event successfully
+Sat Apr 04 21:24:20 2015
+task is due 21 09 2011Add Event successfully
+Sat Apr 04 21:24:20 2015
+MA2213 assignment 3 is due 22 09 1800Add Event successfully
+Sat Apr 04 21:24:20 2015
+MA1104 assignment 4 is due 22 09 2130Add Event successfully
+Sat Apr 04 21:24:20 2015
+sdfs is due 12 10 2222Add Event successfully
+Sat Apr 04 21:24:20 2015
+pass the book to Zhong Ning no specific deadlineAdd Event successfully
+Sat Apr 04 21:24:20 2015
+CS V0.4 no specific deadlineAdd Event successfully
+Sat Apr 04 21:24:20 2015
+see grandma  no specific deadlineAdd Event successfully
+Sat Apr 04 21:24:20 2015
+buy CS text book no specific deadlineAdd Event successfully
+Sat Apr 04 21:24:20 2015
+read cs txt bool no specific deadlineAdd Event successfully
+Sat Apr 04 21:24:20 2015
+booking flight tickets no specific deadlineAdd Event successfully
+Sat Apr 04 21:24:20 2015
+transfer money to Delft University no specific deadlineAdd Event successfully
+Sat Apr 04 21:32:11 2015
+taks is due 21 03 1023Add Event successfully
+Sat Apr 04 21:32:11 2015
+CS meeting no specific deadlineAdd Event successfully
+Sat Apr 04 21:32:11 2015
+return book to clb is due 11 04 2115Add Event successfully
+Sat Apr 04 21:32:11 2015
+task is due 12 04 0000Add Event successfully
+Sat Apr 04 21:32:11 2015
+IE2150 report is due 13 04 2359Add Event successfully
+Sat Apr 04 21:32:11 2015
+lesson start from 02 05 2100 is due 02 05 2200Add Event successfully
+Sat Apr 04 21:32:11 2015
+welcome dinner start from 02 07 1700 is due 02 07 2159Add Event successfully
+Sat Apr 04 21:32:11 2015
+summer holiday camp no specific deadlineAdd Event successfully
+Sat Apr 04 21:32:12 2015
+Home sweet Home!!! start from 11 05 759 is due 01 08 0000Add Event successfully
+Sat Apr 04 21:32:12 2015
+inform school about module mapping is due 09 09 2359Add Event successfully
+Sat Apr 04 21:32:12 2015
+task is due 21 09 2011Add Event successfully
+Sat Apr 04 21:32:12 2015
+MA2213 assignment 3 is due 22 09 1800Add Event successfully
+Sat Apr 04 21:32:12 2015
+MA1104 assignment 4 is due 22 09 2130Add Event successfully
+Sat Apr 04 21:32:12 2015
+sdfs is due 12 10 2222Add Event successfully
+Sat Apr 04 21:32:12 2015
+pass the book to Zhong Ning no specific deadlineAdd Event successfully
+Sat Apr 04 21:32:12 2015
+CS V0.4 no specific deadlineAdd Event successfully
+Sat Apr 04 21:32:12 2015
+see grandma  no specific deadlineAdd Event successfully
+Sat Apr 04 21:32:12 2015
+buy CS text book no specific deadlineAdd Event successfully
+Sat Apr 04 21:32:12 2015
+read cs txt bool no specific deadlineAdd Event successfully
+Sat Apr 04 21:32:12 2015
+booking flight tickets no specific deadlineAdd Event successfully
+Sat Apr 04 21:32:12 2015
+transfer money to Delft University no specific deadlineAdd Event successfully
+Sat Apr 04 21:32:22 2015
+event no specific deadlineAdd Event successfully
+Sat Apr 04 21:35:58 2015
+pass the book to Zhong Ning no specific deadlineAdd Event successfully
+Sat Apr 04 21:35:58 2015
+CS V0.4 no specific deadlineAdd Event successfully
+Sat Apr 04 21:35:58 2015
+see grandma  no specific deadlineAdd Event successfully
+Sat Apr 04 21:35:58 2015
+buy CS text book no specific deadlineAdd Event successfully
+Sat Apr 04 21:35:58 2015
+read cs txt bool no specific deadlineAdd Event successfully
+Sat Apr 04 21:35:58 2015
+booking flight tickets no specific deadlineAdd Event successfully
+Sat Apr 04 21:35:58 2015
+transfer money to Delft University no specific deadlineAdd Event successfully
+Sat Apr 04 21:35:58 2015
+CS meeting no specific deadlineAdd Event successfully
+Sat Apr 04 21:35:58 2015
+summer holiday camp no specific deadlineAdd Event successfully
+Sat Apr 04 21:35:58 2015
+taks is due 21 03 1023Add Event successfully
+Sat Apr 04 21:35:58 2015
+return book to clb is due 11 04 2115Add Event successfully
+Sat Apr 04 21:35:58 2015
+task is due 12 04 0000Add Event successfully
+Sat Apr 04 21:35:58 2015
+IE2150 report is due 13 04 2359Add Event successfully
+Sat Apr 04 21:35:58 2015
+lesson start from 02 05 2100 is due 02 05 2200Add Event successfully
+Sat Apr 04 21:35:58 2015
+welcome dinner start from 02 07 1700 is due 02 07 2159Add Event successfully
+Sat Apr 04 21:35:58 2015
+Home sweet Home!!! start from 11 05 759 is due 01 08 0000Add Event successfully
+Sat Apr 04 21:35:58 2015
+inform school about module mapping is due 09 09 2359Add Event successfully
+Sat Apr 04 21:35:58 2015
+task is due 21 09 2011Add Event successfully
+Sat Apr 04 21:35:58 2015
+MA2213 assignment 3 is due 22 09 1800Add Event successfully
+Sat Apr 04 21:35:58 2015
+MA1104 assignment 4 is due 22 09 2130Add Event successfully
+Sat Apr 04 21:35:58 2015
+sdfs is due 12 10 2222Add Event successfully
+Sat Apr 04 21:35:58 2015
+event no specific deadlineAdd Event successfully
+Sat Apr 04 21:37:07 2015
+event is due 22 04 2123Add Event successfully
