@@ -3,6 +3,12 @@
 
 const static std::string UNDO_ERROR_MESSAGE = "There is no action to undo. Enter a command again.\n\n";
 const static std::string UNDO_MESSAGE = "Undo last action successfully\n\n";
+const static std::string UNDO_UNSUCCESSFUL_MESSAGE = "Undo unsuccessful\n\n";
+const static std::string STRING_ADD = "add";
+const static std::string STRING_DELETE = "delete";
+const static std::string STRING_UPDATE = "update";
+const static std::string STRING_CLEAR = "clear";
+const static std::string STRING_DONE = "done";
 
 cmdUndo::cmdUndo(void)
 {
@@ -19,12 +25,17 @@ string cmdUndo::printUndoMessage(){
 }
 
 //undo last command based on the last command word from the user
+//support undo for last two actions
 string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStored){
 	CommandType lastCommand = commandStored.back();
 
-	//if(lastCommand == UNDO && commandStored.size() == 1){
-		//return UNDO_ERROR_MESSAGE;
-	//}else{
+	if(lastCommand == UNDO){
+		commandStored.pop_back();}{
+		if(commandStored.back() == UNDO){
+			commandStored.pop_back();}
+				if(commandStored.back() == UNDO){
+					return UNDO_ERROR_MESSAGE;
+	}else{
 	while ((lastCommand == UNDO && commandStored.size()>1) || (lastCommand == DISPLAY && commandStored.size()>1) || 
 		    lastCommand == DISPLAYDONE && commandStored.size()>1){
 		commandStored.pop_back();
@@ -34,20 +45,22 @@ string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStored){
 	std::string lastCommandString;
 
 	if(lastCommand == ADDEVENTWITHDEADLINE || lastCommand == ADDFLOATINGEVENT || lastCommand == ADDTIMEDEVENT){
-		lastCommandString = "add";
+		lastCommandString = STRING_ADD;
 	}else if(lastCommand == DELETE){
-		lastCommandString = "delete";
-	}else if(lastCommand == UPDATEENDINGTIME || lastCommand == UPDATENAME || lastCommand == UPDATESTARTINGTIME){
-		lastCommandString = "update";
+		lastCommandString = STRING_DELETE;
+	}else if(lastCommand == UPDATEENDINGTIME || lastCommand == UPDATENAME || lastCommand == UPDATESTARTINGTIME || lastCommand == CLEAREND || lastCommand == CLEARSTART){
+		lastCommandString = STRING_UPDATE;
 	}else if(lastCommand == CLEAR){
-		lastCommandString = "clear";
+		lastCommandString = STRING_CLEAR;
 	}else if(lastCommand == MARKASDONE){
-		lastCommandString = "done";
+		lastCommandString = STRING_DONE;
 	}else if(lastCommand == DISPLAY){
 		cout<<UNDO_ERROR_MESSAGE;
 	}
 	if (_storage.unDopreviousActions(lastCommandString)) {	
 	_storage.synchronizeDrive();
 	return printUndoMessage();}
-	else return "Undo unsuccessful\n\n";
+	else return UNDO_UNSUCCESSFUL_MESSAGE;
 	}
+}
+}
