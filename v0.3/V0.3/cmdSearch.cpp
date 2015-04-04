@@ -30,6 +30,7 @@ std::string cmdSearch::executecmdSearch(Storage& _storage){
 
 }
 
+//this function converts upper case letter to lower case
 std::string cmdSearch::lowercaseCommandWord(std::string commandWord){
 	int n = commandWord.size();
 	for( int i = 0; i < n; i++){
@@ -40,6 +41,7 @@ std::string cmdSearch::lowercaseCommandWord(std::string commandWord){
 
   return commandWord;
 }
+
 void cmdSearch::searchForEvent(std::list<Event> allEvents, int){
 	std::string keyword = _taskName;
 	std::string taskName = lowercaseCommandWord(keyword);
