@@ -115,7 +115,7 @@ std::string cmdDisplay::eventsToDisplay(std::list<Event> events){
 	std::ostringstream display;
 	int i = 1;
 	std::list<Event>::iterator iter;
-	for(iter = events.begin(); iter != events.end(); ++iter){
+	for(iter = events.begin(); iter != events.end() && i < 21; ++iter){
 		display  << std::setw(3) << i << "." << (*iter).displayEvent() << "\n";
 		i++;
 	}
