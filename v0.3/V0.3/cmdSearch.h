@@ -12,5 +12,6 @@ public:
 	std::string executecmdSearch(Storage& _storage);
 	void searchForEvent(std::list<Event>, int);
 	std::string printEventFound();
+	std::string lowercaseCommandWord(std::string commandWord);
 };
 

@@ -1,7 +1,7 @@
 #include "cmdSearch.h"
 #include <sstream>
 
-const static std::string MESSAGE_EVENT_NOT_FOUND = "Sorry! No relevant event found."; 
+const static std::string MESSAGE_EVENT_NOT_FOUND = "Sorry! No relevant event found.\n\n"; 
 
 cmdSearch::cmdSearch(void){
 }
@@ -30,8 +30,19 @@ std::string cmdSearch::executecmdSearch(Storage& _storage){
 
 }
 
+std::string cmdSearch::lowercaseCommandWord(std::string commandWord){
+	int n = commandWord.size();
+	for( int i = 0; i < n; i++){
+		if(commandWord[i] <='Z' && commandWord[i] >= 'A'){
+			commandWord[i] = commandWord[i] - ('Z'-'z');
+		}
+	}
+
+  return commandWord;
+}
 void cmdSearch::searchForEvent(std::list<Event> allEvents, int){
 	std::string keyword = _taskName;
+	std::string taskName = lowercaseCommandWord(keyword);
 	std::list<Event>::iterator Tcount;
 	std::string eventName;
 	int Tindex;
@@ -42,7 +53,8 @@ void cmdSearch::searchForEvent(std::list<Event> allEvents, int){
 		eventNumber++;
 		currentEvent = *Tcount;
 		eventName = currentEvent.getTaskName();
-		Tindex = eventName.find(keyword);
+		std::string newEventName = lowercaseCommandWord(eventName);
+		Tindex = newEventName.find(taskName);
 		if(Tindex !=std:: string::npos){
 			_eventNumbers.push_back(eventNumber);
 			_eventFound.addEvent(currentEvent);
