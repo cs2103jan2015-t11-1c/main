@@ -5,10 +5,12 @@ class cmdSearch :
 {
 private:
 	Eventlist _eventFound;
+	std::vector<int> _eventNumbers;
 public:
 	cmdSearch(void);
 	~cmdSearch(void);
 	std::string executecmdSearch(Storage& _storage);
+	void searchForEvent(std::list<Event>, int);
 	std::string printEventFound();
 };
 

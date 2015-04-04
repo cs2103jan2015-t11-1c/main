@@ -14,44 +14,56 @@ std::string cmdSearch::executecmdSearch(Storage& _storage){
 	Eventlist events = _storage.displayEvent();
 	std::list<Event> allEvents = events.returnAllEvent();
 	int eventsNumber = events.getTotalNumberOfEvents();
-	std::string keyword = _taskName;
-	std::list<Event>::iterator Tcount;
-	std::string taskName;
-	int Tindex;
-	Event currentEvent;
 
-	for(Tcount = allEvents.begin(); Tcount != allEvents.end(); Tcount++){
-		currentEvent = *Tcount;
-		taskName = currentEvent.getTaskName();
-		Tindex = taskName.find(keyword);
-		if(Tindex !=std:: string::npos){
-			_eventFound.addEvent(currentEvent);
-		}
-	}
+	searchForEvent(allEvents, eventsNumber);
 
 	if(_eventFound.getTotalNumberOfEvents() != 0){
 		_feedback = printEventFound();
 	}else{
 		_feedback = MESSAGE_EVENT_NOT_FOUND;
 	}
-	/*for(int j=_eventFound.getTotalNumberOfEvents(); j > 0; j--){
-		_eventFound.deleteEvent(j);}*/
+
 	_eventFound.clearEventlist();
+	_eventNumbers.clear();
+
 	return _feedback;
 
 }
 
+void cmdSearch::searchForEvent(std::list<Event> allEvents, int){
+	std::string keyword = _taskName;
+	std::list<Event>::iterator Tcount;
+	std::string eventName;
+	int Tindex;
+	int eventNumber = 0;
+	Event currentEvent;
+
+	for(Tcount = allEvents.begin(); Tcount != allEvents.end(); Tcount++){
+		eventNumber++;
+		currentEvent = *Tcount;
+		eventName = currentEvent.getTaskName();
+		Tindex = eventName.find(keyword);
+		if(Tindex !=std:: string::npos){
+			_eventNumbers.push_back(eventNumber);
+			_eventFound.addEvent(currentEvent);
+		}
+	}
+}
+
 std::string cmdSearch::printEventFound(){
 	std::ostringstream feedback;
-	std::list<Event>::iterator Tcount;
+	std::list<Event>::iterator Titer;
 	Event currentEvent;
+	int eventNumber;
+	int Tcount = 0;
 	std::list<Event> eventFound = _eventFound.returnAllEvent();
 	
-	for(Tcount = eventFound.begin(); Tcount != eventFound.end(); Tcount++){
-		currentEvent = *Tcount;
-		feedback << currentEvent.displayEvent() << "\n";
+	for(Titer = eventFound.begin(); Titer != eventFound.end(); Titer++){
+		currentEvent = *Titer;
+		eventNumber = _eventNumbers[Tcount];
+		feedback << eventNumber << "." << currentEvent.displayEvent() << "\n\n";
+		Tcount ++;
 	}
 
-	std::cout<<feedback.str();	
-	return "\n";
+	return feedback.str();
 }
