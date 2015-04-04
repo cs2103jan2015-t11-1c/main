@@ -1,3 +1,7 @@
+//This is a class for storing multiple Event class.
+//When a particular event is needed, Eventlist class will find the
+//Event and perform respective functions.
+
 #pragma once
 #include "Event.h"
 #include <vector>
@@ -14,12 +18,12 @@ public:
 	void clearEventlist();
 	void addEvent (Event newEvent);
 	void deleteEvent (int index);
-	int getTotalNumberOfEvents (void);
-	Event getEvent(int index);
-	std::list<Event> returnAllEvent();
+	void copyFromNewList( std::list<Event> newList);
 	void updateEvent (int index, Event newEvent);
 	void sortEvent(void);
+	int getTotalNumberOfEvents (void);
+	std::list<Event> returnAllEvent();
 	bool compareDueRanking (const Event& firstEvent,const Event& secondEvent);
-	void copyFromNewList( std::list<Event> newList);
+	Event getEvent(int index);
 };
 

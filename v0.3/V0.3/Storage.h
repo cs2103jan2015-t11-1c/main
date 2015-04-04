@@ -1,3 +1,6 @@
+//The storage class support the storing of data in Eventlist and stored in a local files
+//Events are classified into incomplete and complete Events and stored in respective Eventlist.
+
 #pragma once
 #include "Eventlist.h"
 #include <fstream>
@@ -19,32 +22,31 @@ private:
 public:
 	Storage(void);
 	~Storage(void);
-	void addEvent (Event newEvent);
+	void addEvent (Event);
 	void unDoAddEvent ();
-	void deleteEvent (std::list<int> allIndex);
+	void deleteEvent (std::list<int>);
 	void unDoDeleteEvent ();
-	void updateEvent (int index, Event newEvent);
+	void updateEvent (int, Event);
 	void unDoUpdateEvent ();
-	void markEventAsDone (std::list<int> allIndex);
+	void markEventAsDone (std::list<int>);
 	void unDomarkEventAsDone();
 	void clearActiveEvent();
 	void unDoClearActiveEvent();
 	void clearDoneEvent();
 	void unDoClearDoneEvent();
-	bool unDopreviousActions(std::string);
 	void sortActiveEventlist();
 	void sortDoneEventlist();
-	Eventlist displayEvent (void);
-	Eventlist displayDoneEvent (void);
-	Event getEvent(int index);
-	void writeFile(std::string eventToFile);
+	void writeFile(std::string);
 	void saveActiveEventsToFile();
 	void saveDoneEventsToFile();
 	void synchronizeDrive();
 	void clearLocalDrive();
 	void readFile();
-	void readEventsFromFile(std::string currentEventLine);
-	void changeCurrentDirectory(const char* newDirectory);
-
+	void readEventsFromFile(std::string);
+	void changeCurrentDirectory(const char*);
+	bool unDopreviousActions(std::string);
+	Eventlist displayEvent (void);
+	Eventlist displayDoneEvent (void);
+	Event getEvent(int);
 };
 

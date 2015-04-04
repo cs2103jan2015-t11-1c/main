@@ -2,17 +2,16 @@
 #include "windows.h"
 
 
-Storage::Storage(void)
-{	_filename = "Minic.txt";
-	//readFile();
+Storage::Storage(void){	
+	_filename = "Minic.txt";
 }
 
-Storage::~Storage(void)
-{
+Storage::~Storage(void){
 }
 
-bool Storage::unDopreviousActions(std::string unDoCommand)
-{	
+//Take in the previous command and perform the necessary undo functions
+//Boolen value is added to stop successive undo.
+bool Storage::unDopreviousActions(std::string unDoCommand){	
 	if (_possibleToUnDo == false)
 		return false;
 	else {
@@ -45,11 +44,11 @@ bool Storage::unDopreviousActions(std::string unDoCommand)
 		}
 	}
 	return false;
-
 }
 
-Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand)
-{		if (currentCommand == "add"){
+//Convert the command string to enum type.
+Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand){		
+	if (currentCommand == "add"){
 			return ADD;
 		}
 		else if (currentCommand == "update"){
@@ -73,43 +72,44 @@ Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand)
 		else return INVALID;
 }
 
-void Storage::clearActiveEvent()
-{	_deletedActiveEvent.copyFromNewList (_activeEvent.returnAllEvent());
+//When clear functions are called, current Eventlist is backed up by another list for undo purpose.
+void Storage::clearActiveEvent(){	
+	_deletedActiveEvent.copyFromNewList (_activeEvent.returnAllEvent());
 	_activeEvent = Eventlist();
 	_possibleToUnDo = true;
 }
 
-void Storage::clearDoneEvent()
-{	_deletedDoneEvent.copyFromNewList(_doneEvent.returnAllEvent());
+void Storage::clearDoneEvent(){	
+	_deletedDoneEvent.copyFromNewList(_doneEvent.returnAllEvent());
 	_doneEvent = Eventlist();
 	_possibleToUnDo = true;
 }
 
-void Storage::unDoClearActiveEvent()
-{	_activeEvent.copyFromNewList (_deletedActiveEvent.returnAllEvent());
+void Storage::unDoClearActiveEvent(){	
+	_activeEvent.copyFromNewList (_deletedActiveEvent.returnAllEvent());
 	_possibleToUnDo = false;
 }
 
-void Storage::unDoClearDoneEvent()
-{	_doneEvent.copyFromNewList (_deletedDoneEvent.returnAllEvent());
+void Storage::unDoClearDoneEvent(){
+	_doneEvent.copyFromNewList (_deletedDoneEvent.returnAllEvent());
 	_possibleToUnDo = false;
 }
 
-void Storage::addEvent(Event newEvent)
-{	_currentEvent = newEvent;
+void Storage::addEvent(Event newEvent){
+	_currentEvent = newEvent;
 	_activeEvent.addEvent(_currentEvent); 
 	_possibleToUnDo = true;
 }
 
-void Storage::unDoAddEvent ()
-{	int index = _activeEvent.getTotalNumberOfEvents();
+void Storage::unDoAddEvent (){
+	int index = _activeEvent.getTotalNumberOfEvents();
 	_activeEvent.deleteEvent(index);
 	_possibleToUnDo = false;
 }
 
-
-void Storage::markEventAsDone (std::list<int> allIndex)
-{   int i;
+//Transfer the list of index Events from active Eventlist to done Eventlist.
+void Storage::markEventAsDone (std::list<int> allIndex){
+	int i;
 	_numberForUndo=allIndex.size();
 	while(!allIndex.empty()){
 	i=allIndex.back();
@@ -121,8 +121,9 @@ void Storage::markEventAsDone (std::list<int> allIndex)
 	_possibleToUnDo = true;
 }
 
-void Storage::unDomarkEventAsDone()
-{	while(_numberForUndo>0) {
+//Transfer the last few Events from done Eventlist back to active Eventlist.
+void Storage::unDomarkEventAsDone(){	
+	while(_numberForUndo>0) {
 	int lastEventNumber = _doneEvent.getTotalNumberOfEvents();
 	Event unDoEvent = _doneEvent.getEvent(lastEventNumber);
 	_doneEvent.deleteEvent(lastEventNumber);
@@ -132,10 +133,10 @@ void Storage::unDomarkEventAsDone()
 	_possibleToUnDo = false;
 }
 
-
-
-void Storage::deleteEvent(std::list<int> allIndex)
-{	int i;
+//Delete Events from the back of the active Eventlist.
+//Push the deleted Events to deleted Eventlist for undo purpose.
+void Storage::deleteEvent(std::list<int> allIndex){	
+	int i;
 	_numberForUndo=allIndex.size();
 	while(!allIndex.empty()){
 	i=allIndex.back();
@@ -146,8 +147,10 @@ void Storage::deleteEvent(std::list<int> allIndex)
 	}
 	_possibleToUnDo = true;
 }
-void Storage::unDoDeleteEvent ()
-{	while(_numberForUndo>0){
+
+//unDo the deleted Eventlist by pushing the Events back to active Eventlist.
+void Storage::unDoDeleteEvent (){	
+	while(_numberForUndo>0){
 	int lastEventNumber = _deletedActiveEvent.getTotalNumberOfEvents();
 	Event unDoEvent = _deletedActiveEvent.getEvent(lastEventNumber);
 	_deletedActiveEvent.deleteEvent(lastEventNumber);
@@ -158,46 +161,47 @@ void Storage::unDoDeleteEvent ()
 }
 
 
-Eventlist Storage::displayEvent(void) 
-{	return _activeEvent;
+Eventlist Storage::displayEvent(void) {	
+	return _activeEvent;
 }
 
-Eventlist Storage::displayDoneEvent (void)
-{	return _doneEvent;
+Eventlist Storage::displayDoneEvent (void){	
+	return _doneEvent;
 }
 
-void Storage::updateEvent (int index, Event newEvent)
-{	_currentEvent = _activeEvent.getEvent(index);
+void Storage::updateEvent (int index, Event newEvent){	
+	_currentEvent = _activeEvent.getEvent(index);
 	_numberForUndo = index;
 	_activeEvent.updateEvent(index,newEvent);
 	_possibleToUnDo = true;
 }
 
-void Storage::unDoUpdateEvent ()
-{   _activeEvent.updateEvent(_numberForUndo,_currentEvent);
+void Storage::unDoUpdateEvent (){   
+	_activeEvent.updateEvent(_numberForUndo,_currentEvent);
 	_possibleToUnDo = false;
 }
 
-Event Storage::getEvent(int index)
-{	
+Event Storage::getEvent(int index){
 	return _activeEvent.getEvent(index);
 }
 
-void Storage::sortActiveEventlist()
-{	_activeEvent.sortEvent();
+void Storage::sortActiveEventlist(){	
+	_activeEvent.sortEvent();
 }
 
-void Storage::sortDoneEventlist()
-{	_doneEvent.sortEvent();
+void Storage::sortDoneEventlist(){	
+	_doneEvent.sortEvent();
 }
 
-void Storage::writeFile(std::string eventToFile)
-{	std::ofstream destination;
+//Add the string to the system default file.
+void Storage::writeFile(std::string eventToFile){	
+	std::ofstream destination;
 	destination.open(_filename, std::ofstream::app);
 	destination << eventToFile << std::endl;
 	destination.close();
 }
 
+//Save all the active Events to a local file.
 void Storage::saveActiveEventsToFile(){
 	std::list<Event> currentList = _activeEvent.returnAllEvent();
 	std::list<Event>::iterator iter;
@@ -206,6 +210,7 @@ void Storage::saveActiveEventsToFile(){
 	}
 }
 
+//Save all the done Events to a local file.
 void Storage::saveDoneEventsToFile(){
 	std::list<Event> currentList = _doneEvent.returnAllEvent();
 	std::list<Event>::iterator iter;
@@ -214,6 +219,7 @@ void Storage::saveDoneEventsToFile(){
 	}
 }
 
+//Synchonized storage data with the local file.
 void Storage::synchronizeDrive(){
 	clearLocalDrive();
 	const int bufferSize = MAX_PATH;
@@ -224,12 +230,14 @@ void Storage::synchronizeDrive(){
 	saveActiveEventsToFile();
 }
 
+//Empty a local file.
 void Storage::clearLocalDrive(){
 	std::ofstream outputFile;
 	outputFile.open(_filename);
 	outputFile.close();
 }
 
+//Transfer the data from a local file to Storage.
 void Storage::readFile(){
 	std::ifstream textFile;
 	std::string currentLine;
@@ -238,14 +246,15 @@ void Storage::readFile(){
 	if (!currentLine.empty()) {
 	const char * oldDirectory = currentLine.c_str();
 	changeCurrentDirectory(oldDirectory);
-	
 	while(getline(textFile,currentLine)){
 		readEventsFromFile(currentLine);
-	}
+		}
 	}
 	textFile.close();
 }
 
+//Retrieve the Event information from a local file
+//and store them in an Event then stored in the appropriate Eventlist.
 void Storage::readEventsFromFile(std::string currentEventLine){
 	int index;
 	std::string doneEventidentifier = "Done tasks: ";
@@ -340,6 +349,7 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 	else _doneEvent.addEvent(newEvent);
 }
 
+//Allow user to change the directory of the local file.
 void Storage::changeCurrentDirectory(const char* newDirectory){
 	const int bufferSize = MAX_PATH;
     char oldDir[bufferSize];
@@ -347,7 +357,6 @@ void Storage::changeCurrentDirectory(const char* newDirectory){
 	const char* newDir = newDirectory;
 	SetCurrentDirectory(newDir);
 	/*std::cout << "Set current directory to " << newDir << '\n'; */
-
 }
 
 /*const int bufferSize = MAX_PATH;

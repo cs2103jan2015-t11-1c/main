@@ -15,7 +15,6 @@ Event::Event(std::string newTitle, int newDay, int newMonth, int newTime)
 	_durationEvent = false;
 }
 
-
 Event::~Event(void)
 {
 }
@@ -73,6 +72,8 @@ std::string Event::readEvent()
 	+ " " + convertTimeToString(_endTime);
 	}
 }
+
+// Convert 1 or 2 digit number to 2 char string.
 std::string Event::convertNumberToString(int number){
 	if (number/10 == 0){
 		std::string tempString;
@@ -80,7 +81,6 @@ std::string Event::convertNumberToString(int number){
 		return "0" + tempString;}
 	else return std::to_string(number);
 }
-
 
 std::string Event::convertToMonth(int i){
 	if(i == 1) {
@@ -111,6 +111,7 @@ std::string Event::convertToMonth(int i){
 	return "invalid month";
 }
 
+//Convert time to a 4 char string.
 std::string Event::convertTimeToString(int number){
 	std::string tempString;
 	tempString = std::to_string(number);
@@ -124,10 +125,10 @@ std::string Event::convertTimeToString(int number){
 	return tempString;
 }
 
-
+//Display the deadline of a particular task.
 std::string Event::getDeadline()
-{	return convertNumberToString(_endDay) + convertNumberToString(_endMonth)	
-+ convertTimeToString(_endTime);
+{	return convertNumberToString(_endDay) + " " + convertToMonth(_endMonth) +
+" " + convertTimeToString(_endTime);
 }
 
 
@@ -166,12 +167,11 @@ void Event::changeStartTime (int newTime)
 	_durationEvent = true;
 }
 
-void Event::changeDetails (std::string newdetails)
-{	_details = newdetails;
-}
-
+//For the purpose of sorting, arrange the events from earliest month and then earliest
+//endday and then earliest hour.
+//Events with no deadline are display first.
 void Event::updateDueRanking()
-{	if(_endDay < 0 || _endDay > 31)
+{	if(_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 || _endTime < 0 || _endTime >2359 )
 	_dueRanking = 0;
 	else
 	_dueRanking = _endMonth*1000000 + _endDay*10000 + _endTime;
@@ -204,4 +204,3 @@ int Event::getStartTime()
 int Event::getEndTime()
 {   return _endTime;
 }
-
