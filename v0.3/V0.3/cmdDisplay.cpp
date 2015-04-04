@@ -2,6 +2,8 @@
 #include <sstream>
 const static std::string MESSAGE_EMPTY_ACTIVE_EVENTS = "Currently no active event. \n\n";
 const static std::string MESSAGE_NO_EVENT_TODAY = "No Event today! \n\n";
+const static int NUMBER_OF_TASK_TO_DISPLAY = 20;
+
 cmdDisplay::cmdDisplay(void){
 }
 
@@ -111,11 +113,12 @@ bool cmdDisplay::isEventToday(int taskStartMonth, int taskStartDay, int taskEndM
 	return isEventToday;
 }
 
+//set the number of tasks to be displayed to be 20
 std::string cmdDisplay::eventsToDisplay(std::list<Event> events){
 	std::ostringstream display;
 	int i = 1;
 	std::list<Event>::iterator iter;
-	for(iter = events.begin(); iter != events.end() && i < 21; ++iter){
+	for(iter = events.begin(); iter != events.end() && i < NUMBER_OF_TASK_TO_DISPLAY; ++iter){
 		display  << std::setw(3) << i << "." << (*iter).displayEvent() << "\n";
 		i++;
 	}
