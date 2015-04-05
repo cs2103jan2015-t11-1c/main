@@ -28,7 +28,6 @@ void Eventlist::addEvent(Event newEvent){
 	rawtime = time (0);
 	localtime_s(&timeinfo, &rawtime);
 	asctime_s(buffer,&timeinfo) ;
-	std::cout << timeinfo.tm_wday << std::endl;
 	destination	<< buffer <<newEvent.readEvent() << "Add Event successfully"<< std::endl;
 	destination.close();
 

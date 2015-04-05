@@ -1,4 +1,8 @@
 #pragma once
+
+#include <stdio.h>
+#include <iostream>
+
 class findNextDate
 {
 private:
@@ -14,13 +18,13 @@ private:
 public:
 	findNextDate(void);
 	~findNextDate(void);
-	findNextDate(int, int, int);
 	bool isLeapYear();
 	int getMonth();
 	int getDay();
 	int getWeekDay();
 	int getYear();
 	int totalNumberOfDays();
+	void calculate(int, int, int);
 	void advanceMonthLeapYear();
 	void advanceMonth();
 	void calculateTheNextDate();

@@ -10,7 +10,6 @@ cmdChangeDirectory::~cmdChangeDirectory(void){
 
 std::string cmdChangeDirectory::executecmdChangeDirectory(Storage& _storage){
 	std::string directory = _taskName;
-	std::cout << " testing" << _taskName << std::endl;
 	const char * newDirectory = directory.c_str();
 	_storage.changeCurrentDirectory(newDirectory);
 

@@ -22,9 +22,6 @@ int main(){
 	else{
 		cout << INVALID_COMMAND_MESSAGE;
 	}
-	{
-
-	}
 	}
 	system("pause");
     return 0;	

@@ -11,6 +11,8 @@
 #include "cmdUndo.h"
 #include "cmdUpdate.h"
 #include "cmdHelp.h"
+#include "cmdChangeDirectory.h"
+#include "cmdRepeat.h"
 
 using namespace std;
 class logic :
@@ -26,6 +28,8 @@ private:
 	cmdUndo _undo;
 	cmdDelete _delete;
 	cmdHelp _help;
+	cmdChangeDirectory _changeDirectory;
+	cmdRepeat _repeat;
 	//Storage _storage;
 
 public:

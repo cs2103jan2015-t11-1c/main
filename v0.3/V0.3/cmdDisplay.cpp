@@ -106,7 +106,7 @@ bool cmdDisplay::isEventToday(int taskStartMonth, int taskStartDay, int taskEndM
 	int currentMonth = now.tm_mon + 1;
 	int currentDay = now.tm_mday;
 
-	if((taskStartMonth == currentMonth & taskStartDay == currentDay) || (taskEndMonth == currentMonth & taskEndDay == currentDay)){
+	if(((taskStartMonth == currentMonth) & (taskStartDay == currentDay)) || ((taskEndMonth == currentMonth) & (taskEndDay == currentDay))){
 		isEventToday = true;
 	}
 

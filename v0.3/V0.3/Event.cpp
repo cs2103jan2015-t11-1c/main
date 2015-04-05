@@ -86,6 +86,7 @@ std::string Event::readEvent()
 	if (_endYear != DEFAUlTYEAR){
 		finalString = finalString + " Year: " + convertTimeToString(_endYear); }
 	}
+	return finalString;
 }
 
 // Convert 1 or 2 digit number to 2 char string.
@@ -187,7 +188,7 @@ void Event::changeStartTime (int newTime)
 }
 
 void Event::changeStartYear (int newYear){
-	_startYear = year;
+	_startYear = newYear;
 }
 
 //For the purpose of sorting, arrange the events from earliest year and then earliest month
@@ -195,7 +196,7 @@ void Event::changeStartYear (int newYear){
 //Events with no deadline are display first.
 void Event::updateDueRanking()
 {	if(_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 || _endTime < 0 || _endTime >2359 )
-	_dueRanking = 10000000000000;
+	_dueRanking = 1.0*1000000000000 ;
 else
 	_dueRanking = _endYear*100000000 +_endMonth*1000000 + _endDay*10000 + _endTime;
 }
@@ -229,5 +230,5 @@ int Event::getEndTime()
 }
 
 std::string Event::saveEvent(){
-
+	return "";
 }

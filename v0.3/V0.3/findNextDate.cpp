@@ -1,21 +1,23 @@
 #include "findNextDate.h"
 
+
 static int daysInMonth[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 static int daysInMonthLeapYear[] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 findNextDate::findNextDate(void){
+	_firstDayOfYear2015 = 3;
+	_year = 2015;
 }
 
 
 findNextDate::~findNextDate(void){
 }
 
-findNextDate::findNextDate(int day, int month, int numberOfDays ){	
+void findNextDate::calculate(int day, int month, int numberOfDays ){	
 	_currentDay = day;
 	_currentMonth = month;
 	_advanceNumberOfDays = numberOfDays;
-	_firstDayOfYear2015 = 3;
-	_year = 2015;
+	calculateTheNextDate();
 }
 
 bool findNextDate:: isLeapYear(){
