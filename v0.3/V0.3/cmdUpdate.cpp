@@ -3,6 +3,7 @@ static const int INVALID_DATE = 0;
 static const int INVALID_MONTH = 13;
 static const int INVALID_TIME = 2400;
 const static std::string UPDATE_MESSAGE = "\" is updated to ";
+const static std::string ERROR = "Error";
 
 cmdUpdate::cmdUpdate(void){
 }
@@ -11,6 +12,7 @@ cmdUpdate::cmdUpdate(void){
 cmdUpdate::~cmdUpdate(void){
 }
 
+//update task name, start time, end time or remove start time or end time
 std::string cmdUpdate::executecmdUpdate(Storage& _storage){
 	int eventNumber;
 	eventNumber= _taskNumberList.front();
@@ -30,16 +32,10 @@ std::string cmdUpdate::executecmdUpdate(Storage& _storage){
 	default:
 		break;
 	}
-	return "no";
+	return ERROR;
 }
-/*	Event newEvent;
-	cout << buffer << endl;
-	newEvent= getEventInformation(buffer);
-	_storage.updateEvent(eventNumber, newEvent);
-	_feedback = "\"" + Tempt + "\" is updated to " + "\"" + newEvent.readEvent() +"\" \n";
-	}
-	return _feedback;*/
 
+//update task name
 std::string cmdUpdate::updateName(Event eventToUpdate, int eventNumber, Storage& _storage){
 	std::string Tempt = eventToUpdate.displayEvent();
 	eventToUpdate.changeTitle(_taskName);
@@ -50,6 +46,7 @@ std::string cmdUpdate::updateName(Event eventToUpdate, int eventNumber, Storage&
 	return _feedback;
 }
 
+//update task ending time
 std::string cmdUpdate::updateEndingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
 	std::string Tempt = eventToUpdate.displayEvent();
 	eventToUpdate.changeEndDay(_endingDate);
@@ -62,6 +59,7 @@ std::string cmdUpdate::updateEndingTime(Event eventToUpdate, int eventNumber, St
 	return _feedback; 
 }
 
+//update task start time
 std::string cmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
 	std::string Tempt = eventToUpdate.displayEvent();
 	eventToUpdate.changeStartDay(_startingDate);
@@ -74,6 +72,7 @@ std::string cmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber, 
 	return _feedback;
 }
 
+//remove task start time
 std::string cmdUpdate::clearStartingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
 	std::string Tempt = eventToUpdate.displayEvent();
 	int endDay = eventToUpdate.getEndDate();
@@ -88,6 +87,7 @@ std::string cmdUpdate::clearStartingTime(Event eventToUpdate, int eventNumber, S
 	return _feedback;
 }
 
+//remove task ending time
 std::string cmdUpdate::clearEndingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
 	std::string Tempt = eventToUpdate.displayEvent();
 	eventToUpdate.changeEndDay(INVALID_DATE);
@@ -99,6 +99,7 @@ std::string cmdUpdate::clearEndingTime(Event eventToUpdate, int eventNumber, Sto
 	_feedback = printFeedback(Tempt, eventToUpdate);
 	return _feedback; 
 }
+
 std::string cmdUpdate::printFeedback(std::string Tempt, Event eventToUpdate){
 	std::string feedback = "\"" + Tempt + UPDATE_MESSAGE + "\"" + eventToUpdate.displayEvent() +"\" \n\n";
 	return feedback;

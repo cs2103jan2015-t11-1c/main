@@ -10,6 +10,7 @@ cmdSearch::cmdSearch(void){
 cmdSearch::~cmdSearch(void){
 }
 
+//search for key words from task list
 std::string cmdSearch::executecmdSearch(Storage& _storage){
 	Eventlist events = _storage.displayEvent();
 	std::list<Event> allEvents = events.returnAllEvent();
@@ -17,7 +18,7 @@ std::string cmdSearch::executecmdSearch(Storage& _storage){
 
 	searchForEvent(allEvents, eventsNumber);
 
-	if(_eventFound.getTotalNumberOfEvents() != 0){
+	if (_eventFound.getTotalNumberOfEvents() != 0) {
 		_feedback = printEventFound();
 	}else{
 		_feedback = MESSAGE_EVENT_NOT_FOUND;

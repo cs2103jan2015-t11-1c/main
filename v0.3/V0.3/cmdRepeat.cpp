@@ -17,6 +17,7 @@ cmdRepeat::cmdRepeat(void){
 cmdRepeat::~cmdRepeat(void){
 }
 
+//repeat a task
 std::string cmdRepeat::executecmdRepeat(Storage& _storage){
 	_repeatDetails = _taskName;
 	determineEventNumber();
@@ -44,6 +45,7 @@ std::string cmdRepeat::executecmdRepeat(Storage& _storage){
 	return "\n";
 }
 
+//extract repeat frequency(daily, weekly, monthly)
 std::string cmdRepeat::getRepeatType(std::string& _repeatDetails){
 	std::string repeatType;
 	int Tcount;
@@ -59,14 +61,15 @@ std::string cmdRepeat::getRepeatType(std::string& _repeatDetails){
 	return repeatType;
 }
 
+//convert repeat type to DAILY, WEEKLY, MONTHLY
 cmdRepeat::repeatType cmdRepeat::determineRepeatType(std::string& _repeatDetails){
 	std::string repeatType;
 	repeatType = getRepeatType(_repeatDetails);
-	if(repeatType == "daily"){
+	if (repeatType == "daily") {
 		_type = DAILY;
-	}else if(repeatType == "weekly"){
+	}else if (repeatType == "weekly") {
 		_type = WEEKLY;
-	}else if(repeatType == "monthly"){
+	}else if (repeatType == "monthly") {
 		_type = MONTHLY;
 	}else {
 		std::cout << INVALID_REPEATING_TYPE << std::endl;
@@ -76,7 +79,7 @@ cmdRepeat::repeatType cmdRepeat::determineRepeatType(std::string& _repeatDetails
 }
 
 int cmdRepeat::determineRepeatTimes(std::string& _repeatDetails){
-	if(isDefaultRepeat(_repeatDetails)){
+	if (isDefaultRepeat(_repeatDetails)) {
 		switch(_type)
 		{
 		case DAILY:

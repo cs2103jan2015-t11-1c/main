@@ -14,12 +14,13 @@ cmdMarkAsDone::~cmdMarkAsDone(void)
 {
 }
 
+//mark one event or multiple tasks as done
 std::string cmdMarkAsDone::executeMarkAsDone(Storage& _storage){
 	int eventNumber = _taskNumberList.size();
 	Eventlist activeEvents = _storage.displayEvent();
 
 	try{
-		if(eventNumber>activeEvents.getTotalNumberOfEvents()){
+		if (eventNumber>activeEvents.getTotalNumberOfEvents()) {
 			throw EXCEPTION_INVALID_INDEX;
 	}
 	_feedback = printFeedback(_taskNumberList, _storage);

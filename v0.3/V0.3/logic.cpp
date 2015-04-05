@@ -13,11 +13,7 @@ logic::logic(CommandType command){
 }
 logic::~logic(){
 }
-/*
-void logic::logicStorage(){
-	_storage = Storage();
-}
-*/
+
 void logic:: setCommand (string taskName, int startingDate, int startingMonth, int startingTime, int endingMonth, int endingDate, int endingTime, list<int> taskNumerlist){
 	_taskName = taskName;
 	_startingDate = startingDate;
@@ -29,47 +25,47 @@ void logic:: setCommand (string taskName, int startingDate, int startingMonth, i
 	_taskNumberList = taskNumerlist;
 }
 
+//taes in command word and execute command
 string logic::executeCommand(CommandType command ,string taskName, int startingDate, int startingMonth, int startingTime, int endingDate, int endingMonth, int endingTime, list<int> taskNumerlist){
 	_commandWord = command;
 	vectorCommand.push_back(command);
-	if (command == ADDEVENTWITHDEADLINE || command == ADDFLOATINGEVENT || command == ADDTIMEDEVENT){
+	if (command == ADDEVENTWITHDEADLINE || command == ADDFLOATINGEVENT || command == ADDTIMEDEVENT) {
 		_add.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _add.executecmdAdd(_storage);
-	}else if(command == UPDATEENDINGTIME || command == UPDATENAME || command == UPDATESTARTINGTIME || command == CLEARSTART || command == CLEAREND){
+	}else if (command == UPDATEENDINGTIME || command == UPDATENAME || command == UPDATESTARTINGTIME || command == CLEARSTART || command == CLEAREND) {
 		_update.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _update.executecmdUpdate(_storage);
-	}else if(command == DELETE){
+	}else if (command == DELETE) {
 		_delete.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _delete.executecmdDelete(_storage);
-	}else if(command == UNDO){
+	}else if (command == UNDO) {
 		_undo.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _undo.undo(_storage, vectorCommand);
-	}else if(command == CLEAR){
+	}else if (command == CLEAR) {
 		_clear.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _clear.executeClear(_storage);
-	}else if(command == SEARCH){
+	}else if (command == SEARCH) {
 		_search.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _search.executecmdSearch(_storage);
-	}else if(command == DISPLAY || command ==DISPLAYTODAY || command
-		== DISPLAYDONE){
+	}else if (command == DISPLAY || command ==DISPLAYTODAY || command
+		== DISPLAYDONE) {
 		_display.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _display.executecmdDisplay(_storage);
-	}else if(command == MARKASDONE){
+	}else if (command == MARKASDONE) {
 		_markAsDone.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _markAsDone.executeMarkAsDone(_storage);
 	}
-	else if(command == HELP){
+	else if (command == HELP) {
 		return _help.helpMessage();
 	}
-	else if(command == CHANGEDIRECTORY){
+	else if (command == CHANGEDIRECTORY) {
 		_changeDirectory.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _changeDirectory.executecmdChangeDirectory(_storage);
 	}
-	else if(command == REPEAT || REPEATDONE){
+	else if (command == REPEAT || REPEATDONE) {
 		_repeat.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _repeat.executecmdRepeat(_storage);
 	}
-	//return "logic error\n\n";
 }
 
 

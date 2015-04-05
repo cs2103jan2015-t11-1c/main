@@ -3,6 +3,7 @@
 #include <sstream>
 
 const static std::string CLASH_MESSAGE = "Reminder: You will be doing something else at this time. You may want to reschedule.\n";
+const static std::string ADD_SUCCESSFUL_MESSAGE = "\" is added successfully.\n\n";
 
 cmdAdd::cmdAdd(void){
 
@@ -12,6 +13,7 @@ cmdAdd::cmdAdd(void){
 cmdAdd::~cmdAdd(void){
 }
 
+//add event with deadline, floating task or timed event
 std:: string cmdAdd::executecmdAdd(Storage& _storage){
 	_newEvent = Event(_taskName, _endingDate, _endingMonth, _endingTime);
 	switch (_commandWord)
@@ -81,8 +83,7 @@ std::string cmdAdd::addTimedEvent(Storage& _storage){
 }
 
 std::string cmdAdd::printFeedback(Event newEvent){
-	std::string feedback = "\"" + newEvent.displayEvent() + "\" is added successfully.\n\n";
-
+	std::string feedback = "\"" + newEvent.displayEvent() + ADD_SUCCESSFUL_MESSAGE;
 	return feedback;
 }
 

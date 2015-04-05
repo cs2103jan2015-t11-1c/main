@@ -11,6 +11,7 @@ cmdDisplay::cmdDisplay(void){
 cmdDisplay::~cmdDisplay(void){
 }
 
+//check if number of task is zero
 bool cmdDisplay::isEmptyEventsStorage(Storage& _storage){
 	bool isEmpty = false;
 	Eventlist activeEvents = _storage.displayEvent();
@@ -20,6 +21,7 @@ bool cmdDisplay::isEmptyEventsStorage(Storage& _storage){
 
 	return isEmpty;
 }
+//display active tasks, tasks done or tasks due/start today
 std::string cmdDisplay::executecmdDisplay(Storage& _storage){
 	if(isEmptyEventsStorage(_storage)){
 		return MESSAGE_EMPTY_ACTIVE_EVENTS;
@@ -38,6 +40,7 @@ std::string cmdDisplay::executecmdDisplay(Storage& _storage){
 	} 	
 	return "";
 }
+
 //display active events
 std::string cmdDisplay::cmdDisplayActive(Storage& _storage){
 	Eventlist activeEvents = _storage.displayEvent();
@@ -87,7 +90,7 @@ std::string cmdDisplay::cmdDisplayToday(Storage& _storage){
 		}
 	}
 
-	if(eventsToday.size() != 0){
+	if (eventsToday.size() != 0){
 		feedback = eventsToDisplay(eventsToday);
 	}else{
 		feedback = MESSAGE_NO_EVENT_TODAY;
@@ -102,11 +105,10 @@ bool cmdDisplay::isEventToday(int taskStartMonth, int taskStartDay, int taskEndM
 	time_t t = time(0);
 	struct tm now;
 	localtime_s (&now, &t);
-	//std::cout << "Month: "<<(now.tm_mon + 1) <<"\n Date: " << (now.tm_mday) << std::endl;
 	int currentMonth = now.tm_mon + 1;
 	int currentDay = now.tm_mday;
 
-	if(((taskStartMonth == currentMonth) & (taskStartDay == currentDay)) || ((taskEndMonth == currentMonth) & (taskEndDay == currentDay))){
+	if (((taskStartMonth == currentMonth) & (taskStartDay == currentDay)) || ((taskEndMonth == currentMonth) & (taskEndDay == currentDay))) {
 		isEventToday = true;
 	}
 
@@ -118,7 +120,7 @@ std::string cmdDisplay::eventsToDisplay(std::list<Event> events){
 	std::ostringstream display;
 	int i = 1;
 	std::list<Event>::iterator iter;
-	for(iter = events.begin(); iter != events.end() && i < NUMBER_OF_TASK_TO_DISPLAY; ++iter){
+	for (iter = events.begin(); iter != events.end() && i < NUMBER_OF_TASK_TO_DISPLAY; ++iter) {
 		display  << std::setw(3) << i << "." << (*iter).displayEvent() << "\n";
 		i++;
 	}

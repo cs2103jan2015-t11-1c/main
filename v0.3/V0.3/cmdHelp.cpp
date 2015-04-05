@@ -20,6 +20,7 @@ cmdHelp::cmdHelp(void){
 cmdHelp::~cmdHelp(void){
 }
 
+//display help for all functions 
 std::string cmdHelp::helpMessage(){
 	return LINE+ HELP_ADD + HELP_DELETE + HELP_UPDATE + HELP_UPDATE_START + HELP_UPDATE_END 
 		   + HELP_UPDATE_CLEAR_START + HELP_UPDATE_CLEAR_END + HELP_MARKASDONE + HELP_UNDO 

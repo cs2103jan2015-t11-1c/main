@@ -8,6 +8,7 @@ cmdChangeDirectory::cmdChangeDirectory(void){
 cmdChangeDirectory::~cmdChangeDirectory(void){
 }
 
+//change directory for the local file
 std::string cmdChangeDirectory::executecmdChangeDirectory(Storage& _storage){
 	std::string directory = _taskName;
 	const char * newDirectory = directory.c_str();

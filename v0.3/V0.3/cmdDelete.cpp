@@ -12,9 +12,9 @@ cmdDelete::cmdDelete(void){
 cmdDelete::~cmdDelete(void){
 }
 
+//delete one task or multiple tasks
 std::string cmdDelete::executecmdDelete(Storage& _storage){
 	int eventNumber = _taskNumberList.size();
-	//std::cout << "eventno: " << eventNumber <<std::endl;
 	Eventlist activeEvents = _storage.displayEvent();
 	try{
 		if(eventNumber>activeEvents.getTotalNumberOfEvents()){
