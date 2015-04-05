@@ -30,13 +30,13 @@ std::string cmdRepeat::executecmdRepeat(Storage& _storage){
 
 	Event repeatingEvent;
 
-	if(_commandWord == REPEAT){
+	if (_commandWord == REPEAT) {
 		repeatingEvent = _storage.getEvent(_eventNumber);
-	}else if(_commandWord == REPEATDONE){
+	}else if (_commandWord == REPEATDONE) {
 		repeatingEvent = _storage.getDoneEvent(_eventNumber);
 	}
 
-	if(repeatingEvent.isTimedTask()){
+	if (repeatingEvent.isTimedTask()) {
 		repeatTimedTask(repeatingEvent, _storage);
 	}else{
 		repeatDeadlineTask(repeatingEvent, _storage);
@@ -53,14 +53,13 @@ std::string cmdRepeat::getRepeatType(std::string& _repeatDetails){
 	std::string repeatType;
 	int Tcount;
 	Tcount = _repeatDetails.find_first_of(" ");
-	if(Tcount != std::string::npos){
+	if (Tcount != std::string::npos) {
 		repeatType = _repeatDetails.substr(0, Tcount);
 		_repeatDetails = _repeatDetails.substr(Tcount+1);
 	}else{
 		repeatType = _repeatDetails;
 		_repeatDetails.clear();
 	}
-
 	return repeatType;
 }
 
@@ -88,7 +87,6 @@ cmdRepeat::repeatType cmdRepeat::determineRepeatType(std::string& _repeatDetails
 	}else {
 		std::cout << INVALID_REPEATING_TYPE << std::endl;
 	}
-
 	return _type;
 }
 
@@ -107,12 +105,11 @@ int cmdRepeat::determineRepeatTimes(std::string& _repeatDetails){
 		}
 	}else{
 		if (isNumber(_repeatDetails)){
-			_repeatTimes= std::stoi(_repeatDetails);
+			_repeatTimes = std::stoi(_repeatDetails);
 		}else{
 			std::cout << ERROR_MESSAGE << std::endl;
 		}
 	}
-
 	return _repeatTimes;
 }
 
