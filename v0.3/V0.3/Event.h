@@ -15,9 +15,11 @@ private:
 	int _endDay;
 	int _endMonth;
 	int _endTime;
+	int _endYear;
 	int _startDay;
 	int _startMonth;
 	int _startTime;
+	int _startYear;
 	bool _durationEvent;
 
 public:

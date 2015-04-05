@@ -1,5 +1,6 @@
 #include "Event.h"
 
+static int DEFAUlTYEAR = 2015;
 
 Event::Event(void)
 {	
@@ -11,6 +12,8 @@ Event::Event(std::string newTitle, int newDay, int newMonth, int newTime)
 	_endDay= newDay;
 	_endMonth = newMonth;
 	_endTime = newTime;
+	_endYear = DEFAUlTYEAR;
+	_startYear = DEFAUlTYEAR;
 	updateDueRanking();
 	_durationEvent = false;
 }
@@ -33,6 +36,8 @@ std::string Event::displayEvent(){
 		hour = _endTime / 100;
 		minute = _endTime % 100;
 		Ostring << " " << convertNumberToString(hour) << ":" << convertNumberToString(minute);
+		if (_endYear != DEFAUlTYEAR){
+			Ostring << " Year: " << _endYear; }
 		Ostring << std::setw(14) << "] ";
 		Ostring << _title; 
 	}
@@ -44,12 +49,16 @@ std::string Event::displayEvent(){
 		hour = _startTime / 100;
 		minute = _startTime % 100;
 		Ostring << " " << convertNumberToString(hour) << ":" << convertNumberToString(minute);
+		if (_startYear != DEFAUlTYEAR){
+			Ostring << " Year: " << _endYear; }
 		Ostring << " - ";
 		Ostring << convertNumberToString(_endDay);
 		Ostring << " " << convertToMonth(_endMonth);
 		hour = _endTime / 100;
 		minute = _endTime % 100;
 		Ostring << " " << convertNumberToString(hour) << ":" << convertNumberToString(minute);
+		if (_endYear != DEFAUlTYEAR){
+			Ostring << " Year: " << _endYear; }
 		Ostring << "] ";
 		Ostring << _title;
 	}
@@ -59,17 +68,23 @@ std::string Event::displayEvent(){
 }
 
 std::string Event::readEvent()
-{
+{	std::string finalString;
 	if (_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 ){
-		return _title + " no specific deadline";}
+		finalString = _title + " no specific deadline";}
 	else if( _durationEvent == false){
-	return _title + " is due " + convertNumberToString(_endDay) + " " 
+		finalString = _title + " is due " + convertNumberToString(_endDay) + " " 
 		+ convertNumberToString(_endMonth) + " " + convertTimeToString(_endTime);
+		if (_endYear != DEFAUlTYEAR){
+			finalString = finalString + "Year: " + convertTimeToString(_endYear); }
 	}
-	else { return _title + " start from " + convertNumberToString(_startDay) + " " + 
-	convertNumberToString(_startMonth) + " " + convertNumberToString(_startTime) + 
-	" is due " + convertNumberToString(_endDay) + " " + convertNumberToString(_endMonth)
-	+ " " + convertTimeToString(_endTime);
+	else { finalString = _title + " start from " + convertNumberToString(_startDay) + " " + 
+	convertNumberToString(_startMonth) + " " + convertNumberToString(_startTime);
+	if (_startYear != DEFAUlTYEAR){
+		finalString = finalString + " Year: " + convertTimeToString(_startYear); }
+	finalString = finalString + " is due " + convertNumberToString(_endDay) + " " + 
+	convertNumberToString(_endMonth)+ " " + convertTimeToString(_endTime);
+	if (_endYear != DEFAUlTYEAR){
+		finalString = finalString + " Year: " + convertTimeToString(_endYear); }
 	}
 }
 
@@ -167,14 +182,14 @@ void Event::changeStartTime (int newTime)
 	_durationEvent = true;
 }
 
-//For the purpose of sorting, arrange the events from earliest month and then earliest
-//endday and then earliest hour.
+//For the purpose of sorting, arrange the events from earliest year and then earliest month
+//and then earliest endday and then earliest hour.
 //Events with no deadline are display first.
 void Event::updateDueRanking()
 {	if(_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 || _endTime < 0 || _endTime >2359 )
-	_dueRanking = 100000000;
-	else
-	_dueRanking = _endMonth*1000000 + _endDay*10000 + _endTime;
+	_dueRanking = 10000000000000;
+else
+	_dueRanking = _endYear*100000000 +_endMonth*1000000 + _endDay*10000 + _endTime;
 }
 
 std::string Event::getTaskName()
