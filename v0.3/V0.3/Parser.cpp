@@ -248,19 +248,25 @@ bool Parser::isAbleToGetNumberList(std::string numberList) {
 
 	while (isValidIndex(TIndex)) {
 		taskNumberString = numberList.substr(0,TIndex);
-
+		 
 		if (isStringAnInteger(taskNumberString)) {
 			taskNumberInteger = convertStringToInteger(taskNumberString);
 			_taskNumberList.push_back(taskNumberInteger);
-			replaceStringWithItsSubstring(numberList, TIndex + 1);
-			replaceStringWithItsSubstring(numberList, getIndexOfFirstNonWhiteSpace(numberList));
-			TIndex = getIndexOfFirstWhiteSpace(numberList);
+			replaceStringWithItsSubstring(numberList, TIndex);
+			int EIndex = getIndexOfFirstNonWhiteSpace(numberList);
+			if (isValidIndex(EIndex) &&!isEmpty(numberList)) {
+				replaceStringWithItsSubstring(numberList, EIndex);
+			    TIndex = getIndexOfFirstWhiteSpace(numberList);
+			}
+			else{
+				break;
+			}
 		} else {
 			return false;			
 		}
 	}
 
-	if (numberList.size() != 0) {		
+	if (!isEmpty(numberList)) {		
 		if (isStringAnInteger(numberList)) {
 			taskNumberString = numberList;
 			taskNumberInteger = convertStringToInteger(numberList);
@@ -800,4 +806,15 @@ string Parser::VerifyAllAttributesAndCallLogic(CommandType command){
 		resetAttributesValue();
 		return INVALID_INPUT_MESSAGE;
 	}
+}
+
+void Parser::setAttributes(string taskName, string startingTime, string endingTime, int startingDate, int endingDate, MonthType startingMonth, MonthType endingMonth, list<int> taskNumberList) {
+	_taskName = taskName;
+	_startingTime = startingTime;
+	_endingTime = endingTime;
+	_startingDate = startingDate;
+	_endingDate = endingDate;
+	_startingMonth = startingMonth;
+	_endingMonth = endingMonth;
+	_taskNumberList = taskNumberList;
 }

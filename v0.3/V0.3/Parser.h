@@ -9,7 +9,7 @@
 
 using namespace std;
 enum MonthType {JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER,MONTHNOTASSIGNED};
-const static string  INVALID_TIME_DATE_MONTH_MESSAGE =" Please check your user input time, date and month.\n\n";
+const static string  INVALID_TIME_DATE_MONTH_MESSAGE ="Please check your user input time, date and month.\n\n";
 const static string INVALID_INPUT_MESSAGE = "Invalid user input.\n\n";
 
 class Parser
@@ -71,5 +71,5 @@ public:
 	void resetAttributesValue();
 	void replaceStringWithItsSubstring(std::string &, int );
 	void  assignDateTimeMonthAttributes(string startOrEnd, string &, int , MonthType );
-
+	void setAttributes(string ,string ,string ,int ,int ,MonthType ,MonthType ,list<int> );
 };
