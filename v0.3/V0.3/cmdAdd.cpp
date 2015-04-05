@@ -54,8 +54,6 @@ std::string cmdAdd::addTimedEvent(Storage& _storage){
 	std::list<Event> allEvents = events.returnAllEvent();
 	int startingMonth = _startingMonth;
 	int startingDate = _startingDate;
-	//int endingMonth = _endingMonth;
-	//int endingDate = _endingDate;
 	int startingTime = _startingTime;
 	int endingTime = _endingTime;
 	std::list<Event>::iterator Tcount;

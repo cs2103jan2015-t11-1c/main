@@ -39,6 +39,8 @@ const static std::string STRING_SEARCH = "search";
 const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
 const static std::string STRING_REPEAT = "repeat";
 const static std::string STRING_REPEATDONE = "repeatdone";
+const static std::string MESSAGE_REPEAT = "Repeat task ";
+const static std::string MESSAGE_SUCCESS = " succesfully\n";
 
 bool Parser::isTaskWithDeadline(std::string toDoList){
 	bool isATaskWithDeadline;
@@ -546,7 +548,7 @@ std::string Parser::repeat(string toDoList, string command) {
 		int IndexTwo = getIndexOfFirstNonWhiteSpace(toDoList);
 		replaceStringWithItsSubstring(toDoList, IndexTwo);
 		_taskName = toDoList;
-		cout << _taskName;
+		cout << MESSAGE_REPEAT << integerTaskNumber << " " << _taskName << MESSAGE_SUCCESS;
 		return VerifyAllAttributesAndCallLogic(CommandTypeCommand);
 	} else {
 		return INVALID_INPUT_MESSAGE;
