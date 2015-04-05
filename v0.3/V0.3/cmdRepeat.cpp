@@ -8,6 +8,8 @@ const int DAILY_INTERVAL = 1;
 const int WEEKLY_INTERVAL = 7;
 const int MONTHLY_INTERVAL = 30;
 const int STARTING_YEAR = 2015;
+const std::string ERROR_MESSAGE = "Invalid Repeating Times";
+const std::string INVALID_REPEATING_TYPE = "Invalid Repeating Type";
 
 cmdRepeat::cmdRepeat(void){
 }
@@ -21,43 +23,25 @@ std::string cmdRepeat::executecmdRepeat(Storage& _storage){
 	determineRepeatType(_repeatDetails);
 	_repeatTimes = determineRepeatTimes(_repeatDetails);
 	_interval = determineInterval();
-	int Tcount;
-	
+
 	Event repeatingEvent;
 
 	if(_commandWord == REPEAT){
 		repeatingEvent = _storage.getEvent(_eventNumber);
 	}else if(_commandWord == REPEATDONE){
 		repeatingEvent = _storage.getDoneEvent(_eventNumber);
+	}
+
+	if(repeatingEvent.isTimedTask()){
+		repeatTimedTask(repeatingEvent, _storage);
 	}else{
-		std::cout << "Error commandWord!" << std::endl;
+		repeatDeadlineTask(repeatingEvent, _storage);
 	}
 
-	std::string eventTitle = repeatingEvent.getTaskName();
-	int date = repeatingEvent.getEndDate();
-	int month = repeatingEvent.getEndMonth();
-	int time = repeatingEvent.getEndTime();
-	_findNextDate.calculate(date, month, _interval);
-	int newDate;
-	int newMonth;
-	int newYear;
-	newDate = _findNextDate.getDay();
-	newMonth = _findNextDate.getMonth();
-	newYear = _findNextDate.getYear();
- 
-	for(Tcount = 0; Tcount < _repeatTimes; Tcount++){
-		Event newEvent(eventTitle, newDate, newMonth, time);
-		if (newYear != STARTING_YEAR) {
-			newEvent.changeEndYear(newYear);}
-		_storage.addEvent(newEvent);
-		_findNextDate.calculate(newDate, newMonth, _interval);
-		newDate = _findNextDate.getDay();
-		newMonth = _findNextDate.getMonth();
-		newYear = _findNextDate.getYear();
-	}
-
-
-	return "";
+	_storage.sortActiveEventlist();
+	_storage.sortDoneEventlist();
+	_storage.synchronizeDrive();
+	return "\n";
 }
 
 std::string cmdRepeat::getRepeatType(std::string& _repeatDetails){
@@ -84,6 +68,8 @@ cmdRepeat::repeatType cmdRepeat::determineRepeatType(std::string& _repeatDetails
 		_type = WEEKLY;
 	}else if(repeatType == "monthly"){
 		_type = MONTHLY;
+	}else {
+		std::cout << INVALID_REPEATING_TYPE << std::endl;
 	}
 
 	return _type;
@@ -103,31 +89,33 @@ int cmdRepeat::determineRepeatTimes(std::string& _repeatDetails){
 			break;
 		}
 	}else{
-		//if (isdigit(_repeatDetails))
-
-	 _repeatTimes= std::stoi(_repeatDetails);
+		if (isNumber(_repeatDetails)){
+			_repeatTimes= std::stoi(_repeatDetails);
+		}else{
+			std::cout << ERROR_MESSAGE << std::endl;
+		}
 	}
 
 	return _repeatTimes;
 }
-/*
+
 bool cmdRepeat::isNumber(std::string& string)
 {
-    bool isNumber = true;
+	bool isNumber = true;
 	std::string::iterator iter = string.begin();
-    for (iter = string.begin(), iter != string.end(), iter++){
-		if(!isdigit(*iter)){
+	for (iter = string.begin(); iter != string.end(); iter++){
+		if (!isdigit(*iter)){
 			isNumber = false;
 		}
 	}
 
-    return  isNumber;
+	return  isNumber;
 }
-*/
+
 bool cmdRepeat::isDefaultRepeat(std::string _repeatDetails){
 	bool isDefaultRepeat = false;
 
-	if(_repeatDetails.empty()){
+	if (_repeatDetails.empty()){
 		isDefaultRepeat = true;
 	}
 
@@ -150,4 +138,80 @@ int cmdRepeat::determineInterval(){
 	default:
 		return NO_INTERVAL;
 	}
+}
+
+void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
+	int Tcount;	
+	std::string eventTitle = repeatingEvent.getTaskName();
+	int date = repeatingEvent.getEndDate();
+	int month = repeatingEvent.getEndMonth();
+	int time = repeatingEvent.getEndTime();
+
+	_findNextDate.calculate(date, month, _interval);
+	int newDate;
+	int newMonth;
+	int newYear;
+	newDate = _findNextDate.getDay();
+	newMonth = _findNextDate.getMonth();
+	newYear = _findNextDate.getYear();
+
+	for(Tcount = 0; Tcount < _repeatTimes; Tcount++){
+		Event newEvent(eventTitle, newDate, newMonth, time);
+		if (newYear != STARTING_YEAR) {
+			newEvent.changeEndYear(newYear);}
+		_storage.addEvent(newEvent);
+		_findNextDate.calculate(newDate, newMonth, _interval);
+		newDate = _findNextDate.getDay();
+		newMonth = _findNextDate.getMonth();
+		newYear = _findNextDate.getYear();
+	}
+
+}
+
+void cmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
+	int Tcount;	
+	std::string eventTitle = repeatingEvent.getTaskName();
+	int startDate = repeatingEvent.getStartDate();
+	int startMonth = repeatingEvent.getStartMonth();
+	int startTime = repeatingEvent.getStartTime();
+	int endDate = repeatingEvent.getEndDate();
+	int endMonth = repeatingEvent.getEndMonth();
+	int endTime = repeatingEvent.getEndTime();
+
+	_findNextDate.calculate(startDate, startMonth, _interval);
+	int newStartDate;
+	int newStartMonth;
+	int newStartYear;
+	newStartDate = _findNextDate.getDay();
+	newStartMonth = _findNextDate.getMonth();
+	newStartYear = _findNextDate.getYear();
+
+	_findNextDate.calculate(endDate, endMonth, _interval);
+	int newEndDate;
+	int newEndMonth;
+	int newEndYear;
+	newEndDate = _findNextDate.getDay();
+	newEndMonth = _findNextDate.getMonth();
+	newEndYear = _findNextDate.getYear();
+
+	for(Tcount = 0; Tcount < _repeatTimes; Tcount++){
+		Event newEvent(eventTitle, newEndDate, newEndMonth, endTime);
+		newEvent.changeStartDay(newStartDate);
+		newEvent.changeStartMonth(newStartMonth);
+		newEvent.changeStartTime(startTime);
+		if (newStartYear != STARTING_YEAR) {
+			newEvent.changeEndYear(newStartYear);}
+		_storage.addEvent(newEvent);
+		
+		_findNextDate.calculate(newStartDate, newStartMonth, _interval);
+		newStartDate = _findNextDate.getDay();
+		newStartMonth = _findNextDate.getMonth();
+		newStartYear = _findNextDate.getYear();
+
+		_findNextDate.calculate(newEndDate, newEndMonth, _interval);
+		newEndDate = _findNextDate.getDay();
+		newEndMonth = _findNextDate.getMonth();
+		newEndYear = _findNextDate.getYear();
+	}
+
 }
