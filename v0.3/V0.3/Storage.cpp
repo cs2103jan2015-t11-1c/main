@@ -197,7 +197,7 @@ void Storage::saveActiveEventsToFile(){
 	std::list<Event> currentList = _activeEvent.returnAllEvent();
 	std::list<Event>::iterator iter;
 	for(iter = currentList.begin(); iter != currentList.end(); ++iter){
-		writeFile("Incomplete tasks: " + (*iter).readEvent());
+		writeFile("Incomplete tasks: " + (*iter).saveEvent());
 	}
 }
 
@@ -206,7 +206,7 @@ void Storage::saveDoneEventsToFile(){
 	std::list<Event> currentList = _doneEvent.returnAllEvent();
 	std::list<Event>::iterator iter;
 	for(iter = currentList.begin(); iter != currentList.end(); ++iter){
-		writeFile("Done tasks: " + (*iter).readEvent());
+		writeFile("Done tasks: " + (*iter).saveEvent());
 	}
 }
 
@@ -247,98 +247,73 @@ void Storage::readFile(){
 //Retrieve the Event information from a local file
 //and store them in an Event then stored in the appropriate Eventlist.
 void Storage::readEventsFromFile(std::string currentEventLine){
-	int index;
 	std::string doneEventidentifier = "Done tasks: ";
-	std::string activeEventidentifier = "Incomplete tasks: ";
-	std::string floatingEventidentifier = " no specific deadline";
-	std::string changeOfYearidentifier = "Year: ";
+	std::string startInfoIdentifier = "Starting Info: ";
+	std::string endInfoIdentifier = "Ending Info: ";
 	std::size_t foundDone = currentEventLine.find(doneEventidentifier);
-	std::size_t floatingEventFinder;
-	std::size_t startingEvent;
+	std::size_t startInfoFinder;
+	std::size_t endInfoFinder;
 	std::string title;
 	std::string startday;
 	std::string startmonth;
 	std::string starttime;
+	std::string startyear;
 	std::string endday;
 	std::string endmonth;
 	std::string endtime;
+	std::string endyear;
 	Event newEvent;
-	bool isActive = false;
-	bool hasStartInfo = false;
-	bool hasNoDeadline = false;
+	bool isActive = true;
+	bool hasStartInfo = true;
+	bool hasEndInfo = true;
 
 	if (foundDone < std::string::npos){
 		currentEventLine = currentEventLine.substr(12);
-		floatingEventFinder = currentEventLine.find(floatingEventidentifier);
-		if (floatingEventFinder < std::string::npos)
-		{	title = currentEventLine.substr(0,floatingEventFinder);
-			hasNoDeadline = true;}
-		else {
-		startingEvent = currentEventLine.find(" start from ");
-		if (startingEvent < std::string::npos)
-		{	
-			index = currentEventLine.find(" start from ");
-			title = currentEventLine.substr(0, index);
-			currentEventLine = currentEventLine.substr(index+12);
-			startday = currentEventLine.substr(0,2);
-			startmonth = currentEventLine.substr(3,2);
-			starttime = currentEventLine.substr(6,4);
-			endday = currentEventLine.substr(18,2);
-			endmonth = currentEventLine.substr(21,2);
-			endtime = currentEventLine.substr(24,4);
-			hasStartInfo = true;
-		}
-		else {	index = currentEventLine.find(" is due ");
-				title = currentEventLine.substr(0, index);
-				currentEventLine = currentEventLine.substr(index+8);
-				endday = currentEventLine.substr(0,2);
-				endmonth = currentEventLine.substr(3,2);
-				endtime = currentEventLine.substr(6,4);
-		}
-		}
+		isActive = false;
 	} else {
-		isActive = true;
 		currentEventLine = currentEventLine.substr(18);
-		floatingEventFinder = currentEventLine.find(floatingEventidentifier);
-		if (floatingEventFinder < std::string::npos)
-		{	title = currentEventLine.substr(0,floatingEventFinder);
-		hasNoDeadline = true;}
-		else {
-		startingEvent = currentEventLine.find(" start from ");
-		if (startingEvent < std::string::npos)
-		{	index = currentEventLine.find(" start from ");
-			title = currentEventLine.substr(0, index);
-			currentEventLine = currentEventLine.substr(index+12);
-			startday = currentEventLine.substr(0,2);
-			startmonth = currentEventLine.substr(3,2);
-			starttime = currentEventLine.substr(6,4);
-			endday = currentEventLine.substr(18,2);
-			endmonth = currentEventLine.substr(21,2);
-			endtime = currentEventLine.substr(24,4);
-			hasStartInfo = true;
-		}
-		else {	index = currentEventLine.find(" is due ");
-				title = currentEventLine.substr(0, index);
-				currentEventLine = currentEventLine.substr(index+8);
-				endday = currentEventLine.substr(0,2);
-				endmonth = currentEventLine.substr(3,2);
-				endtime = currentEventLine.substr(6,4);
-		}
 	}
+	startInfoFinder = currentEventLine.find(startInfoIdentifier);
+	title = currentEventLine.substr(0,startInfoFinder -1);
+	currentEventLine = currentEventLine.substr(startInfoFinder + startInfoIdentifier.size());
+	if (currentEventLine.substr(0,3) == "Nil") {
+		currentEventLine = currentEventLine.substr(4);
+		hasStartInfo = false;
+	} else {
+		startday = currentEventLine.substr(0,2);
+		startmonth = currentEventLine.substr(3,2);
+		starttime = currentEventLine.substr(6,4);
+		startyear = currentEventLine.substr(11,4);
 	}
-	if(hasNoDeadline) {
-		newEvent = Event(title,-1,-1,-1);}
-	else {
-		newEvent = Event(title,stoi(endday), stoi(endmonth),stoi(endtime));}
+	endInfoFinder = currentEventLine.find(endInfoIdentifier);
+	currentEventLine = currentEventLine.substr(endInfoFinder + endInfoIdentifier.size());
+	if (currentEventLine.substr(0,3) == "Nil") {
+		currentEventLine = currentEventLine.substr(4);
+		hasEndInfo = false;
+	} else {
+		endday = currentEventLine.substr(0,2);
+		endmonth = currentEventLine.substr(3,2);
+		endtime = currentEventLine.substr(6,4);
+		endyear = currentEventLine.substr(11,4);
+	}
 
-	if (hasStartInfo)
-	{	newEvent.changeStartDay(stoi(startday));
+	if(hasEndInfo) {
+		newEvent = Event(title,stoi(endday), stoi(endmonth),stoi(endtime));
+		newEvent.changeEndYear(stoi(endyear));
+	} else {
+		newEvent = Event(title,-1,-1,-1);
+	}
+
+	if (hasStartInfo) {	
+		newEvent.changeStartDay(stoi(startday));
 		newEvent.changeStartMonth(stoi(startmonth));
 		newEvent.changeStartTime(stoi(starttime));
+		newEvent.changeStartYear(stoi(startyear));
 	}
-	if (isActive){	
-		_activeEvent.addEvent(newEvent);}
-	else _doneEvent.addEvent(newEvent);
+	if (isActive) {	
+		_activeEvent.addEvent(newEvent);
+	} else { _doneEvent.addEvent(newEvent);
+		}
 }
 
 //Allow user to change the directory of the local file.
@@ -350,16 +325,3 @@ void Storage::changeCurrentDirectory(const char* newDirectory){
 	SetCurrentDirectory(newDir);
 	/*std::cout << "Set current directory to " << newDir << '\n'; */
 }
-
-/*const int bufferSize = MAX_PATH;
-    char oldDir[bufferSize];
-	GetCurrentDirectory(bufferSize, oldDir);
-	std::cout << "Current directory: " << oldDir << '\n';
-	const char* newDir;
-	char newdir[100];
-	cin >> newdir;
-	newDir = newdir;
-	SetCurrentDirectory(newDir);
-	std::cout << "Set current directory to " << newDir << '\n';
-
-	*/

@@ -43,6 +43,7 @@ public:
 	int getEndDate();
 	int getStartTime();
 	int getEndTime();
+	bool isTimedTask();
 	std::string getTaskName();
 	std::string convertToMonth(int);
 	std::string readEvent();

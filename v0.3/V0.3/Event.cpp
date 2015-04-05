@@ -230,5 +230,30 @@ int Event::getEndTime()
 }
 
 std::string Event::saveEvent(){
-	return "";
+	std::ostringstream Ostring;
+	Ostring << _title <<" ";
+	Ostring << "Starting Info: " ;
+	if (!_durationEvent) {
+		Ostring << "Nil ";
+	} else {
+		Ostring << convertNumberToString(_startDay) << " " ; 
+		Ostring << convertNumberToString(_startMonth) << " " ;
+		Ostring << convertTimeToString(_startTime) << " " ; 
+		Ostring << convertTimeToString(_startYear) << " " ;
+	}
+	Ostring << "Ending Info: " ;
+	if (_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 || _endTime < 0 || _endTime >2359 ) {
+		Ostring <<" Nil ";
+	} else {
+		Ostring << convertNumberToString(_endDay) << " " ;
+		Ostring	<< convertNumberToString(_endMonth)<< " " ;
+		Ostring << convertTimeToString(_endTime) << " " ;
+		Ostring << convertTimeToString(_endYear);
+	}
+
+	return Ostring.str();
+}
+
+bool Event::isTimedTask(){
+	return _durationEvent;
 }
