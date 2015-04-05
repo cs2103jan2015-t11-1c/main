@@ -62,6 +62,12 @@ string logic::executeCommand(CommandType command ,string taskName, int startingD
 		return _help.helpMessage();
 	}
 	else if(command == CHANGEDIRECTORY){
+		_changeDirectory.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+		return _changeDirectory.executecmdChangeDirectory(_storage);
+	}
+	else if(command == REPEAT || REPEATDONE){
+		_repeat.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+		_repeat.executecmdRepeat(_storage);
 	}
 	//return "logic error\n\n";
 }
