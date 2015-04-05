@@ -251,7 +251,8 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 	std::string doneEventidentifier = "Done tasks: ";
 	std::string activeEventidentifier = "Incomplete tasks: ";
 	std::string floatingEventidentifier = " no specific deadline";
-	std::size_t found = currentEventLine.find(doneEventidentifier);
+	std::string changeOfYearidentifier = "Year: ";
+	std::size_t foundDone = currentEventLine.find(doneEventidentifier);
 	std::size_t floatingEventFinder;
 	std::size_t startingEvent;
 	std::string title;
@@ -266,7 +267,7 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 	bool hasStartInfo = false;
 	bool hasNoDeadline = false;
 
-	if (found < std::string::npos){
+	if (foundDone < std::string::npos){
 		currentEventLine = currentEventLine.substr(12);
 		floatingEventFinder = currentEventLine.find(floatingEventidentifier);
 		if (floatingEventFinder < std::string::npos)
