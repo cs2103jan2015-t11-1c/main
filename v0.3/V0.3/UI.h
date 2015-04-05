@@ -16,17 +16,19 @@ class UI{
 		VerificationCommand _verificationCommand;
 		
     public:
-		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, DISPLAYDONE, DISPLAYTODAY, CHANGEDIRECTORY, SEARCH, UNDO, CLEAR, HELP, REPEAT, REPEATDONE};
+		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, DISPLAYDONE, DISPLAYTODAY, CHANGEDIRECTORY, SEARCH, UNDO, HELP, CLEAR, REPEAT, REPEATDONE};
 		UI(void);
 		~UI(void);
 	    CommandType determineCommandType();
-
+		
 		string callToParser();
 		bool isEmpty(string );
 		bool getToDoListAndCheckEmpty();
 		bool readCommandAndVerifyCommand();
 		void getTheToDoListWithIndexZeroNotEmpty();
-		void showWelcomeMessage();
+		string showWelcomeMessage();
+		void setValueForAttributes(string, string);
+		string getToDoList();
 };
 		
 #endif

@@ -692,7 +692,7 @@ std::string Parser::getEventTime(std::string &buffer){
 
 	if (isValidIndex(TIndex)) {
 		time = buffer.substr(0, TIndex);
-		buffer = buffer.substr(TIndex);
+		replaceStringWithItsSubstring(buffer, TIndex);
 	} else if (!isEmpty(buffer)) {
 		time = buffer;
 	}

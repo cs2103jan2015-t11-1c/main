@@ -20,30 +20,27 @@ const static std::string STRING_SEARCH = "search";
 const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
 const static std::string STRING_REPEAT = "repeat";
 const static std::string STRING_REPEATDONE = "repeatdone";
-static const  string WELCOME_MESSAGE = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n";
+static const  string WELCOME_MESSAGE = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n\n";
 static const string EMPTY_STRING = "";
 
-UI::UI(){
+UI::UI() {
 	_commandWord=EMPTY_STRING;
 	_toDoList=EMPTY_STRING;
-	
 }
 
-UI::~UI(void){}
+UI::~UI(void) { }
 
-void UI::showWelcomeMessage(){
-	cout << WELCOME_MESSAGE <<endl;
+string UI::showWelcomeMessage() {
+	return WELCOME_MESSAGE;
 }
 
-bool UI:: readCommandAndVerifyCommand(){
+bool UI:: readCommandAndVerifyCommand() {
 	bool isValid=true;
 	cin >> _commandWord;
 
-	if(_commandWord.empty()){
+	if (_commandWord.empty()) {
 		isValid = false;
-	}
-	else
-	{
+	} else {
 		_commandWord = _verificationCommand.lowercaseCommandWord(_commandWord);
 		isValid = _verificationCommand.isValidCommandWord(_commandWord);
 	}
@@ -52,61 +49,48 @@ bool UI:: readCommandAndVerifyCommand(){
 }
 
 UI::CommandType UI::determineCommandType() {
-	if (_commandWord == STRING_ADD){
+
+	if (_commandWord == STRING_ADD) {
 		return ADD;
-	}
-	else if (_commandWord == STRING_DISPLAY) {
+	} else if (_commandWord == STRING_DISPLAY) {
 		return DISPLAY;
-	}
-	else if (_commandWord == STRING_DELETE) {
+	} else if (_commandWord == STRING_DELETE) {
 		return DELETE;
-	}
-	else if (_commandWord == STRING_UPDATE) {
+	} else if (_commandWord == STRING_UPDATE) {
 		return UPDATE;
-	}
-	else if (_commandWord == STRING_EXIT) {
+	} else if (_commandWord == STRING_EXIT) {
 		return EXIT;
-	}
-	else if (_commandWord == STRING_DONE){
+	} else if (_commandWord == STRING_DONE) {
 		return DONE;
-	}
-	else if (_commandWord == STRING_DISPLAYDONE){
+	} else if (_commandWord == STRING_DISPLAYDONE) {
 		return DISPLAYDONE;
-	}
-	else if (_commandWord == STRING_DISPLAYTODAY){
+	} else if (_commandWord == STRING_DISPLAYTODAY) {
 		return DISPLAYTODAY;
-	}
-	else if(_commandWord == STRING_UNDO){
+	} else if (_commandWord == STRING_UNDO) {
 		return UNDO;
-	}
-	else if (_commandWord == STRING_CLEAR){
+	} else if (_commandWord == STRING_CLEAR) {
 		return CLEAR;
-	}
-	else if (_commandWord == STRING_SEARCH){
+	} else if (_commandWord == STRING_SEARCH) {
 		return SEARCH;
-	}
-	else if(_commandWord == STRING_CHANGEDIRECTORY){
+	} else if (_commandWord == STRING_CHANGEDIRECTORY) {
 		return CHANGEDIRECTORY;
-	}
-	else if(_commandWord == STRING_REPEAT){
+	} else if (_commandWord == STRING_REPEAT) {
 		return REPEAT;
-	}
-	else if(_commandWord == STRING_REPEATDONE){
+	} else if (_commandWord == STRING_REPEATDONE) {
 		return REPEATDONE;
-	}
-	else{
+	} else if (_commandWord == STRING_HELP) {
+		return HELP;
+	} else {
 		return HELP;
 	}
 }
 
-
-bool UI::isEmpty(string str){
-	if(str.empty()){
+bool UI::isEmpty(string str) {
+	if (str.empty()) {
 		return true;
-	}
-	else{
-		for(int i = str.size()-1; i >=0; i--){
-			if(str[i] !=' '){
+	} else {
+		for (int i = str.size() - 1; i >=0; i--) {
+			if (str[i] != ' ') {
 				return false;
 			}
 		}
@@ -114,9 +98,9 @@ bool UI::isEmpty(string str){
 	return true;
 }
 
-bool UI::getToDoListAndCheckEmpty(){
+bool UI::getToDoListAndCheckEmpty() {
 	getline(cin, _toDoList);
-	if(isEmpty(_toDoList)){
+	if (isEmpty(_toDoList)) {
 		return true;
 	}
 	else{
@@ -124,140 +108,126 @@ bool UI::getToDoListAndCheckEmpty(){
 	}
 }
 
-void UI:: getTheToDoListWithIndexZeroNotEmpty(){
+void UI:: getTheToDoListWithIndexZeroNotEmpty() {
 
 	int TIndex = _toDoList.find_first_not_of(" ");
 	_toDoList = _toDoList.substr(TIndex);
 }
 
-string UI::callToParser(){
+string UI::callToParser() {
 	CommandType typeOfCommand = determineCommandType();
 
 	switch (typeOfCommand)
 	{
 		case ADD:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				return INVALID_INPUT_MESSAGE;
-			}
-			else{
+			} else {
 				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.addEvent(_toDoList);			
 			}
 		
 		case DISPLAY:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				return _Parser.displayEvent(STRING_DISPLAY);
-			}
-			else{
+			} else {
 				return INVALID_INPUT_MESSAGE;
 			}
 		
 		case DELETE:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				return INVALID_INPUT_MESSAGE;
-			}
-			else{
+			} else {
 				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.deleteEvent(_toDoList);	
 			}
 		
 		case UPDATE:
-			if(getToDoListAndCheckEmpty()){
+			if( getToDoListAndCheckEmpty()) {
 				return INVALID_INPUT_MESSAGE;
-			}
-			else{
+			} else {
 				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.updateEvent(_toDoList);		
 			}
 		
 		case DONE:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				return INVALID_INPUT_MESSAGE;
-			}
-			else{
+			} else {
 				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.markAsDone(_toDoList);
 			}
 			
 		case DISPLAYDONE:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				return _Parser.displayEvent(STRING_DISPLAYDONE);
-			}
-			else{
+			} else {
 				return INVALID_INPUT_MESSAGE;
 			}
 						
 		case DISPLAYTODAY:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				return _Parser.displayEvent(STRING_DISPLAYTODAY);
-			}
-			else{
+			} else {
 				return INVALID_INPUT_MESSAGE;
 			}
 
 		case EXIT:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				exit(0);
-			}
-			else{
+			} else {
 				return INVALID_INPUT_MESSAGE;
 			}
 			
 		case UNDO:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				return _Parser.unDo();
-			}
-			else{
+			} else {
 				return INVALID_INPUT_MESSAGE;
 			}
 
 		case CLEAR:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				return _Parser.clearEvent();
-			}
-			else{
+			} else {
 				return INVALID_INPUT_MESSAGE;
 			}			
 
 		case SEARCH:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				return INVALID_INPUT_MESSAGE;
-			}
-			else{
-			getTheToDoListWithIndexZeroNotEmpty();
+			} else {
+				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.searchEvent(_toDoList);
 			}
 
 		case CHANGEDIRECTORY:
-			if(!getToDoListAndCheckEmpty()){
+			if ( !getToDoListAndCheckEmpty()) {
 				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.changeDirectory(_toDoList);
-			}
-			else{
+			} else {
 				return INVALID_INPUT_MESSAGE;
 			}
+
 		case HELP:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				return _Parser.help();
-			}
-			else{
+			} else {
 				return false;
 			}
 
 		case REPEAT:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				return INVALID_INPUT_MESSAGE;
-			}
-			else{
+			} else {
 				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.repeat(_toDoList, STRING_REPEAT);
 			}
 			
 		case REPEATDONE:
-			if(getToDoListAndCheckEmpty()){
+			if (getToDoListAndCheckEmpty()) {
 				return INVALID_INPUT_MESSAGE;
-			}
-			else{
+			} else {
 				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.repeat(_toDoList, STRING_REPEATDONE);
 			}
@@ -270,4 +240,11 @@ string UI::callToParser(){
 	
 }
 
+void UI::setValueForAttributes(string commandWord, string toDoList){
+	_commandWord = commandWord;
+	_toDoList = toDoList;
+}
 
+string UI::getToDoList(){
+	return _toDoList;
+}

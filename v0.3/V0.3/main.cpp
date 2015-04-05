@@ -10,7 +10,7 @@ const static string INVALID_COMMAND_MESSAGE ="Sorry, invalid command.\n\n";
 int main() {
 	string message;
 	UI Minik;
-	Minik.showWelcomeMessage();
+	cout << Minik.showWelcomeMessage();
 	cout << "Command: ";
 	while(1)
 	{
