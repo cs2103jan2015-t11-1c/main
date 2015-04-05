@@ -7,22 +7,22 @@ using namespace std;
 #include <cstdlib>
 const static string INVALID_COMMAND_MESSAGE ="Sorry, invalid command.\n\n";
 
-int main(){
-	string msg;
-	UI mnk;
-	//std::cout <<"main" <<std::endl;
-	mnk.showWelcomeMessage();
-
+int main() {
+	string message;
+	UI Minik;
+	Minik.showWelcomeMessage();
+	cout << "Command: ";
 	while(1)
 	{
-	if(mnk.readCommandAndVerifyCommand()){
-		msg = mnk.callToParser();
-		cout << msg;
+		if (Minik.readCommandAndVerifyCommand()) {
+			message = Minik.callToParser();
+			cout << message;
+		} else {
+			cout << INVALID_COMMAND_MESSAGE;
+		}
+		
+		cout << "Command: ";
 	}
-	else{
-		cout << INVALID_COMMAND_MESSAGE;
-	}
-	}
-	system("pause");
+
     return 0;	
 }
