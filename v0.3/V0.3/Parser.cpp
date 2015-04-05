@@ -19,9 +19,68 @@ static const int NOV = 11;
 static const int DEC = 12;
 static const int NOASSIGNEDMONTH = 13; 
 
+const static std::string STRING_ADD = "add";
+const static std::string STRING_DELETE = "delete";
+const static std::string STRING_UPDATE ="update" ;
+const static std::string STRING_UNDO = "undo";
+const static std::string STRING_DONE = "done";
+const static std::string STRING_DISPLAY = "display";
+const static std::string STRING_HELP = "help";
+const static std::string STRING_EXIT = "exit";
+const static std::string STRING_CLEAR = "clear";
+const static std::string STRING_DISPLAYDONE = "displaydone";
+const static std::string STRING_DISPLAYTODAY = "displaytoday";
+const static std::string STRING_SEARCH = "search";
+const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
+const static std::string STRING_REPEAT = "repeat";
+const static std::string STRING_REPEATDONE = "repeatdone";
+
+std::string Parser::repeat(string toDoList, string command){
+	CommandType commandT;
+	string TString;
+
+	if(command == STRING_REPEAT){
+		commandT = REPEAT;
+	}
+	else if (command == STRING_REPEATDONE){
+		commandT = REPEATDONE;
+	}
+	
+	int TIndex = firstIndextThatIsASpace(toDoList);
+	
+	if(isValidIndex(TIndex)){
+		TString = toDoList.substr(0, TIndex);
+		
+	}
+	else{
+		return INVALID_INPUT;
+	}
+	
+	if(isStringAnInteger(TString)){
+		_taskNumberList.push_back(changeFromStringToInteger(TString));
+	}
+	else{
+		return INVALID_INPUT;
+	}
+	
+	toDoList = toDoList.substr(TIndex + 1);
+
+	if(!isEmpty(toDoList)){
+		_taskName = toDoList;
+		cout << _taskName;
+		return finalVerificationAndCallToLogic(commandT);
+	}
+	else{
+		return INVALID_INPUT;
+	}
+
+}
+		
 std::string Parser::changeDirectory(std::string directory){
+	_taskName = directory;
 	return finalVerificationAndCallToLogic(CHANGEDIRECTORY);
 }
+
 std::string Parser::getEventTitle(std::string &buffer){
 	int TIndex;
 
@@ -531,6 +590,12 @@ logic::CommandType Parser::changeToLogicCommandType(CommandType command){
 
 	case HELP:
 		return logic::HELP;
+		
+	case REPEAT:
+		return logic::REPEAT;
+		
+	case REPEATDONE:
+		return logic::REPEATDONE;
 
 	default:
 		return logic::HELP;
@@ -645,6 +710,10 @@ string Parser::finalVerificationAndCallToLogic(CommandType command){
 	case DISPLAYTODAY:
 		
 	case DISPLAYDONE:
+		
+	case REPEAT:
+		
+	case REPEATDONE:
 
 	case MARKASDONE:
 		feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);

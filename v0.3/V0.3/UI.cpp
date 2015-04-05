@@ -5,6 +5,21 @@
 #include "Parser.h"
 using namespace std;
 
+const static std::string STRING_ADD = "add";
+const static std::string STRING_DELETE = "delete";
+const static std::string STRING_UPDATE ="update" ;
+const static std::string STRING_UNDO = "undo";
+const static std::string STRING_DONE = "done";
+const static std::string STRING_DISPLAY = "display";
+const static std::string STRING_HELP = "help";
+const static std::string STRING_EXIT = "exit";
+const static std::string STRING_CLEAR = "clear";
+const static std::string STRING_DISPLAYDONE = "displaydone";
+const static std::string STRING_DISPLAYTODAY = "displaytoday";
+const static std::string STRING_SEARCH = "search";
+const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
+const static std::string STRING_REPEAT = "repeat";
+const static std::string STRING_REPEATDONE = "repeatdone";
 static const  string WELCOME_MESSAGE = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n";
 static const string EMPTY_STRING = "";
 
@@ -37,41 +52,47 @@ bool UI:: readCommandAndVerifyCommand(){
 }
 
 UI::CommandType UI::determineCommandType() {
-	if (_commandWord == "add"){
+	if (_commandWord == STRING_ADD){
 		return ADD;
 	}
-	else if (_commandWord == "display") {
+	else if (_commandWord == STRING_DISPLAY) {
 		return DISPLAY;
 	}
-	else if (_commandWord == "delete") {
+	else if (_commandWord == STRING_DELETE) {
 		return DELETE;
 	}
-	else if (_commandWord == "update") {
+	else if (_commandWord == STRING_UPDATE) {
 		return UPDATE;
 	}
-	else if (_commandWord == "exit") {
+	else if (_commandWord == STRING_EXIT) {
 		return EXIT;
 	}
-	else if (_commandWord == "done"){
+	else if (_commandWord == STRING_DONE){
 		return DONE;
 	}
-	else if (_commandWord == "displaydone"){
+	else if (_commandWord == STRING_DISPLAYDONE){
 		return DISPLAYDONE;
 	}
-	else if (_commandWord == "displaytoday"){
+	else if (_commandWord == STRING_DISPLAYTODAY){
 		return DISPLAYTODAY;
 	}
-	else if(_commandWord == "undo"){
+	else if(_commandWord == STRING_UNDO){
 		return UNDO;
 	}
-	else if (_commandWord == "clear"){
+	else if (_commandWord == STRING_CLEAR){
 		return CLEAR;
 	}
-	else if (_commandWord == "search"){
+	else if (_commandWord == STRING_SEARCH){
 		return SEARCH;
 	}
-	else if(_commandWord =="changedirectory"){
+	else if(_commandWord == STRING_CHANGEDIRECTORY){
 		return CHANGEDIRECTORY;
+	}
+	else if(_commandWord == STRING_REPEAT){
+		return REPEAT;
+	}
+	else if(_commandWord == STRING_REPEATDONE){
+		return REPEATDONE;
 	}
 	else{
 		return HELP;
@@ -125,7 +146,7 @@ string UI::callToParser(){
 		
 		case DISPLAY:
 			if(getToDoListAndCheckEmpty()){
-				return _Parser.displayEvent("display");
+				return _Parser.displayEvent(STRING_DISPLAY);
 			}
 			else{
 				return INVALID_INPUT;
@@ -160,7 +181,7 @@ string UI::callToParser(){
 			
 		case DISPLAYDONE:
 			if(getToDoListAndCheckEmpty()){
-				return _Parser.displayEvent("displaydone");
+				return _Parser.displayEvent(STRING_DISPLAYDONE);
 			}
 			else{
 				return INVALID_INPUT;
@@ -168,7 +189,7 @@ string UI::callToParser(){
 						
 		case DISPLAYTODAY:
 			if(getToDoListAndCheckEmpty()){
-				return _Parser.displayEvent("displaytoday");
+				return _Parser.displayEvent(STRING_DISPLAYTODAY);
 			}
 			else{
 				return INVALID_INPUT;
@@ -209,6 +230,7 @@ string UI::callToParser(){
 
 		case CHANGEDIRECTORY:
 			if(!getToDoListAndCheckEmpty()){
+				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.changeDirectory(_toDoList);
 			}
 			else{
@@ -220,6 +242,24 @@ string UI::callToParser(){
 			}
 			else{
 				return false;
+			}
+
+		case REPEAT:
+			if(getToDoListAndCheckEmpty()){
+				return INVALID_INPUT;
+			}
+			else{
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.repeat(_toDoList, STRING_REPEAT);
+			}
+			
+		case REPEATDONE:
+			if(getToDoListAndCheckEmpty()){
+				return INVALID_INPUT;
+			}
+			else{
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.repeat(_toDoList, STRING_REPEATDONE);
 			}
 
 		default:

@@ -32,7 +32,7 @@ private:
 public:
 	Parser(void);
 	~Parser(void);
-	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, CLEAREND, CLEARSTART, CHANGEDIRECTORY, HELP, EXIT};
+	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, SEARCH, UNDO, CLEAR, CLEAREND, CLEARSTART, CHANGEDIRECTORY, HELP, EXIT, REPEAT, REPEATDONE};
 	logic::CommandType changeToLogicCommandType(CommandType );
 	MonthType determineMonthType(std::string );
 	
@@ -51,6 +51,7 @@ public:
 	std::string markAsDone(std::string );
 	std::string deleteEvent(std::string );
 	std::string changeDirectory(std::string );
+	std::string repeat(std::string, std::string);
 	std::string help();
 	bool getNumberList(std::string );
 	void resetAttributesValue();

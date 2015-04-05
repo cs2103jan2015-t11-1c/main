@@ -16,7 +16,7 @@ class UI{
 		VerificationCommand _verificationCommand;
 		
     public:
-		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, DISPLAYDONE, DISPLAYTODAY, CHANGEDIRECTORY, SEARCH, UNDO, CLEAR, HELP};
+		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, DISPLAYDONE, DISPLAYTODAY, CHANGEDIRECTORY, SEARCH, UNDO, CLEAR, HELP, REPEAT, REPEATDONE};
 		UI(void);
 		~UI(void);
 	    CommandType determineCommandType();
