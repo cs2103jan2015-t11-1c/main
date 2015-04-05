@@ -2,7 +2,7 @@
 #include <sstream>
 const static std::string MESSAGE_EMPTY_ACTIVE_EVENTS = "Currently no active event. \n\n";
 const static std::string MESSAGE_NO_EVENT_TODAY = "No Event today! \n\n";
-const static int NUMBER_OF_TASK_TO_DISPLAY = 20;
+const static int NUMBER_OF_TASK_TO_DISPLAY = 21;
 
 cmdDisplay::cmdDisplay(void){
 }
