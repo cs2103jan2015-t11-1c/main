@@ -26,4 +26,5 @@ public:
 	int determineInterval();
 	bool isDefaultRepeat(std::string);
 	bool isNumber(std::string&);
+	std::string lowercaseCommandWord(std::string commandWord);
 };

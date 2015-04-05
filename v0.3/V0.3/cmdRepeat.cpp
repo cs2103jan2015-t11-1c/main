@@ -64,10 +64,21 @@ std::string cmdRepeat::getRepeatType(std::string& _repeatDetails){
 	return repeatType;
 }
 
+std::string cmdRepeat::lowercaseCommandWord(std::string commandWord){
+	int n = commandWord.size();
+	for( int i = 0; i < n; i++){
+		if(commandWord[i] <='Z' && commandWord[i] >= 'A'){
+			commandWord[i] = commandWord[i] - ('Z'-'z');
+		}
+	}
+  return commandWord;
+}
+
 //convert repeat type to DAILY, WEEKLY, MONTHLY
 cmdRepeat::repeatType cmdRepeat::determineRepeatType(std::string& _repeatDetails){
-	std::string repeatType;
-	repeatType = getRepeatType(_repeatDetails);
+	std::string _repeatType;
+	_repeatType = getRepeatType(_repeatDetails);
+	std::string  repeatType = lowercaseCommandWord(_repeatType);
 	if (repeatType == STRING_DAILY) {
 		_type = DAILY;
 	}else if (repeatType == STRING_WEEKLY) {
