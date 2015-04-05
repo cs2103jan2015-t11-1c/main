@@ -10,6 +10,9 @@ const int MONTHLY_INTERVAL = 30;
 const int STARTING_YEAR = 2015;
 const std::string ERROR_MESSAGE = "Invalid Repeating Times";
 const std::string INVALID_REPEATING_TYPE = "Invalid Repeating Type";
+const std::string STRING_DAILY = "daily";
+const std::string STRING_WEEKLY = "weekly";
+const std::string STRING_MONTHLY = "monthly";
 
 cmdRepeat::cmdRepeat(void){
 }
@@ -65,11 +68,11 @@ std::string cmdRepeat::getRepeatType(std::string& _repeatDetails){
 cmdRepeat::repeatType cmdRepeat::determineRepeatType(std::string& _repeatDetails){
 	std::string repeatType;
 	repeatType = getRepeatType(_repeatDetails);
-	if (repeatType == "daily") {
+	if (repeatType == STRING_DAILY) {
 		_type = DAILY;
-	}else if (repeatType == "weekly") {
+	}else if (repeatType == STRING_WEEKLY) {
 		_type = WEEKLY;
-	}else if (repeatType == "monthly") {
+	}else if (repeatType == STRING_MONTHLY) {
 		_type = MONTHLY;
 	}else {
 		std::cout << INVALID_REPEATING_TYPE << std::endl;
