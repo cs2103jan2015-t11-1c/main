@@ -31,9 +31,11 @@ public:
 	void changeStartDay (int);
 	void changeStartMonth (int);
 	void changeStartTime (int);
+	void changeStartYear (int);
 	void changeEndDay (int);
 	void changeEndMonth (int);
 	void changeEndTime (int);
+	void changeEndYear (int);
 	void updateDueRanking();
 	int getStartMonth();
 	int getEndMonth();
@@ -46,6 +48,7 @@ public:
 	std::string readEvent();
 	std::string displayEvent();
 	std::string getDeadline();
+	std::string saveEvent();
 	std::string convertNumberToString(int);
 	std::string convertTimeToString(int);
 };

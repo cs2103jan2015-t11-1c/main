@@ -166,6 +166,10 @@ void Event::changeEndTime (int newTime)
 	updateDueRanking();
 }
 
+void Event::changeEndYear (int newYear){
+	_endYear = newYear;
+}
+
 void Event::changeStartDay (int newDay )
 {	_startDay = newDay;	
 	_durationEvent = true;
@@ -180,6 +184,10 @@ void Event::changeStartMonth (int newMonth)
 void Event::changeStartTime (int newTime)
 {	_startTime= newTime;
 	_durationEvent = true;
+}
+
+void Event::changeStartYear (int newYear){
+	_startYear = year;
 }
 
 //For the purpose of sorting, arrange the events from earliest year and then earliest month
@@ -218,4 +226,8 @@ int Event::getStartTime()
 
 int Event::getEndTime()
 {   return _endTime;
+}
+
+std::string Event::saveEvent(){
+
 }
