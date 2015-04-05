@@ -1,2 +1,19 @@
-C:\Users\User\Documents\GitHub\main\v0.3\V0.3
-Incomplete tasks: event is due 25 01 2222
+C:\Users\Xiaokai\Documents\main\v0.3\v0.3
+Done tasks: event Starting Info: Nil Ending Info: Nil 
+Done tasks: CS Starting Info: Nil Ending Info: 21 01 1111 2015
+Incomplete tasks: eveve Starting Info: Nil Ending Info: Nil 
+Incomplete tasks: eveve Starting Info: Nil Ending Info: Nil 
+Incomplete tasks: Event Starting Info: Nil Ending Info: 28 04 2222 2015
+Incomplete tasks: EVENT TITLE Starting Info: 21 04 1231 2015 Ending Info: 13 05 1234 2015
+Incomplete tasks: Event Starting Info: Nil Ending Info: 28 05 2222 2015
+Incomplete tasks: Event Starting Info: Nil Ending Info: 27 06 2222 2015
+Incomplete tasks: Event Starting Info: Nil Ending Info: 27 07 2222 2015
+Incomplete tasks: Event Starting Info: Nil Ending Info: 26 08 2222 2015
+Incomplete tasks: Event Starting Info: Nil Ending Info: 25 09 2222 2015
+Incomplete tasks: Event Starting Info: Nil Ending Info: 25 10 2222 2015
+Incomplete tasks: Event Starting Info: Nil Ending Info: 24 11 2222 2015
+Incomplete tasks: Event Starting Info: Nil Ending Info: 24 12 2222 2015
+Incomplete tasks: Event Starting Info: Nil Ending Info: 23 01 2222 2016
+Incomplete tasks: Event Starting Info: Nil Ending Info: 22 02 2222 2016
+Incomplete tasks: Event Starting Info: Nil Ending Info: 23 03 2222 2016
+Incomplete tasks: Event Starting Info: Nil Ending Info: 22 04 2222 2016

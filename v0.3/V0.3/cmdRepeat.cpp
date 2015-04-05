@@ -146,7 +146,6 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 	int date = repeatingEvent.getEndDate();
 	int month = repeatingEvent.getEndMonth();
 	int time = repeatingEvent.getEndTime();
-
 	_findNextDate.calculate(date, month, _interval);
 	int newDate;
 	int newMonth;
@@ -154,7 +153,6 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 	newDate = _findNextDate.getDay();
 	newMonth = _findNextDate.getMonth();
 	newYear = _findNextDate.getYear();
-
 	for(Tcount = 0; Tcount < _repeatTimes; Tcount++){
 		Event newEvent(eventTitle, newDate, newMonth, time);
 		if (newYear != STARTING_YEAR) {

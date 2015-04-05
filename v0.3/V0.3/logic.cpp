@@ -67,7 +67,7 @@ string logic::executeCommand(CommandType command ,string taskName, int startingD
 	}
 	else if(command == REPEAT || REPEATDONE){
 		_repeat.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
-		_repeat.executecmdRepeat(_storage);
+		return _repeat.executecmdRepeat(_storage);
 	}
 	//return "logic error\n\n";
 }

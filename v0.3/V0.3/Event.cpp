@@ -169,6 +169,7 @@ void Event::changeEndTime (int newTime)
 
 void Event::changeEndYear (int newYear){
 	_endYear = newYear;
+	updateDueRanking();
 }
 
 void Event::changeStartDay (int newDay )
