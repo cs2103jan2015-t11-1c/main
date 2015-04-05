@@ -1,6 +1,7 @@
 #include "findNextDate.h"
 
 static int daysInMonth[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+static int daysInMonthLeapYear[] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 findNextDate::findNextDate(void){
 }
@@ -14,14 +15,54 @@ findNextDate::findNextDate(int day, int month, int numberOfDays ){
 	_currentMonth = month;
 	_advanceNumberOfDays = numberOfDays;
 	_firstDayOfYear2015 = 3;
+	_year = 2015;
+}
+
+bool findNextDate:: isLeapYear(){
+	if ((_year % 4 == 0) && (_year % 100 != 0))
+		return true;
+	else if (_year % 400 == 0)
+			return true;
+
+	return false;
+}
+
+void findNextDate::advanceMonth(){
+	while (_day > daysInMonth[_month] && _month < 13){
+		_day = _day - daysInMonth[_month];
+		_month++;
+	}
+	if (_month > 12) {
+		_month = _month - 12;
+		_year = _year + 1;}
+}
+
+void findNextDate::advanceMonthLeapYear(){
+	while (_day > daysInMonthLeapYear[_month] && _month < 13){
+		_day = _day - daysInMonthLeapYear[_month];
+		_month++;
+		}
+	if (_month >12){
+		_year = _year +1;
+		_month = _month - 12;
+	}
 }
 
 void findNextDate::calculateTheNextDate(){
 	_day = _currentDay + _advanceNumberOfDays;
 	_month = _currentMonth;
-	while (_day > daysInMonth[_month]){
-		_day = _day - daysInMonth[_month];
-		_month++;
+	if (isLeapYear()){
+		advanceMonthLeapYear();}
+	else { 
+		advanceMonth(); }
+	calculateExtraLongDay();
+}
+void findNextDate::calculateExtraLongDay(){
+	while( _day > 31){
+		if (isLeapYear()){
+			advanceMonthLeapYear();}
+		else { 
+			advanceMonth(); }
 	}
 }
 
@@ -73,5 +114,7 @@ int findNextDate::getWeekDay(){
 	return _weekDay;
 }
 
-
+int findNextDate::getYear(){
+	return _year;
+}
 
