@@ -137,7 +137,7 @@ string UI::callToParser(){
 	{
 		case ADD:
 			if(getToDoListAndCheckEmpty()){
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 			else{
 				getTheToDoListWithIndexZeroNotEmpty();
@@ -149,12 +149,12 @@ string UI::callToParser(){
 				return _Parser.displayEvent(STRING_DISPLAY);
 			}
 			else{
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 		
 		case DELETE:
 			if(getToDoListAndCheckEmpty()){
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 			else{
 				getTheToDoListWithIndexZeroNotEmpty();
@@ -163,7 +163,7 @@ string UI::callToParser(){
 		
 		case UPDATE:
 			if(getToDoListAndCheckEmpty()){
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 			else{
 				getTheToDoListWithIndexZeroNotEmpty();
@@ -172,7 +172,7 @@ string UI::callToParser(){
 		
 		case DONE:
 			if(getToDoListAndCheckEmpty()){
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 			else{
 				getTheToDoListWithIndexZeroNotEmpty();
@@ -184,7 +184,7 @@ string UI::callToParser(){
 				return _Parser.displayEvent(STRING_DISPLAYDONE);
 			}
 			else{
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 						
 		case DISPLAYTODAY:
@@ -192,7 +192,7 @@ string UI::callToParser(){
 				return _Parser.displayEvent(STRING_DISPLAYTODAY);
 			}
 			else{
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 
 		case EXIT:
@@ -200,7 +200,7 @@ string UI::callToParser(){
 				exit(0);
 			}
 			else{
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 			
 		case UNDO:
@@ -208,7 +208,7 @@ string UI::callToParser(){
 				return _Parser.unDo();
 			}
 			else{
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 
 		case CLEAR:
@@ -216,12 +216,12 @@ string UI::callToParser(){
 				return _Parser.clearEvent();
 			}
 			else{
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}			
 
 		case SEARCH:
 			if(getToDoListAndCheckEmpty()){
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 			else{
 			getTheToDoListWithIndexZeroNotEmpty();
@@ -234,7 +234,7 @@ string UI::callToParser(){
 				return _Parser.changeDirectory(_toDoList);
 			}
 			else{
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 		case HELP:
 			if(getToDoListAndCheckEmpty()){
@@ -246,7 +246,7 @@ string UI::callToParser(){
 
 		case REPEAT:
 			if(getToDoListAndCheckEmpty()){
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 			else{
 				getTheToDoListWithIndexZeroNotEmpty();
@@ -255,7 +255,7 @@ string UI::callToParser(){
 			
 		case REPEATDONE:
 			if(getToDoListAndCheckEmpty()){
-				return INVALID_INPUT;
+				return INVALID_INPUT_MESSAGE;
 			}
 			else{
 				getTheToDoListWithIndexZeroNotEmpty();
@@ -263,7 +263,7 @@ string UI::callToParser(){
 			}
 
 		default:
-			return INVALID_INPUT;
+			return INVALID_INPUT_MESSAGE;
 			break;
 			
 		}

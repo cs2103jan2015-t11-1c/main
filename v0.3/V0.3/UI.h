@@ -20,12 +20,13 @@ class UI{
 		UI(void);
 		~UI(void);
 	    CommandType determineCommandType();
-		void showWelcomeMessage();
-	    bool readCommandAndVerifyCommand();
+
 		string callToParser();
 		bool isEmpty(string );
 		bool getToDoListAndCheckEmpty();
+		bool readCommandAndVerifyCommand();
 		void getTheToDoListWithIndexZeroNotEmpty();
+		void showWelcomeMessage();
 };
 		
 #endif
