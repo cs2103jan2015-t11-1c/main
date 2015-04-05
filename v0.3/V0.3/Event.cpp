@@ -243,7 +243,7 @@ std::string Event::saveEvent(){
 	}
 	Ostring << "Ending Info: " ;
 	if (_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 || _endTime < 0 || _endTime >2359 ) {
-		Ostring <<" Nil ";
+		Ostring <<"Nil ";
 	} else {
 		Ostring << convertNumberToString(_endDay) << " " ;
 		Ostring	<< convertNumberToString(_endMonth)<< " " ;
