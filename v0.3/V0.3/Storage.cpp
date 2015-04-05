@@ -172,6 +172,10 @@ Event Storage::getEvent(int index){
 	return _activeEvent.getEvent(index);
 }
 
+Event Storage::getDoneEvent(int index){
+	return _doneEvent.getEvent(index);
+}
+
 void Storage::sortActiveEventlist(){	
 	_activeEvent.sortEvent();
 }

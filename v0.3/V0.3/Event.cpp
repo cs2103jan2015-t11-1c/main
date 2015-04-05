@@ -172,7 +172,7 @@ void Event::changeStartTime (int newTime)
 //Events with no deadline are display first.
 void Event::updateDueRanking()
 {	if(_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 || _endTime < 0 || _endTime >2359 )
-	_dueRanking = 0;
+	_dueRanking = 100000000;
 	else
 	_dueRanking = _endMonth*1000000 + _endDay*10000 + _endTime;
 }

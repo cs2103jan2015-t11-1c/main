@@ -50,5 +50,6 @@ public:
 	Eventlist displayEvent (void);
 	Eventlist displayDoneEvent (void);
 	Event getEvent(int);
+	Event getDoneEvent(int);
 };
 
