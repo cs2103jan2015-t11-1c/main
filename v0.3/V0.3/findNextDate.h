@@ -18,7 +18,7 @@ private:
 public:
 	findNextDate(void);
 	~findNextDate(void);
-	bool isLeapYear();
+	bool isLeapYear(int);
 	int getMonth();
 	int getDay();
 	int getWeekDay();
@@ -31,6 +31,9 @@ public:
 	void calculateTheWeekDay();
 	void calculateExtraLongDay();
 	void changeDefaultYear(int);
+	int calculateDayInMonthForLeapYear();
+	int calculateDayInMonth();
+	int calculateDayInYear();
 
 };
 
