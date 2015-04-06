@@ -18,6 +18,8 @@ int main() {
 			message = Minik.callToParser();
 			cout << message;
 		} else {
+			std::string invalidToDoList;
+			getline(cin, invalidToDoList);
 			cout << INVALID_COMMAND_MESSAGE;
 		}
 		
