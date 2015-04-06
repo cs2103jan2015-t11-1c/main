@@ -1,23 +1,32 @@
 #pragma once
 #include <iostream>
+//repeat 1 daily/monthly/weekly 60
+//repeat 1 every mon/tue / thurs
+//repeat 1 daily except mon.tue.wed
+//repeat 1 weekly except week 2
 class cmdRepeatParser
 {
 private:
-	std::string _repeatDetails; //this one is just the string after the eventnumber
-	//I need these attributes hahaha
-
-	//string _type; this is the repeat type: daily, weekly, monthly, every mondayblah blah blah
-	//this type pass me the string can alr?
-	//int _repeatTimes; like: repeat 1 daily 60, then _repeatTimes = 60
-	//bool _hasException, if got exception then return true? this one discuss later
-	//exception details need break down TTT
-
+	std::string _repeatDetails; 
+	std::string _repeatType;
+	int _repeatTimes; 
+	bool _hasException;
+	std::string _exceptionType;
 
 public:
 	cmdRepeatParser(void);
 	~cmdRepeatParser(void);
-
-	std::string getRepeatType(std::string& _repeatDetails);
+	bool hasException();
+	bool isValidIndex(int);
+	bool getDetailsForRepeatCertainDayOfAWeek(std::string repeatDetail);
+	bool isDailyWeeklyMonthly(std::string );
+	bool isCertainDayOfAWeek(std::string );
+	bool getRepeatTimesForDailyWeeklyMonthly(std::string);
+	bool getExceptionTimes(std::string );
+	bool checkValidityAndGetRepeatDetails(std::string ,std::string &,int &, bool &, std::string &); 
+	bool isStringAnInteger(std::string );
+	std::string lowercaseRepeatDetail(std::string );
+	void initialzeAttributes();
 	std::string getRepeatTimes(std::string& _repeatDetails);
 };
 
