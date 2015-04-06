@@ -72,6 +72,7 @@
     <ClInclude Include="cmdHelp.h" />
     <ClInclude Include="cmdMarkAsDone.h" />
     <ClInclude Include="cmdRepeat.h" />
+    <ClInclude Include="cmdRepeatParser.h" />
     <ClInclude Include="cmdSearch.h" />
     <ClInclude Include="cmdUndo.h" />
     <ClInclude Include="cmdUpdate.h" />
@@ -95,6 +96,7 @@
     <ClCompile Include="cmdHelp.cpp" />
     <ClCompile Include="cmdMarkAsDone.cpp" />
     <ClCompile Include="cmdRepeat.cpp" />
+    <ClCompile Include="cmdRepeatParser.cpp" />
     <ClCompile Include="cmdSearch.cpp" />
     <ClCompile Include="cmdUndo.cpp" />
     <ClCompile Include="cmdUpdate.cpp" />
