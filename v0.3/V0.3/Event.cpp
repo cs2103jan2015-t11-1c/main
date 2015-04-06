@@ -300,3 +300,11 @@ std::string Event::saveEvent(){
 bool Event::isTimedTask(){
 	return _durationEvent;
 }
+
+int Event::getStartYear(){
+	return _startYear;
+}
+
+int Event::getEndYear(){
+	return _endYear;
+}

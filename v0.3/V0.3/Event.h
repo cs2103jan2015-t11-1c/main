@@ -43,6 +43,8 @@ public:
 	int getEndDate();
 	int getStartTime();
 	int getEndTime();
+	int getStartYear();
+	int getEndYear();
 	bool isTimedTask();
 	std::string getTaskName();
 	std::string convertToMonth(int);

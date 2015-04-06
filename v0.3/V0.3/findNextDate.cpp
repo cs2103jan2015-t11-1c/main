@@ -120,3 +120,6 @@ int findNextDate::getYear(){
 	return _year;
 }
 
+void findNextDate::changeDefaultYear(int year){
+	_year = year;
+}

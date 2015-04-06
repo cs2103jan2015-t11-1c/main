@@ -30,6 +30,7 @@ public:
 	void calculateTheNextDate();
 	void calculateTheWeekDay();
 	void calculateExtraLongDay();
+	void changeDefaultYear(int);
 
 };
 

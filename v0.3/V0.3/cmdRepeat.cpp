@@ -160,6 +160,9 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 	int date = repeatingEvent.getEndDate();
 	int month = repeatingEvent.getEndMonth();
 	int time = repeatingEvent.getEndTime();
+	int year = repeatingEvent.getEndYear();
+	if (year != STARTING_YEAR){
+		_findNextDate.changeDefaultYear(year);}
 	_findNextDate.calculate(date, month, _interval);
 	int newDate;
 	int newMonth;
@@ -172,6 +175,8 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 		if (newYear != STARTING_YEAR) {
 			newEvent.changeEndYear(newYear);}
 		_storage.addEvent(newEvent);
+		if (newYear != STARTING_YEAR) {
+			_findNextDate.changeDefaultYear(newYear);}
 		_findNextDate.calculate(newDate, newMonth, _interval);
 		newDate = _findNextDate.getDay();
 		newMonth = _findNextDate.getMonth();
@@ -186,10 +191,14 @@ void cmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 	int startDate = repeatingEvent.getStartDate();
 	int startMonth = repeatingEvent.getStartMonth();
 	int startTime = repeatingEvent.getStartTime();
+	int startYear = repeatingEvent.getStartYear();
 	int endDate = repeatingEvent.getEndDate();
 	int endMonth = repeatingEvent.getEndMonth();
 	int endTime = repeatingEvent.getEndTime();
+	int endYear = repeatingEvent.getEndYear();
 
+	if (startYear != STARTING_YEAR){
+		_findNextDate.changeDefaultYear(startYear);}
 	_findNextDate.calculate(startDate, startMonth, _interval);
 	int newStartDate;
 	int newStartMonth;
@@ -198,6 +207,8 @@ void cmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 	newStartMonth = _findNextDate.getMonth();
 	newStartYear = _findNextDate.getYear();
 
+	if (endYear != STARTING_YEAR){
+		_findNextDate.changeDefaultYear(endYear);}
 	_findNextDate.calculate(endDate, endMonth, _interval);
 	int newEndDate;
 	int newEndMonth;
@@ -212,14 +223,20 @@ void cmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 		newEvent.changeStartMonth(newStartMonth);
 		newEvent.changeStartTime(startTime);
 		if (newStartYear != STARTING_YEAR) {
-			newEvent.changeEndYear(newStartYear);}
+			newEvent.changeStartYear(newStartYear);
+			newEvent.changeEndYear(newEndYear);}
 		_storage.addEvent(newEvent);
 		
+		if (newStartYear != STARTING_YEAR){
+			_findNextDate.changeDefaultYear(newStartYear);}
 		_findNextDate.calculate(newStartDate, newStartMonth, _interval);
+
 		newStartDate = _findNextDate.getDay();
 		newStartMonth = _findNextDate.getMonth();
 		newStartYear = _findNextDate.getYear();
 
+		if (newEndYear != STARTING_YEAR){
+			_findNextDate.changeDefaultYear(newEndYear);}
 		_findNextDate.calculate(newEndDate, newEndMonth, _interval);
 		newEndDate = _findNextDate.getDay();
 		newEndMonth = _findNextDate.getMonth();
