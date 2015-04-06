@@ -1,6 +1,60 @@
 #include "Event.h"
 
-static int DEFAUlTYEAR = 2015;
+const std::string EMPTY_SPACE = " ";
+const std::string START_INfO_IDENTIFIER = "Starting Info: ";
+const std::string END_INFO_IDENTIFIER = "Ending Info: ";
+const std::string NIL_IDENTIFIER = "Nil";
+const std::string OPEN_SQUARE_BRACKET= "[";
+const std::string CLOSE_SQUARE_BRACKET= "]";
+const std::string DASH= "-";
+const std::string BY = "by";
+const std::string YEAR = "Year";
+const std::string COLON = ":";
+const std::string ZERO = "0";
+const std::string JANUARY = "Jan";
+const std::string FEBRUARY = "Feb";
+const std::string MARCH = "Mar";
+const std::string APRIL = "Apr";
+const std::string MAY = "May";
+const std::string JUNE = "Jun";
+const std::string JULY = "Jul";
+const std::string AUGUST = "Aug";
+const std::string SEPTEMBER = "Sep";
+const std::string OCTOBER = "Oct";
+const std::string NOVEMBER = "Nov";
+const std::string DECEMBER = "Dec";
+const std::string INVALID_MONTH = "Invalid Month";
+const int DEFAUlTYEAR = 2015;
+const int THOUSAND = 1000;
+const int HUNDRED = 100;
+const int TEN = 10;
+const int NUMBER_ZERO = 0;
+const int MIN_MONTH = 1;
+const int MAX_MONTH = 12;
+const int MIN_DATE = 1;
+const int MAX_DATE = 31;
+const int MAX_TIME = 2359;
+const int MIN_TIME = 0000;
+const int JANUARY_IN_NUMBER = 1;
+const int FEBRUARY_IN_NUMBER  = 2;
+const int MARCH_IN_NUMBER  = 3;
+const int APRIL_IN_NUMBER  = 4;
+const int MAY_IN_NUMBER  = 5;
+const int JUNE_IN_NUMBER  = 6;
+const int JULY_IN_NUMBER  = 7;
+const int AUGUST_IN_NUMBER  = 8;
+const int SEPTEMBER_IN_NUMBER  = 9;
+const int OCTOBER_IN_NUMBER  = 10;
+const int NOVEMBER_IN_NUMBER  = 11;
+const int DECEMBER_IN_NUMBER  = 12;
+const int DAY_RANKING = 10000;
+const int MONTH_RANKING = 1000000;
+const int YEAR_RANKING = 100000000;
+const int NO_DUE_DATE_RANKING = 1000000000000;
+const int NO_DUE_DATE_SPACING = 28;
+const int NO_START_TIME_DEFAULT_YEAR_SPACING = 13;
+const int NO_START_TIME_NON_DEFAULT_YEAR_SPACING = 24;
+const int DEFAUlT_START_YEAR_NON_DEFAULT_END_YEAR_SPACING = 12;
 
 Event::Event(void)
 {	
@@ -24,127 +78,110 @@ Event::~Event(void)
 
 std::string Event::displayEvent(){
 	std::ostringstream Ostring;
-	Ostring << "[";
-	if (_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 || _endTime < 0 || _endTime >2359 ) {
-		Ostring << std::setfill('-') << std::setw(29) <<  "] ";
-		Ostring << _title; }
+	Ostring << OPEN_SQUARE_BRACKET;
+	if (_endDay < MIN_DATE|| _endDay > MAX_DATE || _endMonth < MIN_MONTH|| _endMonth > MAX_MONTH || _endTime < MIN_TIME || _endTime >MAX_TIME ) {
+		Ostring << std::setfill('-') << std::setw(NO_DUE_DATE_SPACING) <<  CLOSE_SQUARE_BRACKET;
+		Ostring << EMPTY_SPACE << _title; }
 	else if(_durationEvent == false) {
-		Ostring << "by " << convertNumberToString(_endDay);
-		Ostring << " " << convertToMonth(_endMonth);
+		Ostring << BY << EMPTY_SPACE << convertNumberToString(_endDay);
+		Ostring << EMPTY_SPACE << convertToMonth(_endMonth);
 		int hour;
 		int minute;
-		hour = _endTime / 100;
-		minute = _endTime % 100;
-		Ostring << " " << convertNumberToString(hour) << ":" << convertNumberToString(minute);
+		hour = _endTime / HUNDRED;
+		minute = _endTime % HUNDRED;
+		Ostring << EMPTY_SPACE << convertNumberToString(hour) << COLON << convertNumberToString(minute);
+		
 		if (_endYear != DEFAUlTYEAR){
-			Ostring << " Year: " << _endYear; }
-		Ostring << std::setw(14) << "] ";
+			Ostring << EMPTY_SPACE << YEAR << COLON << EMPTY_SPACE << _endYear;
+			Ostring << std::setw(NO_START_TIME_NON_DEFAULT_YEAR_SPACING);
+			Ostring << CLOSE_SQUARE_BRACKET << EMPTY_SPACE << _title; 	
+		} else {
+			Ostring << std::setw(NO_START_TIME_DEFAULT_YEAR_SPACING) << CLOSE_SQUARE_BRACKET << EMPTY_SPACE;
 		Ostring << _title; 
+		}
 	}
 	else {
 		Ostring << convertNumberToString(_startDay);
-		Ostring << " " << convertToMonth(_startMonth);
+		Ostring << EMPTY_SPACE << convertToMonth(_startMonth);
 		int hour;
 		int minute;
-		hour = _startTime / 100;
-		minute = _startTime % 100;
-		Ostring << " " << convertNumberToString(hour) << ":" << convertNumberToString(minute);
+		hour = _startTime / HUNDRED;
+		minute = _startTime % HUNDRED;
+		Ostring << EMPTY_SPACE << convertNumberToString(hour) << COLON << convertNumberToString(minute);
 		if (_startYear != DEFAUlTYEAR){
-			Ostring << " Year: " << _endYear; }
-		Ostring << " - ";
+			Ostring << EMPTY_SPACE << YEAR << COLON << EMPTY_SPACE << _startYear;}
+		Ostring << EMPTY_SPACE << DASH << EMPTY_SPACE;
 		Ostring << convertNumberToString(_endDay);
-		Ostring << " " << convertToMonth(_endMonth);
-		hour = _endTime / 100;
-		minute = _endTime % 100;
-		Ostring << " " << convertNumberToString(hour) << ":" << convertNumberToString(minute);
+		Ostring << EMPTY_SPACE << convertToMonth(_endMonth);
+		hour = _endTime / HUNDRED;
+		minute = _endTime % HUNDRED;
+		Ostring << EMPTY_SPACE << convertNumberToString(hour) << COLON << convertNumberToString(minute);
 		if (_endYear != DEFAUlTYEAR){
-			Ostring << " Year: " << _endYear; }
-		Ostring << "] ";
+			Ostring << EMPTY_SPACE << YEAR << COLON << EMPTY_SPACE << _endYear; }
+		if (_startYear == DEFAUlTYEAR && _endYear != DEFAUlTYEAR) {
+			Ostring << std::setw(DEFAUlT_START_YEAR_NON_DEFAULT_END_YEAR_SPACING); }
+		Ostring << CLOSE_SQUARE_BRACKET << EMPTY_SPACE;
 		Ostring << _title;
 	}
-
 	return Ostring.str();
-
-}
-
-std::string Event::readEvent()
-{	std::string finalString;
-	if (_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 ){
-		finalString = _title + " no specific deadline";}
-	else if( _durationEvent == false){
-		finalString = _title + " is due " + convertNumberToString(_endDay) + " " 
-		+ convertNumberToString(_endMonth) + " " + convertTimeToString(_endTime);
-		if (_endYear != DEFAUlTYEAR){
-			finalString = finalString + "Year: " + convertTimeToString(_endYear); }
-	}
-	else { finalString = _title + " start from " + convertNumberToString(_startDay) + " " + 
-	convertNumberToString(_startMonth) + " " + convertNumberToString(_startTime);
-	if (_startYear != DEFAUlTYEAR){
-		finalString = finalString + " Year: " + convertTimeToString(_startYear); }
-	finalString = finalString + " is due " + convertNumberToString(_endDay) + " " + 
-	convertNumberToString(_endMonth)+ " " + convertTimeToString(_endTime);
-	if (_endYear != DEFAUlTYEAR){
-		finalString = finalString + " Year: " + convertTimeToString(_endYear); }
-	}
-	return finalString;
 }
 
 // Convert 1 or 2 digit number to 2 char string.
 std::string Event::convertNumberToString(int number){
-	if (number/10 == 0){
+	if (number/TEN == NUMBER_ZERO){
 		std::string tempString;
 		tempString = std::to_string(number);
-		return "0" + tempString;}
+		return ZERO + tempString;}
 	else return std::to_string(number);
 }
 
 std::string Event::convertToMonth(int i){
-	if(i == 1) {
-		return "Jan"; }
-	else if (i == 2) {
-		return "Feb"; }
-	else if (i == 3) {
-		return "Mar"; }
-	else if (i == 4) {
-		return "Apr"; }
-	else if (i == 5) {
-		return "May"; }
-	else if (i == 6) {
-		return "Jun"; }
-	else if (i == 7) {
-		return "Jul"; }
-	else if (i == 8) {
-		return "Aug"; }
-	else if (i == 9) {
-		return "Sep"; }
-	else if (i == 10) {
-		return "Oct"; }
-	else if (i == 11) {
-		return "Nov"; }
-	else if (i == 12) {
-		return "Dec"; }
+	if(i == JANUARY_IN_NUMBER) {
+		return JANUARY; }
+	else if (i == FEBRUARY_IN_NUMBER) {
+		return FEBRUARY; }
+	else if (i == MARCH_IN_NUMBER) {
+		return MARCH; }
+	else if (i == APRIL_IN_NUMBER) {
+		return APRIL; }
+	else if (i == MAY_IN_NUMBER) {
+		return MAY; }
+	else if (i == JUNE_IN_NUMBER) {
+		return JUNE; }
+	else if (i == JULY_IN_NUMBER) {
+		return JULY; }
+	else if (i == AUGUST_IN_NUMBER) {
+		return AUGUST; }
+	else if (i == SEPTEMBER_IN_NUMBER) {
+		return SEPTEMBER; }
+	else if (i == OCTOBER_IN_NUMBER) {
+		return OCTOBER; }
+	else if (i == NOVEMBER_IN_NUMBER) {
+		return NOVEMBER; }
+	else if (i == DECEMBER_IN_NUMBER) {
+		return DECEMBER; }
 
-	return "invalid month";
+	return INVALID_MONTH;
 }
 
 //Convert time to a 4 char string.
 std::string Event::convertTimeToString(int number){
 	std::string tempString;
 	tempString = std::to_string(number);
-	if (number /10 == 0)
-		return "000" + tempString;
-	else if (number/100 == 0)
-		return "00" + tempString;
-	else if (number/1000 == 0)
-		return "0" + tempString;
+	if (number /TEN == NUMBER_ZERO)
+		return ZERO + ZERO + ZERO + tempString;
+	else if (number/HUNDRED == NUMBER_ZERO)
+		return  ZERO + ZERO + tempString;
+	else if (number/THOUSAND == NUMBER_ZERO)
+		return  ZERO + tempString;
 
 	return tempString;
 }
 
 //Display the deadline of a particular task.
 std::string Event::getDeadline()
-{	return convertNumberToString(_endDay) + " " + convertToMonth(_endMonth) +
-" " + convertTimeToString(_endTime);
+{	return convertNumberToString(_endDay) + EMPTY_SPACE + convertToMonth(_endMonth) +
+EMPTY_SPACE + convertTimeToString(_endTime);
 }
 
 
@@ -173,18 +210,23 @@ void Event::changeEndYear (int newYear){
 }
 
 void Event::changeStartDay (int newDay )
-{	_startDay = newDay;	
+{	_startDay = newDay;
+if ( _startDay >= MIN_DATE && _startDay <= MAX_DATE) {
 	_durationEvent = true;
+	}
 	
 }
 
 void Event::changeStartMonth (int newMonth)
 {	_startMonth=newMonth;
+if(_startMonth >= MIN_MONTH && _startMonth <= MAX_MONTH ) {
 	_durationEvent = true;
+	}
 }
 
 void Event::changeStartTime (int newTime)
 {	_startTime= newTime;
+if( _startTime >= MIN_TIME && _startTime <= MAX_TIME)
 	_durationEvent = true;
 }
 
@@ -196,10 +238,10 @@ void Event::changeStartYear (int newYear){
 //and then earliest endday and then earliest hour.
 //Events with no deadline are display first.
 void Event::updateDueRanking()
-{	if(_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 || _endTime < 0 || _endTime >2359 )
-	_dueRanking = 1.0*1000000000000 ;
+{	if(_endDay < MIN_DATE || _endDay > MAX_DATE || _endMonth < MIN_MONTH || _endMonth > MAX_MONTH || _endTime < MIN_TIME || _endTime > MAX_TIME )
+	_dueRanking = NO_DUE_DATE_RANKING ;
 else
-	_dueRanking = _endYear*100000000 +_endMonth*1000000 + _endDay*10000 + _endTime;
+	_dueRanking = _endYear * YEAR_RANKING +_endMonth * MONTH_RANKING + _endDay * DAY_RANKING + _endTime;
 }
 
 std::string Event::getTaskName()
@@ -232,23 +274,23 @@ int Event::getEndTime()
 
 std::string Event::saveEvent(){
 	std::ostringstream Ostring;
-	Ostring << _title <<" ";
-	Ostring << "Starting Info: " ;
+	Ostring << _title << EMPTY_SPACE;
+	Ostring << START_INfO_IDENTIFIER;
 	if (!_durationEvent) {
-		Ostring << "Nil ";
+		Ostring << NIL_IDENTIFIER << EMPTY_SPACE;
 	} else {
-		Ostring << convertNumberToString(_startDay) << " " ; 
-		Ostring << convertNumberToString(_startMonth) << " " ;
-		Ostring << convertTimeToString(_startTime) << " " ; 
-		Ostring << convertTimeToString(_startYear) << " " ;
+		Ostring << convertNumberToString(_startDay) << EMPTY_SPACE; 
+		Ostring << convertNumberToString(_startMonth) << EMPTY_SPACE;
+		Ostring << convertTimeToString(_startTime) << EMPTY_SPACE; 
+		Ostring << convertTimeToString(_startYear) << EMPTY_SPACE;
 	}
-	Ostring << "Ending Info: " ;
-	if (_endDay <= 0 || _endDay >31 || _endMonth <= 0 || _endMonth >12 || _endTime < 0 || _endTime >2359 ) {
-		Ostring <<"Nil ";
+	Ostring << END_INFO_IDENTIFIER ;
+	if(_endDay < MIN_DATE || _endDay > MAX_DATE || _endMonth < MIN_MONTH || _endMonth > MAX_MONTH || _endTime < MIN_TIME || _endTime > MAX_TIME ) {
+		Ostring << NIL_IDENTIFIER << EMPTY_SPACE;
 	} else {
-		Ostring << convertNumberToString(_endDay) << " " ;
-		Ostring	<< convertNumberToString(_endMonth)<< " " ;
-		Ostring << convertTimeToString(_endTime) << " " ;
+		Ostring << convertNumberToString(_endDay) << EMPTY_SPACE;
+		Ostring	<< convertNumberToString(_endMonth)<< EMPTY_SPACE;
+		Ostring << convertTimeToString(_endTime) << EMPTY_SPACE;
 		Ostring << convertTimeToString(_endYear);
 	}
 

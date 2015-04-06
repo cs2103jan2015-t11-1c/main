@@ -46,7 +46,6 @@ public:
 	bool isTimedTask();
 	std::string getTaskName();
 	std::string convertToMonth(int);
-	std::string readEvent();
 	std::string displayEvent();
 	std::string getDeadline();
 	std::string saveEvent();

@@ -46,6 +46,7 @@ public:
 	void saveCurrentDoneEventList();
 	void changeToPreviousActiveEventList();
 	void changeToPreviousDoneEventList();
+	void writeToLogfile(std::string, std::string);
 	bool unDopreviousActions(std::string);
 	Eventlist displayEvent (void);
 	Eventlist displayDoneEvent (void);

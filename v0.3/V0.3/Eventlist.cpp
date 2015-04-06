@@ -4,9 +4,7 @@
 #include <fstream>
 #include <time.h>
 
-const std::string LOGFILE = "log.txt" ;
-
-char buffer[1000];
+const int GO_TO_PREVIOUS = -1;
 
 Eventlist::Eventlist(void){
 }
@@ -21,23 +19,13 @@ void Eventlist::clearEventlist(){
 
 void Eventlist::addEvent(Event newEvent){
 	_allEvent.push_back(newEvent); 
-	std::ofstream destination;
-	destination.open(LOGFILE,std::ofstream::app);
-	time_t rawtime;
-	struct tm  timeinfo;
-	rawtime = time (0);
-	localtime_s(&timeinfo, &rawtime);
-	asctime_s(buffer,&timeinfo) ;
-	destination	<< buffer <<newEvent.readEvent() << "Add Event successfully"<< std::endl;
-	destination.close();
-
 }
 
 //Delete one Event from the list by searching from the front of the list.
 void Eventlist::deleteEvent(int index){
 	std::list<Event>::iterator deleteposition;
 	deleteposition = _allEvent.begin();
-	advance (deleteposition, index-1);
+	advance (deleteposition, index + GO_TO_PREVIOUS );
 	_allEvent.erase(deleteposition);
 }
 
@@ -45,7 +33,7 @@ void Eventlist::deleteEvent(int index){
 Event Eventlist::getEvent(int index){	
 	std::list<Event>::iterator eventPosition;
 	eventPosition = _allEvent.begin();
-	advance (eventPosition, index-1);
+	advance (eventPosition, index + GO_TO_PREVIOUS);
 	return *eventPosition;
 }
 
@@ -53,7 +41,7 @@ Event Eventlist::getEvent(int index){
 void Eventlist::updateEvent (int index, Event newEvent){
 	std::list<Event>::iterator eventPosition;
 	eventPosition = _allEvent.begin();
-	advance (eventPosition, index-1);
+	advance (eventPosition, index + GO_TO_PREVIOUS);
 	*eventPosition = newEvent;
 }
 
