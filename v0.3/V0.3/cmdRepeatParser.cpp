@@ -7,7 +7,7 @@ const static std::string EXCEPT_STRING = "except";
 const static int DEFAULT_TIMES = 0;
 const static std::string STRING_DAILY = "daily";
 const static std::string STRING_WEEKLY = "weekly";
-const static std::string STRING_MONTHLY = "daily";
+const static std::string STRING_MONTHLY = "monthly";
 const static std::string STRING_EVERY = "every";
 
 cmdRepeatParser::cmdRepeatParser(void){
@@ -26,7 +26,7 @@ bool cmdRepeatParser::checkValidityAndGetRepeatDetails(std::string repeatDetail,
 	initialzeAttributes();
 	repeatDetail = lowercaseRepeatDetail(repeatDetail);
 	_repeatDetails = repeatDetail;
-	bool isValid;
+	bool isValid = false;
 	
 	if(isDailyWeeklyMonthly(repeatDetail)){
 		bool isDefault = getRepeatTimesForDailyWeeklyMonthly(repeatDetail);
@@ -44,7 +44,8 @@ bool cmdRepeatParser::checkValidityAndGetRepeatDetails(std::string repeatDetail,
 	}		
 
 	repeatType = _repeatType;
-	repeatTimes = _repeatTimes;
+	repeatTimes = _repeatTimes; 
+	std::cout << _repeatTimes << std::endl;
 	isWithException = hasException();
 	exceptionType = _exceptionType;
 

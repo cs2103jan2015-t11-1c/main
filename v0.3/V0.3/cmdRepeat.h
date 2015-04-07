@@ -1,7 +1,10 @@
 #pragma once
+#include <iostream>
+#include <string>
 #include "logicbaseclass.h"
 #include "findNextDate.h"
 #include "cmdRepeatParser.h"
+
 class cmdRepeat :
 	public logicBaseClass
 {
