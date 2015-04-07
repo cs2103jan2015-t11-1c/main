@@ -304,7 +304,7 @@ std::string Event::saveEvent() {
 		Ostring << convertTimeToString(_startYear) << EMPTY_SPACE;
 	}
 	Ostring << END_INFO_IDENTIFIER ;
-	if(isValidDateMonthTime()) {
+	if(!isValidDateMonthTime()) {
 		Ostring << NIL_IDENTIFIER << EMPTY_SPACE;
 	} else {
 		Ostring << convertNumberToString(_endDay) << EMPTY_SPACE;
