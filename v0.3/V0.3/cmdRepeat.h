@@ -39,4 +39,5 @@ public:
 	int getExceptionTime(std::string);
 	int getNumberOfDays(int, int);
 	bool isExceptionDay(int, int, int);
+	std::string lowercaseCommandWord(std::string);
 };

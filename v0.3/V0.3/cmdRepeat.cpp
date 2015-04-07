@@ -15,12 +15,20 @@ const std::string STRING_DAILY = "daily";
 const std::string STRING_WEEKLY = "weekly";
 const std::string STRING_MONTHLY = "monthly";
 const std::string STRING_MONDAY = "monday";
+const std::string STRING_MON = "mon";
 const std::string STRING_TUESDAY = "tuesday";
 const std::string STRING_WEDNESDAY = "wednesday";
 const std::string STRING_THURSDAY = "thursday";
 const std::string STRING_FRIDAY = "friday";
 const std::string STRING_SATURDAY = "saturday";
 const std::string STRING_SUNDAY = "sunday";
+const std::string STRING_TUE = "tue";
+const std::string STRING_WED = "wed";
+const std::string STRING_THUR = "thur";
+const std::string STRING_FRI = "fri";
+const std::string STRING_SAT = "sat";
+const std::string STRING_SUN = "sun";
+
 
 cmdRepeat::cmdRepeat(void){
 }
@@ -78,10 +86,13 @@ cmdRepeat::repeatType cmdRepeat::determineRepeatType(){
 
 bool cmdRepeat::isWeekday(std::string repeatCommand){
 	bool isWeekday = false;
-
-	if (repeatCommand == STRING_MONDAY || repeatCommand == STRING_TUESDAY || repeatCommand == 
-		STRING_WEDNESDAY || repeatCommand == STRING_THURSDAY || repeatCommand == STRING_FRIDAY
-		|| repeatCommand == STRING_SATURDAY || repeatCommand == STRING_SUNDAY) {
+	std::string repeatCommandNew = lowercaseCommandWord(repeatCommand);
+	if (repeatCommandNew == STRING_MONDAY || repeatCommandNew == STRING_TUESDAY || repeatCommandNew == 
+		STRING_WEDNESDAY || repeatCommandNew == STRING_THURSDAY || repeatCommandNew == STRING_FRIDAY
+		|| repeatCommandNew == STRING_SATURDAY || repeatCommandNew == STRING_SUNDAY || 
+		repeatCommandNew == STRING_MON || repeatCommandNew == STRING_TUE || repeatCommandNew == 
+		STRING_WED || repeatCommandNew == STRING_THUR || repeatCommandNew == STRING_FRI
+		|| repeatCommandNew == STRING_SAT || repeatCommandNew == STRING_SUN) {
 		isWeekday = true;
 	}
 
@@ -139,7 +150,7 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 	_interval = determineInterval(month, year);
 	int newDate;
 	int newMonth;
-	int newYear;
+	int newYear = 0;
 
 	if (_type  == EVERYWEEKDAY) {
 		getTheStartingDate(date, month, newDate, newMonth);
@@ -198,21 +209,32 @@ int cmdRepeat::determineWeekday(std::string repeatCommand){
 	return _weekday;
 }
 
+std::string cmdRepeat::lowercaseCommandWord(std::string commandWord){
+	int n = commandWord.size();
+	for( int i = 0; i < n; i++){
+		if(commandWord[i] <='Z' && commandWord[i] >= 'A'){
+			commandWord[i] = commandWord[i] - ('Z'-'z');
+		}
+	}
+
+  return commandWord;
+}
 int cmdRepeat::changeWeekdayToInteger(std::string day){
 	int weekday;
-	if ( day  == STRING_MONDAY) {
+	std::string repeatDay = lowercaseCommandWord(day);
+	if ( repeatDay  == STRING_MONDAY || repeatDay  == STRING_MON ) {
 		weekday = 0;
-	} else if (day == STRING_TUESDAY) {
+	} else if (repeatDay  == STRING_TUESDAY || repeatDay == STRING_TUE) {
 		weekday = 1;
-	} else if (day == STRING_WEDNESDAY) {
+	} else if (repeatDay  == STRING_WEDNESDAY || repeatDay  == STRING_WED) {
 		weekday = 2;
-	} else if (day == STRING_THURSDAY) {
+	} else if (repeatDay  == STRING_THURSDAY || repeatDay  == STRING_THUR) {
 		weekday = 3;
-	} else if (day == STRING_FRIDAY) {
+	} else if (repeatDay  == STRING_FRIDAY || repeatDay  == STRING_FRI) {
 		weekday = 4;
-	} else if (day == STRING_SATURDAY) {
+	} else if (repeatDay  == STRING_SATURDAY || repeatDay  == STRING_SAT) {
 		weekday = 5;
-	} else if (day == STRING_SUNDAY) {
+	} else if (repeatDay  == STRING_SUNDAY || repeatDay  == STRING_SUN) {
 		weekday = 6;
 	} 
 
