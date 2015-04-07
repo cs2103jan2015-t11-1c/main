@@ -8,8 +8,7 @@
 #include <list>
 
 
-class Eventlist
-{
+class Eventlist {
 private:
 	std::list <Event> _allEvent;
 public:

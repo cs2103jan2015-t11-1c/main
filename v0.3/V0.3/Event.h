@@ -8,8 +8,7 @@
 #include <sstream>
 
 
-class Event
-{
+class Event {
 private:
 	std::string _title;
 	int _endDay;
@@ -46,6 +45,7 @@ public:
 	int getStartYear();
 	int getEndYear();
 	bool isTimedTask();
+	bool isValidDateMonthTime();
 	std::string getTaskName();
 	std::string convertToMonth(int);
 	std::string displayEvent();

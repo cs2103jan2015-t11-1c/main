@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 
-class findNextDate
-{
+class findNextDate {
 private:
 	int _month;
 	int _day;

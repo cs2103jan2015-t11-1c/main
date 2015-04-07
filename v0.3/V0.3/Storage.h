@@ -5,8 +5,7 @@
 #include "Eventlist.h"
 #include <fstream>
 
-class Storage
-{
+class Storage {
 private:
 	Event _currentEvent;
 	Eventlist _activeEvent;

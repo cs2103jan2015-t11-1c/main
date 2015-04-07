@@ -4,7 +4,6 @@
 #include "Storage.h"
 #include "windows.h"
 
-
 const std::string LOGFILE = "log.txt";
 const std::string WARNING = "Warning";
 const std::string INFOMATION = "Info";
@@ -39,8 +38,8 @@ const std::string CMD_CLEAR_ACTIVE = "clearactive";
 const std::string LOG_BACK_SYMBOL = "> ";
 const std::string LOG_FRONT_SYMBOL = " <";
 const std::string EMPTY_SPACE = " ";
-const std::string START_INfO_IDENTIFIER = "Starting Info: ";
-const std::string END_INFO_IDENTIFIER = "Ending Info: ";
+const std::string START_INfO = "Starting Info: ";
+const std::string END_INFO = "Ending Info: ";
 const std::string NIL_IDENTIFIER = "Nil";
 const int ZERO = 0;
 const int NUMBER_OF_DIGIT_FOR_DATE = 2;
@@ -57,7 +56,7 @@ Storage::~Storage(void) {
 }
 
 //Take in the previous command and perform the necessary undo functions
-bool Storage::unDopreviousActions(std::string unDoCommand){	
+bool Storage::unDopreviousActions(std::string unDoCommand) {	
 	COMMAND_TYPE command = findCommandType(unDoCommand);
 		switch (command) {
 	case ADD:
@@ -89,123 +88,118 @@ bool Storage::unDopreviousActions(std::string unDoCommand){
 }
 
 //Convert the command string to enum type.
-Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand){		
-	if (currentCommand == CMD_ADD){
-			return ADD;
-		}
-	else if (currentCommand == CMD_UPDATE){
-			return UPDATE;
-		}
-	else if (currentCommand == CMD_DELETE){
-			return DELETEEVENT;
-		} 
-	else if (currentCommand == CMD_DONE){
-			return DONE;
-		}
-	else if (currentCommand == CMD_CLEAR_DONE){
-			return CLEARDONE;
-		}
-	else if (currentCommand == CMD_CLEAR_ACTIVE){
-			return CLEARACTIVE;
-		}
-	else if (currentCommand == CMD_CLEAR){
-			return CLEAR;
-		}
-		else return INVALID;
+Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand) {		
+	if (currentCommand == CMD_ADD) {
+		return ADD;
+	} else if (currentCommand == CMD_UPDATE) {
+		return UPDATE;
+	} else if (currentCommand == CMD_DELETE) {
+		return DELETEEVENT;
+	} else if (currentCommand == CMD_DONE) {
+		return DONE;
+	} else if (currentCommand == CMD_CLEAR_DONE) {
+		return CLEARDONE;
+	} else if (currentCommand == CMD_CLEAR_ACTIVE) {
+		return CLEARACTIVE;
+	} else if (currentCommand == CMD_CLEAR) {
+		return CLEAR;
+	} else {
+		return INVALID;
+	}
 }
-
 //When clear functions are called, current Eventlist is saved for undo purpose.
-void Storage::clearActiveEvent(){
+void Storage::clearActiveEvent() {
 	saveCurrentActiveEventList();
 	_activeEvent = Eventlist();
 	writeToLogfile(INFOMATION, CLEAR_ACTIVE_EVENTLIST);
 }
 
-void Storage::clearDoneEvent(){	
+void Storage::clearDoneEvent() {	
 	saveCurrentDoneEventList();
 	_doneEvent = Eventlist();
 	writeToLogfile(INFOMATION, CLEAR_DONE_EVENTLIST);
 }
 
-void Storage::unDoClearActiveEvent(){	
+void Storage::unDoClearActiveEvent() {	
 	changeToPreviousActiveEventList();
 	writeToLogfile(INFOMATION, UNDO_CLEAR_ACTIVE_EVENTLIST);
 }
 
-void Storage::unDoClearDoneEvent(){
+void Storage::unDoClearDoneEvent() {
 	changeToPreviousDoneEventList();
 	writeToLogfile(INFOMATION, UNDO_CLEAR_DONE_EVENTLIST);
 }
 
-void Storage::saveCurrentActiveEventList(){
+void Storage::saveCurrentActiveEventList() {
 	_previousActiveEvent.push_back(_activeEvent);
 }
 
-void Storage::saveCurrentDoneEventList(){
+void Storage::saveCurrentDoneEventList() {
 	_previousDoneEvent.push_back(_doneEvent);
 }
 
-void Storage::changeToPreviousActiveEventList(){
+void Storage::changeToPreviousActiveEventList() {
 	_activeEvent = _previousActiveEvent.back();
 	_previousActiveEvent.pop_back();
 }
 
-void Storage::changeToPreviousDoneEventList(){
+void Storage::changeToPreviousDoneEventList() {
 	_doneEvent = _previousDoneEvent.back();
 	_previousDoneEvent.pop_back();
 }
 
-void Storage::addEvent(Event newEvent){
+void Storage::addEvent(Event newEvent) {
 	saveCurrentActiveEventList();
 	_currentEvent = newEvent;
 	_activeEvent.addEvent(_currentEvent); 
 	std::string addInfomation;
-	addInfomation = _currentEvent.displayEvent() + EMPTY_SPACE + ADD_ACTIVE_EVENT;
+	addInfomation = _currentEvent.displayEvent() + EMPTY_SPACE;
+	addInfomation = addInfomation	+ ADD_ACTIVE_EVENT;
 	writeToLogfile(INFOMATION, addInfomation);
 }
 
-void Storage::unDoAddEvent (){
+void Storage::unDoAddEvent () {
 	changeToPreviousActiveEventList();
 	writeToLogfile(INFOMATION, UNDO_ADD_ACTIVE_EVENT);
 }
 
 //Transfer the list of index Events from active Eventlist to done Eventlist.
-void Storage::markEventAsDone (std::list<int> allIndex){
+void Storage::markEventAsDone (std::list<int> allIndex) {
 	saveCurrentActiveEventList();
 	saveCurrentDoneEventList();
 	int i;
 	allIndex.sort();
-	while(!allIndex.empty()){
-	i=allIndex.back();
-	_currentEvent = _activeEvent.getEvent(i);
-	_activeEvent.deleteEvent(i);
-	_doneEvent.addEvent(_currentEvent);
-	allIndex.pop_back();
+	while(!allIndex.empty()) {
+		i=allIndex.back();
+		_currentEvent = _activeEvent.getEvent(i);
+		_activeEvent.deleteEvent(i);
+		_doneEvent.addEvent(_currentEvent);
+		allIndex.pop_back();
 	}
 	writeToLogfile(INFOMATION, ADD_DONE_EVENT);
 }
 
-void Storage::unDomarkEventAsDone(){	
+void Storage::unDomarkEventAsDone() {	
 	changeToPreviousActiveEventList();
 	changeToPreviousDoneEventList();
 	writeToLogfile(INFOMATION, UNDO_ADD_DONE_EVENT);
 }
 
 //Delete Events from the back of the active Eventlist.
-void Storage::deleteEvent(std::list<int> allIndex){	
+void Storage::deleteEvent(std::list<int> allIndex) {	
 	saveCurrentActiveEventList();
 	int i;
 	allIndex.sort();
-	while(!allIndex.empty()){
-	i=allIndex.back();
-	_currentEvent = _activeEvent.getEvent(i);
-	_activeEvent.deleteEvent(i);
-	allIndex.pop_back();
+	while(!allIndex.empty()) {
+		i=allIndex.back();
+		_currentEvent = _activeEvent.getEvent(i);
+		_activeEvent.deleteEvent(i);
+		allIndex.pop_back();
 	}
 	writeToLogfile(INFOMATION, DELETE_ACTIVE_EVENT);
 }
 
-void Storage::unDoDeleteEvent (){	
+void Storage::unDoDeleteEvent() {	
 	changeToPreviousActiveEventList();
 	writeToLogfile(INFOMATION, UNDO_DELETE_ACTIVE_EVENT);
 }
@@ -214,39 +208,39 @@ Eventlist Storage::displayEvent(void) {
 	return _activeEvent;
 }
 
-Eventlist Storage::displayDoneEvent (void){	
+Eventlist Storage::displayDoneEvent (void) {	
 	return _doneEvent;
 }
 
-void Storage::updateEvent (int index, Event newEvent){	
+void Storage::updateEvent(int index, Event newEvent) {	
 	saveCurrentActiveEventList();
 	_activeEvent.updateEvent(index,newEvent);
 	writeToLogfile(INFOMATION, UPDATE_ACTIVE_EVENT);
 }
 
-void Storage::unDoUpdateEvent (){   
+void Storage::unDoUpdateEvent() {   
 	changeToPreviousActiveEventList();
 	writeToLogfile(INFOMATION, UNDO_UPDATE_ACTIVE_EVENT);
 }
 
-Event Storage::getEvent(int index){
+Event Storage::getEvent(int index) {
 	return _activeEvent.getEvent(index);
 }
 
-Event Storage::getDoneEvent(int index){
+Event Storage::getDoneEvent(int index) {
 	return _doneEvent.getEvent(index);
 }
 
-void Storage::sortActiveEventlist(){	
+void Storage::sortActiveEventlist() {	
 	_activeEvent.sortEvent();
 }
 
-void Storage::sortDoneEventlist(){	
+void Storage::sortDoneEventlist() {	
 	_doneEvent.sortEvent();
 }
 
 //Add the string to the system default file.
-void Storage::writeFile(std::string eventToFile){	
+void Storage::writeFile(std::string eventToFile) {	
 	std::ofstream destination;
 	destination.open(_filename, std::ofstream::app);
 	destination << eventToFile << std::endl;
@@ -254,25 +248,25 @@ void Storage::writeFile(std::string eventToFile){
 }
 
 //Save all the active Events to a local file.
-void Storage::saveActiveEventsToFile(){
+void Storage::saveActiveEventsToFile() {
 	std::list<Event> currentList = _activeEvent.returnAllEvent();
 	std::list<Event>::iterator iter;
-	for(iter = currentList.begin(); iter != currentList.end(); ++iter){
+	for(iter = currentList.begin(); iter != currentList.end(); ++iter) { 
 		writeFile(INCOMPLETE_TASK + (*iter).saveEvent());
 	}
 }
 
 //Save all the done Events to a local file.
-void Storage::saveDoneEventsToFile(){
+void Storage::saveDoneEventsToFile() {
 	std::list<Event> currentList = _doneEvent.returnAllEvent();
 	std::list<Event>::iterator iter;
-	for(iter = currentList.begin(); iter != currentList.end(); ++iter){
+	for(iter = currentList.begin(); iter != currentList.end(); ++iter) {
 		writeFile(DONE_TASK + (*iter).saveEvent());
 	}
 }
 
 //Synchonized storage data with the local file.
-void Storage::synchronizeDrive(){
+void Storage::synchronizeDrive() {
 	clearLocalDrive();
 	const int bufferSize = MAX_PATH;
     char oldDir[bufferSize];
@@ -284,24 +278,25 @@ void Storage::synchronizeDrive(){
 }
 
 //Empty a local file.
-void Storage::clearLocalDrive(){
+void Storage::clearLocalDrive() {
 	std::ofstream outputFile;
 	outputFile.open(_filename);
 	outputFile.close();
 }
 
 //Transfer the data from a local file to Storage.
-void Storage::readFile(){
+void Storage::readFile() {
 	std::ifstream textFile;
 	std::string currentLine;
 	textFile.open(_filename);
 	getline(textFile,currentLine);
-	if (!currentLine.empty()) {
-	const char * oldDirectory = currentLine.c_str();
-	changeCurrentDirectory(oldDirectory);
-	while(getline(textFile,currentLine)){
+	if (currentLine.empty()) {
+		return ;
+	} else {
+		const char * oldDirectory = currentLine.c_str();
+		changeCurrentDirectory(oldDirectory); }
+	while(getline(textFile,currentLine)) {
 		readEventsFromFile(currentLine);
-		}
 	}
 	textFile.close();
 	writeToLogfile(INFOMATION, READ_FROM_FILE);
@@ -309,9 +304,9 @@ void Storage::readFile(){
 
 //Retrieve the Event information from a local file
 //and store them in an Event then stored in the appropriate Eventlist.
-void Storage::readEventsFromFile(std::string currentEventLine){
+void Storage::readEventsFromFile(std::string line) {
 	std::string doneEventidentifier = DONE_TASK;
-	std::size_t foundDone = currentEventLine.find(doneEventidentifier);
+	std::size_t foundDone = line.find(doneEventidentifier);
 	std::size_t startInfoFinder;
 	std::size_t endInfoFinder;
 	std::string title;
@@ -328,49 +323,47 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 	bool hasStartInfo = true;
 	bool hasEndInfo = true;
 
-	if (foundDone < std::string::npos){
-		currentEventLine = currentEventLine.substr(DONE_TASK.size());
+	if (foundDone < std::string::npos) {
+		line = line.substr(DONE_TASK.size());
 		isActive = false;
 	} else {
-		currentEventLine = currentEventLine.substr(INCOMPLETE_TASK.size());
+		line = line.substr(INCOMPLETE_TASK.size());
 	}
-	startInfoFinder = currentEventLine.find(START_INfO_IDENTIFIER);
-	title = currentEventLine.substr(ZERO,startInfoFinder - EMPTY_SPACE.size());
-	currentEventLine = currentEventLine.substr(startInfoFinder + START_INfO_IDENTIFIER.size());
-	if (currentEventLine.substr(ZERO,NIL_IDENTIFIER.size()) == NIL_IDENTIFIER) {
-		currentEventLine = currentEventLine.substr(NIL_IDENTIFIER.size() + EMPTY_SPACE.size());
+	startInfoFinder = line.find(START_INfO);
+	title = line.substr(ZERO,startInfoFinder - EMPTY_SPACE.size());
+	line = line.substr(startInfoFinder + START_INfO.size());
+	if (line.substr(ZERO,NIL_IDENTIFIER.size()) == NIL_IDENTIFIER) {
+		line = line.substr(NIL_IDENTIFIER.size() + EMPTY_SPACE.size());
 		hasStartInfo = false;
 	} else {
-		startday = currentEventLine.substr(ZERO,NUMBER_OF_DIGIT_FOR_DATE);
-		currentEventLine = currentEventLine.substr(NUMBER_OF_DIGIT_FOR_DATE + EMPTY_SPACE.size());
-		startmonth = currentEventLine.substr(ZERO,NUMBER_OF_DIGIT_FOR_DATE);
-		currentEventLine = currentEventLine.substr(NUMBER_OF_DIGIT_FOR_DATE + EMPTY_SPACE.size());
-		starttime = currentEventLine.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
-		currentEventLine = currentEventLine.substr(NUMBER_OF_DIGIT_FOR_TIME + EMPTY_SPACE.size());
-		startyear = currentEventLine.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
+		startday = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_DATE);
+		line = line.substr(NUMBER_OF_DIGIT_FOR_DATE + EMPTY_SPACE.size());
+		startmonth = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_DATE);
+		line = line.substr(NUMBER_OF_DIGIT_FOR_DATE + EMPTY_SPACE.size());
+		starttime = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
+		line = line.substr(NUMBER_OF_DIGIT_FOR_TIME + EMPTY_SPACE.size());
+		startyear = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
 	}
-	endInfoFinder = currentEventLine.find(END_INFO_IDENTIFIER);
-	currentEventLine = currentEventLine.substr(endInfoFinder + END_INFO_IDENTIFIER.size());
-	if (currentEventLine.substr(ZERO,NIL_IDENTIFIER.size()) == NIL_IDENTIFIER) {
-		currentEventLine = currentEventLine.substr(NIL_IDENTIFIER.size() + EMPTY_SPACE.size());
+	endInfoFinder = line.find(END_INFO);
+	line = line.substr(endInfoFinder + END_INFO.size());
+	if (line.substr(ZERO,NIL_IDENTIFIER.size()) == NIL_IDENTIFIER) {
+		line = line.substr(NIL_IDENTIFIER.size() + EMPTY_SPACE.size());
 		hasEndInfo = false;
 	} else {
-		endday = currentEventLine.substr(ZERO,NUMBER_OF_DIGIT_FOR_DATE);
-		currentEventLine = currentEventLine.substr(NUMBER_OF_DIGIT_FOR_DATE + EMPTY_SPACE.size());
-		endmonth = currentEventLine.substr(ZERO,NUMBER_OF_DIGIT_FOR_DATE);
-		currentEventLine = currentEventLine.substr(NUMBER_OF_DIGIT_FOR_DATE + EMPTY_SPACE.size());
-		endtime = currentEventLine.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
-		currentEventLine = currentEventLine.substr(NUMBER_OF_DIGIT_FOR_TIME + EMPTY_SPACE.size());
-		endyear = currentEventLine.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
+		endday = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_DATE);
+		line = line.substr(NUMBER_OF_DIGIT_FOR_DATE + EMPTY_SPACE.size());
+		endmonth = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_DATE);
+		line = line.substr(NUMBER_OF_DIGIT_FOR_DATE + EMPTY_SPACE.size());
+		endtime = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
+		line = line.substr(NUMBER_OF_DIGIT_FOR_TIME + EMPTY_SPACE.size());
+		endyear = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
 	}
-
 	if(hasEndInfo) {
 		newEvent = Event(title,stoi(endday), stoi(endmonth),stoi(endtime));
 		newEvent.changeEndYear(stoi(endyear));
 	} else {
 		newEvent = Event(title,INVALID_NUMBER,INVALID_NUMBER,INVALID_NUMBER);
 	}
-
 	if (hasStartInfo) {	
 		newEvent.changeStartDay(stoi(startday));
 		newEvent.changeStartMonth(stoi(startmonth));
@@ -379,12 +372,13 @@ void Storage::readEventsFromFile(std::string currentEventLine){
 	}
 	if (isActive) {	
 		_activeEvent.addEvent(newEvent);
-	} else { _doneEvent.addEvent(newEvent);
-		}
+	} else { 
+		_doneEvent.addEvent(newEvent);
+	}
 }
 
 //Allow user to change the directory of the local file.
-void Storage::changeCurrentDirectory(const char* newDirectory){
+void Storage::changeCurrentDirectory(const char* newDirectory) {
 	const int bufferSize = MAX_PATH;
     char oldDir[bufferSize];
 	GetCurrentDirectory(bufferSize, oldDir);
@@ -397,7 +391,7 @@ void Storage::changeCurrentDirectory(const char* newDirectory){
 	}
 }
 
-void Storage::writeToLogfile(std::string type, std::string message){
+void Storage::writeToLogfile(std::string type, std::string message) {
 	std::ofstream destination;
 	destination.open(LOGFILE,std::ofstream::app);
 	time_t rawtime;
@@ -405,5 +399,6 @@ void Storage::writeToLogfile(std::string type, std::string message){
 	rawtime = time (ZERO);
 	localtime_s(&timeinfo, &rawtime);
 	asctime_s(buffer,&timeinfo) ;
-	destination	<< buffer << LOG_FRONT_SYMBOL << type << LOG_BACK_SYMBOL << message << std::endl;
+	destination	<< buffer << LOG_FRONT_SYMBOL << type << LOG_BACK_SYMBOL;
+	destination	<< message << std::endl;
 }
