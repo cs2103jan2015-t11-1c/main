@@ -1,3 +1,10 @@
+//This is the class used to store information about an Event.
+//All the functions here support retrieve, edit and display of
+//a single Event information.
+//By default the year stored is 2015.
+//If there is a change of year, changeYear functions must be used.
+//Display function will display year out if the year of event is not 2015.
+
 #include "Event.h"
 
 const std::string EMPTY_SPACE = " ";
@@ -272,6 +279,8 @@ int Event::getEndTime()
 {   return _endTime;
 }
 
+//Display all information of a Event out for saving data to local file.
+//Easier for advance user to change data in a local drive.
 std::string Event::saveEvent(){
 	std::ostringstream Ostring;
 	Ostring << _title << EMPTY_SPACE;

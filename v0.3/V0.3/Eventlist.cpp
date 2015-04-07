@@ -1,3 +1,5 @@
+//This class is used to store multiple Events.
+
 #include "Eventlist.h"
 #include <iostream>
 #include <sstream>
