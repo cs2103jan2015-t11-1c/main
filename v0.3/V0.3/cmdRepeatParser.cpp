@@ -15,6 +15,7 @@ cmdRepeatParser::cmdRepeatParser(void){
 
 cmdRepeatParser::~cmdRepeatParser(void){
 }
+
 void cmdRepeatParser::initialzeAttributes() {
 	_repeatDetails = EMPTY_STRING;
 	_repeatType = EMPTY_STRING;
@@ -24,143 +25,152 @@ void cmdRepeatParser::initialzeAttributes() {
 
 bool cmdRepeatParser::checkValidityAndGetRepeatDetails(std::string repeatDetail,std::string &repeatType,int &repeatTimes, bool &isWithException, std::string &exceptionType) {
 	initialzeAttributes();
+
 	repeatDetail = lowercaseRepeatDetail(repeatDetail);
 	_repeatDetails = repeatDetail;
 	bool isValid = false;
+	bool isDefault = false;
+	bool hasAnException = hasException();
 	
 	if(isDailyWeeklyMonthly(repeatDetail)){
-		bool isDefault = getRepeatTimesForDailyWeeklyMonthly(repeatDetail);
 
-		if (isDefault) {
-			isValid = true;
-		} else if(hasException() && !isDefault) {
-			isValid = getExceptionTimes(repeatDetail);
+		if(!hasAnException) {
+			isValid = getRepeatTimesForDailyWeeklyMonthly(repeatDetail);
+		} else {
+
+			if(getRepeatTimesForDailyWeeklyMonthly(repeatDetail)) {
+				isValid = getExceptionTimes(repeatDetail);
+			} 
+
 		}
+	}  else if(isCertainDayOfAWeek(repeatDetail)) {
 
-	} else if(isCertainDayOfAWeek(repeatDetail)) {
-		isValid = getDetailsForRepeatCertainDayOfAWeek( repeatDetail);
+		if(!hasAnException) {
+			isValid = getDetailsForRepeatCertainDayOfAWeek( repeatDetail);
+		} else {
+			if(getDetailsForRepeatCertainDayOfAWeek(repeatDetail)) {
+				isValid = getExceptionTimes(repeatDetail);
+			}
+		}
 	} else {
 		isValid = false;
 	}		
 
 	repeatType = _repeatType;
 	repeatTimes = _repeatTimes; 
-	std::cout << _repeatTimes << std::endl;
 	isWithException = hasException();
 	exceptionType = _exceptionType;
-
+	//std::cout << _repeatType <<std::endl <<_repeatTimes <<std::endl << _hasException << std:: endl << _exceptionType <<std::endl;
+	
 	initialzeAttributes();
 	return isValid;
 }
 
 bool cmdRepeatParser::getRepeatTimesForDailyWeeklyMonthly(std::string repeatDetail) {
+
 	int repeatTypeSize = _repeatType.size();
-		repeatDetail = repeatDetail.substr(repeatTypeSize - 1);
-		int TIndex = repeatDetail.find_first_not_of(" ");
+	int EIndex = repeatDetail.find(_repeatType);
 
-		if(isValidIndex(TIndex)){
-			repeatDetail = repeatDetail.substr(TIndex);
-			TIndex = repeatDetail.find_first_of(" ");
-			std::string repeatTimeString = repeatDetail.substr(0, TIndex);
+	repeatDetail = repeatDetail.substr(EIndex +  repeatTypeSize - 1);
+	std::string repeatTimeString;
 
-			if(isStringAnInteger(repeatTimeString)) {
-				_repeatTimes = std::stoi(repeatTimeString);
-				return true;
-			} else {
-				return false;
-			}
+	int TIndex = repeatDetail.find_first_of(" ");
 
-		} else {
-			_repeatTimes = DEFAULT_TIMES;
-			return true;
-		}
+	if (isValidIndex(TIndex)) {
+		repeatDetail = repeatDetail.substr(TIndex);
+	} else {
+		_repeatTimes = DEFAULT_TIMES;
+		return true;
+	}
+		
+	TIndex = repeatDetail.find_first_not_of(" ");
+
+	if(isValidIndex(TIndex)){
+		repeatDetail = repeatDetail.substr(TIndex);
+	}	else {
+		_repeatTimes = DEFAULT_TIMES;
+		return true;
+	}
+		
+	TIndex = repeatDetail.find_first_of(" ");
+
+	if(isValidIndex(TIndex)){
+		repeatTimeString = repeatDetail.substr(0, TIndex);
+	} else {
+		repeatTimeString = repeatDetail;
+	}
+		
+	if(isStringAnInteger(repeatTimeString)) {
+		_repeatTimes = std::stoi(repeatTimeString);
+		return true;
+	} else {
+		return false;
+	}
+
 }
 
 bool cmdRepeatParser::getExceptionTimes(std::string repeatDetail) {
 	int EIndex = repeatDetail.find(EXCEPT_STRING);
 	repeatDetail = repeatDetail.substr(EIndex);
-
+	int TIndex;
 	if(repeatDetail.size() > EXCEPT_STRING.size()) {
-		int TIndex = repeatDetail.find(EXCEPT_STRING) + 6;
+		TIndex = repeatDetail.find(EXCEPT_STRING) + 6;
 		repeatDetail = repeatDetail.substr(TIndex);
-		TIndex = repeatDetail.find_first_not_of(" ");
-
-		if(isValidIndex(TIndex)) {
-			repeatDetail = repeatDetail.substr(TIndex);
-			TIndex = repeatDetail.find_first_of(" ");
-
-			if(isValidIndex(TIndex)){
-				_exceptionType = repeatDetail.substr(0, TIndex);
-				return true;
-			} else {
-				_exceptionType = repeatDetail;
-				return true;
-			} 
-		}else {
-			return false;
-		}
-	} else{
+	} else {
 		return false;
-	}	
-}
+	}
+
+	TIndex = repeatDetail.find_first_not_of(" ");
+
+	if(isValidIndex(TIndex)) {
+		repeatDetail = repeatDetail.substr(TIndex);
+	} else {
+		return false;
+	}
+
+	TIndex = repeatDetail.find_first_of(" ");
+
+	if(isValidIndex(TIndex)){
+		_exceptionType = repeatDetail.substr(0, TIndex);
+	    return true;
+	} else {
+		_exceptionType = repeatDetail;
+		return true;
+	}
+
+}	
+
 
 bool cmdRepeatParser::getDetailsForRepeatCertainDayOfAWeek(std::string repeatDetail) {
+
 	int TIndex = repeatDetail.find(STRING_EVERY);
+	repeatDetail = repeatDetail.substr(TIndex);
+	TIndex = repeatDetail.find_first_of(" ");
+
+	if(isValidIndex(TIndex)) {
 		repeatDetail = repeatDetail.substr(TIndex);
-		TIndex = repeatDetail.find_first_of(" ");
+	} else {
+		return false;
+	}
+	
+	TIndex = repeatDetail.find_first_not_of(" ");
 
-		if(isValidIndex(TIndex)) {
-			repeatDetail = repeatDetail.substr(TIndex);
-		} else {
-			return false;
-		}
+	if(isValidIndex(TIndex)) {
+		repeatDetail = repeatDetail.substr(TIndex);
+	} else{
+		return false;
+	}
 
-		TIndex = repeatDetail.find_first_not_of(" ");
+	TIndex = repeatDetail.find_first_of(" ");
 
-		if(isValidIndex(TIndex)) {
-			repeatDetail = repeatDetail.substr(TIndex);
-		} else{
-			return false;
-		}
-
-		TIndex = repeatDetail.find_first_of(" ");
-
-		if(isValidIndex(TIndex)) {
-			_repeatType = repeatDetail.substr(0, TIndex);
-			return true;
-		} else {
-			_repeatType = repeatDetail;
-			return true;
-		}
-
-		if(hasException()) {
-			TIndex = repeatDetail.find(EXCEPT_STRING);
-			repeatDetail = repeatDetail.substr(TIndex);
-			
-			if(repeatDetail.size() > repeatDetail.size()) {
-				repeatDetail = repeatDetail.substr(repeatDetail.size());
-			}else {
-				return false;
-			}
-
-			TIndex = repeatDetail.find_first_not_of(" ");
-			if(isValidIndex(TIndex)){
-				 repeatDetail = repeatDetail.substr(TIndex);
-			}else {
-				return false;
-			}
-
-			TIndex = repeatDetail.find_first_of(" ");
-			if(isValidIndex(TIndex)){
-				_exceptionType = repeatDetail.substr(0, TIndex);
-				return true;
-			} else {
-				_exceptionType = repeatDetail;
-				return true;
-			}
-
-		}
-	}		
+	if(isValidIndex(TIndex)) {
+		_repeatType = repeatDetail.substr(0, TIndex);
+		return true;
+	} else {
+		_repeatType = repeatDetail;
+		return true;
+	}
+}		
 	
 
 bool cmdRepeatParser::isValidIndex(int TIndex){
