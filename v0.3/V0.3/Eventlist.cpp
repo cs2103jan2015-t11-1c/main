@@ -1,3 +1,4 @@
+//@author A0116455H
 //This class is used to store multiple Events.
 
 #include "Eventlist.h"

@@ -1,3 +1,4 @@
+//@author A0116455H
 //This class will find the next date when given current day
 //and the number of days to the next date.
 //week number of the next date are calculated also.
