@@ -150,13 +150,17 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 	_interval = determineInterval(month, year);
 	int newDate;
 	int newMonth;
-	int newYear = 0;
+	int newYear;// = 0;
 
 	if (_type  == EVERYWEEKDAY) {
 		getTheStartingDate(date, month, newDate, newMonth);
 	} else {
 	_findNextDate.calculate(date, month, _interval);
-	newDate = _findNextDate.getDay();
+	if(_type == MONTHLY){
+		newDate = date;
+	} else {
+		newDate = _findNextDate.getDay();
+	}
 	newMonth = _findNextDate.getMonth();
 	newYear = _findNextDate.getYear();
 	}
@@ -169,6 +173,8 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 	for(Tcount = 1; Tcount <= _repeatTimes; Tcount++){
 		Event newEvent(eventTitle, newDate, newMonth, time);
 		//std::cout << newEvent.displayEvent() << std::endl;
+
+		if (newDate <= getNumberOfDays(newMonth, newYear)) {
 		if (_hasException) {
 			if(((Tcount != exception) && (_type == WEEKLY || _type == EVERYWEEKDAY || _type == MONTHLY))
 				|| (!isExceptionDay(newDate, newMonth, exception)) && (_type == DAILY)) {
@@ -177,13 +183,16 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 		} else {
 			_storage.addEvent(newEvent);
 		}
-
+		}
 		if (newYear != STARTING_YEAR) {
 			_findNextDate.changeDefaultYear(newYear);
 		}
 		_interval = determineInterval(newMonth, newYear);
 		_findNextDate.calculate(newDate, newMonth, _interval);
+		
+		if(_type != MONTHLY){
 		newDate = _findNextDate.getDay();
+		}
 		newMonth = _findNextDate.getMonth();
 		newYear = _findNextDate.getYear();
 	}
