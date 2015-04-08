@@ -1,3 +1,4 @@
+//@author A0116455H
 //The Storage class will store all the data used in a program.
 //Every time changes are made, it will save the data to a local file.
 

@@ -1,3 +1,5 @@
+//@author A0116455H
+
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include <assert.h>
@@ -284,6 +286,7 @@ namespace StorageTest {
 			Assert::AreEqual(expected.displayEvent(),sampleEvent1.displayEvent());
 			expected = sampleEventList.getEvent(1);
 			Assert::AreEqual(expected.displayEvent(),sampleEvent3.displayEvent());
+			
 		}
 
 		TEST_METHOD(getAllEvent) {
@@ -319,22 +322,75 @@ namespace StorageTest {
 
 	public:
 		TEST_METHOD(addEvent) {
-		Event sampleEvent1("IncompleteProject",02,04,2359);
-		Storage sampleStorage;
-		sampleStorage.addEvent(sampleEvent1);
-		Event expected = sampleStorage.getEvent(1);
-		Assert::AreEqual(expected.displayEvent(),sampleEvent1.displayEvent());
+			Event sampleEvent("IncompleteProject",02,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent);
+			Event expected = sampleStorage.getEvent(1);
+			Assert::AreEqual(expected.displayEvent(),sampleEvent.displayEvent());
 		}
 
 		TEST_METHOD(updateEvent) {
-		Event sampleEvent1("IncompleteProject",02,04,2359);
-		Event sampleEvent2("FinishProject",13,04,2359);
-		Storage sampleStorage;
-		sampleStorage.addEvent(sampleEvent1);
-		sampleStorage.updateEvent(1,sampleEvent2);
-		Event expected = sampleStorage.getEvent(1);
-		Assert::AreEqual(expected.displayEvent(),sampleEvent2.displayEvent());
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			sampleStorage.updateEvent(1,sampleEvent2);
+			Event expected = sampleStorage.getEvent(1);
+			Assert::AreEqual(expected.displayEvent(),sampleEvent2.displayEvent());
 		}
 
+		TEST_METHOD(markEventAsDone) {
+			Event sampleEvent("IncompleteProject",02,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent);
+			std::list<int> index;
+			index.push_back(1);
+			sampleStorage.markEventAsDone(index);
+			Event output = sampleStorage.getDoneEvent(1);
+			Assert::AreEqual(sampleEvent.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(deleteEvent) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			sampleStorage.addEvent(sampleEvent2);
+			std::list<int> index;
+			index.push_back(1);
+			sampleStorage.deleteEvent(index);
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+		}
+
+		//Test the 6 different saving and display format.
+		//As format has been tested, one done case is sufficient.
+		TEST_METHOD(readEventFromFile) {
+			std:: string input[7] = {	"Incomplete tasks: FinishProject Starting Info: Nil Ending Info: Nil ",
+										"Incomplete tasks: FinishProject Starting Info: Nil Ending Info: 13 04 2359 2015",
+										"Incomplete tasks: FinishProject Starting Info: Nil Ending Info: 13 04 2359 2016",
+										"Incomplete tasks: FinishProject Starting Info: 21 03 2359 2015 Ending Info: 13 04 2359 2015",
+										"Incomplete tasks: FinishProject Starting Info: 21 03 2359 2015 Ending Info: 13 04 2359 2017",
+										"Incomplete tasks: FinishProject Starting Info: 21 03 2359 2016 Ending Info: 13 04 2359 2017",
+										"Done tasks: FinishProject Starting Info: Nil Ending Info: Nil "
+										};
+			std:: string expected[6] = {	"[---------------------------] FinishProject",
+											"[by 13 Apr 23:59            ] FinishProject", 
+											"[by 13 Apr 23:59 Year: 2016                       ] FinishProject",
+											"[21 Mar 23:59 - 13 Apr 23:59] FinishProject",
+											"[21 Mar 23:59 - 13 Apr 23:59 Year: 2017           ] FinishProject",
+											"[21 Mar 23:59 Year: 2016 - 13 Apr 23:59 Year: 2017] FinishProject"
+										};
+			Storage sampleStorage;
+			int i;
+			for (i = 0; i < 6; i++) {
+				sampleStorage.readEventsFromFile(input[i]);
+				Event output = sampleStorage.getEvent(i+1);
+				Assert::AreEqual(expected[i],output.displayEvent());
+			}
+			sampleStorage.readEventsFromFile(input[i]);
+			Event output = sampleStorage.getDoneEvent(1);
+			Assert::AreEqual(expected[0],output.displayEvent());
+		}
 	};
 }

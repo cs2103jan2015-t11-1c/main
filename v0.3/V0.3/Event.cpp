@@ -1,3 +1,4 @@
+//@author A0116455H
 //This is the class used to store information about an Event.
 //All the functions here support retrieve, edit and display of
 //a single Event information.
@@ -259,7 +260,7 @@ void Event::updateDueRanking() {
 	if(!isValidDateMonthTime()) {
 		_dueRanking = NO_DUE_DATE_RANKING ;
 	} else {
-		_dueRanking = _endYear * YEAR_RANKING +_endMonth * MONTH_RANKING;
+		_dueRanking = _endYear % 100 * YEAR_RANKING +_endMonth * MONTH_RANKING;
 		_dueRanking = _dueRanking + _endDay * DAY_RANKING + _endTime;
 	}
 }

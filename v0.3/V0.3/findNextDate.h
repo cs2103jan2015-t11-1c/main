@@ -1,3 +1,5 @@
+//@author A0116455H
+//Calender used to find out the next date and which week day it is.
 #pragma once
 
 #include <stdio.h>

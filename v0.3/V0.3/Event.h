@@ -1,3 +1,4 @@
+//@author A0116455H
 //The information of a particular event is all stored in this class.
 
 #pragma once

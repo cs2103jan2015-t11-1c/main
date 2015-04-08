@@ -1,3 +1,4 @@
+//@author A0116455H
 //This is a class for storing multiple Event class.
 //When a particular event is needed, Eventlist class will find the
 //Event and perform respective functions.
