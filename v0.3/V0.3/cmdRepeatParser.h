@@ -11,7 +11,7 @@ private:
 	std::string _repeatType;
 	int _repeatTimes; 
 	bool _hasException;
-	std::string _exceptionType;
+	std::string _exceptionDetail;
 
 public:
 	cmdRepeatParser(void);
@@ -21,12 +21,11 @@ public:
 	bool getDetailsForRepeatCertainDayOfAWeek(std::string repeatDetail);
 	bool isDailyWeeklyMonthly(std::string );
 	bool isCertainDayOfAWeek(std::string );
-	bool getRepeatTimesForDailyWeeklyMonthly(std::string);
-	bool getExceptionTimes(std::string );
+	bool getRepeatTimes(std::string);
+	bool getExceptionDetails(std::string );
 	bool checkValidityAndGetRepeatDetails(std::string ,std::string &,int &, bool &, std::string &); 
 	bool isStringAnInteger(std::string );
 	std::string lowercaseRepeatDetail(std::string );
 	void initialzeAttributes();
-	std::string getRepeatTimes(std::string& _repeatDetails);
 };
 
