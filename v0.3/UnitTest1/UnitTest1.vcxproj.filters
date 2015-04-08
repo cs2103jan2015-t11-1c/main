@@ -29,11 +29,5 @@
     <ClCompile Include="logicTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="parserTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="storageTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
