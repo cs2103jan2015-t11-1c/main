@@ -14,10 +14,8 @@ std::string cmdChangeDirectory::executecmdChangeDirectory(Storage& _storage){
 	const char * newDirectory = directory.c_str();
 	_storage.changeCurrentDirectory(newDirectory);
 
-	std::string feedback;
-	feedback = getFeedback(directory);
-
-	return feedback;
+	_feedback = getFeedback(directory);
+	return _feedback;
 }
 
 std::string cmdChangeDirectory::getFeedback(std::string directory){
