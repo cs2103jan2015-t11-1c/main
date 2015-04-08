@@ -226,23 +226,26 @@ void Event::changeEndYear (int newYear){
 
 void Event::changeStartDay (int newDay){
 	_startDay = newDay;
-	if ( _startDay >= MIN_DATE && _startDay <= MAX_DATE) {
+	if(isTimedTask()) {
 		_durationEvent = true;
 	}
+	else _durationEvent = false;
 }
 
 void Event::changeStartMonth (int newMonth) {
 	_startMonth = newMonth;
-	if(_startMonth >= MIN_MONTH && _startMonth <= MAX_MONTH ) {
+	if(isTimedTask()) {
 		_durationEvent = true;
 	}
+	else _durationEvent = false;
 }
 
 void Event::changeStartTime (int newTime) {
 	_startTime= newTime;
-	if( _startTime >= MIN_TIME && _startTime <= MAX_TIME) {
+	if(isTimedTask()) {
 		_durationEvent = true;
 	}
+	else _durationEvent = false;
 }
 
 void Event::changeStartYear (int newYear) {
@@ -253,7 +256,7 @@ void Event::changeStartYear (int newYear) {
 //then earliest month and then earliest endday and then earliest hour.
 //Events with no deadline are display first.
 void Event::updateDueRanking() {
-	if(isValidDateMonthTime()) {
+	if(!isValidDateMonthTime()) {
 		_dueRanking = NO_DUE_DATE_RANKING ;
 	} else {
 		_dueRanking = _endYear * YEAR_RANKING +_endMonth * MONTH_RANKING;
@@ -316,7 +319,17 @@ std::string Event::saveEvent() {
 }
 
 bool Event::isTimedTask() {
-	return _durationEvent;
+	bool isValid = true;
+	if(_startDay < MIN_DATE || _startDay > MAX_DATE) {
+		isValid = false;
+	}
+	if(_startMonth < MIN_MONTH || _startMonth > MAX_MONTH) {
+		isValid = false;
+	}
+	if(_startTime < MIN_TIME || _startTime > MAX_TIME) {
+		isValid = false;
+	}
+	return isValid;
 }
 
 int Event::getStartYear() {
