@@ -39,7 +39,7 @@ cmdRepeat::~cmdRepeat(void){
 //repeat a task
 std::string cmdRepeat::executecmdRepeat(Storage& _storage){
 	_repeatDetails = _taskName;
-	_parser.checkValidityAndGetRepeatDetails(_repeatDetails, _repeatCommand, _repeatTimes, _hasException, _exceptionDetails);
+	_parser.checkValidityAndGetDetails(_repeatDetails, _repeatCommand, _repeatTimes, _hasException, _exceptionDetails);
 	//std::cout << _repeatCommand << " " << _repeatTimes << " " << _hasException << " " << _exceptionDetails << std::endl;
 	//std::cout<<_repeatTimes << std::endl;
 	determineEventNumber();

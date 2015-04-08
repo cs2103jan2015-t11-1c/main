@@ -23,7 +23,7 @@ public:
 	bool isCertainDayOfAWeek(std::string );
 	bool getRepeatTimes(std::string);
 	bool getExceptionDetails(std::string );
-	bool checkValidityAndGetRepeatDetails(std::string ,std::string &,int &, bool &, std::string &); 
+	bool checkValidityAndGetDetails(std::string ,std::string &,int &, bool &, std::string &); 
 	bool isStringAnInteger(std::string );
 	std::string lowercaseRepeatDetail(std::string );
 	void initialzeAttributes();
