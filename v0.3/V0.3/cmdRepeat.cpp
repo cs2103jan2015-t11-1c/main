@@ -277,7 +277,7 @@ void cmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 	int endTime = repeatingEvent.getEndTime();
 	int endYear = repeatingEvent.getEndYear();
 
-	if (startYear != STARTING_YEAR){
+	if (startYear != _findNextDate.getYear()){
 		_findNextDate.changeDefaultYear(startYear);
 	}
 	_interval = determineInterval(startMonth, startYear);
@@ -289,9 +289,10 @@ void cmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 	newStartMonth = _findNextDate.getMonth();
 	newStartYear = _findNextDate.getYear();
 
-	if (endYear != STARTING_YEAR){
+	if (endYear != _findNextDate.getYear()){
 		_findNextDate.changeDefaultYear(endYear);
 	}
+	_interval = determineInterval(endMonth, endYear);
 	_findNextDate.calculate(endDate, endMonth, _interval);
 	int newEndDate;
 	int newEndMonth;
@@ -306,12 +307,13 @@ void cmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 		newEvent.changeStartMonth(newStartMonth);
 		newEvent.changeStartTime(startTime);
 		if (newStartYear != STARTING_YEAR) {
-			newEvent.changeStartYear(newStartYear);
+			newEvent.changeStartYear(newStartYear);}
+		if (newEndYear != STARTING_YEAR) {
 			newEvent.changeEndYear(newEndYear);
 		}
 		_storage.addEvent(newEvent);
 
-		if (newStartYear != STARTING_YEAR){
+		if (newStartYear != _findNextDate.getYear()){
 			_findNextDate.changeDefaultYear(newStartYear);
 		}
 		_interval = determineInterval(newStartMonth, newStartYear);
@@ -320,9 +322,10 @@ void cmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 		newStartMonth = _findNextDate.getMonth();
 		newStartYear = _findNextDate.getYear();
 
-		if (newEndYear != STARTING_YEAR){
+		if (newEndYear != _findNextDate.getYear()){
 			_findNextDate.changeDefaultYear(newEndYear);
 		}
+		_interval = determineInterval(newEndMonth, newEndYear);
 		_findNextDate.calculate(newEndDate, newEndMonth, _interval);
 		newEndDate = _findNextDate.getDay();
 		newEndMonth = _findNextDate.getMonth();
