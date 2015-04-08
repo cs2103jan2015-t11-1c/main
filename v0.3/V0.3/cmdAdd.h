@@ -1,9 +1,9 @@
 #pragma once
 #include "logicBaseClass.h"
 
-class cmdAdd: 
-	public logicBaseClass
-{
+//This cmdAdd class will add three types of event to the storage:
+//Floating task, Deadline task and Timed task
+class cmdAdd: public logicBaseClass{
 private:
 	Event _newEvent;
 public:
@@ -14,6 +14,5 @@ public:
 	std::string addEventWithoutDeadline(Storage& _storage);
 	std::string addTimedEvent(Storage& _storage);
 	std::string printFeedback(Event);
-
+	void updateStorage();
 };
-
