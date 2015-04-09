@@ -27,19 +27,20 @@ std:: string cmdAdd::executecmdAdd(Storage& _storage){
 		break;
 	} 
 
-	updateStorage();
 	return "";
 }
 
 std::string cmdAdd::addEventWithDeadline(Storage& _storage){
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
+	updateStorage();
 	return _feedback;
 }
 
 std::string cmdAdd::addEventWithoutDeadline(Storage& _storage){
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
+	updateStorage();
 	return _feedback;
 }
 
@@ -72,7 +73,8 @@ std::string cmdAdd::addTimedEvent(Storage& _storage){
 	_newEvent.changeStartTime(_startingTime);
 	_storage.addEvent(_newEvent);
 
-	_feedback = printFeedback(_newEvent);	
+	_feedback = printFeedback(_newEvent);
+	updateStorage();
 	return _feedback;
 }
 
