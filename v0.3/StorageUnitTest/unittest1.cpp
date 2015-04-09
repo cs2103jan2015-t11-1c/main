@@ -4,6 +4,7 @@
 #include "CppUnitTest.h"
 #include <assert.h>
 #include "Storage.h"
+#include "findNextDate.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -391,6 +392,146 @@ namespace StorageTest {
 			sampleStorage.readEventsFromFile(input[i]);
 			Event output = sampleStorage.getDoneEvent(1);
 			Assert::AreEqual(expected[0],output.displayEvent());
+		}
+
+		TEST_METHOD(repeatEvent) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+			output = sampleStorage.getEvent(2);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			Eventlist sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(2,sampleEventList.getTotalNumberOfEvents());
+		}
+
+		TEST_METHOD(undoAdd) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			sampleStorage.addEvent(sampleEvent2);
+			Eventlist sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(2,sampleEventList.getTotalNumberOfEvents());
+			sampleStorage.unDopreviousActions("add");
+			sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(1,sampleEventList.getTotalNumberOfEvents());
+		}
+
+		TEST_METHOD(undoMarkAsDone) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			sampleStorage.addEvent(sampleEvent2);
+			std::list<int> sampleList;
+			sampleList.push_back(1);
+			sampleStorage.markEventAsDone(sampleList);
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+			output = sampleStorage.getDoneEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			sampleStorage.unDopreviousActions("done");
+			output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(undoDelete) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			sampleStorage.addEvent(sampleEvent2);
+			std::list<int> sampleList;
+			sampleList.push_back(1);
+			sampleStorage.deleteEvent(sampleList);
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+			sampleStorage.unDopreviousActions("delete");
+			output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(undoUpdate) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			sampleStorage.updateEvent(1,sampleEvent2);
+			sampleStorage.unDopreviousActions("update");
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+		}
+		
+		TEST_METHOD(undoClearActive) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			Eventlist sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(1,sampleEventList.getTotalNumberOfEvents());
+			sampleStorage.clearActiveEvent();
+			sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(0,sampleEventList.getTotalNumberOfEvents());
+			sampleStorage.unDopreviousActions("clearactive");
+			sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(1,sampleEventList.getTotalNumberOfEvents());
+		}
+
+		TEST_METHOD(undoClearDone) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			std::list<int> index;
+			index.push_back(1);
+			sampleStorage.markEventAsDone(index);
+			Eventlist sampleEventList = sampleStorage.displayDoneEvent();
+			Assert::AreEqual(1,sampleEventList.getTotalNumberOfEvents());
+			sampleStorage.clearDoneEvent();
+			sampleEventList = sampleStorage.displayDoneEvent();
+			Assert::AreEqual(0,sampleEventList.getTotalNumberOfEvents());
+			sampleStorage.unDopreviousActions("cleardone");
+			sampleEventList = sampleStorage.displayDoneEvent();
+			Assert::AreEqual(1,sampleEventList.getTotalNumberOfEvents());
+		}
+
+		TEST_METHOD(undoRepeatEvent) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			Eventlist sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(2,sampleEventList.getTotalNumberOfEvents());
+			sampleStorage.unDopreviousActions("repeat");
+			sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(0,sampleEventList.getTotalNumberOfEvents());
+		}
+	};
+
+	TEST_CLASS(testfindNextDate) {
+
+	public:
+		//Equivalent partition {divisible by 400}, {divisible by 4 not divisible by 400}
+		//{others}
+		TEST_METHOD(isLeapYear) {
+			findNextDate finder;
+			bool expected[2] = {	true,
+									false};
+			bool output = finder.isLeapYear(2001);
+			Assert::AreEqual(expected[1],output);
+			output = finder.isLeapYear(2000);
+			Assert::AreEqual(expected[0],output);
+			output = finder.isLeapYear(1900);
+			Assert::AreEqual(expected[1],output);
+			output = finder.isLeapYear(2004);
+			Assert::AreEqual(expected[0],output);
 		}
 	};
 }
