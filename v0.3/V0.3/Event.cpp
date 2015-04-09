@@ -263,7 +263,6 @@ void Event::updateDueRanking() {
 		_dueRanking = _endYear % 100 * YEAR_RANKING +_endMonth * MONTH_RANKING;
 		_dueRanking = _dueRanking + _endDay * DAY_RANKING + _endTime;
 	}
-	std::cout << _dueRanking << std::endl;
 }
 
 std::string Event::getTaskName() {

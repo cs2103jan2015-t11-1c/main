@@ -16,6 +16,7 @@ private:
 	enum COMMAND_TYPE { ADD,UPDATE,DELETEEVENT,DONE,CLEARDONE,CLEARACTIVE,CLEAR,REPEAT,INVALID};
 	COMMAND_TYPE findCommandType(std::string currentCommand);
 	std::string _filename;
+	std::string _locationFile;
 
 public:
 	Storage(void);
@@ -49,6 +50,8 @@ public:
 	void changeToPreviousActiveEventList();
 	void changeToPreviousDoneEventList();
 	void writeToLogfile(std::string, std::string);
+	void getDirectory();
+	void initialiseDirectory(const char* );
 	bool unDopreviousActions(std::string);
 	Eventlist displayEvent (void);
 	Eventlist displayDoneEvent (void);

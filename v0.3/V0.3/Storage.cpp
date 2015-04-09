@@ -45,6 +45,7 @@ const std::string EMPTY_SPACE = " ";
 const std::string START_INfO = "Starting Info: ";
 const std::string END_INFO = "Ending Info: ";
 const std::string NIL_IDENTIFIER = "Nil";
+const std::string DEFAULT_LOCATION_NAME = "Directory.txt";
 const int ZERO = 0;
 const int NUMBER_OF_DIGIT_FOR_DATE = 2;
 const int NUMBER_OF_DIGIT_FOR_TIME = 4;
@@ -54,6 +55,8 @@ char buffer[1000];
 
 Storage::Storage(void) {	
 	_filename = DEFAULT_FILE_NAME;
+	_locationFile = DEFAULT_LOCATION_NAME;
+	getDirectory();
 }
 
 Storage::~Storage(void) {
@@ -292,10 +295,6 @@ void Storage::saveDoneEventsToFile() {
 //Synchonized storage data with the local file.
 void Storage::synchronizeDrive() {
 	clearLocalDrive();
-	const int bufferSize = MAX_PATH;
-    char oldDir[bufferSize];
-	GetCurrentDirectory(bufferSize, oldDir);
-	writeFile(oldDir);
 	saveDoneEventsToFile();
 	saveActiveEventsToFile();
 	writeToLogfile(INFOMATION, WRITE_TO_FILE);
@@ -313,17 +312,19 @@ void Storage::readFile() {
 	std::ifstream textFile;
 	std::string currentLine;
 	textFile.open(_filename);
-	getline(textFile,currentLine);
-	if (currentLine.empty()) {
-		return ;
-	} else {
-		const char * oldDirectory = currentLine.c_str();
-		changeCurrentDirectory(oldDirectory); }
 	while(getline(textFile,currentLine)) {
-		readEventsFromFile(currentLine);
+	readEventsFromFile(currentLine);
 	}
 	textFile.close();
 	writeToLogfile(INFOMATION, READ_FROM_FILE);
+}
+
+void Storage::getDirectory() {
+	std::ifstream textFile;
+	std::string directory;
+	textFile.open(_locationFile);
+	getline(textFile,directory);
+	initialiseDirectory(directory.c_str());
 }
 
 //Retrieve the Event information from a local file
@@ -403,17 +404,21 @@ void Storage::readEventsFromFile(std::string line) {
 
 //Allow user to change the directory of the local file.
 void Storage::changeCurrentDirectory(const char* newDirectory) {
-	const int bufferSize = MAX_PATH;
-    char oldDir[bufferSize];
-	GetCurrentDirectory(bufferSize, oldDir);
 	const char* newDir = newDirectory;
-	if (oldDir != newDir) {
+	std::ofstream destination;
+	destination.open(_locationFile);
+	destination << newDir;
 	SetCurrentDirectory(newDir);
+	synchronizeDrive();
 	std::string messageForLog;
 	messageForLog = SET_CURRENT_DIRECTORY + newDir;
 	writeToLogfile(INFOMATION, messageForLog);
-	}
 }
+
+void Storage::initialiseDirectory(const char* newDirectory) {
+	SetCurrentDirectory(newDirectory);
+}
+
 
 void Storage::writeToLogfile(std::string type, std::string message) {
 	std::ofstream destination;
