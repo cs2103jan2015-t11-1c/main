@@ -1,8 +1,8 @@
 #pragma once
 #include "logicbaseclass.h"
-class cmdChangeDirectory :
-	public logicBaseClass
-{
+
+//This cmdChangeDirectory class will change the location of the file saved
+class cmdChangeDirectory: public logicBaseClass {
 public:
 	cmdChangeDirectory(void);
 	~cmdChangeDirectory(void);

@@ -6,7 +6,6 @@ const static std::string CLASH_MESSAGE = "Reminder: You will be doing something 
 const static std::string ADD_SUCCESSFUL_MESSAGE = "\" is added successfully.\n\n";
 
 cmdAdd::cmdAdd(void){
-
 }
 
 
@@ -27,22 +26,20 @@ std:: string cmdAdd::executecmdAdd(Storage& _storage){
 	default:
 		break;
 	} 
+
+	updateStorage();
 	return "";
 }
 
 std::string cmdAdd::addEventWithDeadline(Storage& _storage){
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
-	_storage.sortActiveEventlist();
-	_storage.synchronizeDrive();
 	return _feedback;
 }
 
 std::string cmdAdd::addEventWithoutDeadline(Storage& _storage){
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
-	_storage.sortActiveEventlist();
-	_storage.synchronizeDrive();
 	return _feedback;
 }
 
@@ -56,17 +53,17 @@ std::string cmdAdd::addTimedEvent(Storage& _storage){
 	int startingDate = _startingDate;
 	int startingTime = _startingTime;
 	int endingTime = _endingTime;
+	
 	std::list<Event>::iterator Tcount;
 	Event currentEvent;
-
 	for(Tcount = allEvents.begin(); Tcount != allEvents.end(); Tcount++){
 		currentEvent = *Tcount;
 		int startMonth = currentEvent.getStartMonth();
 		int startDate = currentEvent.getStartDate();
 		int startTime = currentEvent.getStartTime();
 		int endTime = currentEvent.getEndTime();
-		if(startMonth == startingMonth && startDate == startingDate && startingTime >= startTime && startingTime <= endTime){
-			std::cout<<CLASH_MESSAGE;
+		if (startMonth == startingMonth && startDate == startingDate && startingTime >= startTime && startingTime <= endTime) {
+			std::cout << CLASH_MESSAGE;
 			break;
 		}
 	}
@@ -74,9 +71,8 @@ std::string cmdAdd::addTimedEvent(Storage& _storage){
 	_newEvent.changeStartMonth(_startingMonth);
 	_newEvent.changeStartTime(_startingTime);
 	_storage.addEvent(_newEvent);
-	_storage.sortActiveEventlist();
-	_storage.synchronizeDrive();
-	_feedback = printFeedback(_newEvent);
+
+	_feedback = printFeedback(_newEvent);	
 	return _feedback;
 }
 
@@ -85,3 +81,7 @@ std::string cmdAdd::printFeedback(Event newEvent){
 	return feedback;
 }
 
+void cmdAdd::updateStorage(){
+	_storage.sortActiveEventlist();
+	_storage.synchronizeDrive();
+}

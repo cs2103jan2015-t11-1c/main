@@ -2,56 +2,53 @@
 #include <string>
 
 const static std::string EMPTY_STRING = "";
-const static std::string INVALID_REPEAT_DETAILS = "Sorry, invalid repeat details.";
+const static std::string INVALID_EXCEPTION_TYPE = "INVALID";
 const static std::string EXCEPT_STRING = "except";
-const static int DEFAULT_TIMES = 0;
 const static std::string STRING_DAILY = "daily";
 const static std::string STRING_WEEKLY = "weekly";
 const static std::string STRING_MONTHLY = "monthly";
 const static std::string STRING_EVERY = "every";
+const static int INVALID_REPEAT_TIME = -1;
+const static int DEFAULT_TIMES = 0;
 
-cmdRepeatParser::cmdRepeatParser(void){
+
+cmdRepeatParser::cmdRepeatParser(void) {
 }
 
-cmdRepeatParser::~cmdRepeatParser(void){
+cmdRepeatParser::~cmdRepeatParser(void) {
 }
 
 void cmdRepeatParser::initialzeAttributes() {
 	_repeatDetails = EMPTY_STRING;
 	_repeatType = EMPTY_STRING;
 	_repeatTimes = DEFAULT_TIMES;
-	_exceptionType = EMPTY_STRING;
+	_exceptionDetail = EMPTY_STRING;
 }
 
-bool cmdRepeatParser::checkValidityAndGetRepeatDetails(std::string repeatDetail,std::string &repeatType,int &repeatTimes, bool &isWithException, std::string &exceptionType) {
+bool cmdRepeatParser::checkValidityAndGetDetails(std::string repeatDetail, std::string &repeatType, int &repeatTimes, bool &isWithException, std::string &exceptionType) {
 	initialzeAttributes();
-
 	repeatDetail = lowercaseRepeatDetail(repeatDetail);
 	_repeatDetails = repeatDetail;
 	bool isValid = false;
 	bool isDefault = false;
 	bool hasAnException = hasException();
 	
-	if(isDailyWeeklyMonthly(repeatDetail)){
+	if (isDailyWeeklyMonthly(repeatDetail)) {
 
 		if(!hasAnException) {
-			isValid = getRepeatTimesForDailyWeeklyMonthly(repeatDetail);
+			isValid = getRepeatTimes(repeatDetail);
 		} else {
-
-			if(getRepeatTimesForDailyWeeklyMonthly(repeatDetail)) {
-				isValid = getExceptionTimes(repeatDetail);
-			} 
-
+			isValid = getRepeatTimes(repeatDetail) && getExceptionDetails(repeatDetail);
 		}
-	}  else if(isCertainDayOfAWeek(repeatDetail)) {
 
-		if(!hasAnException) {
-			isValid = getDetailsForRepeatCertainDayOfAWeek( repeatDetail);
+	}  else if (isCertainDayOfAWeek(repeatDetail)) {
+
+		if (!hasAnException) {
+			isValid = getDetailsForRepeatCertainDayOfAWeek( repeatDetail) && getRepeatTimes(repeatDetail);
 		} else {
-			if(getDetailsForRepeatCertainDayOfAWeek(repeatDetail)) {
-				isValid = getExceptionTimes(repeatDetail);
-			}
+			isValid = getDetailsForRepeatCertainDayOfAWeek(repeatDetail) && getRepeatTimes(repeatDetail) && getExceptionDetails(repeatDetail);
 		}
+
 	} else {
 		isValid = false;
 	}		
@@ -59,14 +56,13 @@ bool cmdRepeatParser::checkValidityAndGetRepeatDetails(std::string repeatDetail,
 	repeatType = _repeatType;
 	repeatTimes = _repeatTimes; 
 	isWithException = hasException();
-	exceptionType = _exceptionType;
-	//std::cout << _repeatType <<std::endl <<_repeatTimes <<std::endl << _hasException << std:: endl << _exceptionType <<std::endl;
-	
+	exceptionType = _exceptionDetail;
 	initialzeAttributes();
+
 	return isValid;
 }
 
-bool cmdRepeatParser::getRepeatTimesForDailyWeeklyMonthly(std::string repeatDetail) {
+bool cmdRepeatParser::getRepeatTimes(std::string repeatDetail) {
 
 	int repeatTypeSize = _repeatType.size();
 	int EIndex = repeatDetail.find(_repeatType);
@@ -85,38 +81,47 @@ bool cmdRepeatParser::getRepeatTimesForDailyWeeklyMonthly(std::string repeatDeta
 		
 	TIndex = repeatDetail.find_first_not_of(" ");
 
-	if(isValidIndex(TIndex)){
+	if (isValidIndex(TIndex)) {
 		repeatDetail = repeatDetail.substr(TIndex);
-	}	else {
+	} else {
 		_repeatTimes = DEFAULT_TIMES;
 		return true;
 	}
 		
 	TIndex = repeatDetail.find_first_of(" ");
 
-	if(isValidIndex(TIndex)){
+	if (isValidIndex(TIndex)) {
 		repeatTimeString = repeatDetail.substr(0, TIndex);
 	} else {
 		repeatTimeString = repeatDetail;
 	}
 		
-	if(isStringAnInteger(repeatTimeString)) {
+	if (isStringAnInteger(repeatTimeString)) {
 		_repeatTimes = std::stoi(repeatTimeString);
 		return true;
 	} else {
-		return false;
-	}
 
+		if (repeatTimeString == EXCEPT_STRING) {
+			_repeatTimes = DEFAULT_TIMES;
+		} else {
+			_repeatTimes = INVALID_REPEAT_TIME;
+			return false;
+		}
+
+	}
 }
 
-bool cmdRepeatParser::getExceptionTimes(std::string repeatDetail) {
+bool cmdRepeatParser::getExceptionDetails(std::string repeatDetail) {
 	int EIndex = repeatDetail.find(EXCEPT_STRING);
 	repeatDetail = repeatDetail.substr(EIndex);
-	int TIndex;
-	if(repeatDetail.size() > EXCEPT_STRING.size()) {
-		TIndex = repeatDetail.find(EXCEPT_STRING) + 6;
+
+	int TIndex = EXCEPT_STRING.size() - 1;
+	repeatDetail = repeatDetail.substr(TIndex);
+	TIndex = repeatDetail.find_first_of(" ");
+	if (isValidIndex(TIndex)) {
 		repeatDetail = repeatDetail.substr(TIndex);
 	} else {
+		_exceptionDetail = INVALID_EXCEPTION_TYPE;
 		return false;
 	}
 
@@ -130,14 +135,13 @@ bool cmdRepeatParser::getExceptionTimes(std::string repeatDetail) {
 
 	TIndex = repeatDetail.find_first_of(" ");
 
-	if(isValidIndex(TIndex)){
-		_exceptionType = repeatDetail.substr(0, TIndex);
+	if (isValidIndex(TIndex)) {
+		_exceptionDetail = repeatDetail.substr(0, TIndex);
 	    return true;
 	} else {
-		_exceptionType = repeatDetail;
+		_exceptionDetail = repeatDetail;
 		return true;
 	}
-
 }	
 
 
@@ -147,7 +151,7 @@ bool cmdRepeatParser::getDetailsForRepeatCertainDayOfAWeek(std::string repeatDet
 	repeatDetail = repeatDetail.substr(TIndex);
 	TIndex = repeatDetail.find_first_of(" ");
 
-	if(isValidIndex(TIndex)) {
+	if (isValidIndex(TIndex)) {
 		repeatDetail = repeatDetail.substr(TIndex);
 	} else {
 		return false;
@@ -155,15 +159,15 @@ bool cmdRepeatParser::getDetailsForRepeatCertainDayOfAWeek(std::string repeatDet
 	
 	TIndex = repeatDetail.find_first_not_of(" ");
 
-	if(isValidIndex(TIndex)) {
+	if (isValidIndex(TIndex)) {
 		repeatDetail = repeatDetail.substr(TIndex);
-	} else{
+	} else {
 		return false;
 	}
 
 	TIndex = repeatDetail.find_first_of(" ");
 
-	if(isValidIndex(TIndex)) {
+	if (isValidIndex(TIndex)) {
 		_repeatType = repeatDetail.substr(0, TIndex);
 		return true;
 	} else {
@@ -171,10 +175,9 @@ bool cmdRepeatParser::getDetailsForRepeatCertainDayOfAWeek(std::string repeatDet
 		return true;
 	}
 }		
-	
 
-bool cmdRepeatParser::isValidIndex(int TIndex){
-	if (TIndex!=std::string::npos && TIndex >= 0) {
+bool cmdRepeatParser::isValidIndex(int TIndex) {
+	if (TIndex != std::string::npos && TIndex >= 0) {
 		return true;
 	} else {
 		return false;
@@ -194,14 +197,12 @@ bool cmdRepeatParser::hasException() {
 	return _hasException;
 }
 
-
-
-bool cmdRepeatParser::isDailyWeeklyMonthly(std::string str){
+bool cmdRepeatParser::isDailyWeeklyMonthly(std::string str) {
 	int indexOne = str.find(STRING_DAILY);
 	int indexTwo = str.find(STRING_WEEKLY);
 	int indexThree = str.find(STRING_MONTHLY);
 
-	if( isValidIndex(indexOne) ){
+	if (isValidIndex(indexOne)) {
 		_repeatType = STRING_DAILY;
 		return true;
 	} else if (isValidIndex(indexTwo)) {
@@ -215,7 +216,7 @@ bool cmdRepeatParser::isDailyWeeklyMonthly(std::string str){
 	}
 }
 
-bool cmdRepeatParser::isCertainDayOfAWeek(std::string str){
+bool cmdRepeatParser::isCertainDayOfAWeek(std::string str) {
 	int Tindex = str.find(STRING_EVERY);
 	if (isValidIndex(Tindex)) {
 		return true;
@@ -225,20 +226,26 @@ bool cmdRepeatParser::isCertainDayOfAWeek(std::string str){
 }
 
 bool cmdRepeatParser::isStringAnInteger(std::string str) {
-	for (int i = str.size()-1; i>=0; i--) {
+
+	for (int i = str.size()-1; i >= 0; i--) {
+
 		if (!isdigit(str[i])) {
 			return false;
 		}
+
 	}
 	return true;
 }
 
-std::string cmdRepeatParser::lowercaseRepeatDetail(std::string repeatDetail){
+std::string cmdRepeatParser::lowercaseRepeatDetail(std::string repeatDetail) {
 	int n = repeatDetail.size();
-	for( int i = 0; i < n; i++){
-		if(repeatDetail[i] <='Z' && repeatDetail[i] >= 'A'){
+
+	for (int i = 0; i < n; i++) {
+
+		if (repeatDetail[i] <= 'Z' && repeatDetail[i] >= 'A') {
 			repeatDetail[i] = repeatDetail[i] - ('Z'-'z');
 		}
+
 	}
 
   return repeatDetail;
