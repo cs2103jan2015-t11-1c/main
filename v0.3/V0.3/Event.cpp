@@ -58,7 +58,7 @@ const int DECEMBER_IN_NUMBER = 12;
 const int DAY_RANKING = 10000;
 const int MONTH_RANKING = 1000000;
 const int YEAR_RANKING = 100000000;
-const int NO_DUE_DATE_RANKING = 1;
+const int NO_DUE_DATE_RANKING = 2000000000;
 const int NO_DUE_DATE_SPACING = 28;
 const int NO_START_TIME_DEFAULT_YEAR_SPACING = 13;
 const int NO_START_TIME_NON_DEFAULT_YEAR_SPACING = 24;
@@ -263,6 +263,7 @@ void Event::updateDueRanking() {
 		_dueRanking = _endYear % 100 * YEAR_RANKING +_endMonth * MONTH_RANKING;
 		_dueRanking = _dueRanking + _endDay * DAY_RANKING + _endTime;
 	}
+	std::cout << _dueRanking << std::endl;
 }
 
 std::string Event::getTaskName() {

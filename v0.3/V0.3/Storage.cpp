@@ -15,6 +15,8 @@ const std::string UNDO_CLEAR_ACTIVE_EVENTLIST = "Undo deleted all incomplete eve
 const std::string UNDO_CLEAR_DONE_EVENTLIST = "Undo deleted all completed events.";
 const std::string ADD_ACTIVE_EVENT = "added to incomplete events.";
 const std::string ADD_DONE_EVENT = "Event(s) has been marked as done.";
+const std::string REPEAT_EVENTS = "Recuring events added.";
+const std::string UNDO_REPEAT_EVENTS = "Undo recuring events";
 const std::string UNDO_ADD_ACTIVE_EVENT = "Undo add event.";
 const std::string UNDO_ADD_DONE_EVENT = "Undo mark event as done.";
 const std::string DELETE_ACTIVE_EVENT = "Incomplete event(s) has been deleted.";
@@ -36,6 +38,7 @@ const std::string CMD_UPDATE = "update";
 const std::string CMD_DONE = "done";
 const std::string CMD_CLEAR_DONE = "cleardone";
 const std::string CMD_CLEAR_ACTIVE = "clearactive";
+const std::string CMD_REPEAT = "repeat";
 const std::string LOG_BACK_SYMBOL = "> ";
 const std::string LOG_FRONT_SYMBOL = " <";
 const std::string EMPTY_SPACE = " ";
@@ -59,7 +62,7 @@ Storage::~Storage(void) {
 //Take in the previous command and perform the necessary undo functions
 bool Storage::unDopreviousActions(std::string unDoCommand) {	
 	COMMAND_TYPE command = findCommandType(unDoCommand);
-		switch (command) {
+	switch (command) {
 	case ADD:
 		unDoAddEvent();
 		return true;
@@ -81,6 +84,9 @@ bool Storage::unDopreviousActions(std::string unDoCommand) {
 	case CLEAR:
 		unDoClearActiveEvent();
 		unDoClearDoneEvent();
+		return true;
+	case REPEAT:
+		unDoRepeatEvent();
 		return true;
 	case INVALID:
 		return false;
@@ -104,6 +110,8 @@ Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand) {
 		return CLEARACTIVE;
 	} else if (currentCommand == CMD_CLEAR) {
 		return CLEAR;
+	} else if (currentCommand == CMD_REPEAT) {
+		return REPEAT;
 	} else {
 		return INVALID;
 	}
@@ -162,6 +170,21 @@ void Storage::addEvent(Event newEvent) {
 void Storage::unDoAddEvent () {
 	changeToPreviousActiveEventList();
 	writeToLogfile(INFOMATION, UNDO_ADD_ACTIVE_EVENT);
+}
+
+void Storage::repeatEvent(std::list<Event> allEvents) {
+	saveCurrentActiveEventList();
+	while (!allEvents.empty()) {
+		_currentEvent = allEvents.back();
+		_activeEvent.addEvent(_currentEvent);
+		allEvents.pop_back();
+	}
+	writeToLogfile(INFOMATION, REPEAT_EVENTS);
+}
+
+void Storage::unDoRepeatEvent() {
+	changeToPreviousActiveEventList();
+	writeToLogfile(INFOMATION, UNDO_REPEAT_EVENTS);
 }
 
 //Transfer the list of index Events from active Eventlist to done Eventlist.
