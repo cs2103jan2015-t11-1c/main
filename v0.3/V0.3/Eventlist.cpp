@@ -8,6 +8,7 @@
 #include <time.h>
 
 const int GO_TO_PREVIOUS = -1;
+const std::string ERROR_INDEX = "Error: index not valid.";
 
 Eventlist::Eventlist(void) {
 }
@@ -25,21 +26,30 @@ void Eventlist::addEvent(Event newEvent) {
 }
 
 //Delete one Event from the list by searching from the front of the list.
-void Eventlist::deleteEvent(int index) {
+void Eventlist::deleteEvent(unsigned int index) {
+	if(index < 1 || index > _allEvent.size()) {
+		throw std::string(ERROR_INDEX);
+	}
 	std::list<Event>::iterator deleteposition = _allEvent.begin();
 	advance(deleteposition, index + GO_TO_PREVIOUS);
 	_allEvent.erase(deleteposition);
 }
 
 //Find the Event at the index position and return the Event.
-Event Eventlist::getEvent(int index) {	
+Event Eventlist::getEvent(unsigned int index) {	
+	if(index < 1 || index > _allEvent.size()) {
+		throw std::string(ERROR_INDEX);
+	}
 	std::list<Event>::iterator eventPosition =_allEvent.begin();
 	advance(eventPosition, index + GO_TO_PREVIOUS);
 	return *eventPosition;
 }
 
 //Replaced the index position Event with new event.
-void Eventlist::updateEvent (int index, Event newEvent) {
+void Eventlist::updateEvent (unsigned int index, Event newEvent) {
+	if(index < 1 || index > _allEvent.size()) {
+		throw std::string(ERROR_INDEX);
+	}
 	std::list<Event>::iterator eventPosition = _allEvent.begin();
 	advance(eventPosition, index + GO_TO_PREVIOUS);
 	*eventPosition = newEvent;
@@ -54,6 +64,7 @@ int Eventlist::getTotalNumberOfEvents (void) {
 }
 
 //Sort the Event in Eventlist according to smallest month, day and time.
+//Event with no due time will be put to the end.
 void Eventlist::sortEvent(void) {  
 	_allEvent.sort([](const Event & a, const Event & b) { //given two event.
 	return a._dueRanking< b._dueRanking; });			  //compare their ranking.

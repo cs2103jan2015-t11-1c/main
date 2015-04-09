@@ -32,6 +32,7 @@ const std::string OCTOBER = "Oct";
 const std::string NOVEMBER = "Nov";
 const std::string DECEMBER = "Dec";
 const std::string INVALID_MONTH = "Invalid Month";
+const std::string ERROR_YEAR = "Error: Setting year earlier than 2015 is not allowed";
 const int DEFAUlTYEAR = 2015;
 const int THOUSAND = 1000;
 const int HUNDRED = 100;
@@ -201,56 +202,65 @@ std::string Event::getDeadline() {
 }
 
 
-void Event::changeTitle(std::string newTitle){	
+void Event::changeTitle(std::string newTitle) {	
 	_title = newTitle; 
 }
 
-void Event::changeEndDay(int newDay){	
+void Event::changeEndDay(int newDay) {	
 	_endDay = newDay;
 	updateDueRanking();
 }
 
-void Event::changeEndMonth (int newMonth){
+void Event::changeEndMonth (int newMonth) {
 	_endMonth = newMonth;
 	updateDueRanking();
 }
 
-void Event::changeEndTime (int newTime){
+void Event::changeEndTime (int newTime) {
 	_endTime = newTime;
 	updateDueRanking();
 }
 
-void Event::changeEndYear (int newYear){
+void Event::changeEndYear (int newYear) {
+	if (newYear < DEFAUlTYEAR) {
+		throw std::string(ERROR_YEAR);
+	}
 	_endYear = newYear;
 	updateDueRanking();
 }
 
-void Event::changeStartDay (int newDay){
+void Event::changeStartDay (int newDay) {
 	_startDay = newDay;
 	if(isTimedTask()) {
 		_durationEvent = true;
+	} else {
+		_durationEvent = false;
 	}
-	else _durationEvent = false;
 }
 
 void Event::changeStartMonth (int newMonth) {
 	_startMonth = newMonth;
 	if(isTimedTask()) {
 		_durationEvent = true;
+	} else {
+		_durationEvent = false;
 	}
-	else _durationEvent = false;
 }
 
 void Event::changeStartTime (int newTime) {
 	_startTime= newTime;
 	if(isTimedTask()) {
 		_durationEvent = true;
+	} else { 
+		_durationEvent = false;
 	}
-	else _durationEvent = false;
 }
 
 void Event::changeStartYear (int newYear) {
-	_startYear = newYear;
+	if (newYear < DEFAUlTYEAR) {
+		throw std::string(ERROR_YEAR);
+	}
+	_startYear= newYear;
 }
 
 //For the purpose of sorting, arrange the events from earliest year and
@@ -289,7 +299,7 @@ int Event::getStartTime() {
 	return _startTime;
 }
 
-int Event::getEndTime(){
+int Event::getEndTime() {
 	return _endTime;
 }
 
@@ -312,7 +322,7 @@ std::string Event::saveEvent() {
 		Ostring << NIL_IDENTIFIER << EMPTY_SPACE;
 	} else {
 		Ostring << convertNumberToString(_endDay) << EMPTY_SPACE;
-		Ostring	<< convertNumberToString(_endMonth)<< EMPTY_SPACE;
+		Ostring	<< convertNumberToString(_endMonth) << EMPTY_SPACE;
 		Ostring << convertTimeToString(_endTime) << EMPTY_SPACE;
 		Ostring << convertTimeToString(_endYear);
 	}

@@ -1,4 +1,4 @@
-55//@author A0116455H
+//@author A0116455H
 
 #include "stdafx.h"
 #include "CppUnitTest.h"
@@ -282,9 +282,9 @@ namespace StorageTest {
 			Event expected = sampleEventList.getEvent(1);
 			Assert::AreEqual(expected.displayEvent(),sampleEvent2.displayEvent());
 			sampleEventList.sortEvent();
-			expected = sampleEventList.getEvent(2);
-			Assert::AreEqual(expected.displayEvent(),sampleEvent1.displayEvent());
 			expected = sampleEventList.getEvent(1);
+			Assert::AreEqual(expected.displayEvent(),sampleEvent1.displayEvent());
+			expected = sampleEventList.getEvent(3);
 			Assert::AreEqual(expected.displayEvent(),sampleEvent3.displayEvent());
 			
 		}

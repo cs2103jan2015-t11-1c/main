@@ -17,13 +17,13 @@ public:
 	~Eventlist(void);
 	void clearEventlist();
 	void addEvent (Event newEvent);
-	void deleteEvent (int index);
+	void deleteEvent (unsigned int index);
 	void copyFromNewList( std::list<Event> newList);
-	void updateEvent (int index, Event newEvent);
+	void updateEvent (unsigned int index, Event newEvent);
 	void sortEvent(void);
 	int getTotalNumberOfEvents (void);
 	std::list<Event> returnAllEvent();
 	bool compareDueRanking (const Event& firstEvent,const Event& secondEvent);
-	Event getEvent(int index);
+	Event getEvent(unsigned int index);
 };
 

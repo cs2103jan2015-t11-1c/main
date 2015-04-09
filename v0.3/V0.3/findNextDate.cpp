@@ -9,6 +9,9 @@
 //before calling calculate function. 
 #include "findNextDate.h"
 
+const std::string ERROR_DAY = "Day entered invalid";
+const std::string ERROR_MONTH = "Month entered invalid";
+const std::string ERROR_YEAR = "Error: Setting year earlier than 2015 is not allowed";
 const int MONTH[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 const int MONTH_LEAP[] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 const int STARTING_YEAR = 2015;
@@ -40,6 +43,12 @@ findNextDate::~findNextDate(void) {
 //Calculate the next date when given current date and number of days
 //to next date. Week number of the next date is calculated too.
 void findNextDate::calculate(int day, int month, int numberOfDays) {	
+	if(day < MIN_DATE || day > MAX_DATE) {
+		throw std::string(ERROR_DAY);
+	}
+	if(month < MIN_MONTH || day > MAX_MONTH) {
+		throw std::string(ERROR_MONTH);
+	}
 	_currentDay = day;
 	_currentMonth = month;
 	_advanceNumberOfDays = numberOfDays;
@@ -188,5 +197,8 @@ int findNextDate::getYear() {
 //When this class is used to calculate date beyond 2015.
 //This function must be called to change year before calculate functions.
 void findNextDate::changeDefaultYear(int year) {
+	if (year < STARTING_YEAR) {
+		throw std::string(ERROR_YEAR);
+	}
 	_year = year;
 }
