@@ -46,7 +46,7 @@ void findNextDate::calculate(int day, int month, int numberOfDays) {
 	if(day < MIN_DATE || day > MAX_DATE) {
 		throw std::string(ERROR_DAY);
 	}
-	if(month < MIN_MONTH || day > MAX_MONTH) {
+	if(month < MIN_MONTH || month > MAX_MONTH) {
 		throw std::string(ERROR_MONTH);
 	}
 	_currentDay = day;

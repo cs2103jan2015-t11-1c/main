@@ -518,20 +518,65 @@ namespace StorageTest {
 	TEST_CLASS(testfindNextDate) {
 
 	public:
-		//Equivalent partition {divisible by 400}, {divisible by 4 not divisible by 400}
+		//Equivalent partition {divisible by 400}, {divisible by 4 not divisible by 100}
 		//{others}
 		TEST_METHOD(isLeapYear) {
 			findNextDate finder;
 			bool expected[2] = {	true,
 									false};
-			bool output = finder.isLeapYear(2001);
+			bool output = finder.isLeapYear(2015);
 			Assert::AreEqual(expected[1],output);
-			output = finder.isLeapYear(2000);
+			output = finder.isLeapYear(2016);
 			Assert::AreEqual(expected[0],output);
-			output = finder.isLeapYear(1900);
+			output = finder.isLeapYear(2100);
 			Assert::AreEqual(expected[1],output);
-			output = finder.isLeapYear(2004);
+			output = finder.isLeapYear(2400);
 			Assert::AreEqual(expected[0],output);
+		}
+		//Equivalent partition {month with 31 days}, {28 days}
+		//{month with 30 days}
+		TEST_METHOD(calculateDateInNonLeapYear) {
+			findNextDate finder;
+			finder.calculate(1,1,1);
+			Assert::AreEqual(2,finder.getDay());
+			Assert::AreEqual(1,finder.getMonth());
+			Assert::AreEqual(4,finder.getWeekDay());
+			finder.calculate(31,1,1);
+			Assert::AreEqual(1,finder.getDay());
+			Assert::AreEqual(2,finder.getMonth());
+			Assert::AreEqual(6,finder.getWeekDay());
+			finder.calculate(22,2,7);
+			Assert::AreEqual(1,finder.getDay());
+			Assert::AreEqual(3,finder.getMonth());
+			Assert::AreEqual(6,finder.getWeekDay());
+			finder.calculate(28,2,62);
+			Assert::AreEqual(1,finder.getDay());
+			Assert::AreEqual(5,finder.getMonth());
+			Assert::AreEqual(4,finder.getWeekDay());
+			finder.calculate(1,1,732);
+			Assert::AreEqual(2,finder.getDay());
+			Assert::AreEqual(1,finder.getMonth());
+			Assert::AreEqual(0,finder.getWeekDay());
+			Assert::AreEqual(2017,finder.getYear());
+		}
+
+		//Equivalent partition {month with 31 days}, {29 days}
+		//{month with 30 days}
+		TEST_METHOD(calculateDateInLeapYear) {
+			findNextDate finder;
+			finder.changeDefaultYear(2016);
+			finder.calculate(27,2,2);
+			Assert::AreEqual(29,finder.getDay());
+			Assert::AreEqual(2,finder.getMonth());
+			Assert::AreEqual(0,finder.getWeekDay());
+			finder.calculate(1,1,32);
+			Assert::AreEqual(2,finder.getDay());
+			Assert::AreEqual(2,finder.getMonth());
+			Assert::AreEqual(1,finder.getWeekDay());
+			finder.calculate(1,1,300);
+			Assert::AreEqual(27,finder.getDay());
+			Assert::AreEqual(10,finder.getMonth());
+			Assert::AreEqual(3,finder.getWeekDay());
 		}
 	};
 }
