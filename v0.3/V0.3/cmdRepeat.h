@@ -20,6 +20,7 @@ private:
 	int _interval;
 	bool _hasException;
 	std::string _exceptionDetails;
+	std::list<Event> _events;
 
 public:
 	cmdRepeat(void);
@@ -40,4 +41,5 @@ public:
 	int getNumberOfDays(int, int);
 	bool isExceptionDay(int, int, int);
 	std::string lowercaseCommandWord(std::string);
+	void updateStorage();
 };

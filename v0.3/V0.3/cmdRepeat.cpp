@@ -60,10 +60,9 @@ std::string cmdRepeat::executecmdRepeat(Storage& _storage){
 	}else{
 		repeatDeadlineTask(repeatingEvent, _storage);
 	}
-
-	_storage.sortActiveEventlist();
-	_storage.sortDoneEventlist();
-	_storage.synchronizeDrive();
+	_storage.repeatEvent(_events);
+	updateStorage();
+	_events.clear();
 	return "\n";
 }
 
@@ -150,7 +149,7 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 	_interval = determineInterval(month, year);
 	int newDate;
 	int newMonth;
-	int newYear;// = 0;
+	int newYear = STARTING_YEAR;
 
 	if (_type  == EVERYWEEKDAY) {
 		getTheStartingDate(date, month, newDate, newMonth);
@@ -178,10 +177,10 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 		if (_hasException) {
 			if(((Tcount != exception) && (_type == WEEKLY || _type == EVERYWEEKDAY || _type == MONTHLY))
 				|| (!isExceptionDay(newDate, newMonth, exception)) && (_type == DAILY)) {
-				_storage.addEvent(newEvent);
+				_events.push_back(newEvent);
 			}
 		} else {
-			_storage.addEvent(newEvent);
+			_events.push_back(newEvent);
 		}
 		}
 		if (newYear != STARTING_YEAR) {
@@ -320,7 +319,7 @@ void cmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 		if (newEndYear != STARTING_YEAR) {
 			newEvent.changeEndYear(newEndYear);
 		}
-		_storage.addEvent(newEvent);
+		_events.push_back(newEvent);
 
 		if (newStartYear != _findNextDate.getYear()){
 			_findNextDate.changeDefaultYear(newStartYear);
@@ -366,4 +365,10 @@ int cmdRepeat::getNumberOfDays(int month, int year){
 		}
 
 	return numberOfDays;
+}
+
+void cmdRepeat::updateStorage(){
+	_storage.sortActiveEventlist();
+	_storage.sortDoneEventlist();
+	_storage.synchronizeDrive();
 }
