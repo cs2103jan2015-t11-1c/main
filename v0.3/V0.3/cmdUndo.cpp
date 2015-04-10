@@ -27,22 +27,12 @@ std::string cmdUndo::printUndoMessage(){
 //support undo for last two actions
 std::string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStored){
 	CommandType lastCommand = commandStored.back();
-
-	if (lastCommand == UNDO) {
-		commandStored.pop_back();}{
-		if (commandStored.back() == UNDO) {
-			commandStored.pop_back();}
-				if (commandStored.back() == UNDO) {
-					return UNDO_ERROR_MESSAGE;
-	}else{
-	while ((lastCommand == UNDO && commandStored.size()>1) || (lastCommand == DISPLAY && commandStored.size()>1) || 
-		    lastCommand == DISPLAYDONE && commandStored.size()>1){
+	while ((lastCommand == UNDO  || lastCommand == DISPLAY || lastCommand == DISPLAYDONE) && (!commandStored.empty())){
 		commandStored.pop_back();
 		lastCommand = commandStored.back();
 	}
 	commandStored.pop_back();
 	std::string lastCommandString;
-
 	if(lastCommand == ADDEVENTWITHDEADLINE || lastCommand == ADDFLOATINGEVENT || lastCommand == ADDTIMEDEVENT){
 		lastCommandString = STRING_ADD;
 	}else if (lastCommand == DELETE) {
@@ -56,12 +46,12 @@ std::string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStor
 	}else if (lastCommand == DISPLAY) {
 		std::cout<<UNDO_ERROR_MESSAGE;
 	}
+
 	if (_storage.unDopreviousActions(lastCommandString)) {	
 		_storage.synchronizeDrive();
-		return printUndoMessage();}
-	else{
+		return printUndoMessage();
+	}else{
 		return UNDO_UNSUCCESSFUL_MESSAGE;
 	}
 }
-}
-}
+
