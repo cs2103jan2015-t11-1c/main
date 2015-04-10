@@ -53,8 +53,6 @@ public:
 	bool isAbleToGetEventDateAndMonth(std::string &, int &, MonthType &);
     bool isTaskWithDeadline(std::string );
 	bool isTimedTask(std::string );
-	bool isMonthValid(std::string);
-	bool isDateValid(std::string );
 	bool isStringAnInteger(std::string );
 	bool isEmpty(std::string);
 	bool isValidIndex(int );

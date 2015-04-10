@@ -105,6 +105,36 @@ namespace ParserUnitTest
 			Assert::AreNotEqual(INVALID_MESSAGE, parserObject.VerifyAllAttributesAndCallLogic(command));
 		
 		}
+		TEST_METHOD(getIndexOfFirstNonWhiteSpace)
+		{
+			std::string emptyString = "";
+			int indexEmptyString = emptyString.find_first_not_of(" ");
+			Assert::AreEqual(indexEmptyString, parserObject.getIndexOfFirstNonWhiteSpace(emptyString));
+
+			std::string stringOne = "CS meeting";
+			int indexStringOne = stringOne.find_first_not_of(" ");
+			Assert::AreEqual(indexStringOne, parserObject.getIndexOfFirstNonWhiteSpace(stringOne));
+
+			std::string stringTwo = "  project due";
+			int indexStringTwo = stringTwo.find_first_not_of(" ");
+			Assert::AreEqual(indexStringTwo, parserObject.getIndexOfFirstNonWhiteSpace(stringTwo));
+		}
+
+		TEST_METHOD(getIndexOfFirstWhiteSpace)
+		{
+			std::string emptyString = "";
+			int indexEmptyString = emptyString.find_first_of(" ");
+			Assert::AreEqual(indexEmptyString, parserObject.getIndexOfFirstWhiteSpace(emptyString));
+
+			std::string stringOne = "CS meeting";
+			int indexStringOne = stringOne.find_first_of(" ");
+			Assert::AreEqual(indexStringOne, parserObject.getIndexOfFirstWhiteSpace(stringOne));
+
+			std::string stringTwo = "  project due";
+			int indexStringTwo = stringTwo.find_first_of(" ");
+			Assert::AreEqual(indexStringTwo, parserObject.getIndexOfFirstWhiteSpace(stringTwo));
+		}
+
 
 	};
 }

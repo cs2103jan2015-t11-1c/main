@@ -1,10 +1,11 @@
-//#include "logic.h"
+
 #include "UI.h"
 #include <assert.h>
 #include <iostream>
 #include <Windows.h>
-using namespace std;
 #include <cstdlib>
+using namespace std;
+
 const static string INVALID_COMMAND_MESSAGE ="Sorry, invalid command.\n\n";
 
 int main() {
