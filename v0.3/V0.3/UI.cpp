@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <ctype.h>
+#include <assert.h>
 #include "Parser.h"
 using namespace std;
 

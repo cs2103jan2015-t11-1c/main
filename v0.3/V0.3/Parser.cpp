@@ -1,5 +1,6 @@
 #include "Parser.h"
 #include <string>
+#include <assert.h>
 
 static const std::string EMPTY_STRING = "";
 static const std::string TIME_NOT_ASSIGNED = "2400";
@@ -124,6 +125,10 @@ bool Parser::isAbleToGetEventDateAndMonth(string &buffer,int &date,MonthType &mo
 MonthType Parser :: determineMonthType(std::string monthString) {
 
 	monthString = _verificationDateTimeMonth.lowercaseMonth(monthString);
+
+	for (int i = monthString.size() - 1; i >= 0; i--) {
+		assert( !(isupper(monthString[i])) );
+	}
 
 	if (monthString == "jan" ||  monthString == "january" || monthString == "01" || monthString == "1" ) {
 		return JANUARY;
@@ -748,6 +753,9 @@ string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 
 		if (_verificationDateTimeMonth.isEndingLaterThanStarting(integerStartingTime, integerStartingMonth, _startingDate, integerEndingTime, integerEndingMonth, _endingDate)) {
 			feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
+			
+			assert( feedback != EMPTY_STRING );
+
 			resetAttributesValue();
 			return feedback;
 		} else {
@@ -788,6 +796,9 @@ string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 
 	case MARKASDONE:
 		feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
+		
+		assert( feedback != EMPTY_STRING );
+
 		resetAttributesValue();
 		return feedback;
 
@@ -796,6 +807,9 @@ string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 	case ADDEVENTWITHDEADLINE:
 		if (_verificationDateTimeMonth.isDateMonthTimeValid(_endingDate, integerEndingMonth, integerEndingTime)) { 
 			feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
+			
+			assert( feedback != EMPTY_STRING );
+
 			resetAttributesValue();
 			return feedback;
 		} else {
@@ -805,6 +819,9 @@ string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 	case UPDATESTARTINGTIME:
 		if (_verificationDateTimeMonth.isDateMonthTimeValid(_startingDate, integerStartingMonth, integerStartingTime)) { 
 			feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
+			
+			assert( feedback != EMPTY_STRING );
+
 			resetAttributesValue();
 			return feedback;
 		} else {

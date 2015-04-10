@@ -2,6 +2,7 @@
 #include <cstring>
 #include <string>
 #include <ctype.h>
+#include <assert.h>
 
 const static std::string STRING_ADD = "add";
 const static std::string STRING_DELETE = "delete";
