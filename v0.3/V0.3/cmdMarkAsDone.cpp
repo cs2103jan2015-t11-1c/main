@@ -32,7 +32,7 @@ std::string cmdMarkAsDone::executeMarkAsDone(Storage& _storage){
 	_storage.markEventAsDone(_taskNumberList);
 	_storage.synchronizeDrive();
 	Storage storage;
-	storage.writeFile(LOG_MARKASDONE);
+	storage.writeToLogfile("Info",LOG_MARKASDONE);
 	return _feedback;
 	}catch(std::string EXCEPTION_INVALID_INDEX){
 		std::cout << EXCEPTION_INVALID_INDEX;
@@ -56,6 +56,6 @@ std::string cmdMarkAsDone::printFeedback(std::list<int> taskNumberList, Storage&
 	}
 	std::cout<< feedback.str();
 	Storage storage;
-	storage.writeFile(LOG_PRINT_FEEDBACK);
+	storage.writeToLogfile("Info",(LOG_PRINT_FEEDBACK));
 	return NEW_Line;
 }
