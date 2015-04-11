@@ -47,6 +47,7 @@ public:
 	int getEndYear();
 	bool isTimedTask();
 	bool isValidDateMonthTime();
+	bool isFloatingTask();
 	std::string getTaskName();
 	std::string convertToMonth(int);
 	std::string displayEvent();
