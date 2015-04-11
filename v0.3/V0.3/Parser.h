@@ -28,7 +28,7 @@ private:
 public:
 	Parser(void);
 	~Parser(void);
-	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATEENDINGTIME, UPDATESTARTINGTIME, DELETE, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, DISPLAYTOMORROW, DISPLAYALL, SEARCH, UNDO, CLEAR, CLEAREND, CLEARSTART, CHANGEDIRECTORY, HELP, EXIT, REPEAT, REPEATDONE};
+	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATERECURNAME, UPDATEENDINGTIME, UPDATERECURENDINGTIME, UPDATESTARTINGTIME, UPDATERECURSTARTINGTIME, DELETE, DELETERECUR, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, DISPLAYTOMORROW, DISPLAYALL, SEARCH, UNDO, CLEAR, CLEAREND, CLEARRECUREND, CLEARSTART, CLEARRECURSTART, CHANGEDIRECTORY, HELP, EXIT, REPEAT, REPEATDONE};
     std::string VerifyAllAttributesAndCallLogic(CommandType);
     std::string addEvent(std::string );
     std::string addTimedEvent(std::string );
@@ -36,13 +36,13 @@ public:
 	std::string addFloatingEvent(std::string );
 	std::string getTaskName(std::string &);
 	std::string getEventTime(std::string &);
-	std::string updateEvent(std::string );
+	std::string updateEvent(std::string, std::string );
 	std::string searchEvent(std::string );
 	std::string unDo();
 	std::string displayEvent(std::string );
 	std::string clearEvent();
 	std::string markAsDone(std::string );
-	std::string deleteEvent(std::string );
+	std::string deleteEvent(std::string, std::string);
 	std::string changeDirectory(std::string );
 	std::string repeat(std::string, std::string);
 	std::string help();

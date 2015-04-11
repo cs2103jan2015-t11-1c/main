@@ -19,6 +19,10 @@ cmdDelete::~cmdDelete(void){
 
 //delete one task or multiple tasks
 std::string cmdDelete::executecmdDelete(Storage& _storage){
+	if (_commandWord == DELETERECUR) {
+		return deleteRecurringEvents(_taskNumberList, _storage);
+	}
+
 	int eventNumber = _taskNumberList.size();
 	Eventlist activeEvents = _storage.displayEvent();
 	try{

@@ -44,6 +44,8 @@ const static std::string STRING_SEARCH = "search";
 const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
 const static std::string STRING_REPEAT = "repeat";
 const static std::string STRING_REPEATDONE = "repeatdone";
+const static std::string STRING_DELETERECUR = "deleterecur";
+const static std::string STRING_UPDATERECUR = "updaterecur";
 
 //All attributes are initialized with their respective NOTASSIGNED value. Assume 24:00 as time not assigned, "" as task not assigned, 0 as date not assigned.
 Parser::Parser(void){
@@ -73,9 +75,13 @@ std::string Parser::markAsDone(std::string numberList) {
 	}
 }
 
-std::string Parser::deleteEvent(std::string numberList) {
+std::string Parser::deleteEvent(std::string command, ::string numberList) {
 	if (isAbleToGetNumberList(numberList)) {
-		return VerifyAllAttributesAndCallLogic(DELETE);
+		if (command == STRING_DELETE) {
+			return VerifyAllAttributesAndCallLogic(DELETE);
+		} else if (command == STRING_DELETERECUR) {
+			return VerifyAllAttributesAndCallLogic(DELETE);
+		}
 	} else {
 		return INVALID_INPUT_MESSAGE;
 	}
@@ -97,15 +103,15 @@ std::string Parser::help() {
 std::string Parser::displayEvent(std::string command) {
 	CommandType commandT;
 
-	if (command == "displaydone") {
+	if (command == STRING_DISPLAYDONE) {
 		commandT = DISPLAYDONE;
-	} else if (command == "displaytoday") {
+	} else if (command == STRING_DISPLAYTODAY) {
 		commandT = DISPLAYTODAY;
-	} else if (command == "display") {
+	} else if (command == STRING_DISPLAY) {
 		commandT = DISPLAY;
-	} else if (command == "displayall") {
+	} else if (command == STRING_DISPLAYALL) {
 		commandT = DISPLAYALL;
-	} else if (command == "displaytomorrow") {
+	} else if (command == STRING_DISPLAYTOMORROW) {
 		commandT = DISPLAYTOMORROW;
 	}
 	
@@ -172,39 +178,46 @@ std::string Parser::addEvent(std::string toDoList){
 }
 
 //This method is to get update details.
-std::string Parser::updateEvent(std::string toDoList) {
+std::string Parser::updateEvent(std::string command, std::string toDoList) {
 	std::string buffer;
-	std::string command;
 	int TIndex;
 	int taskNumber;
 	buffer = toDoList;
 	taskNumber = getUpdatetaskNumber(buffer);
 	_taskNumberList.push_back(taskNumber);
 	TIndex = getIndexOfFirstNonWhiteSpace(buffer);
-
 	replaceStringWithItsSubstring(buffer, TIndex);
-
 	TIndex = getIndexOfFirstWhiteSpace(buffer);
 	std::string updateType = buffer.substr(0, TIndex);
 	replaceStringWithItsSubstring(buffer, TIndex + 1);
 
 	if (updateType == STRING_NAME) {
 		_taskName=buffer;
-		return VerifyAllAttributesAndCallLogic(UPDATENAME);
+
+		if (command == STRING_UPDATE) {
+			return VerifyAllAttributesAndCallLogic(UPDATENAME);
+		} else if (command == STRING_UPDATERECUR ) {
+			return  VerifyAllAttributesAndCallLogic(UPDATERECURNAME);
+		}
+
 	} else if ( updateType == STRING_CLEAR) {
 		TIndex = getIndexOfFirstNonWhiteSpace(buffer);
 		replaceStringWithItsSubstring(buffer, TIndex);
 		std::string clearType = buffer.substr(0,getIndexOfFirstWhiteSpace(buffer));
 
 		try {
-			if (clearType == STRING_END) {
+			if (clearType == STRING_END && command == STRING_UPDATE) {
 				return VerifyAllAttributesAndCallLogic(CLEAREND);
-			} else if (clearType == STRING_START) {
+			} else if (clearType == STRING_END && command == STRING_UPDATERECUR) {
+				return VerifyAllAttributesAndCallLogic(CLEARRECUREND);
+			} else if (clearType == STRING_START && command == STRING_UPDATE) {
 				return VerifyAllAttributesAndCallLogic(CLEARSTART);
+			} else if (clearType == STRING_START && command == STRING_UPDATERECUR) {
+				return VerifyAllAttributesAndCallLogic(CLEARRECURSTART);
 			} else {
-			throw INVALID_INPUT_MESSAGE;
+				throw INVALID_INPUT_MESSAGE;
 			}
-		}catch (std::string &exceptionMesssage) {
+		} catch (std::string &exceptionMesssage) {
 				return exceptionMesssage;
 		}
 
@@ -218,7 +231,11 @@ std::string Parser::updateEvent(std::string toDoList) {
 			_endingDate = date;
 			_endingMonth = month;
 			_endingTime = getEventTime(buffer);
-			return VerifyAllAttributesAndCallLogic(UPDATEENDINGTIME);
+			if (command == STRING_UPDATE) {
+				return VerifyAllAttributesAndCallLogic(UPDATEENDINGTIME);
+			} else if (command == STRING_UPDATERECUR) {
+				return VerifyAllAttributesAndCallLogic(UPDATERECURENDINGTIME);
+			}
 		}
 
 	} else if (updateType == STRING_START) {
@@ -231,7 +248,11 @@ std::string Parser::updateEvent(std::string toDoList) {
 			_startingDate=date;
 			_startingMonth = month;
 			_startingTime = getEventTime(buffer);
-			return VerifyAllAttributesAndCallLogic(UPDATESTARTINGTIME);
+			if (command == STRING_UPDATE) {
+				return VerifyAllAttributesAndCallLogic(UPDATESTARTINGTIME);
+			} else if (command == STRING_UPDATERECUR) {
+				return VerifyAllAttributesAndCallLogic(UPDATESTARTINGTIME);
+			}
 		}
 
 	} else {
@@ -488,8 +509,14 @@ logic::CommandType Parser::changeToLogicCommandType(CommandType command) {
 	case CLEAREND:
 		return logic::CLEAREND;
 
+	case CLEARRECUREND:
+		return logic::CLEARRECUREND;
+
 	case CLEARSTART:
 		return logic::CLEARSTART;
+
+	case CLEARRECURSTART:
+		return logic::CLEARRECURSTART;
 
 	case ADDEVENTWITHDEADLINE:
 		return logic::ADDEVENTWITHDEADLINE;
@@ -503,11 +530,20 @@ logic::CommandType Parser::changeToLogicCommandType(CommandType command) {
 	case UPDATENAME:
 		return logic::UPDATENAME;
 
+	case UPDATERECURNAME:
+		return logic::UPDATERECURNAME;
+
 	case UPDATEENDINGTIME:
 		return logic::UPDATEENDINGTIME;
 
+	case UPDATERECURENDINGTIME:
+		return logic::UPDATERECURENDINGTIME;
+
 	case UPDATESTARTINGTIME:
 		return logic::UPDATESTARTINGTIME;
+
+	case UPDATERECURSTARTINGTIME:
+		return logic::UPDATESRECURTARTINGTIME;
 	case DELETE:
 		return logic::DELETE;
 
@@ -545,7 +581,10 @@ logic::CommandType Parser::changeToLogicCommandType(CommandType command) {
 		return logic::DISPLAYALL;
 
 	case DISPLAYTOMORROW:
-		return logic ::DISPLAYTOMORROW;
+		return logic::DISPLAYTOMORROW;
+
+	case DELETERECUR:
+		return logic::DELETERECUR;
 
 	default:
 		return logic::HELP;
@@ -794,6 +833,14 @@ std::string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 
 	case DELETE:
 
+	case DELETERECUR:
+
+	case UPDATERECURNAME:
+
+	case CLEARRECUREND:
+
+	case CLEARRECURSTART:
+
 	case UPDATENAME:
 
 	case UNDO:
@@ -838,6 +885,8 @@ std::string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 
 	case UPDATEENDINGTIME:
 
+	case UPDATERECURENDINGTIME:
+
 	case ADDEVENTWITHDEADLINE:
 		if (_verificationDateTimeMonth.isDateMonthTimeValid(_endingDate, integerEndingMonth, integerEndingTime)) { 
 			feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
@@ -849,6 +898,8 @@ std::string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 		} else {
 			return  INVALID_TIME_DATE_MONTH_MESSAGE;
 		}
+
+	case UPDATERECURSTARTINGTIME:
 
 	case UPDATESTARTINGTIME:
 		if (_verificationDateTimeMonth.isDateMonthTimeValid(_startingDate, integerStartingMonth, integerStartingTime)) { 
