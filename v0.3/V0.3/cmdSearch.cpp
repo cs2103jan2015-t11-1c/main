@@ -79,7 +79,7 @@ std::string cmdSearch::printEventFound(){
 	for(Titer = eventFound.begin(); Titer != eventFound.end(); Titer++){
 		currentEvent = *Titer;
 		eventNumber = _eventNumbers[Tcount];
-		feedback << eventNumber << DOT << currentEvent.displayEvent() << TWO_LINES;
+		feedback << std::setw(3) << eventNumber << DOT << currentEvent.displayEvent() << TWO_LINES;
 		Tcount ++;
 	}
 
