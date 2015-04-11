@@ -177,36 +177,18 @@ std::string Parser::addEvent(std::string toDoList){
 
 }
 
-//This method is to get update details.
-std::string Parser::updateEvent(std::string command, std::string toDoList) {
-	std::string buffer;
-	int TIndex;
-	int taskNumber;
-	buffer = toDoList;
-	taskNumber = getUpdatetaskNumber(buffer);
-	_taskNumberList.push_back(taskNumber);
-	TIndex = getIndexOfFirstNonWhiteSpace(buffer);
-	replaceStringWithItsSubstring(buffer, TIndex);
-	TIndex = getIndexOfFirstWhiteSpace(buffer);
-	std::string updateType = buffer.substr(0, TIndex);
-	replaceStringWithItsSubstring(buffer, TIndex + 1);
+std::string Parser::updateName(std::string command) {
+	if (command == STRING_UPDATE) {
+		return VerifyAllAttributesAndCallLogic(UPDATENAME);
+	} else if (command == STRING_UPDATERECUR ) {
+		return  VerifyAllAttributesAndCallLogic(UPDATERECURNAME);
+	}
+}
 
-	if (updateType == STRING_NAME) {
-		_taskName=buffer;
-
-		if (command == STRING_UPDATE) {
-			return VerifyAllAttributesAndCallLogic(UPDATENAME);
-		} else if (command == STRING_UPDATERECUR ) {
-			return  VerifyAllAttributesAndCallLogic(UPDATERECURNAME);
-		}
-
-	} else if ( updateType == STRING_CLEAR) {
-		TIndex = getIndexOfFirstNonWhiteSpace(buffer);
-		replaceStringWithItsSubstring(buffer, TIndex);
-		std::string clearType = buffer.substr(0,getIndexOfFirstWhiteSpace(buffer));
-
-		try {
-			if (clearType == STRING_END && command == STRING_UPDATE) {
+//This method is to update the starting/ending time to none, i.e. clear the starting/ ending time of existing event.
+std::string Parser:: updateClear(std::string clearType, std::string command) {
+	try {
+		if (clearType == STRING_END && command == STRING_UPDATE) {
 				return VerifyAllAttributesAndCallLogic(CLEAREND);
 			} else if (clearType == STRING_END && command == STRING_UPDATERECUR) {
 				return VerifyAllAttributesAndCallLogic(CLEARRECUREND);
@@ -219,9 +201,11 @@ std::string Parser::updateEvent(std::string command, std::string toDoList) {
 			}
 		} catch (std::string &exceptionMesssage) {
 				return exceptionMesssage;
-		}
+	}
+}
 
-	} else if (updateType == STRING_END) {
+//This method is to get details for updating end time of an existing event.
+std::string Parser::updateEndingTime(std::string buffer, std::string command) {
 		int date = 0;
 		MonthType month = MONTHNOTASSIGNED;
 
@@ -231,30 +215,62 @@ std::string Parser::updateEvent(std::string command, std::string toDoList) {
 			_endingDate = date;
 			_endingMonth = month;
 			_endingTime = getEventTime(buffer);
+
 			if (command == STRING_UPDATE) {
 				return VerifyAllAttributesAndCallLogic(UPDATEENDINGTIME);
 			} else if (command == STRING_UPDATERECUR) {
 				return VerifyAllAttributesAndCallLogic(UPDATERECURENDINGTIME);
 			}
-		}
 
+		}
+}
+
+//This method is get details for update the starting time of an existing event.
+std::string Parser::updateStart(std::string buffer, std::string command) {
+	int date= 0;
+	MonthType month= MONTHNOTASSIGNED;
+
+	if (!isAbleToGetEventDateAndMonth(buffer,date, month)) {
+		return  INVALID_TIME_DATE_MONTH_MESSAGE;
+	} else {
+		_startingDate=date;
+		_startingMonth = month;
+		_startingTime = getEventTime(buffer);
+		if (command == STRING_UPDATE) {
+			return VerifyAllAttributesAndCallLogic(UPDATESTARTINGTIME);
+		} else if (command == STRING_UPDATERECUR) {
+			return VerifyAllAttributesAndCallLogic(UPDATESTARTINGTIME);
+		}
+	}
+}
+
+//This method is to gathers all update cases and call the respective update functions.
+std::string Parser::updateEvent(std::string command, std::string toDoList) {
+	std::string buffer;
+	int TIndex;
+	int taskNumber;
+	buffer = toDoList;
+	taskNumber = getUpdatetaskNumber(buffer);
+	_taskNumberList.push_back(taskNumber);
+	TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+	replaceStringWithItsSubstring(buffer, TIndex);
+	TIndex = getIndexOfFirstWhiteSpace(buffer);
+	std::string updateType = buffer.substr(0, TIndex);
+	replaceStringWithItsSubstring(buffer, TIndex + 1);
+    
+	if (updateType == STRING_NAME) {
+		_taskName=buffer;
+		return updateName(command);
+	} else if ( updateType == STRING_CLEAR) {
+		TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+		replaceStringWithItsSubstring(buffer, TIndex);
+		std::string clearType = buffer.substr(0,getIndexOfFirstWhiteSpace(buffer));
+		return updateClear(clearType, command);
+
+	} else if (updateType == STRING_END) {
+		return updateEndingTime(buffer, command);
 	} else if (updateType == STRING_START) {
-		int date= 0;
-		MonthType month= MONTHNOTASSIGNED;
-
-		if (!isAbleToGetEventDateAndMonth(buffer,date, month)) {
-			return  INVALID_TIME_DATE_MONTH_MESSAGE;
-		} else {
-			_startingDate=date;
-			_startingMonth = month;
-			_startingTime = getEventTime(buffer);
-			if (command == STRING_UPDATE) {
-				return VerifyAllAttributesAndCallLogic(UPDATESTARTINGTIME);
-			} else if (command == STRING_UPDATERECUR) {
-				return VerifyAllAttributesAndCallLogic(UPDATESTARTINGTIME);
-			}
-		}
-
+		return updateStart(buffer, command);
 	} else {
 		return  INVALID_INPUT_MESSAGE;
 	}
