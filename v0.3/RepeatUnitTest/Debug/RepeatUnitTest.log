@@ -1,0 +1,16 @@
+﻿Build started 4/11/2015 17:13:51.
+     1>Project "C:\Users\User\Documents\GitHub\main\v0.3\RepeatUnitTest\RepeatUnitTest.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\User\Documents\GitHub\main\v0.3\Debug\RepeatUnitTest.dll" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\UnitTest\lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\User\Documents\GitHub\main\v0.3\Debug\RepeatUnitTest.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\User\Documents\GitHub\main\v0.3\Debug\RepeatUnitTest.lib" /MACHINE:X86 /DLL Debug\stdafx.obj
+         Debug\RepeatTest.obj
+            Creating library C:\Users\User\Documents\GitHub\main\v0.3\Debug\RepeatUnitTest.lib and object C:\Users\User\Documents\GitHub\main\v0.3\Debug\RepeatUnitTest.exp
+     1>RepeatTest.obj : error LNK2019: unresolved external symbol "public: __thiscall cmdRepeat::cmdRepeat(void)" (??0cmdRepeat@@QAE@XZ) referenced in function "public: __thiscall RepeatUnitTest::UnitTest1::UnitTest1(void)" (??0UnitTest1@RepeatUnitTest@@QAE@XZ)
+     1>RepeatTest.obj : error LNK2019: unresolved external symbol "public: __thiscall cmdRepeat::~cmdRepeat(void)" (??1cmdRepeat@@QAE@XZ) referenced in function "public: virtual __thiscall RepeatUnitTest::UnitTest1::~UnitTest1(void)" (??1UnitTest1@RepeatUnitTest@@UAE@XZ)
+     1>RepeatTest.obj : error LNK2019: unresolved external symbol "public: bool __thiscall cmdRepeat::isWeekday(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?isWeekday@cmdRepeat@@QAE_NV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) referenced in function "public: void __thiscall RepeatUnitTest::UnitTest1::isWeekday(void)" (?isWeekday@UnitTest1@RepeatUnitTest@@QAEXXZ)
+     1>RepeatTest.obj : error LNK2019: unresolved external symbol "public: bool __thiscall cmdRepeat::isValidDate(int,int,int)" (?isValidDate@cmdRepeat@@QAE_NHHH@Z) referenced in function "public: void __thiscall RepeatUnitTest::UnitTest1::isValidDate(void)" (?isValidDate@UnitTest1@RepeatUnitTest@@QAEXXZ)
+     1>C:\Users\User\Documents\GitHub\main\v0.3\Debug\RepeatUnitTest.dll : fatal error LNK1120: 4 unresolved externals
+     1>Done Building Project "C:\Users\User\Documents\GitHub\main\v0.3\RepeatUnitTest\RepeatUnitTest.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.27
