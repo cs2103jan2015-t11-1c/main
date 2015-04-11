@@ -1,6 +1,6 @@
 //@author A0115253R
 // stdafx.cpp : source file that includes just the standard includes
-// UIUnitTest.pch will be the pre-compiled header
+// ParserUnitTest.pch will be the pre-compiled header
 // stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
