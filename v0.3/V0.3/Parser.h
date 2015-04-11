@@ -49,7 +49,7 @@ public:
 	std::string updateName(std::string );
 	std::string updateClear(std::string , std::string );
 	std::string updateEndingTime(std::string , std::string );
-	std::string updateStart(std::string, std::string );
+	std::string updateStartingTime(std::string, std::string );
 	bool isAbleToGetEventDateAndMonth(std::string &, int &, MonthType &);
     bool isTaskWithDeadline(std::string );
 	bool isTimedTask(std::string );

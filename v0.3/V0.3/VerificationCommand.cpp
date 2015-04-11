@@ -28,6 +28,7 @@ VerificationCommand::VerificationCommand(void) {
 VerificationCommand::~VerificationCommand(void) {
 }
 
+//This method converts uppercase letter in command to lower case letter.
 std::string VerificationCommand::lowercaseCommandWord(std::string commandWord) {
 	int n = commandWord.size();
 
@@ -40,6 +41,7 @@ std::string VerificationCommand::lowercaseCommandWord(std::string commandWord) {
   return commandWord;
 }
 
+//This method checks the validity of user command.
 bool VerificationCommand::isValidCommandWord(std::string commandWord) {
 	bool isValidCommandWord;
 	

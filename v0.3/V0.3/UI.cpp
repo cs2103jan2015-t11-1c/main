@@ -1,5 +1,9 @@
 //@author A0115253R
 
+//This class gets user command and calls Parser to get user input(details of the event/action keyed in by users).
+//Before calling Parser, the validity of user command is being checked by verification command.
+//We allow some flexible commands such as upper case or lower case command word.
+
 #include "UI.h"
 
 const static std::string STRING_ADD = "add";
