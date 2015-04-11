@@ -8,7 +8,7 @@
 #include <time.h>
 
 const int GO_TO_PREVIOUS = -1;
-const std::string ERROR_INDEX = "Error: index not valid.";
+const std::string ERROR_INDEX = "Error: index not valid.\\n";
 
 Eventlist::Eventlist(void) {
 }

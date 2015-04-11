@@ -51,6 +51,7 @@ const std::string NIL_IDENTIFIER = "Nil";
 const std::string DEFAULT_LOCATION_NAME = "Directory.txt";
 const std::string READ_A_EVENT = "analysing event from local file.";
 const std::string RECURRING_NUMBER = "Recurring number: ";
+const std::string NOT_RECURRING = "The event is not a recurring event.";
 const int ZERO = 0;
 const int NUMBER_OF_DIGIT_FOR_DATE = 2;
 const int NUMBER_OF_DIGIT_FOR_TIME = 4;
@@ -249,12 +250,7 @@ void Storage::deleteEvent(std::list<int> allIndex) {
 		while(!allIndex.empty()) {
 			i = allIndex.back();
 			_currentEvent = _activeEvent.getEvent(i);
-			if(_currentEvent.getRecurringTaskSeries() == 0) {
 			_activeEvent.deleteEvent(i);
-			} else {
-				deleteRecurring(_currentEvent.getRecurringTaskSeries());
-				return;
-			}
 			allIndex.pop_back();
 		}
 		writeToLogfile(INFOMATION, DELETE_ACTIVE_EVENT);
@@ -264,22 +260,24 @@ void Storage::deleteEvent(std::list<int> allIndex) {
 	}
 }
 
-void Storage::deleteRecurring(int recurringNumber) {
+void Storage::deleteRecurring(int inputIndex) {
 	std::list<Event> allEvents = _activeEvent.returnAllEvent();
 	std::list<Event>::iterator iter;
 	int index = ZERO;
+	_currentEvent = _activeEvent.getEvent(inputIndex);
+	int recurringNumber = _currentEvent.getRecurringTaskSeries();
+	if(recurringNumber == 0) {
+		throw std::string(NOT_RECURRING);
+	}
 	std::list<int> numbers;
 	for(iter = allEvents.begin(); iter != allEvents.end(); iter++) {
 		index = index + ONE;
-		if((*iter).getRecurringTaskSeries == recurringNumber) {
+		if((*iter).getRecurringTaskSeries() == recurringNumber) {
 			numbers.push_back(index);
 		}
 	}
-	numbers.sort();
-	while(!numbers.empty()) {
-		_activeEvent.deleteEvent(numbers.back());
-		numbers.pop_back();
-	}
+	deleteEvent(numbers);
+	_numberOfRecuring = _numberOfRecuring - ONE;
 }
 
 void Storage::unDoDeleteEvent() {	
