@@ -4,6 +4,7 @@ const static std::string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. 
 const static std::string MESSAGE_DELETE_ONE_EVENT = "The following event is deleted: \n";
 const static std::string MESSAGE_DELETE_MUTIPLE_EVENTS = "The following events are deleted: \n";
 const static int ONE_EVENT = 1;
+const static std::string NEW_LINE = "\n";
 
 cmdDelete::cmdDelete(void){
 }
@@ -26,7 +27,7 @@ std::string cmdDelete::executecmdDelete(Storage& _storage){
 
 	}catch(std::string EXCEPTION_INVALID_INDEX){
 		std::cout << EXCEPTION_INVALID_INDEX;
-		return "\n";
+		return NEW_LINE;
 	}
 }
 
@@ -35,15 +36,15 @@ std::string cmdDelete::printFeedback(std::list<int> taskNumberList, Storage& _st
 	Event eventDeleted;
 	if (taskNumberList.size() == ONE_EVENT) {
 		eventDeleted = _storage.getEvent(taskNumberList.front());
-		feedback << MESSAGE_DELETE_ONE_EVENT << eventDeleted.displayEvent() << "\n";
+		feedback << MESSAGE_DELETE_ONE_EVENT << eventDeleted.displayEvent() << NEW_LINE;
 	} else {
 		feedback << MESSAGE_DELETE_MUTIPLE_EVENTS;
 		while (!taskNumberList.empty()) {
 			eventDeleted = _storage.getEvent(taskNumberList.back());
-			feedback << eventDeleted.displayEvent() << "\n";
+			feedback << eventDeleted.displayEvent() << NEW_LINE;
 			taskNumberList.pop_back();
 		} 
 	}
 	std::cout << feedback.str();
-	return "\n";
+	return NEW_LINE;
 }

@@ -1,9 +1,12 @@
 #include "cmdAdd.h"
 #include <iostream>
 #include <sstream>
+#include <assert.h>
 
 const static std::string CLASH_MESSAGE = "Reminder: You will be doing something else at this time. You may want to reschedule.\n";
 const static std::string ADD_SUCCESSFUL_MESSAGE = "\" is added successfully.\n\n";
+const static std::string QUOTATION_MARKS = "\"";
+const static std::string EMPTY_STRING = "";
 
 cmdAdd::cmdAdd(void){
 }
@@ -24,10 +27,11 @@ std:: string cmdAdd::executecmdAdd(Storage& _storage){
 	case ADDTIMEDEVENT:
 		return addTimedEvent(_storage);
 	default:
+		assert(false);
 		break;
 	} 
 
-	return "";
+	return EMPTY_STRING;
 }
 
 std::string cmdAdd::addEventWithDeadline(Storage& _storage){
@@ -79,7 +83,7 @@ std::string cmdAdd::addTimedEvent(Storage& _storage){
 }
 
 std::string cmdAdd::printFeedback(Event newEvent){
-	std::string feedback = "\"" + newEvent.displayEvent() + ADD_SUCCESSFUL_MESSAGE;
+	std::string feedback = QUOTATION_MARKS + newEvent.displayEvent() + ADD_SUCCESSFUL_MESSAGE;
 	return feedback;
 }
 
