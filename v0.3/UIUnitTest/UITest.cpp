@@ -21,7 +21,7 @@ const static std::string STRING_SEARCH = "search";
 const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
 const static std::string STRING_REPEAT = "repeat";
 const static std::string STRING_REPEATDONE = "repeatdone";
-string welcomemsg = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n\n";
+std::string welcomemsg = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n\n";
 
 namespace UIUnitTest
 {		
