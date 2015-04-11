@@ -20,6 +20,7 @@ private:
 	int _startMonth;
 	int _startTime;
 	int _startYear;
+	int _recurringTaskSeries;
 	bool _durationEvent;
 
 public:
@@ -36,6 +37,7 @@ public:
 	void changeEndMonth (int);
 	void changeEndTime (int);
 	void changeEndYear (int);
+	void changeRecurringTaskSeries(int);
 	void updateDueRanking();
 	int getStartMonth();
 	int getEndMonth();
@@ -45,6 +47,7 @@ public:
 	int getEndTime();
 	int getStartYear();
 	int getEndYear();
+	int getRecurringTaskSeries();
 	bool isTimedTask();
 	bool isValidDateMonthTime();
 	bool isFloatingTask();
