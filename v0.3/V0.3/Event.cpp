@@ -364,3 +364,11 @@ bool Event::isValidDateMonthTime() {
 	}
 	return isValid;
 }
+
+bool Event::isFloatingTask() {
+	if(isValidDateMonthTime()) {
+		return false;
+	} else {
+		return true;
+	}
+}

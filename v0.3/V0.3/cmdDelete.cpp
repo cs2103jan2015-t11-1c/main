@@ -31,12 +31,14 @@ std::string cmdDelete::executecmdDelete(Storage& _storage){
 	}
 }
 //@author A0115429H
+//This method return the feedback for either deleting one event or multiple events
 std::string cmdDelete::printFeedback(std::list<int> taskNumberList, Storage& _storage){
 	std::ostringstream feedback;
 	Event eventDeleted;
 	if (taskNumberList.size() == ONE_EVENT) {
+		feedback << MESSAGE_DELETE_ONE_EVENT;
 		eventDeleted = _storage.getEvent(taskNumberList.front());
-		feedback << MESSAGE_DELETE_ONE_EVENT << eventDeleted.displayEvent() << NEW_LINE;
+		feedback << eventDeleted.displayEvent() << NEW_LINE;
 	} else {
 		feedback << MESSAGE_DELETE_MUTIPLE_EVENTS;
 		while (!taskNumberList.empty()) {
@@ -45,6 +47,6 @@ std::string cmdDelete::printFeedback(std::list<int> taskNumberList, Storage& _st
 			taskNumberList.pop_back();
 		} 
 	}
-	std::cout << feedback.str();
-	return NEW_LINE;
+	feedback << NEW_LINE;
+	return feedback.str();
 }

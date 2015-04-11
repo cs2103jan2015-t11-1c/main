@@ -1,5 +1,4 @@
 #include "cmdRepeat.h"
-#include <assert.h>
 
 const int DAILY_REPTEAT_TIMES = 7;
 const int WEEKLY_REPEAT_TIMES = 4;
@@ -108,7 +107,6 @@ int cmdRepeat::determineRepeatTimes(int repeatTimes){
 		case MONTHLY:
 			return MONTHLY_REPEAT_TIMES;
 		default:
-			assert(false);
 			break;
 		}
 	} else {
@@ -131,7 +129,6 @@ int cmdRepeat::determineInterval(int month, int year){
 	case MONTHLY:
 		return getNumberOfDays(month, year);
 	default:
-		assert(false);
 		return NO_INTERVAL;
 	}
 }
