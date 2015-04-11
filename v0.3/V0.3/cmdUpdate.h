@@ -13,6 +13,7 @@ public:
 	std::string updateStartingTime(Event, int, Storage&);
 	std::string clearStartingTime(Event, int, Storage&);
 	std::string clearEndingTime(Event, int, Storage&);
+	std::string updateRecurringName(Event, int, Storage&);
 	std::string printFeedback(std::string, Event);
 };
 

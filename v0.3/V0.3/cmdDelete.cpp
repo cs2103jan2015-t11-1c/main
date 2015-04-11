@@ -20,6 +20,7 @@ cmdDelete::~cmdDelete(void){
 //delete one task or multiple tasks
 std::string cmdDelete::executecmdDelete(Storage& _storage){
 	if (_commandWord == DELETERECUR) {
+		std::cout <<"testing" << std::endl;
 		return deleteRecurringEvents(_taskNumberList, _storage);
 	}
 
@@ -33,7 +34,7 @@ std::string cmdDelete::executecmdDelete(Storage& _storage){
 	_storage.deleteEvent(_taskNumberList);
 	_storage.synchronizeDrive();
 	Storage storage;
-	storage.writeFile(LOG_DELETE);
+	storage.writeToLogfile("Info", LOG_DELETE);
 	return _feedback;
 
 	}catch(std::string EXCEPTION_INVALID_INDEX){
@@ -68,5 +69,6 @@ std::string cmdDelete::printFeedback(std::list<int> taskNumberList, Storage& _st
 std::string cmdDelete::deleteRecurringEvents(std::list<int> taskNumberList, Storage& _storage) {
 	int recurringEventNumber = taskNumberList.back();
 	_storage.deleteRecurring(recurringEventNumber);
+	_storage.synchronizeDrive();
 	return RECURRING_EVENTS_DELETED;
 }
