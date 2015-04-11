@@ -13,7 +13,8 @@ private:
 	Eventlist _doneEvent;
 	std::list<Eventlist> _previousActiveEvent;
 	std::list<Eventlist> _previousDoneEvent;
-	enum COMMAND_TYPE { ADD,UPDATE,DELETEEVENT,DONE,CLEARDONE,CLEARACTIVE,CLEAR,REPEAT,INVALID};
+	enum COMMAND_TYPE { ADD,UPDATE,DELETEEVENT,DONE,CLEARDONE,CLEARACTIVE,
+		CLEAR,REPEAT,UPDATE_REPEAT,DELETE_REPEAT,INVALID};
 	COMMAND_TYPE findCommandType(std::string currentCommand);
 	std::string _filename;
 	std::string _locationFile;
