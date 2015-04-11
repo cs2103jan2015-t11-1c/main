@@ -11,22 +11,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{9CD9EE25-126F-485A-92EA-8279F60072DD}</ProjectGuid>
-    <RootNamespace>v03</RootNamespace>
+    <ProjectGuid>{AB655D32-6286-4F1B-95E2-D8445012C6F3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>RepeatUnitTest</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -38,79 +41,61 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\User\Documents\GitHub\main\v0.3\V0.3;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="cmdAdd.h" />
-    <ClInclude Include="cmdChangeDirectory.h" />
-    <ClInclude Include="cmdClear.h" />
-    <ClInclude Include="cmdDelete.h" />
-    <ClInclude Include="cmdDisplay.h" />
-    <ClInclude Include="cmdHelp.h" />
-    <ClInclude Include="cmdMarkAsDone.h" />
-    <ClInclude Include="cmdRepeat.h" />
-    <ClInclude Include="cmdRepeatParser.h" />
-    <ClInclude Include="cmdSearch.h" />
-    <ClInclude Include="cmdUndo.h" />
-    <ClInclude Include="cmdUpdate.h" />
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="Eventlist.h" />
-    <ClInclude Include="findNextDate.h" />
-    <ClInclude Include="logic.h" />
-    <ClInclude Include="logicBaseClass.h" />
-    <ClInclude Include="Parser.h" />
-    <ClInclude Include="Storage.h" />
-    <ClInclude Include="UI.h" />
-    <ClInclude Include="VerificationCommand.h" />
-    <ClInclude Include="VerificationDateTimeMonth.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cmdAdd.cpp" />
-    <ClCompile Include="cmdChangeDirectory.cpp" />
-    <ClCompile Include="cmdClear.cpp" />
-    <ClCompile Include="cmdDelete.cpp" />
-    <ClCompile Include="cmdDisplay.cpp" />
-    <ClCompile Include="cmdHelp.cpp" />
-    <ClCompile Include="cmdMarkAsDone.cpp" />
-    <ClCompile Include="cmdRepeat.cpp" />
-    <ClCompile Include="cmdRepeatParser.cpp" />
-    <ClCompile Include="cmdSearch.cpp" />
-    <ClCompile Include="cmdUndo.cpp" />
-    <ClCompile Include="cmdUpdate.cpp" />
-    <ClCompile Include="Event.cpp" />
-    <ClCompile Include="Eventlist.cpp" />
-    <ClCompile Include="findNextDate.cpp" />
-    <ClCompile Include="logic.cpp" />
-    <ClCompile Include="logicBaseClass.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="Storage.cpp" />
-    <ClCompile Include="UI.cpp" />
-    <ClCompile Include="VerificationCommand.cpp" />
-    <ClCompile Include="VerificationDateTimeMonth.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="RepeatTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\V0.3\V0.3.vcxproj">
+      <Project>{9cd9ee25-126f-485a-92ea-8279f60072dd}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

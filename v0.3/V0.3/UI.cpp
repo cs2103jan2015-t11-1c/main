@@ -19,6 +19,8 @@ const static std::string STRING_REPEAT = "repeat";
 const static std::string STRING_DISPLAYALL = "displayall";
 const static std::string STRING_DISPLAYTOMORROW = "displaytomorrow";
 const static std::string STRING_REPEATDONE = "repeatdone";
+const static std::string STRING_UPDATERECUR = "updaterecur";
+const static std::string STRING_DELETERECUR = "deleterecur";
 const static std::string INVALID_INPUT_MESSAGE = "Invalid user input.\n\n";
 static const std::string WELCOME_MESSAGE = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n\n";
 static const std::string EMPTY_STRING = "";
@@ -94,6 +96,10 @@ UI::CommandType UI::determineCommandType() {
 		return DISPLAYALL;
 	} else if (_commandWord == STRING_DISPLAYTOMORROW){
 		return DISPLAYTOMORROW;
+	} else if (_commandWord == STRING_DELETERECUR) {
+		return DELETERECUR;
+	} else if (_commandWord == STRING_UPDATERECUR) {
+		return UPDATERECUR;
 	} else {
 		return HELP;
 	}
@@ -173,24 +179,46 @@ std::string UI::callToParser() {
 				return exceptionMesssage;
 			}
 
+		case DELETERECUR:
+			try {
+				if (getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				} 
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.deleteEvent(STRING_DELETERECUR, _toDoList);	
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+
 		case DELETE:
 			try {
 				if (getToDoListAndCheckEmpty()) {
 					throw INVALID_INPUT_MESSAGE;
 				} 
 				getTheToDoListWithIndexZeroNotEmpty();
-				return _Parser.deleteEvent(_toDoList);	
+				return _Parser.deleteEvent(STRING_DELETE,_toDoList);	
 			} catch (std::string &exceptionMesssage) {
 				return exceptionMesssage;
 			}
-		
+
 		case UPDATE:
 			try {
 				if( getToDoListAndCheckEmpty()) {
 					throw INVALID_INPUT_MESSAGE;
 				}
 				getTheToDoListWithIndexZeroNotEmpty();
-				return _Parser.updateEvent(_toDoList);		
+				return _Parser.updateEvent(STRING_UPDATE,_toDoList);		
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+
+		case UPDATERECUR:
+			try {
+				if( getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.updateEvent(STRING_UPDATERECUR,_toDoList);		
 			} catch (std::string &exceptionMesssage) {
 				return exceptionMesssage;
 			}

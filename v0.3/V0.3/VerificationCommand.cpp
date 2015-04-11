@@ -19,6 +19,8 @@ const static std::string STRING_SEARCH = "search";
 const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
 const static std::string STRING_REPEAT = "repeat";
 const static std::string STRING_REPEATDONE = "repeatdone";
+const static std::string STRING_UPDATERECUR = "updaterecur";
+const static std::string STRING_DELETERECUR = "deleterecur";
 
 VerificationCommand::VerificationCommand(void) {
 }
