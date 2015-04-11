@@ -9,6 +9,7 @@ const static std::string MESSAGE_MarkDone_MUTIPLE_EVENTS = "The following events
 const static std::string NEW_Line = "\n";
 const static std::string LOG_MARKASDONE = "executed mark as done";
 const static std::string LOG_PRINT_FEEDBACK = "executed print feedback";
+const static std::string INFO = "Info";
 
 cmdMarkAsDone::cmdMarkAsDone(void)
 {
@@ -32,11 +33,11 @@ std::string cmdMarkAsDone::executeMarkAsDone(Storage& _storage){
 	_storage.markEventAsDone(_taskNumberList);
 	_storage.synchronizeDrive();
 	Storage storage;
-	storage.writeToLogfile("Info",LOG_MARKASDONE);
+	storage.writeToLogfile(INFO,LOG_MARKASDONE);
 	return _feedback;
 	}catch(std::string EXCEPTION_INVALID_INDEX){
 		std::cout << EXCEPTION_INVALID_INDEX;
-		return "\n";
+		return NEW_Line;
 	}
 }
 	
@@ -56,6 +57,6 @@ std::string cmdMarkAsDone::printFeedback(std::list<int> taskNumberList, Storage&
 	}
 	std::cout<< feedback.str();
 	Storage storage;
-	storage.writeToLogfile("Info",(LOG_PRINT_FEEDBACK));
+	storage.writeToLogfile(INFO,(LOG_PRINT_FEEDBACK));
 	return NEW_Line;
 }

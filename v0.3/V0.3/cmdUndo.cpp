@@ -12,6 +12,7 @@ const static std::string STRING_DONE = "done";
 const static std::string STRING_REPEAT = "update repeat";
 const static std::string STRING_UPDATE_RECUR = "update repeat";
 const static std::string STRING_DELETE_RECUR = "delete repeat";
+const static std::string STRING_DIRECTORY = "directory";
 
 
 
@@ -42,7 +43,7 @@ std::string cmdUndo::undo(Storage& _storage,std::vector<CommandType>& commandSto
 		commandStored.pop_back();
 	}
 	std::string lastCommandString;
-	if(lastCommand == ADDEVENTWITHDEADLINE || lastCommand == ADDFLOATINGEVENT || lastCommand == ADDTIMEDEVENT){
+	if (lastCommand == ADDEVENTWITHDEADLINE || lastCommand == ADDFLOATINGEVENT || lastCommand == ADDTIMEDEVENT) {
 		lastCommandString = STRING_ADD;
 	} else if (lastCommand == DELETE) {
 		lastCommandString = STRING_DELETE;
@@ -62,13 +63,15 @@ std::string cmdUndo::undo(Storage& _storage,std::vector<CommandType>& commandSto
 		lastCommandString = STRING_DELETE_RECUR;
 	} else if (lastCommand == UPDATERECURENDINGTIME || lastCommand == UPDATERECURSTARTINGTIME || lastCommand == UPDATERECURNAME){
 		lastCommandString = STRING_UPDATE_RECUR;
+	} else if (lastCommand == CHANGEDIRECTORY) {
+		lastCommandString = STRING_DIRECTORY;
 	} else {
 		return UNDO_UNSUCCESSFUL_MESSAGE;
 	}
 	if (_storage.unDopreviousActions(lastCommandString)) {	
 		_storage.synchronizeDrive();
 		return printUndoMessage();
-	} else{
+	} else {
 		return UNDO_UNSUCCESSFUL_MESSAGE;
 	}
 }

@@ -3,6 +3,7 @@
 #include "storage.h"
 const static std::string CLEAR_MESSAGE = "all tasks cleared\n\n";
 const static std::string LOG_CLEAR = "executed clear";
+const static std::string INFO = "Info";
 
 cmdClear::cmdClear(void){
 }
@@ -16,7 +17,7 @@ std::string cmdClear::executeClear(Storage& _storage){
 	_storage.clearDoneEvent();
 	_storage.synchronizeDrive();
 	Storage storage;
-	storage.writeToLogfile("Info",LOG_CLEAR);
+	storage.writeToLogfile(INFO,LOG_CLEAR);
 	return CLEAR_MESSAGE;
 }
 ;

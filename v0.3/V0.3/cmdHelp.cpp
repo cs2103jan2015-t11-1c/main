@@ -16,6 +16,7 @@ const static std::string HELP_SEARCH = "[11] search <key words>\ne.g. search hom
 const static std::string HELP_RECURRING = "[12] repeat <task number> <frequency> <number of repetitions>\ne.g. repeat 1 weekly 13 except 8   repeat 2 monthly 2\n     repeat 3 every mon/Monday/monday\n\n";
 const static std::string LINE = "================================================\n";
 const static std::string LOG_HELP = "executed help";
+const static std::string INFO = "info";
 
 cmdHelp::cmdHelp(void){
 }
@@ -26,7 +27,7 @@ cmdHelp::~cmdHelp(void){
 //display help for all functions 
 std::string cmdHelp::helpMessage(){
 	Storage storage;
-	storage.writeToLogfile("Info",LOG_HELP);
+	storage.writeToLogfile(INFO,LOG_HELP);
 	return LINE+ HELP_ADD + HELP_DELETE + HELP_DISPLAY + HELP_UPDATE + HELP_UPDATE_START  
 		   + HELP_UPDATE_CLEAR_START + HELP_UPDATE_CLEAR_END + HELP_UPDATE_END + HELP_MARKASDONE + HELP_UNDO 
 		   + HELP_SEARCH + HELP_RECURRING + LINE;
