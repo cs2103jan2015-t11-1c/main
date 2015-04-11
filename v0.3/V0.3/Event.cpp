@@ -237,7 +237,7 @@ void Event::changeEndYear (int newYear) {
 
 void Event::changeStartDay (int newDay) {
 	_startDay = newDay;
-	if(isTimedTask()) {
+	if (isTimedTask()) {
 		_durationEvent = true;
 	} else {
 		_durationEvent = false;
@@ -246,7 +246,7 @@ void Event::changeStartDay (int newDay) {
 
 void Event::changeStartMonth (int newMonth) {
 	_startMonth = newMonth;
-	if(isTimedTask()) {
+	if (isTimedTask()) {
 		_durationEvent = true;
 	} else {
 		_durationEvent = false;
@@ -255,7 +255,7 @@ void Event::changeStartMonth (int newMonth) {
 
 void Event::changeStartTime (int newTime) {
 	_startTime= newTime;
-	if(isTimedTask()) {
+	if (isTimedTask()) {
 		_durationEvent = true;
 	} else { 
 		_durationEvent = false;
@@ -277,7 +277,7 @@ void Event::changeRecurringTaskSeries(int series) {
 //then earliest month and then earliest endday and then earliest hour.
 //Events with no deadline are display first.
 void Event::updateDueRanking() {
-	if(!isValidDateMonthTime()) {
+	if (!isValidDateMonthTime()) {
 		_dueRanking = NO_DUE_DATE_RANKING ;
 	} else {
 		_dueRanking = _endYear % 100 * YEAR_RANKING +_endMonth * MONTH_RANKING;
@@ -332,7 +332,7 @@ std::string Event::saveEvent() {
 		Ostring << convertTimeToString(_startYear) << EMPTY_SPACE;
 	}
 	Ostring << END_INFO_IDENTIFIER ;
-	if(!isValidDateMonthTime()) {
+	if (!isValidDateMonthTime()) {
 		Ostring << NIL_IDENTIFIER << EMPTY_SPACE;
 	} else {
 		Ostring << convertNumberToString(_endDay) << EMPTY_SPACE;
@@ -348,13 +348,13 @@ std::string Event::saveEvent() {
 
 bool Event::isTimedTask() {
 	bool isValid = true;
-	if(_startDay < MIN_DATE || _startDay > MAX_DATE) {
+	if (_startDay < MIN_DATE || _startDay > MAX_DATE) {
 		isValid = false;
 	}
-	if(_startMonth < MIN_MONTH || _startMonth > MAX_MONTH) {
+	if (_startMonth < MIN_MONTH || _startMonth > MAX_MONTH) {
 		isValid = false;
 	}
-	if(_startTime < MIN_TIME || _startTime > MAX_TIME) {
+	if (_startTime < MIN_TIME || _startTime > MAX_TIME) {
 		isValid = false;
 	}
 	return isValid;
@@ -370,20 +370,20 @@ int Event::getEndYear() {
 
 bool Event::isValidDateMonthTime() {
 	bool isValid = true;
-	if(_endDay < MIN_DATE || _endDay > MAX_DATE) {
+	if (_endDay < MIN_DATE || _endDay > MAX_DATE) {
 		isValid = false;
 	}
-	if(_endMonth < MIN_MONTH || _endMonth > MAX_MONTH) {
+	if (_endMonth < MIN_MONTH || _endMonth > MAX_MONTH) {
 		isValid = false;
 	}
-	if(_endTime < MIN_TIME || _endTime > MAX_TIME) {
+	if (_endTime < MIN_TIME || _endTime > MAX_TIME) {
 		isValid = false;
 	}
 	return isValid;
 }
 
 bool Event::isFloatingTask() {
-	if(isValidDateMonthTime()) {
+	if (isValidDateMonthTime()) {
 		return false;
 	} else {
 		return true;

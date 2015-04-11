@@ -282,13 +282,13 @@ void Storage::deleteRecurring(int inputIndex) {
 	int index = ZERO;
 	_currentEvent = _activeEvent.getEvent(inputIndex);
 	int recurringNumber = _currentEvent.getRecurringTaskSeries();
-	if(recurringNumber == 0) {
+	if ( recurringNumber == 0) {
 		throw std::string(NOT_RECURRING);
 	}
 	std::list<int> numbers;
 	for(iter = allEvents.begin(); iter != allEvents.end(); iter++) {
 		index = index + ONE;
-		if((*iter).getRecurringTaskSeries() == recurringNumber) {
+		if ((*iter).getRecurringTaskSeries() == recurringNumber) {
 			numbers.push_back(index);
 		}
 	}
@@ -334,13 +334,13 @@ void Storage::updateRecurring(int index, Event newEvent) {
 	int indexForRecurring = ZERO;
 	_currentEvent = _activeEvent.getEvent(index);
 	int recurringNumber = _currentEvent.getRecurringTaskSeries();
-	if(recurringNumber == 0) {
+	if (recurringNumber == 0) {
 		throw std::string(NOT_RECURRING);
 	}
 	newEvent.changeRecurringTaskSeries(recurringNumber);
 	for(iter = allEvents.begin(); iter != allEvents.end(); iter++) {
 		indexForRecurring = indexForRecurring + ONE;
-		if((*iter).getRecurringTaskSeries() == recurringNumber) {
+		if ((*iter).getRecurringTaskSeries() == recurringNumber) {
 			_activeEvent.updateEvent(indexForRecurring, newEvent);
 		}
 	}
@@ -425,7 +425,7 @@ void Storage::readFile() {
 	std::string currentLine;
 	textFile.open(_filename);
 	while(getline(textFile,currentLine)) {
-	readEventsFromFile(currentLine);
+		readEventsFromFile(currentLine);
 	}
 	textFile.close();
 	writeToLogfile(INFOMATION, READ_FROM_FILE);
@@ -510,7 +510,7 @@ void Storage::readEventsFromFile(std::string line) {
 	catch(...) {
 		std::cout << WRONG << EMPTY_SPACE << READ_A_EVENT;
 	}
-	if(hasEndInfo) {
+	if (hasEndInfo) {
 		newEvent = Event(title,stoi(endday), stoi(endmonth),stoi(endtime));
 		newEvent.changeEndYear(stoi(endyear));
 	} else {

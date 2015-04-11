@@ -27,7 +27,7 @@ void Eventlist::addEvent(Event newEvent) {
 
 //Delete one Event from the list by searching from the front of the list.
 void Eventlist::deleteEvent(unsigned int index) {
-	if(index < 1 || index > _allEvent.size()) {
+	if (index < 1 || index > _allEvent.size()) {
 		throw std::string(ERROR_INDEX);
 	}
 	std::list<Event>::iterator deleteposition = _allEvent.begin();
@@ -37,7 +37,7 @@ void Eventlist::deleteEvent(unsigned int index) {
 
 //Find the Event at the index position and return the Event.
 Event Eventlist::getEvent(unsigned int index) {	
-	if(index < 1 || index > _allEvent.size()) {
+	if (index < 1 || index > _allEvent.size()) {
 		throw std::string(ERROR_INDEX);
 	}
 	std::list<Event>::iterator eventPosition =_allEvent.begin();
@@ -47,7 +47,7 @@ Event Eventlist::getEvent(unsigned int index) {
 
 //Replaced the index position Event with new event.
 void Eventlist::updateEvent (unsigned int index, Event newEvent) {
-	if(index < 1 || index > _allEvent.size()) {
+	if (index < 1 || index > _allEvent.size()) {
 		throw std::string(ERROR_INDEX);
 	}
 	std::list<Event>::iterator eventPosition = _allEvent.begin();
