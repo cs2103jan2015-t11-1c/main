@@ -1,9 +1,12 @@
 #include "cmdUpdate.h"
+#include <assert.h>
+
 static const int INVALID_DATE = 0;
 static const int INVALID_MONTH = 13;
 static const int INVALID_TIME = 2400;
 const static std::string UPDATE_MESSAGE = "\" is updated to ";
 const static std::string ERROR = "Error";
+const static std::string QUOTATION_MARKS = "\"";
 
 cmdUpdate::cmdUpdate(void){
 }
@@ -30,6 +33,7 @@ std::string cmdUpdate::executecmdUpdate(Storage& _storage){
 	case CLEAREND:
 		return clearEndingTime(eventToUpdate, eventNumber, _storage);
 	default:
+		assert(false);
 		break;
 	}
 	return ERROR;
@@ -101,6 +105,6 @@ std::string cmdUpdate::clearEndingTime(Event eventToUpdate, int eventNumber, Sto
 }
 
 std::string cmdUpdate::printFeedback(std::string Tempt, Event eventToUpdate){
-	std::string feedback = "\"" + Tempt + UPDATE_MESSAGE + "\"" + eventToUpdate.displayEvent() +"\" \n\n";
+	std::string feedback = QUOTATION_MARKS + Tempt + UPDATE_MESSAGE + QUOTATION_MARKS + eventToUpdate.displayEvent() +"\" \n\n";
 	return feedback;
 }

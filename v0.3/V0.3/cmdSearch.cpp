@@ -2,6 +2,8 @@
 #include <sstream>
 
 const static std::string MESSAGE_EVENT_NOT_FOUND = "Sorry! No relevant event found.\n\n"; 
+const static std::string DOT = ".";
+const static std::string TWO_LINES = "\n\n";
 
 cmdSearch::cmdSearch(void){
 }
@@ -76,7 +78,7 @@ std::string cmdSearch::printEventFound(){
 	for(Titer = eventFound.begin(); Titer != eventFound.end(); Titer++){
 		currentEvent = *Titer;
 		eventNumber = _eventNumbers[Tcount];
-		feedback << eventNumber << "." << currentEvent.displayEvent() << "\n\n";
+		feedback << eventNumber << DOT << currentEvent.displayEvent() << TWO_LINES;
 		Tcount ++;
 	}
 

@@ -4,6 +4,7 @@ const static std::string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. 
 const static int ONE_EVENT = 1;
 const static std::string MESSAGE_MarkDone_ONE_EVENT = "The following event is marked as done: \n";
 const static std::string MESSAGE_MarkDone_MUTIPLE_EVENTS = "The following events are marked as done: \n";
+const static std::string NEW_Line = "\n";
 
 cmdMarkAsDone::cmdMarkAsDone(void)
 {
@@ -38,15 +39,15 @@ std::string cmdMarkAsDone::printFeedback(std::list<int> taskNumberList, Storage&
 	Event eventMarkedDone;
 	if(taskNumberList.size() == ONE_EVENT){
 		eventMarkedDone = _storage.getEvent(taskNumberList.front());
-		feedback << MESSAGE_MarkDone_ONE_EVENT << eventMarkedDone.displayEvent() << "\n";
+		feedback << MESSAGE_MarkDone_ONE_EVENT << eventMarkedDone.displayEvent() << NEW_Line;
 	}else{
 		feedback << MESSAGE_MarkDone_MUTIPLE_EVENTS;
 		while(!taskNumberList.empty()){
 			eventMarkedDone = _storage.getEvent(taskNumberList.back());
-			feedback << eventMarkedDone.displayEvent() << "\n";
+			feedback << eventMarkedDone.displayEvent() << NEW_Line;
 			taskNumberList.pop_back();
 		}
 	}
 	std::cout<< feedback.str();
-	return "\n";
+	return NEW_Line;
 }

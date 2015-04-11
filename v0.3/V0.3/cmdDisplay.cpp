@@ -1,8 +1,12 @@
 #include "cmdDisplay.h"
 #include <sstream>
+#include <assert.h>
+
 const static std::string MESSAGE_EMPTY_ACTIVE_EVENTS = "Currently no active event. \n\n";
 const static std::string MESSAGE_NO_EVENT_TODAY = "No Event today! \n\n";
 const static int NUMBER_OF_TASK_TO_DISPLAY = 21;
+const static std::string NEW_LINE = "\n";
+const static std::string Dot = ".";
 
 cmdDisplay::cmdDisplay(void){
 }
@@ -36,6 +40,7 @@ std::string cmdDisplay::executecmdDisplay(Storage& _storage){
 	case DISPLAYTODAY:
 		return cmdDisplayToday(_storage);
 	default:
+		assert(false);
 		break;
 	} 	
 	return "";
@@ -121,10 +126,10 @@ std::string cmdDisplay::eventsToDisplay(std::list<Event> events){
 	int i = 1;
 	std::list<Event>::iterator iter;
 	for (iter = events.begin(); iter != events.end() && i < NUMBER_OF_TASK_TO_DISPLAY; ++iter) {
-		display  << std::setw(3) << i << "." << (*iter).displayEvent() << "\n";
+		display  << std::setw(3) << i << Dot << (*iter).displayEvent() << NEW_LINE;
 		i++;
 	}
-	display << "\n";
+	display << NEW_LINE;
 
 	return display.str();
 }

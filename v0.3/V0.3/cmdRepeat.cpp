@@ -1,4 +1,5 @@
 #include "cmdRepeat.h"
+#include <assert.h>
 
 const int DAILY_REPTEAT_TIMES = 7;
 const int WEEKLY_REPEAT_TIMES = 4;
@@ -40,12 +41,9 @@ cmdRepeat::~cmdRepeat(void){
 std::string cmdRepeat::executecmdRepeat(Storage& _storage){
 	_repeatDetails = _taskName;
 	_parser.checkValidityAndGetDetails(_repeatDetails, _repeatCommand, _repeatTimes, _hasException, _exceptionDetails);
-	//std::cout << _repeatCommand << " " << _repeatTimes << " " << _hasException << " " << _exceptionDetails << std::endl;
-	//std::cout<<_repeatTimes << std::endl;
 	determineEventNumber();
 	determineRepeatType();
 	_repeatTimes = determineRepeatTimes(_repeatTimes);
-	//std::cout <<_repeatTimes << std::endl;
 
 	Event repeatingEvent;
 
@@ -110,6 +108,7 @@ int cmdRepeat::determineRepeatTimes(int repeatTimes){
 		case MONTHLY:
 			return MONTHLY_REPEAT_TIMES;
 		default:
+			assert(false);
 			break;
 		}
 	} else {
@@ -132,6 +131,7 @@ int cmdRepeat::determineInterval(int month, int year){
 	case MONTHLY:
 		return getNumberOfDays(month, year);
 	default:
+		assert(false);
 		return NO_INTERVAL;
 	}
 }
@@ -171,7 +171,6 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 
 	for(Tcount = 1; Tcount <= _repeatTimes; Tcount++){
 		Event newEvent(eventTitle, newDate, newMonth, time);
-		//std::cout << newEvent.displayEvent() << std::endl;
 
 		if (newDate <= getNumberOfDays(newMonth, newYear)) {
 		if (_hasException) {
@@ -219,8 +218,8 @@ int cmdRepeat::determineWeekday(std::string repeatCommand){
 
 std::string cmdRepeat::lowercaseCommandWord(std::string commandWord){
 	int n = commandWord.size();
-	for( int i = 0; i < n; i++){
-		if(commandWord[i] <='Z' && commandWord[i] >= 'A'){
+	for ( int i = 0; i < n; i++){
+		if (commandWord[i] <='Z' && commandWord[i] >= 'A'){
 			commandWord[i] = commandWord[i] - ('Z'-'z');
 		}
 	}
