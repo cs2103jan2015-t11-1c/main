@@ -133,70 +133,97 @@ std::string UI::callToParser() {
 	switch (typeOfCommand)
 	{
 		case ADD:
-			if (getToDoListAndCheckEmpty()) {
-				return INVALID_INPUT_MESSAGE;
-			} else {
+			try {
+				if (getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				} 
 				getTheToDoListWithIndexZeroNotEmpty();
-				return _Parser.addEvent(_toDoList);			
+				return _Parser.addEvent(_toDoList);		
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
 			}
 		
 		case DISPLAY:
-			if (getToDoListAndCheckEmpty()) {
+			try {
+				if (!getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
 				return _Parser.displayEvent(STRING_DISPLAY);
-			} else {
-				return INVALID_INPUT_MESSAGE;
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
 			}
 		
 		case DISPLAYALL:
-			if (getToDoListAndCheckEmpty()) {
+			try {
+				if (!getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
 				return _Parser.displayEvent(STRING_DISPLAYALL);
-			} else {
-				return INVALID_INPUT_MESSAGE;
+			}  catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
 			}
 		
 		case DISPLAYTOMORROW:
-			if (getToDoListAndCheckEmpty()) {
+			try {
+				if (!getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
 				return _Parser.displayEvent(STRING_DISPLAYTOMORROW);
-			} else {
-				return INVALID_INPUT_MESSAGE;
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
 			}
 
 		case DELETE:
-			if (getToDoListAndCheckEmpty()) {
-				return INVALID_INPUT_MESSAGE;
-			} else {
+			try {
+				if (getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				} 
 				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.deleteEvent(_toDoList);	
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
 			}
 		
 		case UPDATE:
-			if( getToDoListAndCheckEmpty()) {
-				return INVALID_INPUT_MESSAGE;
-			} else {
+			try {
+				if( getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
 				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.updateEvent(_toDoList);		
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
 			}
 		
 		case DONE:
-			if (getToDoListAndCheckEmpty()) {
-				return INVALID_INPUT_MESSAGE;
-			} else {
+			try {
+				if (getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				} 
 				getTheToDoListWithIndexZeroNotEmpty();
 				return _Parser.markAsDone(_toDoList);
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
 			}
 			
 		case DISPLAYDONE:
-			if (getToDoListAndCheckEmpty()) {
+			try {
+				if (!getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
 				return _Parser.displayEvent(STRING_DISPLAYDONE);
-			} else {
-				return INVALID_INPUT_MESSAGE;
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
 			}
 						
 		case DISPLAYTODAY:
-			if (getToDoListAndCheckEmpty()) {
+			try {
+				if (!getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
 				return _Parser.displayEvent(STRING_DISPLAYTODAY);
-			} else {
-				return INVALID_INPUT_MESSAGE;
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
 			}
 
 		case EXIT:

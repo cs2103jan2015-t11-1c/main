@@ -208,12 +208,16 @@ std::string Parser::updateEvent(std::string toDoList) {
 		replaceStringWithItsSubstring(buffer, TIndex);
 		std::string clearType = buffer.substr(0,getIndexOfFirstWhiteSpace(buffer));
 
-		if (clearType == STRING_END) {
-			return VerifyAllAttributesAndCallLogic(CLEAREND);
-		} else if (clearType == STRING_START) {
-			return VerifyAllAttributesAndCallLogic(CLEARSTART);
-		} else {
-			return INVALID_INPUT_MESSAGE;
+		try {
+			if (clearType == STRING_END) {
+				return VerifyAllAttributesAndCallLogic(CLEAREND);
+			} else if (clearType == STRING_START) {
+				return VerifyAllAttributesAndCallLogic(CLEARSTART);
+			} else {
+			throw INVALID_INPUT_MESSAGE;
+			}
+		}catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
 		}
 
 	} else if (updateType == STRING_END) {
@@ -243,7 +247,7 @@ std::string Parser::updateEvent(std::string toDoList) {
 		}
 
 	} else {
-		return  INVALID_TIME_DATE_MONTH_MESSAGE;
+		return  INVALID_INPUT_MESSAGE;
 	}
 }
 
