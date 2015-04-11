@@ -1,3 +1,4 @@
+//@author A0114301E
 //logic.h
 #ifndef logic_H
 #define logic_H

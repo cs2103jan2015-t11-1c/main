@@ -1,13 +1,21 @@
+//@author A0115253R
+
 #pragma once
+#ifndef VERIFICATIONCOMMAD_H
+#define VERIFICATIONCOMMAND_H
 #include <string>
-using namespace std;
+#include <cstring>
+#include <ctype.h>
+#include <assert.h>
 
 class VerificationCommand
 {
 public:
 	VerificationCommand(void);
 	~VerificationCommand(void);
-	string lowercaseCommandWord(string);
-	bool isValidCommandWord(string);
+	std::string lowercaseCommandWord(std::string);
+	bool isValidCommandWord(std::string);
 };
+
+#endif
 

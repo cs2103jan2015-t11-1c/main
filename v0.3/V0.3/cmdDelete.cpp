@@ -1,10 +1,14 @@
+//@author A0114301E
 #include "cmdDelete.h"
+#include "storage.h";
+
 #include <sstream>
 const static std::string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.";
 const static std::string MESSAGE_DELETE_ONE_EVENT = "The following event is deleted: \n";
 const static std::string MESSAGE_DELETE_MUTIPLE_EVENTS = "The following events are deleted: \n";
 const static int ONE_EVENT = 1;
 const static std::string NEW_LINE = "\n";
+const static std::string LOG_DELETE = "executed delete";
 
 cmdDelete::cmdDelete(void){
 }
@@ -23,6 +27,8 @@ std::string cmdDelete::executecmdDelete(Storage& _storage){
 	_feedback = printFeedback(_taskNumberList, _storage);
 	_storage.deleteEvent(_taskNumberList);
 	_storage.synchronizeDrive();
+	Storage storage;
+	storage.writeFile(LOG_DELETE);
 	return _feedback;
 
 	}catch(std::string EXCEPTION_INVALID_INDEX){

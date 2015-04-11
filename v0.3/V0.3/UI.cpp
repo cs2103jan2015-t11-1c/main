@@ -1,10 +1,6 @@
+//@author A0115253R
+
 #include "UI.h"
-#include <string>
-#include <iostream>
-#include <ctype.h>
-#include <assert.h>
-#include "Parser.h"
-using namespace std;
 
 const static std::string STRING_ADD = "add";
 const static std::string STRING_DELETE = "delete";
@@ -20,24 +16,37 @@ const static std::string STRING_DISPLAYTODAY = "displaytoday";
 const static std::string STRING_SEARCH = "search";
 const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
 const static std::string STRING_REPEAT = "repeat";
+const static std::string STRING_DISPLAYALL = "displayall";
+const static std::string STRING_DISPLAYTOMORROW = "displaytomorrow";
 const static std::string STRING_REPEATDONE = "repeatdone";
-static const  string WELCOME_MESSAGE = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n\n";
-static const string EMPTY_STRING = "";
+const static std::string INVALID_INPUT_MESSAGE = "Invalid user input.\n\n";
+static const std::string WELCOME_MESSAGE = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n\n";
+static const std::string EMPTY_STRING = "";
 
 UI::UI() {
 	_commandWord=EMPTY_STRING;
 	_toDoList=EMPTY_STRING;
 }
 
-UI::~UI(void) { }
+UI::~UI(void) {
+}
 
-string UI::showWelcomeMessage() {
+void UI::setValueForAttributes(std::string commandWord, std::string toDoList) {
+	_commandWord = commandWord;
+	_toDoList = toDoList;
+}
+
+std::string UI::getToDoList() {
+	return _toDoList;
+}
+
+std::string UI::showWelcomeMessage() {
 	return WELCOME_MESSAGE;
 }
 
 bool UI:: readCommandAndVerifyCommand() {
 	bool isValid=true;
-	cin >> _commandWord;
+	std::cin >> _commandWord;
 
 	if (_commandWord.empty()) {
 		isValid = false;
@@ -81,12 +90,16 @@ UI::CommandType UI::determineCommandType() {
 		return REPEATDONE;
 	} else if (_commandWord == STRING_HELP) {
 		return HELP;
+	} else if (_commandWord == STRING_DISPLAYALL) {
+		return DISPLAYALL;
+	} else if (_commandWord == STRING_DISPLAYTOMORROW){
+		return DISPLAYTOMORROW;
 	} else {
 		return HELP;
 	}
 }
 
-bool UI::isEmpty(string str) {
+bool UI::isEmpty(std::string str) {
 	if (str.empty()) {
 		return true;
 	} else {
@@ -100,11 +113,10 @@ bool UI::isEmpty(string str) {
 }
 
 bool UI::getToDoListAndCheckEmpty() {
-	getline(cin, _toDoList);
+	getline(std::cin, _toDoList);
 	if (isEmpty(_toDoList)) {
 		return true;
-	}
-	else{
+	} else {
 		return false;
 	}
 }
@@ -115,7 +127,7 @@ void UI:: getTheToDoListWithIndexZeroNotEmpty() {
 	_toDoList = _toDoList.substr(TIndex);
 }
 
-string UI::callToParser() {
+std::string UI::callToParser() {
 	CommandType typeOfCommand = determineCommandType();
 
 	switch (typeOfCommand)
@@ -135,6 +147,20 @@ string UI::callToParser() {
 				return INVALID_INPUT_MESSAGE;
 			}
 		
+		case DISPLAYALL:
+			if (getToDoListAndCheckEmpty()) {
+				return _Parser.displayEvent(STRING_DISPLAYALL);
+			} else {
+				return INVALID_INPUT_MESSAGE;
+			}
+		
+		case DISPLAYTOMORROW:
+			if (getToDoListAndCheckEmpty()) {
+				return _Parser.displayEvent(STRING_DISPLAYTOMORROW);
+			} else {
+				return INVALID_INPUT_MESSAGE;
+			}
+
 		case DELETE:
 			if (getToDoListAndCheckEmpty()) {
 				return INVALID_INPUT_MESSAGE;
@@ -238,14 +264,5 @@ string UI::callToParser() {
 			break;
 			
 		}
-	
 }
 
-void UI::setValueForAttributes(string commandWord, string toDoList){
-	_commandWord = commandWord;
-	_toDoList = toDoList;
-}
-
-string UI::getToDoList(){
-	return _toDoList;
-}

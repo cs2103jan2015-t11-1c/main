@@ -1,3 +1,4 @@
+//@author A0114301E
 #include "cmdUndo.h"
 
 const static std::string UNDO_ERROR_MESSAGE = "There is no action to undo. Enter a command again.\n\n";
@@ -8,6 +9,7 @@ const static std::string STRING_DELETE = "delete";
 const static std::string STRING_UPDATE = "update";
 const static std::string STRING_CLEAR = "clear";
 const static std::string STRING_DONE = "done";
+const static std::string STRING_REPEAT = "repeat";
 
 cmdUndo::cmdUndo(void)
 {
@@ -45,6 +47,10 @@ std::string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStor
 		lastCommandString = STRING_DONE;
 	}else if (lastCommand == DISPLAY) {
 		std::cout<<UNDO_ERROR_MESSAGE;
+	}else if (lastCommand == HELP) {
+		std::cout<<UNDO_ERROR_MESSAGE;
+	}else if(lastCommand == REPEAT){
+		lastCommandString = STRING_REPEAT;
 	}
 
 	if (_storage.unDopreviousActions(lastCommandString)) {	

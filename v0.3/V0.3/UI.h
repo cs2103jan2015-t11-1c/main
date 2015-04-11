@@ -1,34 +1,37 @@
-//#pragma once
+//@author A0115253R
+#pragma once
 
 #ifndef UI_H
 #define UI_H
 #include <cstring>
 #include <string>
-#include <iostream>
 #include "Parser.h"
 #include "VerificationCommand.h"
+#include <ctype.h>
+#include <assert.h>
+#include <iostream>
 
-class UI{
+class UI {
+
     private:
-		string _commandWord;
-		string _toDoList;
+		std::string _commandWord;
+		std::string _toDoList;
 		Parser _Parser;
 		VerificationCommand _verificationCommand;
 		
     public:
-		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, DISPLAYDONE, DISPLAYTODAY, CHANGEDIRECTORY, SEARCH, UNDO, HELP, CLEAR, REPEAT, REPEATDONE};
 		UI(void);
 		~UI(void);
+		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, DISPLAYDONE, DISPLAYTODAY, DISPLAYALL, DISPLAYTOMORROW, CHANGEDIRECTORY, SEARCH, UNDO, HELP, CLEAR, REPEAT, REPEATDONE};
 	    CommandType determineCommandType();
-		
-		string callToParser();
-		bool isEmpty(string );
+		std::string callToParser();
+		bool isEmpty(std::string );
 		bool getToDoListAndCheckEmpty();
 		bool readCommandAndVerifyCommand();
 		void getTheToDoListWithIndexZeroNotEmpty();
-		string showWelcomeMessage();
-		void setValueForAttributes(string, string);
-		string getToDoList();
+		std::string showWelcomeMessage();
+		void setValueForAttributes(std::string, std::string);
+		std::string getToDoList();
 };
 		
 #endif

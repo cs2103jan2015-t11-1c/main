@@ -1,3 +1,5 @@
+//@author A0115253R
+
 #pragma once
 
 // Including SDKDDKVer.h defines the highest available Windows platform.
