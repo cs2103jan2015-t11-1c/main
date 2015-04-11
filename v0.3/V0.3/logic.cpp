@@ -48,8 +48,7 @@ string logic::executeCommand(CommandType command ,string taskName, int startingD
 	}else if (command == SEARCH) {
 		_search.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _search.executecmdSearch(_storage);
-	}else if (command == DISPLAY || command ==DISPLAYTODAY || command
-		== DISPLAYDONE) {
+	}else if (command == DISPLAY || command == DISPLAYTODAY || command == DISPLAYDONE || command == DISPLAYALL || command == DISPLAYTOMORROW ) {
 		_display.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _display.executecmdDisplay(_storage);
 	}else if (command == MARKASDONE) {
