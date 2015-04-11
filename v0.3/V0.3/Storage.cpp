@@ -524,6 +524,9 @@ void Storage::readEventsFromFile(std::string line) {
 	}
 	if (isRecurring) {
 		newEvent.changeRecurringTaskSeries(stoi(recurringNumber));
+		if (stoi(recurringNumber) > _numberOfRecuring) {
+			_numberOfRecuring = stoi(recurringNumber);
+		}
 	}
 	if (isActive) {	
 		_activeEvent.addEvent(newEvent);
