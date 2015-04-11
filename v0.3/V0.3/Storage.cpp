@@ -337,6 +337,7 @@ void Storage::updateRecurring(int index, Event newEvent) {
 	if(recurringNumber == 0) {
 		throw std::string(NOT_RECURRING);
 	}
+	newEvent.changeRecurringTaskSeries(recurringNumber);
 	for(iter = allEvents.begin(); iter != allEvents.end(); iter++) {
 		indexForRecurring = indexForRecurring + ONE;
 		if((*iter).getRecurringTaskSeries() == recurringNumber) {
