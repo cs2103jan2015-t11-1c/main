@@ -25,7 +25,7 @@ std::string cmdMarkAsDone::executeMarkAsDone(Storage& _storage){
 	int eventNumber = _taskNumberList.size();
 	Eventlist activeEvents = _storage.displayEvent();
 
-	try{
+	try {
 		if (eventNumber>activeEvents.getTotalNumberOfEvents()) {
 			throw EXCEPTION_INVALID_INDEX;
 	}
@@ -35,7 +35,7 @@ std::string cmdMarkAsDone::executeMarkAsDone(Storage& _storage){
 	Storage storage;
 	storage.writeToLogfile(INFO,LOG_MARKASDONE);
 	return _feedback;
-	}catch(std::string EXCEPTION_INVALID_INDEX){
+	} catch(std::string EXCEPTION_INVALID_INDEX){
 		std::cout << EXCEPTION_INVALID_INDEX;
 		return NEW_Line;
 	}
@@ -44,18 +44,18 @@ std::string cmdMarkAsDone::executeMarkAsDone(Storage& _storage){
 std::string cmdMarkAsDone::printFeedback(std::list<int> taskNumberList, Storage& _storage){
 	std::ostringstream feedback;
 	Event eventMarkedDone;
-	if(taskNumberList.size() == ONE_EVENT){
+	if (taskNumberList.size() == ONE_EVENT) {
 		eventMarkedDone = _storage.getEvent(taskNumberList.front());
 		feedback << MESSAGE_MarkDone_ONE_EVENT << eventMarkedDone.displayEvent() << NEW_Line;
-	}else{
+	} else {
 		feedback << MESSAGE_MarkDone_MUTIPLE_EVENTS;
-		while(!taskNumberList.empty()){
+		while (!taskNumberList.empty()) {
 			eventMarkedDone = _storage.getEvent(taskNumberList.back());
 			feedback << eventMarkedDone.displayEvent() << NEW_Line;
 			taskNumberList.pop_back();
 		}
 	}
-	std::cout<< feedback.str();
+	std::cout << feedback.str();
 	Storage storage;
 	storage.writeToLogfile(INFO,(LOG_PRINT_FEEDBACK));
 	return NEW_Line;

@@ -38,7 +38,7 @@ std::string cmdUndo::undo(Storage& _storage,std::vector<CommandType>& commandSto
 		return UNDO_UNSUCCESSFUL_MESSAGE;
 	}
 	commandStored.pop_back();
-	while ((lastCommand == UNDO  || lastCommand == DISPLAY || lastCommand == DISPLAYDONE) && commandStored.size() > 0){
+	while ((lastCommand == UNDO  || lastCommand == DISPLAY || lastCommand == DISPLAYDONE) && commandStored.size() > 0) {
 		lastCommand = commandStored.back();
 		commandStored.pop_back();
 	}
