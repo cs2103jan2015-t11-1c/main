@@ -107,6 +107,7 @@ bool VerificationDateTimeMonth::isDateMonthTimeValid(int date, int month, int ti
 	return isTDateMonthTimeValid;
 }
 
+//This method checks whether the input time is valid.
 bool VerificationDateTimeMonth::isTimeValid(int time) {
 	bool isTimeValid = true;
 

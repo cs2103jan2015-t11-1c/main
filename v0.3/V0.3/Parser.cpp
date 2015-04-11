@@ -1,5 +1,17 @@
 //@author A0115253R
 
+//The purpose of Parser class is to separate all the details of the user input.
+//Different command requires different details of user input. (For example, undo requires task numbers, while add requires event name or event time or both.
+//User input is analyzed diffently based on the type of command: add, delete, update, undo ,etc requires the users to key in different details.
+//The details of user input include: event name, starting date, ending date, starting month, ending month,starting time, ending time and task number list.
+//This details are initially assigned with default invalid values. If the user input contains the value of any parameter, it will overwrite the default value.
+//The validity of the details is being checked by calling verificationDateTimeMonth class. Invalid details will result in an error message.
+//All details are eventually passed to logic class for further execution.
+
+// *** Because the user input is being read as a string, the way we used to separate a piece of detail is by always finding first space and first nonspace.
+//     The validity of the index obtained is being checked everytime such an action is taken. In this way, exception errors are eliminated.
+
+
 #include "Parser.h"
 #include <string>
 #include <assert.h>
@@ -226,7 +238,7 @@ std::string Parser::updateEndingTime(std::string buffer, std::string command) {
 }
 
 //This method is get details for update the starting time of an existing event.
-std::string Parser::updateStart(std::string buffer, std::string command) {
+std::string Parser::updateStartingTime(std::string buffer, std::string command) {
 	int date= 0;
 	MonthType month= MONTHNOTASSIGNED;
 
@@ -270,7 +282,7 @@ std::string Parser::updateEvent(std::string command, std::string toDoList) {
 	} else if (updateType == STRING_END) {
 		return updateEndingTime(buffer, command);
 	} else if (updateType == STRING_START) {
-		return updateStart(buffer, command);
+		return updateStartingTime(buffer, command);
 	} else {
 		return  INVALID_INPUT_MESSAGE;
 	}
