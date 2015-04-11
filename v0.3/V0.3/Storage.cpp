@@ -30,7 +30,7 @@ const std::string INCOMPLETE_TASK = "Incomplete tasks: ";
 const std::string DONE_TASK = "Done tasks: ";
 const std::string WRITEFILE = "Writefile.";
 const std::string SET_CURRENT_DIRECTORY = "Directory changed to: ";
-const std::string DIRECTORY = "changing directory";
+const std::string CHANGE_DIR = "changing directory";
 const std::string FRONT_TOKEN = " <";
 const std::string BACK_TOKEN = "> ";
 const std::string DEFAULT_FILE_NAME = "Minic.txt";
@@ -44,6 +44,7 @@ const std::string CMD_CLEAR_ACTIVE = "clearactive";
 const std::string CMD_REPEAT = "repeat";
 const std::string CMD_UPDATE_REPEAT = "update repeat";
 const std::string CMD_DELETE_REPEAT = "delete repeat";
+const std::string CMD_DIRECTORY = "directory";
 const std::string LOG_BACK_SYMBOL = "> ";
 const std::string LOG_FRONT_SYMBOL = " <";
 const std::string EMPTY_SPACE = " ";
@@ -113,6 +114,9 @@ bool Storage::unDopreviousActions(std::string unDoCommand) {
 	case DELETE_REPEAT:
 		undoDeleteRecurring();
 		return true;
+	case DIRECTORY:
+		undoChangeDirectory();
+		return true;
 	case INVALID:
 		return false;
 		}
@@ -141,6 +145,8 @@ Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand) {
 		return UPDATE_REPEAT;
 	} else if (currentCommand == CMD_DELETE_REPEAT) {
 		return DELETE_REPEAT;
+	} else if (currentCommand == CMD_DIRECTORY) {
+		return DIRECTORY;
 	} else {
 		return INVALID;
 	}
@@ -219,6 +225,7 @@ void Storage::repeatEvent(std::list<Event> allEvents) {
 		writeToLogfile(INFOMATION, REPEAT_EVENTS);
 	}
 	catch(...) {
+		writeToLogfile(WRONG, REPEAT_EVENTS);
 		std::cout << WRONG << EMPTY_SPACE << REPEAT_EVENTS;
 	}
 	_numberOfRecuring = _numberOfRecuring + ONE;
@@ -247,6 +254,7 @@ void Storage::markEventAsDone (std::list<int> allIndex) {
 		writeToLogfile(INFOMATION, ADD_DONE_EVENT);
 	}
 	catch(...) {
+		writeToLogfile(WRONG, ADD_DONE_EVENT);
 		std::cout << WRONG << EMPTY_SPACE << ADD_DONE_EVENT;
 	}
 }
@@ -272,6 +280,7 @@ void Storage::deleteEvent(std::list<int> allIndex) {
 		writeToLogfile(INFOMATION, DELETE_ACTIVE_EVENT);
 	}
 	catch(...) {
+		writeToLogfile(WRONG, DELETE_ACTIVE_EVENT);
 		std::cout << WRONG << EMPTY_SPACE << DELETE_ACTIVE_EVENT;
 	}
 }
@@ -321,6 +330,7 @@ void Storage::updateEvent(int index, Event newEvent) {
 		writeToLogfile(INFOMATION, UPDATE_ACTIVE_EVENT);
 	}
 	catch(...) {
+		writeToLogfile(WRONG, UPDATE_ACTIVE_EVENT);
 		std::cout << WRONG << EMPTY_SPACE << UPDATE_ACTIVE_EVENT;
 	}
 }
@@ -446,6 +456,7 @@ void Storage::writeFile(std::string eventToFile) {
 		destination.close();
 	}
 	catch(...) {
+		writeToLogfile(WRONG, WRITE_TO_FILE);
 		std::cout << WRONG << EMPTY_SPACE << WRITEFILE;
 	}
 }
@@ -603,6 +614,9 @@ void Storage::readEventsFromFile(std::string line) {
 void Storage::changeCurrentDirectory(const char* newDirectory) {
 	try {
 		const char* newDir = newDirectory;
+		char oldDirectory[MAX_PATH];
+		GetCurrentDirectory(bufferSize, oldDirectory);
+		_previousDirectory.push_back(oldDirectory);
 		SetCurrentDirectory(_defaultDirectory);
 		std::ofstream destination;
 		destination.open(_locationFile);
@@ -614,8 +628,21 @@ void Storage::changeCurrentDirectory(const char* newDirectory) {
 		writeToLogfile(INFOMATION, messageForLog);
 	}
 	catch(...) {
-		std::cout << WRONG << EMPTY_SPACE << DIRECTORY;
+		writeToLogfile(WRONG, CHANGE_DIR);
+		std::cout << WRONG << EMPTY_SPACE << CHANGE_DIR;
 	}
+}
+
+void Storage::undoChangeDirectory() {
+	assert(!_previousDirectory.empty());
+	std::string oldDirectory = _previousDirectory.back();
+	_previousDirectory.pop_back();
+	SetCurrentDirectory(_defaultDirectory);
+	std::ofstream destination;
+	destination.open(_locationFile);
+	destination << oldDirectory;
+	SetCurrentDirectory(oldDirectory.c_str());
+	synchronizeDrive();
 }
 
 void Storage::initialiseDirectory(const char* newDirectory) {

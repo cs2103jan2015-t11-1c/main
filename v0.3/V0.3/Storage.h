@@ -6,6 +6,8 @@
 #include "Eventlist.h"
 #include <fstream>
 
+const int MAX_PATH = 260;
+
 class Storage {
 private:
 	Event _currentEvent;
@@ -14,11 +16,12 @@ private:
 	std::list<Eventlist> _previousActiveEvent;
 	std::list<Eventlist> _previousDoneEvent;
 	enum COMMAND_TYPE { ADD,UPDATE,DELETEEVENT,DONE,CLEARDONE,CLEARACTIVE,
-		CLEAR,REPEAT,UPDATE_REPEAT,DELETE_REPEAT,INVALID};
+		CLEAR,REPEAT,UPDATE_REPEAT,DELETE_REPEAT,DIRECTORY,INVALID};
 	COMMAND_TYPE findCommandType(std::string currentCommand);
 	std::string _filename;
 	std::string _locationFile;
-	char _defaultDirectory[260];
+	char _defaultDirectory[MAX_PATH];
+	std::list<std::string> _previousDirectory;
 	int _numberOfRecuring;
 
 public:
@@ -48,6 +51,7 @@ public:
 	void readFile();
 	void readEventsFromFile(std::string);
 	void changeCurrentDirectory(const char*);
+	void undoChangeDirectory();
 	void saveCurrentActiveEventList();
 	void saveCurrentDoneEventList();
 	void changeToPreviousActiveEventList();
