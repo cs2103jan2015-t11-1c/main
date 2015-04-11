@@ -54,6 +54,7 @@ public:
 	void writeToLogfile(std::string, std::string);
 	void getDirectory();
 	void initialiseDirectory(const char* );
+	void deleteRecurring(int);
 	bool unDopreviousActions(std::string);
 	Eventlist displayEvent (void);
 	Eventlist displayDoneEvent (void);

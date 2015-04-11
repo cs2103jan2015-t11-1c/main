@@ -247,15 +247,38 @@ void Storage::deleteEvent(std::list<int> allIndex) {
 	try {
 		allIndex.sort();
 		while(!allIndex.empty()) {
-			i=allIndex.back();
+			i = allIndex.back();
 			_currentEvent = _activeEvent.getEvent(i);
+			if(_currentEvent.getRecurringTaskSeries() == 0) {
 			_activeEvent.deleteEvent(i);
+			} else {
+				deleteRecurring(_currentEvent.getRecurringTaskSeries());
+				return;
+			}
 			allIndex.pop_back();
 		}
 		writeToLogfile(INFOMATION, DELETE_ACTIVE_EVENT);
 	}
 	catch(...) {
 		std::cout << WRONG << EMPTY_SPACE << DELETE_ACTIVE_EVENT;
+	}
+}
+
+void Storage::deleteRecurring(int recurringNumber) {
+	std::list<Event> allEvents = _activeEvent.returnAllEvent();
+	std::list<Event>::iterator iter;
+	int index = ZERO;
+	std::list<int> numbers;
+	for(iter = allEvents.begin(); iter != allEvents.end(); iter++) {
+		index = index + ONE;
+		if((*iter).getRecurringTaskSeries == recurringNumber) {
+			numbers.push_back(index);
+		}
+	}
+	numbers.sort();
+	while(!numbers.empty()) {
+		_activeEvent.deleteEvent(numbers.back());
+		numbers.pop_back();
 	}
 }
 
