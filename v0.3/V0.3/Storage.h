@@ -55,6 +55,9 @@ public:
 	void getDirectory();
 	void initialiseDirectory(const char* );
 	void deleteRecurring(int);
+	void undoDeleteRecurring();
+	void updateRecurring(int, Event);
+	void undoUpdateRecurring();
 	bool unDopreviousActions(std::string);
 	Eventlist displayEvent (void);
 	Eventlist displayDoneEvent (void);
