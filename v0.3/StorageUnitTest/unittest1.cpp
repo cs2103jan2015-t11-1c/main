@@ -524,12 +524,31 @@ namespace StorageTest {
 			sampleList.push_back(sampleEvent1);
 			sampleList.push_back(sampleEvent2);
 			sampleStorage.repeatEvent(sampleList);
+			sampleStorage.sortActiveEventlist();
 			sampleStorage.updateRecurring(1,sampleEvent3);
 			Event output = sampleStorage.getEvent(1);
 			Assert::AreEqual(sampleEvent3.displayEvent(),output.displayEvent());
 			output = sampleStorage.getEvent(2);
 			Assert::AreEqual(sampleEvent3.displayEvent(),output.displayEvent());
 			Assert::AreEqual(1,output.getRecurringTaskSeries());
+		}
+
+		TEST_METHOD(undoUpdateRepeatEvent) {
+			Event sampleEvent1("IncompleteProject",03,04,2359);
+			Event sampleEvent2("IncompleteProject",04,04,2359);
+			Event sampleEvent3("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			sampleStorage.sortActiveEventlist();
+			sampleStorage.updateRecurring(1,sampleEvent3);
+			sampleStorage.unDopreviousActions("update repeat");
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			output = sampleStorage.getEvent(2);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
 		}
 
 		TEST_METHOD(deleteRepeatEvent) {
@@ -542,6 +561,7 @@ namespace StorageTest {
 			sampleList.push_back(sampleEvent2);
 			sampleStorage.repeatEvent(sampleList);
 			sampleStorage.addEvent(sampleEvent3);
+			sampleStorage.sortActiveEventlist();
 			Event output = sampleStorage.getEvent(1);
 			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
 			output = sampleStorage.getEvent(3);
@@ -552,7 +572,24 @@ namespace StorageTest {
 			Assert::AreEqual(sampleStorage.getTotalNumberOfRecurringSeries(),0);
 		}
 
-
+		TEST_METHOD(unDoDeleteRepeatEvent) {
+			Event sampleEvent1("IncompleteProject",03,04,2359);
+			Event sampleEvent2("IncompleteProject",04,04,2359);
+			Event sampleEvent3("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			sampleStorage.addEvent(sampleEvent3);
+			sampleStorage.sortActiveEventlist();
+			sampleStorage.deleteRecurring(1);
+			Assert::AreEqual(sampleStorage.getTotalNumberOfRecurringSeries(),0);
+			sampleStorage.unDopreviousActions("delete repeat");
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			Assert::AreEqual(sampleStorage.getTotalNumberOfRecurringSeries(),1);
+		}
 	};
 
 	TEST_CLASS(testfindNextDate) {
