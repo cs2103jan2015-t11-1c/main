@@ -110,24 +110,7 @@ bool cmdRepeat::isWeekday(std::string repeatCommand){
 bool cmdRepeat::isDefaultRepeatTimes(int repeatTimes){
 	bool isDefault = false;
 	if (repeatTimes == DEFAULT_REPEATING_TIMES_INDICATOR) {
-<<<<<<< HEAD
 		isDefault = true;
-=======
-		switch(_type)
-		{
-		case DAILY:
-			return DAILY_REPTEAT_TIMES;
-		case WEEKLY:
-		case EVERYWEEKDAY:
-			return WEEKLY_REPEAT_TIMES;
-		case MONTHLY:
-			return MONTHLY_REPEAT_TIMES;
-		default:
-			break;
-		}
-	} else {
-		return repeatTimes;
->>>>>>> origin/master
 	}
 	return isDefault;
 }
