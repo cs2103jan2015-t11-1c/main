@@ -329,7 +329,9 @@ bool Parser::isValidIndex(int TIndex) {
 bool Parser::isAbleToGetEventDateAndMonth(std::string &buffer,int &date,MonthType &month) {
 	std::string dateString;
 	std::string monthString;
-	int TIndex = getIndexOfFirstWhiteSpace(buffer);
+	int TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+	replaceStringWithItsSubstring(buffer, TIndex);
+	TIndex = getIndexOfFirstWhiteSpace(buffer);
 
 	if (isValidIndex(TIndex)) {
 		dateString = buffer.substr(0, TIndex);
