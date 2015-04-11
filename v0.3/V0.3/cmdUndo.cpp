@@ -27,13 +27,16 @@ std::string cmdUndo::printUndoMessage(){
 
 //undo last command based on the last command word from the user
 //support undo for last two actions
-std::string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStored){
+std::string cmdUndo::undo(Storage& _storage,std::vector<CommandType>& commandStored){
 	CommandType lastCommand = commandStored.back();
-	while ((lastCommand == UNDO  || lastCommand == DISPLAY || lastCommand == DISPLAYDONE) && (!commandStored.empty())){
-		commandStored.pop_back();
-		lastCommand = commandStored.back();
+	if(commandStored.size() <= 1) {
+		return "Error Cannot Undo";
 	}
 	commandStored.pop_back();
+	while ((lastCommand == UNDO  || lastCommand == DISPLAY || lastCommand == DISPLAYDONE) && commandStored.size() > 0){
+		lastCommand = commandStored.back();
+		commandStored.pop_back();
+	}
 	std::string lastCommandString;
 	if(lastCommand == ADDEVENTWITHDEADLINE || lastCommand == ADDFLOATINGEVENT || lastCommand == ADDTIMEDEVENT){
 		lastCommandString = STRING_ADD;
@@ -51,8 +54,9 @@ std::string cmdUndo::undo(Storage& _storage,std::vector<CommandType> commandStor
 		std::cout<<UNDO_ERROR_MESSAGE;
 	}else if(lastCommand == REPEAT){
 		lastCommandString = STRING_REPEAT;
+	} else {
+		return UNDO_UNSUCCESSFUL_MESSAGE;
 	}
-
 	if (_storage.unDopreviousActions(lastCommandString)) {	
 		_storage.synchronizeDrive();
 		return printUndoMessage();

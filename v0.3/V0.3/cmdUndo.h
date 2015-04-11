@@ -6,7 +6,7 @@ class cmdUndo :
 public:
 	cmdUndo(void);
 	~cmdUndo(void);
-	std::string undo(Storage& _storage, std::vector<CommandType>);
+	std::string undo(Storage& _storage, std::vector<CommandType>&);
 	std::string printUndoMessage();
 };
 
