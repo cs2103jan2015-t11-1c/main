@@ -80,7 +80,7 @@ std::string Parser::deleteEvent(std::string command, ::string numberList) {
 		if (command == STRING_DELETE) {
 			return VerifyAllAttributesAndCallLogic(DELETE);
 		} else if (command == STRING_DELETERECUR) {
-			return VerifyAllAttributesAndCallLogic(DELETE);
+			return VerifyAllAttributesAndCallLogic(DELETERECUR);
 		}
 	} else {
 		return INVALID_INPUT_MESSAGE;
@@ -543,7 +543,7 @@ logic::CommandType Parser::changeToLogicCommandType(CommandType command) {
 		return logic::UPDATESTARTINGTIME;
 
 	case UPDATERECURSTARTINGTIME:
-		return logic::UPDATESRECURTARTINGTIME;
+		return logic::UPDATERECURSTARTINGTIME;
 	case DELETE:
 		return logic::DELETE;
 

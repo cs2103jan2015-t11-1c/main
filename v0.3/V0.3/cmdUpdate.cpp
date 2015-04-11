@@ -33,6 +33,9 @@ std::string cmdUpdate::executecmdUpdate(Storage& _storage){
 		return clearStartingTime(eventToUpdate, eventNumber, _storage);
 	case CLEAREND:
 		return clearEndingTime(eventToUpdate, eventNumber, _storage);
+	case UPDATERECURENDINGTIME:
+		return updateRecurringName(eventToUpdate, eventNumber, _storage);
+
 	default:
 		assert(false);
 		break;
@@ -103,6 +106,10 @@ std::string cmdUpdate::clearEndingTime(Event eventToUpdate, int eventNumber, Sto
 	_storage.synchronizeDrive();
 	_feedback = printFeedback(Tempt, eventToUpdate);
 	return _feedback; 
+}
+
+std::string cmdUpdate::updateRecurringName(Event eventToUpdate, int eventNumber, Storage& _storage) {
+	return "";
 }
 
 std::string cmdUpdate::printFeedback(std::string Tempt, Event eventToUpdate){
