@@ -11,7 +11,20 @@ namespace ParserUnitTest
 	private:
 		Parser parserObject;
 	public:
-		
+
+		TEST_METHOD(getTaskName)
+		{
+			std::string deadlineEvent = "CS meeting by: 12 04 2013";
+			std::string expectedNameOne = "CS meeting";
+			std::string timedEvent = "IE2150 presentation from: 13 04 1000 to: 13 04 1030";
+			std::string expectedNameTwo = "IE2150 presentation";
+			std::string floatingEvent = "pay bill";
+			std::string expectedNameThree = "pay bill";
+			Assert::AreEqual(expectedNameOne, parserObject.getTaskName(deadlineEvent));
+			Assert::AreEqual(expectedNameTwo, parserObject.getTaskName(timedEvent));
+			Assert::AreEqual(expectedNameThree, parserObject.getTaskName(floatingEvent));
+		}
+
 		TEST_METHOD(isValidIndex)
 		{
 			string str = "No_White_Space_String.";
