@@ -22,7 +22,7 @@ class UI {
     public:
 		UI(void);
 		~UI(void);
-		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, DISPLAYDONE, DISPLAYTODAY, CHANGEDIRECTORY, SEARCH, UNDO, HELP, CLEAR, REPEAT, REPEATDONE};
+		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, DISPLAYDONE, DISPLAYTODAY, DISPLAYALL, DISPLAYTOMORROW, CHANGEDIRECTORY, SEARCH, UNDO, HELP, CLEAR, REPEAT, REPEATDONE};
 	    CommandType determineCommandType();
 		std::string callToParser();
 		bool isEmpty(std::string );
