@@ -345,6 +345,72 @@ void Storage::updateRecurring(int index, Event newEvent) {
 	writeToLogfile(INFOMATION, UPDATE_RECURRING);
 }
 
+void Storage::updateRecurringStartTime(int index, int newStartTime) {
+	saveCurrentActiveEventList();
+	std::list<Event> allEvents = _activeEvent.returnAllEvent();
+	std::list<Event>::iterator iter;
+	int indexForRecurring = ZERO;
+	_currentEvent = _activeEvent.getEvent(index);
+	int recurringNumber = _currentEvent.getRecurringTaskSeries();
+	if (recurringNumber == 0) {
+		throw std::string(NOT_RECURRING);
+	}
+	for(iter = allEvents.begin(); iter != allEvents.end(); iter++) {
+		indexForRecurring = indexForRecurring + ONE;
+		if ((*iter).getRecurringTaskSeries() == recurringNumber) {
+			std::string title = (*iter).getTaskName();
+			int startDate = (*iter).getStartDate();
+			int startMonth = (*iter).getStartMonth();
+			int startYear = (*iter).getStartYear();
+			int endDate = (*iter).getEndDate();
+			int endMonth = (*iter).getEndMonth();
+			int endTime = (*iter).getEndTime();
+			int endYear = (*iter).getEndYear();
+			Event newEvent(title,endDate,endMonth,endTime);
+			newEvent.changeEndYear(endYear);
+			newEvent.changeStartDay(startDate);
+			newEvent.changeStartMonth(startMonth);
+			newEvent.changeStartTime(newStartTime);
+			newEvent.changeStartYear(startYear);
+			newEvent.changeRecurringTaskSeries(recurringNumber);
+			_activeEvent.updateEvent(indexForRecurring, newEvent);
+		}
+	}
+}
+
+void Storage::updateRecurringEndTime(int index, int newEndTime) {
+	saveCurrentActiveEventList();
+	std::list<Event> allEvents = _activeEvent.returnAllEvent();
+	std::list<Event>::iterator iter;
+	int indexForRecurring = ZERO;
+	_currentEvent = _activeEvent.getEvent(index);
+	int recurringNumber = _currentEvent.getRecurringTaskSeries();
+	if (recurringNumber == 0) {
+		throw std::string(NOT_RECURRING);
+	}
+	for(iter = allEvents.begin(); iter != allEvents.end(); iter++) {
+		indexForRecurring = indexForRecurring + ONE;
+		if ((*iter).getRecurringTaskSeries() == recurringNumber) {
+			std::string title = (*iter).getTaskName();
+			int startDate = (*iter).getStartDate();
+			int startMonth = (*iter).getStartMonth();
+			int startTime = (*iter).getStartTime();
+			int startYear = (*iter).getStartYear();
+			int endDate = (*iter).getEndDate();
+			int endMonth = (*iter).getEndMonth();
+			int endYear = (*iter).getEndYear();
+			Event newEvent(title,endDate,endMonth,newEndTime);
+			newEvent.changeEndYear(endYear);
+			newEvent.changeStartDay(startDate);
+			newEvent.changeStartMonth(startMonth);
+			newEvent.changeStartTime(startTime);
+			newEvent.changeStartYear(startYear);
+			newEvent.changeRecurringTaskSeries(recurringNumber);
+			_activeEvent.updateEvent(indexForRecurring, newEvent);
+		}
+	}
+}
+
 void Storage::unDoUpdateEvent() {   
 	changeToPreviousActiveEventList();
 	writeToLogfile(INFOMATION, UNDO_UPDATE_ACTIVE_EVENT);

@@ -58,6 +58,8 @@ public:
 	void deleteRecurring(int);
 	void undoDeleteRecurring();
 	void updateRecurring(int, Event);
+	void updateRecurringStartTime(int, int);
+	void updateRecurringEndTime(int, int);
 	void undoUpdateRecurring();
 	bool unDopreviousActions(std::string);
 	Eventlist displayEvent (void);
