@@ -1,3 +1,7 @@
+//@author A0115253R
+
+#ifndef VERIFICATIONDATETIMEMONTH_H
+#define VERIFICATIONDATETIMEMONTH_H
 #pragma once
 #include <string>
 
@@ -14,3 +18,4 @@ public:
 	std::string lowercaseMonth(std::string month);
 };
 
+#endif
