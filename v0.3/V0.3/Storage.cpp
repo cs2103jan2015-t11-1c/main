@@ -293,7 +293,6 @@ void Storage::deleteRecurring(int inputIndex) {
 		}
 	}
 	deleteEvent(numbers);
-	_numberOfRecuring = _numberOfRecuring - ONE;
 	writeToLogfile(INFOMATION, DELETE_RECURRING);
 }
 
@@ -304,7 +303,6 @@ void Storage::unDoDeleteEvent() {
 
 void Storage::undoDeleteRecurring(){
 	changeToPreviousActiveEventList();
-	_numberOfRecuring = _numberOfRecuring + ONE;
 	writeToLogfile(INFOMATION, UNDO_DELETE_RECURRING);
 }
 

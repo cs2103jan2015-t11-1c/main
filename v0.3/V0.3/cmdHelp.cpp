@@ -26,7 +26,7 @@ cmdHelp::~cmdHelp(void){
 //display help for all functions 
 std::string cmdHelp::helpMessage(){
 	Storage storage;
-	storage.writeFile(LOG_HELP);
+	storage.writeToLogfile("Info",LOG_HELP);
 	return LINE+ HELP_ADD + HELP_DELETE + HELP_DISPLAY + HELP_UPDATE + HELP_UPDATE_START  
 		   + HELP_UPDATE_CLEAR_START + HELP_UPDATE_CLEAR_END + HELP_UPDATE_END + HELP_MARKASDONE + HELP_UNDO 
 		   + HELP_SEARCH + HELP_RECURRING + LINE;
