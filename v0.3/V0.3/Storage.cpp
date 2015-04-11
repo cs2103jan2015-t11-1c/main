@@ -52,6 +52,10 @@ const std::string DEFAULT_LOCATION_NAME = "Directory.txt";
 const std::string READ_A_EVENT = "analysing event from local file.";
 const std::string RECURRING_NUMBER = "Recurring number: ";
 const std::string NOT_RECURRING = "The event is not a recurring event.";
+const std::string UPDATE_RECURRING = "Update recurring events.";
+const std::string DELETE_RECURRING = "Recurring events deleted";
+const std::string UNDO_DELETE_RECURRING = "Undo delete recurring events";
+const std::string UNDO_UPDATE_RECURRING = "Undo update recurring events.";
 const int ZERO = 0;
 const int NUMBER_OF_DIGIT_FOR_DATE = 2;
 const int NUMBER_OF_DIGIT_FOR_TIME = 4;
@@ -278,11 +282,18 @@ void Storage::deleteRecurring(int inputIndex) {
 	}
 	deleteEvent(numbers);
 	_numberOfRecuring = _numberOfRecuring - ONE;
+	writeToLogfile(INFOMATION, DELETE_RECURRING);
 }
 
 void Storage::unDoDeleteEvent() {	
 	changeToPreviousActiveEventList();
 	writeToLogfile(INFOMATION, UNDO_DELETE_ACTIVE_EVENT);
+}
+
+void Storage::undoDeleteRecurring(){
+	changeToPreviousActiveEventList();
+	_numberOfRecuring = _numberOfRecuring + ONE;
+	writeToLogfile(INFOMATION, UNDO_DELETE_RECURRING);
 }
 
 Eventlist Storage::displayEvent(void) {	
@@ -304,9 +315,33 @@ void Storage::updateEvent(int index, Event newEvent) {
 	}
 }
 
+void Storage::updateRecurring(int index, Event newEvent) {
+	saveCurrentActiveEventList();
+	std::list<Event> allEvents = _activeEvent.returnAllEvent();
+	std::list<Event>::iterator iter;
+	int indexForRecurring = ZERO;
+	_currentEvent = _activeEvent.getEvent(index);
+	int recurringNumber = _currentEvent.getRecurringTaskSeries();
+	if(recurringNumber == 0) {
+		throw std::string(NOT_RECURRING);
+	}
+	for(iter = allEvents.begin(); iter != allEvents.end(); iter++) {
+		indexForRecurring = indexForRecurring + ONE;
+		if((*iter).getRecurringTaskSeries() == recurringNumber) {
+			_activeEvent.updateEvent(indexForRecurring, newEvent);
+		}
+	}
+	writeToLogfile(INFOMATION, UPDATE_RECURRING);
+}
+
 void Storage::unDoUpdateEvent() {   
 	changeToPreviousActiveEventList();
 	writeToLogfile(INFOMATION, UNDO_UPDATE_ACTIVE_EVENT);
+}
+
+void Storage::undoUpdateRecurring() {
+	changeToPreviousActiveEventList();
+	writeToLogfile(INFOMATION, UNDO_UPDATE_RECURRING);
 }
 
 Event Storage::getEvent(int index) {
