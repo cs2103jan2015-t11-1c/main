@@ -33,17 +33,32 @@ namespace RepeatUnitTest
 		{
 			bool isValid1 = _repeat.isValidDate(29, 2, 2015);
 			bool expected1 = false;
-			Assert::AreEqual(isValid1, expected1);
+			Assert::AreEqual(expected1, isValid1);
 			bool isValid2 = _repeat.isValidDate(29, 2, 2016);
 			bool expected2 = true;
-			Assert::AreEqual(isValid2, expected2);
+			Assert::AreEqual(expected2, isValid2);
 			bool isValid3 = _repeat.isValidDate(30, 1, 2015);
 			bool expected3 = true;
-			Assert::AreEqual(isValid3, expected3);
+			Assert::AreEqual(expected3, isValid3);
 		}
-		/*
-		TEST_METHOD()
+		
+		TEST_METHOD(isExceptionDay)
 		{
-		}*/
+			bool isExceptionDay1 = _repeat.isExceptionDay(11, 4, 2015, 5);
+			bool expected1 = true;
+			Assert::AreEqual(expected1, isExceptionDay1);
+			bool isExceptionDay2 = _repeat.isExceptionDay(11, 4, 2016, 5);
+			bool expected2 = false;
+			Assert::AreEqual( expected2, isExceptionDay2);
+		}
+
+		TEST_METHOD(determineWeekday)
+		{
+			std::string repeatCommand1 = "monday";
+			int output1 = _repeat.determineWeekday(repeatCommand1);
+			int expected1 = 0;
+			Assert::AreEqual(expected1, output1);
+
+		}
 	};
 }

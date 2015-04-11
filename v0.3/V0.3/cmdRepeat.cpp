@@ -162,7 +162,7 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 	int newDate;
 	int newMonth;
 	int newYear = STARTING_YEAR;
-	getStartingRepeatDate(date, month, year, newDate, newMonth, newYear);
+	getStartingRepeatDate(date, month, newYear, newDate, newMonth, newYear);
 
 	int exception;
 	if (_hasException) {
@@ -177,7 +177,7 @@ void cmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 
 		if (isValidDate (newDate, newMonth, newYear)) {
 			if (_hasException) {
-				if (isValidEvent(newDate, newMonth, Tcount, exception)) {
+				if (isValidEvent(newDate, newMonth, newYear, Tcount, exception)) {
 					_events.push_back(newEvent);
 				}
 			} else {
@@ -213,7 +213,6 @@ void cmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 	int newEndYear = STARTING_YEAR;
 	getStartingRepeatDate(endDate, endMonth, endYear, newEndDate, newEndMonth, newEndYear);
 
-	std::cout << newEndYear << std::endl;
 	int exception;
 	if (_hasException) {
 		exception = getExceptionTime(_exceptionDetails);
@@ -232,7 +231,7 @@ void cmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 
 		if (isValidDate (newStartDate, newStartMonth, newStartYear) && isValidDate (newEndDate, newEndMonth, newEndYear)) {
 			if (_hasException) {
-				if (isValidEvent(newStartDate, newStartMonth, Tcount, exception)) {
+				if (isValidEvent(newStartDate, newStartMonth, newStartYear, Tcount, exception)) {
 					_events.push_back(newEvent);
 				}
 			} else {
@@ -248,7 +247,7 @@ void cmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 void cmdRepeat::getStartingRepeatDate(int date, int month, int year, int& newDate, int& newMonth, int& newYear){
 	_findNextDate.changeDefaultYear(newYear);
 	if (_type  == EVERYWEEKDAY) {
-		getTheStartingDate(date, month, newDate, newMonth);
+		getTheStartingDate(date, month, year, newDate, newMonth);
 	} else {
 		_interval = determineInterval(month, year);
 		_findNextDate.calculate(date, month, _interval);
@@ -273,10 +272,10 @@ void cmdRepeat::getNextDate(int& newDate, int& newMonth, int& newYear){
 	newYear = _findNextDate.getYear();
 }
 
-bool cmdRepeat::isValidEvent(int date, int month, int Tcount, int exception) {
+bool cmdRepeat::isValidEvent(int date, int month, int year, int Tcount, int exception) {
 	bool isValidEvent = false;
 	if (((Tcount != exception) && (_type == WEEKLY || _type == EVERYWEEKDAY || _type == MONTHLY))
-		|| ((!isExceptionDay(date, month, exception)) && (_type == DAILY))) {
+		|| ((!isExceptionDay(date, month, year, exception)) && (_type == DAILY))) {
 			isValidEvent = true;
 	}
 	return isValidEvent;
@@ -290,8 +289,8 @@ bool cmdRepeat::isValidDate(int date, int month, int year){
 	return isValidDate;
 }
 
-bool cmdRepeat::isExceptionDay(int day, int month, int exceptionDay){
-	int weekdayToday = getWeekdayToday(day, month);
+bool cmdRepeat::isExceptionDay(int day, int month, int year, int exceptionDay){
+	int weekdayToday = getWeekdayToday(day, month, year);
 	bool isExceptionDay = false;
 	if (weekdayToday == exceptionDay) {
 		isExceptionDay = true;
@@ -337,15 +336,21 @@ int cmdRepeat::changeWeekdayToInteger(std::string day){
 	return weekday;
 }
 
-int cmdRepeat::getWeekdayToday(int date, int month){
+int cmdRepeat::getWeekdayToday(int date, int month, int year){
 	int weekdayToday;
+
+	if (year != STARTING_YEAR) {
+		_findNextDate.changeDefaultYear(year);
+	}
 	_findNextDate.calculate(date, month, 0);
 	weekdayToday = _findNextDate.getWeekDay();
+
+	_findNextDate.changeDefaultYear(STARTING_YEAR);
 	return weekdayToday;
 }
 
-void cmdRepeat::getTheStartingDate(int date, int month, int& newDate, int& newMonth){
-	int weekdayToday = getWeekdayToday(date, month);
+void cmdRepeat::getTheStartingDate(int date, int month, int year, int& newDate, int& newMonth){
+	int weekdayToday = getWeekdayToday(date, month, year);
 	int repeatingWeekday = determineWeekday(_repeatCommand);
 	int interval;
 	if (weekdayToday < repeatingWeekday) {
