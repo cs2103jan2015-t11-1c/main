@@ -1,10 +1,9 @@
+//@author A0115253R
+
 #include "Parser.h"
 #include <string>
 #include <assert.h>
 
-static const std::string EMPTY_STRING = "";
-static const std::string TIME_NOT_ASSIGNED = "2400";
-static const std::string TASK_NAME_NOT_ASSIGNED = "";
 static const int MONTH_NOT_ASSIGNED = 13; 
 static const int INVALID_EVENT_NUMBER = 0;
 static const int DATE_NOT_ASSIGNED = 0;
@@ -20,6 +19,11 @@ static const int SEP = 9;
 static const int OCT = 10;
 static const int NOV = 11;
 static const int DEC = 12;
+const static std::string INVALID_INPUT_MESSAGE = "Invalid user input.\n\n";
+const static std::string INVALID_TIME_DATE_MONTH_MESSAGE ="Please check your user input time, date and month.\n\n";
+static const std::string EMPTY_STRING = "";
+static const std::string TIME_NOT_ASSIGNED = "2400";
+static const std::string TASK_NAME_NOT_ASSIGNED = "";
 const static std::string STRING_END = "end";
 const static std::string STRING_START = "start";
 const static std::string STRING_NAME = "name";
@@ -39,11 +43,26 @@ const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
 const static std::string STRING_REPEAT = "repeat";
 const static std::string STRING_REPEATDONE = "repeatdone";
 
+//All attributes are initialized with their respective NOTASSIGNED value. Assume 24:00 as time not assigned, "" as task not assigned, 0 as date not assigned.
+Parser::Parser(void){
+	_taskName = TASK_NAME_NOT_ASSIGNED;
+	_startingTime = TIME_NOT_ASSIGNED; 
+	_endingTime = TIME_NOT_ASSIGNED;
+	_startingDate = DATE_NOT_ASSIGNED;
+	_endingDate = DATE_NOT_ASSIGNED;
+	_startingMonth = MONTHNOTASSIGNED;
+	_endingMonth = MONTHNOTASSIGNED;
+	_taskNumberList.clear();
+}
+
+Parser::~Parser(void){
+}
+
 bool Parser::isTaskWithDeadline(std::string toDoList){
 	bool isATaskWithDeadline;
 	int TIndex = toDoList.find("by:");
 
-	if (TIndex != string::npos) {
+	if (TIndex != std::string::npos) {
 		isATaskWithDeadline = true;
 	} else {
 		isATaskWithDeadline = false;
@@ -73,7 +92,7 @@ bool Parser::isValidIndex(int TIndex) {
 	}
 }
 
-bool Parser::isAbleToGetEventDateAndMonth(string &buffer,int &date,MonthType &month) {
+bool Parser::isAbleToGetEventDateAndMonth(std::string &buffer,int &date,MonthType &month) {
 	std::string dateString;
 	std::string monthString;
 	int TIndex = getIndexOfFirstWhiteSpace(buffer);
@@ -287,23 +306,6 @@ bool Parser::isAbleToGetNumberList(std::string numberList) {
 	return true;
 }
 
-//All attributes are initialized with their respective NOTASSIGNED value. Assume 24:00 as time not assigned, "" as task not assigned, 0 as date not assigned.
-Parser::Parser(void)
-{
-	_taskName = TASK_NAME_NOT_ASSIGNED;
-	_startingTime = TIME_NOT_ASSIGNED; 
-	_endingTime = TIME_NOT_ASSIGNED;
-	_startingDate = DATE_NOT_ASSIGNED;
-	_endingDate = DATE_NOT_ASSIGNED;
-	_startingMonth = MONTHNOTASSIGNED;
-	_endingMonth = MONTHNOTASSIGNED;
-	_taskNumberList.clear();
-}
-
-Parser::~Parser(void)
-{
-}
-
 int Parser::convertMonthTypeToInteger(MonthType monthType) {
 
 	switch(monthType) {
@@ -431,7 +433,7 @@ void Parser :: resetAttributesValue(){
 	_taskNumberList.clear();
 }
 
-bool Parser::isStringAnInteger(string str) {
+bool Parser::isStringAnInteger(std::string str) {
 
 	for (int i = str.size()-1; i >= 0; i--) {
 
@@ -448,9 +450,7 @@ int Parser::convertStringToInteger(std::string str){
 	return stoi(str);
 }
 
-
-
-string Parser::addEvent(string toDoList){
+std::string Parser::addEvent(std::string toDoList){
 	
 	if (isTimedTask(toDoList)) {
 		return addTimedEvent(toDoList);
@@ -462,7 +462,7 @@ string Parser::addEvent(string toDoList){
 
 }
 
-bool Parser::isEmpty(string str) {
+bool Parser::isEmpty(std::string str) {
 	if (str.empty()) {
 		return true;
 	} else {
@@ -484,7 +484,6 @@ int Parser::getIndexOfFirstNonWhiteSpace(std::string str) {
 int Parser::getIndexOfFirstWhiteSpace(std::string str) {
 	return str.find_first_of(" ");
 }
-
 
 std::string Parser::clearEvent() {
 	return VerifyAllAttributesAndCallLogic(CLEAR);
@@ -534,9 +533,9 @@ std::string Parser::displayEvent(std::string command) {
 	return VerifyAllAttributesAndCallLogic(commandT);
 }
 
-std::string Parser::repeat(string toDoList, string command) {
+std::string Parser::repeat(std::string toDoList, std::string command) {
 	CommandType CommandTypeCommand;
-	string strTaskNumber;
+	std::string strTaskNumber;
 	int integerTaskNumber;
 
 	if (command == STRING_REPEAT) {
@@ -606,7 +605,7 @@ std::string Parser::getTaskName(std::string &buffer) {
 	}
 }
 
-void Parser:: assignDateTimeMonthAttributes(string startOrEnd, string &buffer, int date, MonthType month) {
+void Parser:: assignDateTimeMonthAttributes(std::string startOrEnd, std::string &buffer, int date, MonthType month) {
 	if (startOrEnd == STRING_START) {
 		_startingDate = date; 
 		_startingMonth = month; 
@@ -620,8 +619,7 @@ void Parser:: assignDateTimeMonthAttributes(string startOrEnd, string &buffer, i
 	}
 }
 
-
-string Parser::addTimedEvent(string toDoList){
+std::string Parser::addTimedEvent(std::string toDoList){
 	std:: string buffer = toDoList;
 	int date = DATE_NOT_ASSIGNED;
 	MonthType month = MONTHNOTASSIGNED;
@@ -728,7 +726,7 @@ std::string Parser::addFloatingEvent(std::string toDoList) {
 	return VerifyAllAttributesAndCallLogic(ADDFLOATINGEVENT);
 }
 
-string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
+std::string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 
 	int integerStartingMonth = convertMonthTypeToInteger(_startingMonth);
 	int integerEndingMonth = convertMonthTypeToInteger(_endingMonth);
@@ -745,7 +743,7 @@ string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 	
 	logic::CommandType _command;
 	_command = changeToLogicCommandType(command);
-	string feedback = EMPTY_STRING;
+	std::string feedback = EMPTY_STRING;
 
 	switch (command) {
 
@@ -834,7 +832,7 @@ string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 	}
 }
 
-void Parser::setAttributes(string taskName, string startingTime, string endingTime, int startingDate, int endingDate, MonthType startingMonth, MonthType endingMonth, list<int> taskNumberList) {
+void Parser::setAttributes(std::string taskName, std::string startingTime, std::string endingTime, int startingDate, int endingDate, MonthType startingMonth, MonthType endingMonth, std::list<int> taskNumberList) {
 	_taskName = taskName;
 	_startingTime = startingTime;
 	_endingTime = endingTime;
