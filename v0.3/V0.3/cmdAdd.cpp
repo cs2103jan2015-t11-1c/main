@@ -1,3 +1,4 @@
+//@author A0115429H
 #include "cmdAdd.h"
 #include <iostream>
 #include <sstream>
@@ -37,14 +38,14 @@ std:: string cmdAdd::executecmdAdd(Storage& _storage){
 std::string cmdAdd::addEventWithDeadline(Storage& _storage){
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
-	updateStorage();
+	updateStorage(_storage);
 	return _feedback;
 }
 
 std::string cmdAdd::addEventWithoutDeadline(Storage& _storage){
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
-	updateStorage();
+	updateStorage(_storage);
 	return _feedback;
 }
 
@@ -78,7 +79,7 @@ std::string cmdAdd::addTimedEvent(Storage& _storage){
 	_storage.addEvent(_newEvent);
 
 	_feedback = printFeedback(_newEvent);
-	updateStorage();
+	updateStorage(_storage);
 	return _feedback;
 }
 
@@ -87,7 +88,7 @@ std::string cmdAdd::printFeedback(Event newEvent){
 	return feedback;
 }
 
-void cmdAdd::updateStorage(){
+void cmdAdd::updateStorage(Storage& _storage){
 	_storage.sortActiveEventlist();
 	_storage.synchronizeDrive();
 }

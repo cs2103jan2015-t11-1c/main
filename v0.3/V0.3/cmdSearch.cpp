@@ -1,3 +1,4 @@
+//@author A0115429H
 #include "cmdSearch.h"
 #include <sstream>
 

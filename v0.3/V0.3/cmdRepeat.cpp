@@ -59,7 +59,7 @@ std::string cmdRepeat::executecmdRepeat(Storage& _storage){
 		repeatDeadlineTask(repeatingEvent, _storage);
 	}
 	_storage.repeatEvent(_events);
-	updateStorage();
+	updateStorage(_storage);
 	_events.clear();
 	return "\n";
 }
@@ -366,7 +366,7 @@ int cmdRepeat::getNumberOfDays(int month, int year){
 	return numberOfDays;
 }
 
-void cmdRepeat::updateStorage(){
+void cmdRepeat::updateStorage(Storage& _storage){
 	_storage.sortActiveEventlist();
 	_storage.sortDoneEventlist();
 	_storage.synchronizeDrive();

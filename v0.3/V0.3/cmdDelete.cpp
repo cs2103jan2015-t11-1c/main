@@ -30,7 +30,7 @@ std::string cmdDelete::executecmdDelete(Storage& _storage){
 		return NEW_LINE;
 	}
 }
-
+//@author A0115429H
 std::string cmdDelete::printFeedback(std::list<int> taskNumberList, Storage& _storage){
 	std::ostringstream feedback;
 	Event eventDeleted;

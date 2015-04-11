@@ -1,3 +1,4 @@
+//@author A0115429H
 #pragma once
 #include <iostream>
 #include <string>
@@ -41,5 +42,5 @@ public:
 	int getNumberOfDays(int, int);
 	bool isExceptionDay(int, int, int);
 	std::string lowercaseCommandWord(std::string);
-	void updateStorage();
+	void updateStorage(Storage& _storage);
 };
