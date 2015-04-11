@@ -9,4 +9,5 @@ public:
 	~cmdDelete(void);
 	std::string executecmdDelete(Storage& _storage);
 	std::string printFeedback(std::list<int>, Storage& _storage);
+	std::string deleteRecurringEvents(std::list<int>, Storage&);
 };

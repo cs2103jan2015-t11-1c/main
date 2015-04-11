@@ -33,10 +33,10 @@ string logic::executeCommand(CommandType command ,string taskName, int startingD
 	if (command == ADDEVENTWITHDEADLINE || command == ADDFLOATINGEVENT || command == ADDTIMEDEVENT) {
 		_add.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _add.executecmdAdd(_storage);
-	}else if (command == UPDATEENDINGTIME || command == UPDATENAME || command == UPDATESTARTINGTIME || command == CLEARSTART || command == CLEAREND) {
+	}else if (command == UPDATEENDINGTIME || command == UPDATENAME || command == UPDATESTARTINGTIME || command == CLEARSTART || command == CLEAREND || command == UPDATERECUR) {
 		_update.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _update.executecmdUpdate(_storage);
-	}else if (command == DELETE) {
+	}else if (command == DELETE || command == DELETERECUR) {
 		_delete.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
 		return _delete.executecmdDelete(_storage);
 	}else if (command == UNDO) {

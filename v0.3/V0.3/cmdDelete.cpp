@@ -9,6 +9,7 @@ const static std::string MESSAGE_DELETE_MUTIPLE_EVENTS = "The following events a
 const static int ONE_EVENT = 1;
 const static std::string NEW_LINE = "\n";
 const static std::string LOG_DELETE = "executed delete";
+const static std::string RECURRING_EVENTS_DELETED = "Recurring events are deleted. \n\n";
 
 cmdDelete::cmdDelete(void){
 }
@@ -40,19 +41,28 @@ std::string cmdDelete::executecmdDelete(Storage& _storage){
 //This method return the feedback for either deleting one event or multiple events
 std::string cmdDelete::printFeedback(std::list<int> taskNumberList, Storage& _storage){
 	std::ostringstream feedback;
+	int eventNumber;
 	Event eventDeleted;
 	if (taskNumberList.size() == ONE_EVENT) {
 		feedback << MESSAGE_DELETE_ONE_EVENT;
-		eventDeleted = _storage.getEvent(taskNumberList.front());
+		eventNumber = taskNumberList.back();
+		eventDeleted = _storage.getEvent(eventNumber);
 		feedback << eventDeleted.displayEvent() << NEW_LINE;
 	} else {
 		feedback << MESSAGE_DELETE_MUTIPLE_EVENTS;
 		while (!taskNumberList.empty()) {
-			eventDeleted = _storage.getEvent(taskNumberList.back());
+			eventNumber = taskNumberList.back();
+			eventDeleted = _storage.getEvent(eventNumber);
 			feedback << eventDeleted.displayEvent() << NEW_LINE;
 			taskNumberList.pop_back();
 		} 
 	}
 	feedback << NEW_LINE;
 	return feedback.str();
+}
+
+std::string cmdDelete::deleteRecurringEvents(std::list<int> taskNumberList, Storage& _storage) {
+	int recurringEventNumber = taskNumberList.back();
+	_storage.deleteRecurring(recurringEventNumber);
+	return RECURRING_EVENTS_DELETED;
 }
