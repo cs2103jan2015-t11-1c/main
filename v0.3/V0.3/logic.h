@@ -16,9 +16,7 @@
 #include "cmdRepeat.h"
 
 using namespace std;
-class logic :
-public logicBaseClass
-{
+class logic : public logicBaseClass {
 private:	
 	cmdAdd _add;
 	cmdUpdate _update;

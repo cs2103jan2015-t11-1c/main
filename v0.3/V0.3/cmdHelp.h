@@ -2,9 +2,7 @@
 #pragma once
 #include "logicBaseClass.h"
 
-class cmdHelp: 
-	public logicBaseClass
-{
+class cmdHelp: public logicBaseClass {
 private:
 	
 public:

@@ -6,8 +6,7 @@
 #include "Storage.h"
 
 #pragma once
-class logicBaseClass
-{
+class logicBaseClass {
 	protected:
 	
 	std::string _taskName;

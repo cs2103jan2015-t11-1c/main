@@ -1,9 +1,7 @@
 //@author A0114301E
 #pragma once
 #include "logicBaseClass.h"
-class cmdMarkAsDone :
-	public logicBaseClass
-{
+class cmdMarkAsDone : public logicBaseClass {
 public:
 	cmdMarkAsDone(void);
 	~cmdMarkAsDone(void);

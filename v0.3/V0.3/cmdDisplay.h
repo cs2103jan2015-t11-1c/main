@@ -2,9 +2,7 @@
 #pragma once
 #include "logicBaseClass.h"
 #include <ctime>
-class cmdDisplay :
-	public logicBaseClass
-{
+class cmdDisplay : public logicBaseClass {
 public:
 	cmdDisplay(void);
 	~cmdDisplay(void);

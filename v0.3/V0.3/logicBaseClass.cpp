@@ -4,6 +4,7 @@
 
 logicBaseClass::logicBaseClass(void){
 }
+
 logicBaseClass::logicBaseClass(Storage &storage){
 
 }

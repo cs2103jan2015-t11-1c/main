@@ -1,9 +1,7 @@
 //@author A0114301E
 #pragma once
 #include "logicBaseClass.h"
-class cmdUpdate :
-	public logicBaseClass
-{
+class cmdUpdate : public logicBaseClass {
 public:
 	cmdUpdate(void);
 	~cmdUpdate(void);

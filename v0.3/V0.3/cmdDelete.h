@@ -3,7 +3,7 @@
 #include "logicBaseClass.h"
 
 //This cmdDelete class will delete one task or multiple tasks
-class cmdDelete: public logicBaseClass{
+class cmdDelete: public logicBaseClass {
 public:
 	cmdDelete(void);
 	~cmdDelete(void);
