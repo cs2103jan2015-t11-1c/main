@@ -42,6 +42,8 @@ const std::string CMD_DONE = "done";
 const std::string CMD_CLEAR_DONE = "cleardone";
 const std::string CMD_CLEAR_ACTIVE = "clearactive";
 const std::string CMD_REPEAT = "repeat";
+const std::string CMD_UPDATE_REPEAT = "update repeat";
+const std::string CMD_DELETE_REPEAT = "delete repeat";
 const std::string LOG_BACK_SYMBOL = "> ";
 const std::string LOG_FRONT_SYMBOL = " <";
 const std::string EMPTY_SPACE = " ";
@@ -105,6 +107,12 @@ bool Storage::unDopreviousActions(std::string unDoCommand) {
 	case REPEAT:
 		unDoRepeatEvent();
 		return true;
+	case UPDATE_REPEAT:
+		undoUpdateRecurring();
+		return true;
+	case DELETE_REPEAT:
+		undoDeleteRecurring();
+		return true;
 	case INVALID:
 		return false;
 		}
@@ -129,6 +137,10 @@ Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand) {
 		return CLEAR;
 	} else if (currentCommand == CMD_REPEAT) {
 		return REPEAT;
+	} else if (currentCommand == CMD_UPDATE_REPEAT) {
+		return UPDATE_REPEAT;
+	} else if (currentCommand == CMD_DELETE_REPEAT) {
+		return DELETE_REPEAT;
 	} else {
 		return INVALID;
 	}
