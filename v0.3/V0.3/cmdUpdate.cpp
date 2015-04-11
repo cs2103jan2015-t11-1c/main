@@ -8,10 +8,11 @@ static const int INVALID_TIME = 2400;
 const static std::string UPDATE_MESSAGE = "\" is updated to ";
 const static std::string ERROR = "Error";
 const static std::string QUOTATION_MARKS = "\"";
+const static std::string UPDATE_RECURRING_NAME = "Recurring Events' titles are changed.\n\n";
+const static std::string UPDATE_RECURRING_TIME = "Recurring Events' times are changed.\n\n";
 
 cmdUpdate::cmdUpdate(void){
 }
-
 
 cmdUpdate::~cmdUpdate(void){
 }
@@ -33,11 +34,13 @@ std::string cmdUpdate::executecmdUpdate(Storage& _storage){
 		return clearStartingTime(eventToUpdate, eventNumber, _storage);
 	case CLEAREND:
 		return clearEndingTime(eventToUpdate, eventNumber, _storage);
-	case UPDATERECURENDINGTIME:
+	case UPDATERECURNAME:
 		return updateRecurringName(eventToUpdate, eventNumber, _storage);
-
+	case UPDATERECURSTARTINGTIME:
+		return updateRecurringStartTime(eventNumber, _storage);
+	case UPDATERECURENDINGTIME:
+		return updateRecurringEndTime(eventNumber, _storage);
 	default:
-		assert(false);
 		break;
 	}
 	return ERROR;
@@ -48,8 +51,7 @@ std::string cmdUpdate::updateName(Event eventToUpdate, int eventNumber, Storage&
 	std::string Tempt = eventToUpdate.displayEvent();
 	eventToUpdate.changeTitle(_taskName);
 	_storage.updateEvent(eventNumber, eventToUpdate);
-	_storage.sortActiveEventlist();
-	_storage.synchronizeDrive();
+	updateStorage(_storage);
 	_feedback = printFeedback(Tempt, eventToUpdate);
 	return _feedback;
 }
@@ -61,8 +63,7 @@ std::string cmdUpdate::updateEndingTime(Event eventToUpdate, int eventNumber, St
 	eventToUpdate.changeEndMonth(_endingMonth);
 	eventToUpdate.changeEndTime(_endingTime);
 	_storage.updateEvent(eventNumber, eventToUpdate);
-	_storage.sortActiveEventlist();
-	_storage.synchronizeDrive();
+	updateStorage(_storage);
 	_feedback = printFeedback(Tempt, eventToUpdate);
 	return _feedback; 
 }
@@ -74,8 +75,7 @@ std::string cmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber, 
 	eventToUpdate.changeStartMonth(_startingMonth);
 	eventToUpdate.changeStartTime(_startingTime);
 	_storage.updateEvent(eventNumber, eventToUpdate);
-	_storage.sortActiveEventlist();
-	_storage.synchronizeDrive();
+	updateStorage(_storage);
 	_feedback = printFeedback(Tempt, eventToUpdate);
 	return _feedback;
 }
@@ -89,8 +89,7 @@ std::string cmdUpdate::clearStartingTime(Event eventToUpdate, int eventNumber, S
 	std::string eventName = eventToUpdate.getTaskName();
 	Event newEvent(eventName, endDay, endMonth, endTime);
 	_storage.updateEvent(eventNumber, newEvent);	
-	_storage.sortActiveEventlist();
-	_storage.synchronizeDrive();
+    updateStorage(_storage);
 	_feedback = printFeedback(Tempt, newEvent);
 	return _feedback;
 }
@@ -102,17 +101,39 @@ std::string cmdUpdate::clearEndingTime(Event eventToUpdate, int eventNumber, Sto
 	eventToUpdate.changeEndMonth(INVALID_MONTH);
 	eventToUpdate.changeEndTime(INVALID_TIME);
 	_storage.updateEvent(eventNumber, eventToUpdate);
-	_storage.sortActiveEventlist();
-	_storage.synchronizeDrive();
+	updateStorage(_storage);
 	_feedback = printFeedback(Tempt, eventToUpdate);
 	return _feedback; 
 }
 
 std::string cmdUpdate::updateRecurringName(Event eventToUpdate, int eventNumber, Storage& _storage) {
-	return "";
+	eventToUpdate.changeTitle(_taskName);
+	_storage.updateRecurring(eventNumber, eventToUpdate);
+	updateStorage(_storage);
+	_feedback = UPDATE_RECURRING_NAME;
+	return _feedback;
+}
+
+std::string cmdUpdate::updateRecurringStartTime(int eventNumber, Storage& _storage) {
+	_storage.updateRecurringStartTime(eventNumber, _startingTime);
+	updateStorage(_storage);
+	_feedback = UPDATE_RECURRING_TIME;
+	return _feedback;
+}
+
+std::string cmdUpdate::updateRecurringEndTime(int eventNumber, Storage& _storage) {
+	_storage.updateRecurringEndTime(eventNumber, _endingTime);
+	updateStorage(_storage);
+	_feedback = UPDATE_RECURRING_TIME;
+	return _feedback;
 }
 
 std::string cmdUpdate::printFeedback(std::string Tempt, Event eventToUpdate){
 	std::string feedback = QUOTATION_MARKS + Tempt + UPDATE_MESSAGE + QUOTATION_MARKS + eventToUpdate.displayEvent() +"\" \n\n";
 	return feedback;
+}
+
+void cmdUpdate::updateStorage(Storage& _storage){
+	_storage.sortActiveEventlist();
+	_storage.synchronizeDrive();
 }

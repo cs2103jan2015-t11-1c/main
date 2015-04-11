@@ -251,7 +251,7 @@ std::string Parser::updateStartingTime(std::string buffer, std::string command) 
 		if (command == STRING_UPDATE) {
 			return VerifyAllAttributesAndCallLogic(UPDATESTARTINGTIME);
 		} else if (command == STRING_UPDATERECUR) {
-			return VerifyAllAttributesAndCallLogic(UPDATESTARTINGTIME);
+			return VerifyAllAttributesAndCallLogic(UPDATERECURSTARTINGTIME);
 		}
 	}
 }
