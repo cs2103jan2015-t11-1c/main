@@ -140,23 +140,4 @@ namespace ParserUnitTest
 	};
 }
 
-/*
-string validDateMonth_Jan = "31 01 0000";
-			string invalidDate_Jan = "32 01 0000";
-			string validDateMonth_Feb = "29 feburary 0000";
-			string invalidDate_Feb = "30 02 0000";
-			string validDateMonth_Mar = "31 Mar 0000";
-			string invalidDate_Mar = "32 03 0000";
-			string validDateMonth_Apr = "30 APRIL 0000";
-			string invalidDate_Apr = " 31 04 0000";
-			string validDateMonth_May = "31 may 0000";
-			string invalidDate_May = "32 05 0000";
-			string validDateMonth_Jun = "30 jun 0000";
-			string invalidDate_Jun = "31 06 0000";
-			string validDateMonth_Jul = "31 jUlY 0000";
-			string invalidDate_Jul = "32 07 0000";
-			string validDateMonth_Aug = "31 AUG 0000";
-			string invalidDate_Aug = "32 08 0000";
-			string validDateMonth_Sep ="30 sep 0000";
 
-*/
