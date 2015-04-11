@@ -567,3 +567,7 @@ void Storage::writeToLogfile(std::string type, std::string message) {
 	destination	<< buffer << LOG_FRONT_SYMBOL << type << LOG_BACK_SYMBOL;
 	destination	<< message << std::endl;
 }
+
+int Storage::getTotalNumberOfRecurringSeries() {
+	return _numberOfRecuring;
+}

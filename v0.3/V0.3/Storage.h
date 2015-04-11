@@ -64,5 +64,6 @@ public:
 	Eventlist displayDoneEvent (void);
 	Event getEvent(int);
 	Event getDoneEvent(int);
+	int getTotalNumberOfRecurringSeries();
 };
 

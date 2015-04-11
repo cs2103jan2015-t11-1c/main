@@ -7,8 +7,10 @@
 //Display function will display year out if the year of event is not 2015.
 
 #include "Event.h"
+#include <assert.h>
 
 const std::string EMPTY_SPACE = " ";
+const std::string EMPTY_STRING = "";
 const std::string START_INfO_IDENTIFIER = "Starting Info: ";
 const std::string END_INFO_IDENTIFIER = "Ending Info: ";
 const std::string NIL_IDENTIFIER = "Nil";
@@ -71,6 +73,7 @@ Event::Event(void) {
 
 
 Event::Event(std::string newTitle, int newDay, int newMonth, int newTime) {
+	assert(newTitle != EMPTY_STRING );
 	_title = newTitle;
 	_endDay= newDay;
 	_endMonth = newMonth;
@@ -93,14 +96,14 @@ std::string Event::displayEvent() {
 		Ostring << CLOSE_SQUARE_BRACKET;
 		Ostring << EMPTY_SPACE << _title; 
 	} else {
-		if(_durationEvent == false) {
+		if (_durationEvent == false) {
 			Ostring << BY << EMPTY_SPACE << convertNumberToString(_endDay);
 			Ostring << EMPTY_SPACE << convertToMonth(_endMonth);
 			int hour = _endTime / HUNDRED;
 			int minute = _endTime % HUNDRED;
 			Ostring << EMPTY_SPACE << convertNumberToString(hour) << COLON; 
 			Ostring	<< convertNumberToString(minute);
-			if(_endYear != DEFAUlTYEAR) {
+			if (_endYear != DEFAUlTYEAR) {
 				Ostring << EMPTY_SPACE << YEAR << COLON << EMPTY_SPACE << _endYear;
 				Ostring << std::setw(NO_START_TIME_NON_DEFAULT_YEAR_SPACING);
 				Ostring << CLOSE_SQUARE_BRACKET << EMPTY_SPACE << _title; 	
@@ -153,7 +156,7 @@ std::string Event::convertNumberToString(int number) {
 }
 
 std::string Event::convertToMonth(int i) {
-	if(i == JANUARY_IN_NUMBER) {
+	if (i == JANUARY_IN_NUMBER) {
 		return JANUARY; 
 	} else if (i == FEBRUARY_IN_NUMBER) {
 		return FEBRUARY; 
@@ -205,6 +208,7 @@ std::string Event::getDeadline() {
 
 
 void Event::changeTitle(std::string newTitle) {	
+	assert(newTitle != EMPTY_STRING );
 	_title = newTitle; 
 }
 
