@@ -60,130 +60,118 @@ Parser::Parser(void){
 Parser::~Parser(void){
 }
 
-bool Parser::isTaskWithDeadline(std::string toDoList){
-	bool isATaskWithDeadline;
-	int TIndex = toDoList.find("by:");
-
-	if (TIndex != std::string::npos) {
-		isATaskWithDeadline = true;
-	} else {
-		isATaskWithDeadline = false;
-	}
-
-	return isATaskWithDeadline;
+std::string Parser::clearEvent() {
+	return VerifyAllAttributesAndCallLogic(CLEAR);
 }
 
-bool Parser::isTimedTask(std::string toDoList) {
-	bool isTimedTask;
-	int TIndex = toDoList.find("from:");
 
-	if (isValidIndex(TIndex)) {
-		isTimedTask = true;
+std::string Parser::markAsDone(std::string numberList) {
+	if (isAbleToGetNumberList(numberList)) {
+		return VerifyAllAttributesAndCallLogic(MARKASDONE);
 	} else {
-		isTimedTask = false;
-	}
-
-	return isTimedTask;
-}
-
-bool Parser::isValidIndex(int TIndex) {
-	if (TIndex != std::string::npos && TIndex >= 0) {
-		return true;
-	} else {
-		return false;
+		return INVALID_INPUT_MESSAGE;
 	}
 }
 
-bool Parser::isAbleToGetEventDateAndMonth(std::string &buffer,int &date,MonthType &month) {
-	std::string dateString;
-	std::string monthString;
-	int TIndex = getIndexOfFirstWhiteSpace(buffer);
-
-	if (isValidIndex(TIndex)) {
-		dateString = buffer.substr(0, TIndex);
+std::string Parser::deleteEvent(std::string numberList) {
+	if (isAbleToGetNumberList(numberList)) {
+		return VerifyAllAttributesAndCallLogic(DELETE);
 	} else {
-		return false;
+		return INVALID_INPUT_MESSAGE;
+	}
+}
+
+std::string Parser::searchEvent(std::string partToSearch) {
+	_taskName = partToSearch;
+	return VerifyAllAttributesAndCallLogic(SEARCH);
+}
+
+std::string Parser::unDo() {
+	return VerifyAllAttributesAndCallLogic(UNDO);
+}
+
+std::string Parser::help() {
+	return VerifyAllAttributesAndCallLogic(HELP);
+}
+
+std::string Parser::displayEvent(std::string command) {
+	CommandType commandT;
+
+	if (command == "displaydone") {
+		commandT = DISPLAYDONE;
+	} else if (command == "displaytoday") {
+		commandT = DISPLAYTODAY;
+	} else if (command == "display") {
+		commandT = DISPLAY;
+	} else if (command == "displayall") {
+		commandT = DISPLAYALL;
+	} else if (command == "displaytomorrow") {
+		commandT = DISPLAYTOMORROW;
 	}
 	
-	if (!isStringAnInteger(dateString)) {
-			return false;			
-	} else {
-		date = convertStringToInteger(dateString);
-	}
+	return VerifyAllAttributesAndCallLogic(commandT);
+}
 
-	replaceStringWithItsSubstring(buffer, TIndex + 1);
-	TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+std::string Parser::repeat(std::string toDoList, std::string command) {
+	CommandType CommandTypeCommand;
+	std::string strTaskNumber;
+	int integerTaskNumber;
+
+	if (command == STRING_REPEAT) {
+		CommandTypeCommand = REPEAT;
+	} else if (command == STRING_REPEATDONE) {
+		CommandTypeCommand = REPEATDONE;
+	} else {
+		return INVALID_INPUT_MESSAGE;
+	}
 	
-	int EIndex;
-
+	int TIndex = getIndexOfFirstWhiteSpace(toDoList);
+	
 	if (isValidIndex(TIndex)) {
-		replaceStringWithItsSubstring(buffer, TIndex);
-		EIndex = getIndexOfFirstWhiteSpace(buffer);
-
-		if (isValidIndex(EIndex)) {
-			monthString = buffer.substr(0, EIndex);
-		} else {
-			return false;
-		}
-
+		strTaskNumber = toDoList.substr(0, TIndex);		
 	} else {
-		return false;
+		return INVALID_INPUT_MESSAGE;
+	}
+	
+	if (isStringAnInteger(strTaskNumber)) {
+		integerTaskNumber = convertStringToInteger(strTaskNumber);
+		_taskNumberList.push_back(integerTaskNumber);
+	} else {
+		return INVALID_INPUT_MESSAGE;
+	}
+	
+	toDoList = toDoList.substr(TIndex + 1);
+
+	if (!isEmpty(toDoList)) {
+		int IndexTwo = getIndexOfFirstNonWhiteSpace(toDoList);
+		replaceStringWithItsSubstring(toDoList, IndexTwo);
+		_taskName = toDoList;
+		return VerifyAllAttributesAndCallLogic(CommandTypeCommand);
+	} else {
+		return INVALID_INPUT_MESSAGE;
 	}
 
-	month = determineMonthType(monthString);
-	replaceStringWithItsSubstring(buffer, EIndex);
-	TIndex = getIndexOfFirstNonWhiteSpace(buffer);
-
-	if (isValidIndex(TIndex)) {
-		replaceStringWithItsSubstring(buffer, TIndex);
-	} else {
-		return false;
-	}
-
-	return true;
+	return INVALID_INPUT_MESSAGE;
+}
+		
+std::string Parser::changeDirectory(std::string directory) {
+	_taskName = directory;
+	return VerifyAllAttributesAndCallLogic(CHANGEDIRECTORY);
 }
 
-MonthType Parser :: determineMonthType(std::string monthString) {
-
-	monthString = _verificationDateTimeMonth.lowercaseMonth(monthString);
-
-	for (int i = monthString.size() - 1; i >= 0; i--) {
-		assert( !(isupper(monthString[i])) );
-	}
-
-	if (monthString == "jan" ||  monthString == "january" || monthString == "01" || monthString == "1" ) {
-		return JANUARY;
-	} else if (monthString == "feb" || monthString == "february"|| monthString == "02" || monthString == "2") {
-		return FEBRUARY;
-	} else if (monthString == "mar" || monthString == "march" || monthString == "03" || monthString == "3") {
-		return MARCH;
-	} else if (monthString == "apr" || monthString == "april" || monthString == "04" || monthString == "4") {
-		return APRIL;
-	} else if ( monthString == "may" ||  monthString == "may" || monthString == "05" || monthString == "5") {
-		return MAY;
-	} else if (monthString == "jun" || monthString == "june"|| monthString == "06" || monthString == "6") {
-		return JUNE;
-	} else if (monthString == "jul" || monthString == "july" || monthString =="07" || monthString =="7" ) {
-		return JULY;
-	} else if (monthString == "aug" || monthString == "august" || monthString == "08" || monthString == "8") {
-		return AUGUST;
-	} else if (monthString == "sep" || monthString == "september" || monthString == "09" || monthString == "9") {
-		return SEPTEMBER;
-	} else if (monthString == "oct" ||  monthString == "october" || monthString =="10") {
-		return OCTOBER;
-	} else if (monthString == "nov" || monthString == "november" || monthString == "11") {
-		return NOVEMBER;
-	} else if (monthString == "dec" || monthString == "december" || monthString == "12") {
-		return DECEMBER;
+std::string Parser::addEvent(std::string toDoList){
+	
+	if (isTimedTask(toDoList)) {
+		return addTimedEvent(toDoList);
+	} else if (isTaskWithDeadline(toDoList)) {
+		return addEventWithDeadline(toDoList);
 	} else {
-		return MONTHNOTASSIGNED;
+		return addFloatingEvent(toDoList);
 	}
+
 }
 
-void Parser::replaceStringWithItsSubstring(std::string &buffer, int TIndex) {
-	buffer = buffer.substr(TIndex);
-}
-
+//This method is to get update details.
 std::string Parser::updateEvent(std::string toDoList) {
 	std::string buffer;
 	std::string command;
@@ -251,6 +239,136 @@ std::string Parser::updateEvent(std::string toDoList) {
 	}
 }
 
+//This Method checks whether a task is a task with deadline.
+bool Parser::isTaskWithDeadline(std::string toDoList){
+	bool isATaskWithDeadline;
+	int TIndex = toDoList.find("by:");
+
+	if (TIndex != std::string::npos) {
+		isATaskWithDeadline = true;
+	} else {
+		isATaskWithDeadline = false;
+	}
+
+	return isATaskWithDeadline;
+}
+
+//This method checks whether a task is timed task with starting and ending time.
+bool Parser::isTimedTask(std::string toDoList) {
+	bool isTimedTask;
+	int TIndex = toDoList.find("from:");
+
+	if (isValidIndex(TIndex)) {
+		isTimedTask = true;
+	} else {
+		isTimedTask = false;
+	}
+
+	return isTimedTask;
+}
+
+//This method checks whether an index is valid.
+bool Parser::isValidIndex(int TIndex) {
+	if (TIndex != std::string::npos && TIndex >= 0) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+//This method checks whether date and month can be separated from the user input and at the same time, separate date and month.
+bool Parser::isAbleToGetEventDateAndMonth(std::string &buffer,int &date,MonthType &month) {
+	std::string dateString;
+	std::string monthString;
+	int TIndex = getIndexOfFirstWhiteSpace(buffer);
+
+	if (isValidIndex(TIndex)) {
+		dateString = buffer.substr(0, TIndex);
+	} else {
+		return false;
+	}
+	
+	if (!isStringAnInteger(dateString)) {
+			return false;			
+	} else {
+		date = convertStringToInteger(dateString);
+	}
+
+	replaceStringWithItsSubstring(buffer, TIndex + 1);
+	TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+	
+	int EIndex;
+
+	if (isValidIndex(TIndex)) {
+		replaceStringWithItsSubstring(buffer, TIndex);
+		EIndex = getIndexOfFirstWhiteSpace(buffer);
+
+		if (isValidIndex(EIndex)) {
+			monthString = buffer.substr(0, EIndex);
+		} else {
+			return false;
+		}
+
+	} else {
+		return false;
+	}
+
+	month = determineMonthType(monthString);
+	replaceStringWithItsSubstring(buffer, EIndex);
+	TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+
+	if (isValidIndex(TIndex)) {
+		replaceStringWithItsSubstring(buffer, TIndex);
+	} else {
+		return false;
+	}
+
+	return true;
+}
+
+//This method assigns a corresponding enum MonthType to user input month which is a string.
+MonthType Parser :: determineMonthType(std::string monthString) {
+
+	monthString = _verificationDateTimeMonth.lowercaseMonth(monthString);
+
+	for (int i = monthString.size() - 1; i >= 0; i--) {
+		assert( !(isupper(monthString[i])) );
+	}
+
+	if (monthString == "jan" ||  monthString == "january" || monthString == "01" || monthString == "1" ) {
+		return JANUARY;
+	} else if (monthString == "feb" || monthString == "february"|| monthString == "02" || monthString == "2") {
+		return FEBRUARY;
+	} else if (monthString == "mar" || monthString == "march" || monthString == "03" || monthString == "3") {
+		return MARCH;
+	} else if (monthString == "apr" || monthString == "april" || monthString == "04" || monthString == "4") {
+		return APRIL;
+	} else if ( monthString == "may" ||  monthString == "may" || monthString == "05" || monthString == "5") {
+		return MAY;
+	} else if (monthString == "jun" || monthString == "june"|| monthString == "06" || monthString == "6") {
+		return JUNE;
+	} else if (monthString == "jul" || monthString == "july" || monthString =="07" || monthString =="7" ) {
+		return JULY;
+	} else if (monthString == "aug" || monthString == "august" || monthString == "08" || monthString == "8") {
+		return AUGUST;
+	} else if (monthString == "sep" || monthString == "september" || monthString == "09" || monthString == "9") {
+		return SEPTEMBER;
+	} else if (monthString == "oct" ||  monthString == "october" || monthString =="10") {
+		return OCTOBER;
+	} else if (monthString == "nov" || monthString == "november" || monthString == "11") {
+		return NOVEMBER;
+	} else if (monthString == "dec" || monthString == "december" || monthString == "12") {
+		return DECEMBER;
+	} else {
+		return MONTHNOTASSIGNED;
+	}
+}
+
+void Parser::replaceStringWithItsSubstring(std::string &buffer, int TIndex) {
+	buffer = buffer.substr(TIndex);
+}
+
+//This method get the number of the event to be updated from the user input.
 int Parser :: getUpdatetaskNumber(std::string &buffer) {
 	int indexOne;
 	int indexTwo;
@@ -270,6 +388,7 @@ int Parser :: getUpdatetaskNumber(std::string &buffer) {
 	}
 }
 
+//This method check whether the task numbers inputted by the user is valid, and store the task numbers into a list.
 bool Parser::isAbleToGetNumberList(std::string numberList) {
 	std::string taskNumberString;
 	int taskNumberInteger;
@@ -445,6 +564,7 @@ void Parser :: resetAttributesValue(){
 	_taskNumberList.clear();
 }
 
+//This method checks whether the string can be converted to an integer.
 bool Parser::isStringAnInteger(std::string str) {
 
 	for (int i = str.size()-1; i >= 0; i--) {
@@ -462,18 +582,7 @@ int Parser::convertStringToInteger(std::string str){
 	return stoi(str);
 }
 
-std::string Parser::addEvent(std::string toDoList){
-	
-	if (isTimedTask(toDoList)) {
-		return addTimedEvent(toDoList);
-	} else if (isTaskWithDeadline(toDoList)) {
-		return addEventWithDeadline(toDoList);
-	} else {
-		return addFloatingEvent(toDoList);
-	}
-
-}
-
+//This method checks whether a string is an empty string or blank string
 bool Parser::isEmpty(std::string str) {
 	if (str.empty()) {
 		return true;
@@ -497,105 +606,7 @@ int Parser::getIndexOfFirstWhiteSpace(std::string str) {
 	return str.find_first_of(" ");
 }
 
-std::string Parser::clearEvent() {
-	return VerifyAllAttributesAndCallLogic(CLEAR);
-}
-
-
-std::string Parser::markAsDone(std::string numberList) {
-	if (isAbleToGetNumberList(numberList)) {
-		return VerifyAllAttributesAndCallLogic(MARKASDONE);
-	} else {
-		return INVALID_INPUT_MESSAGE;
-	}
-}
-
-std::string Parser::deleteEvent(std::string numberList) {
-	if (isAbleToGetNumberList(numberList)) {
-		return VerifyAllAttributesAndCallLogic(DELETE);
-	} else {
-		return INVALID_INPUT_MESSAGE;
-	}
-}
-
-std::string Parser::searchEvent(std::string partToSearch) {
-	_taskName = partToSearch;
-	return VerifyAllAttributesAndCallLogic(SEARCH);
-}
-
-std::string Parser::unDo() {
-	return VerifyAllAttributesAndCallLogic(UNDO);
-}
-
-std::string Parser::help() {
-	return VerifyAllAttributesAndCallLogic(HELP);
-}
-
-std::string Parser::displayEvent(std::string command) {
-	CommandType commandT;
-
-	if (command == "displaydone") {
-		commandT = DISPLAYDONE;
-	} else if (command == "displaytoday") {
-		commandT = DISPLAYTODAY;
-	} else if (command == "display") {
-		commandT = DISPLAY;
-	} else if (command == "displayall") {
-		commandT = DISPLAYALL;
-	} else if (command == "displaytomorrow") {
-		commandT = DISPLAYTOMORROW;
-	}
-	
-	return VerifyAllAttributesAndCallLogic(commandT);
-}
-
-std::string Parser::repeat(std::string toDoList, std::string command) {
-	CommandType CommandTypeCommand;
-	std::string strTaskNumber;
-	int integerTaskNumber;
-
-	if (command == STRING_REPEAT) {
-		CommandTypeCommand = REPEAT;
-	} else if (command == STRING_REPEATDONE) {
-		CommandTypeCommand = REPEATDONE;
-	} else {
-		return INVALID_INPUT_MESSAGE;
-	}
-	
-	int TIndex = getIndexOfFirstWhiteSpace(toDoList);
-	
-	if (isValidIndex(TIndex)) {
-		strTaskNumber = toDoList.substr(0, TIndex);		
-	} else {
-		return INVALID_INPUT_MESSAGE;
-	}
-	
-	if (isStringAnInteger(strTaskNumber)) {
-		integerTaskNumber = convertStringToInteger(strTaskNumber);
-		_taskNumberList.push_back(integerTaskNumber);
-	} else {
-		return INVALID_INPUT_MESSAGE;
-	}
-	
-	toDoList = toDoList.substr(TIndex + 1);
-
-	if (!isEmpty(toDoList)) {
-		int IndexTwo = getIndexOfFirstNonWhiteSpace(toDoList);
-		replaceStringWithItsSubstring(toDoList, IndexTwo);
-		_taskName = toDoList;
-		return VerifyAllAttributesAndCallLogic(CommandTypeCommand);
-	} else {
-		return INVALID_INPUT_MESSAGE;
-	}
-
-	return INVALID_INPUT_MESSAGE;
-}
-		
-std::string Parser::changeDirectory(std::string directory) {
-	_taskName = directory;
-	return VerifyAllAttributesAndCallLogic(CHANGEDIRECTORY);
-}
-
+//This method separates the task name from the entire string of user input.
 std::string Parser::getTaskName(std::string &buffer) {
 	int TIndex;
     std::string taskName;
@@ -621,6 +632,7 @@ std::string Parser::getTaskName(std::string &buffer) {
 	}
 }
 
+//This method assigns the corresponding values to private attributes.
 void Parser:: assignDateTimeMonthAttributes(std::string startOrEnd, std::string &buffer, int date, MonthType month) {
 	if (startOrEnd == STRING_START) {
 		_startingDate = date; 
@@ -635,6 +647,7 @@ void Parser:: assignDateTimeMonthAttributes(std::string startOrEnd, std::string 
 	}
 }
 
+//This method gets all the details of timed events from user input.
 std::string Parser::addTimedEvent(std::string toDoList){
 	std:: string buffer = toDoList;
 	int date = DATE_NOT_ASSIGNED;
@@ -694,6 +707,7 @@ std::string Parser::addTimedEvent(std::string toDoList){
 	}
 }
 
+//This method gets all the details of a dealine event from the user input.
 std::string Parser::addEventWithDeadline(std::string toDoList) {
 	std::string buffer = toDoList;
 	_taskName = getTaskName(buffer);
@@ -720,6 +734,7 @@ std::string Parser::addEventWithDeadline(std::string toDoList) {
 	}
 }
 
+//This method gets the time of event from the user input.
 std::string Parser::getEventTime(std::string &buffer) {
 	std::string time;
 	int TIndex = getIndexOfFirstNonWhiteSpace(buffer);
@@ -742,6 +757,7 @@ std::string Parser::addFloatingEvent(std::string toDoList) {
 	return VerifyAllAttributesAndCallLogic(ADDFLOATINGEVENT);
 }
 
+//This method final verifies the validity of all the details of the event and pass the values to logic to execute.
 std::string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 
 	int integerStartingMonth = convertMonthTypeToInteger(_startingMonth);
@@ -852,6 +868,7 @@ std::string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 	}
 }
 
+//This funtion is for unit test purpose. (Assign values to the private attributes)
 void Parser::setAttributes(std::string taskName, std::string startingTime, std::string endingTime, int startingDate, int endingDate, MonthType startingMonth, MonthType endingMonth, std::list<int> taskNumberList) {
 	_taskName = taskName;
 	_startingTime = startingTime;
