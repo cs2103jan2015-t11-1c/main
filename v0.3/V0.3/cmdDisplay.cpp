@@ -57,6 +57,7 @@ std::string cmdDisplay::cmdDisplayActive(Storage& _storage){
 	return feedback;
 }
 
+//@author A0114301E
 //display completed events
 std::string cmdDisplay::cmdDisplayDone(Storage& _storage){
 	Eventlist doneEvents = _storage.displayDoneEvent();
@@ -67,6 +68,15 @@ std::string cmdDisplay::cmdDisplayDone(Storage& _storage){
 	return feedback;
 }
 
+std::string cmdDisplay::cmdDisplayAll(Storage& _storage){
+	Eventlist doneEvents = _storage.displayDoneEvent();
+	std::list<Event> currentList = doneEvents.returnAllEvent();
+	std::string feedback;
+	feedback = allEvents(currentList);
+	return feedback;
+}
+
+//@author A0115429H
 //display events today
 std::string cmdDisplay::cmdDisplayToday(Storage& _storage){
 	std::string feedback;
@@ -121,12 +131,81 @@ bool cmdDisplay::isEventToday(int taskStartMonth, int taskStartDay, int taskEndM
 	return isEventToday;
 }
 
+//@author A0114301E
+bool cmdDisplay::isEventTomorrow(int taskStartMonth, int taskStartDay, int taskEndMonth, int taskEndDay){
+	bool isEventToday = false;
+	
+	time_t t = time(0);
+	struct tm now;
+	localtime_s (&now, &t);
+	int currentMonth = now.tm_mon + 1;
+	int currentDay = now.tm_mday + 1;
+
+	if (((taskStartMonth == currentMonth) & (taskStartDay == currentDay)) || ((taskEndMonth == currentMonth) & (taskEndDay == currentDay))) {
+		isEventToday = true;
+	}
+
+	return isEventToday;
+}
+
 //set the number of tasks to be displayed to be 20
 std::string cmdDisplay::eventsToDisplay(std::list<Event> events){
 	std::ostringstream display;
 	int i = 1;
 	std::list<Event>::iterator iter;
 	for (iter = events.begin(); iter != events.end() && i < NUMBER_OF_TASK_TO_DISPLAY; ++iter) {
+		display  << std::setw(3) << i << Dot << (*iter).displayEvent() << NEW_LINE;
+		i++;
+	}
+	display << NEW_LINE;
+
+	return display.str();
+}
+
+std::string cmdDisplay::cmdDisplayTomorrow(Storage& _storage){
+	std::string feedback;
+
+	std::list<Event> eventsTomorrow;
+	Eventlist events = _storage.displayEvent();
+	std::list<Event> allEvents = events.returnAllEvent();
+	int eventsNumber = events.getTotalNumberOfEvents();
+
+	std::list<Event>::iterator Tcount;
+
+	Event currentEvent;
+	int taskStartMonth;
+	int taskStartDay;
+	int taskEndMonth;
+	int taskEndDay;
+
+	for(Tcount = allEvents.begin(); Tcount != allEvents.end(); Tcount++){
+		currentEvent = *Tcount;
+		taskStartMonth = currentEvent.getStartMonth();
+		taskStartDay = currentEvent.getStartDate();
+	    taskEndMonth = currentEvent.getEndMonth();
+	    taskEndDay = currentEvent.getEndDate();
+
+		if(isEventTomorrow(taskStartMonth, taskStartDay, taskEndMonth, taskEndDay)){
+			eventsTomorrow.push_back(currentEvent);
+		}
+	}
+
+	if (eventsTomorrow.size() != 0){
+		feedback = eventsToDisplay(eventsTomorrow);
+	}else{
+		feedback = MESSAGE_NO_EVENT_TODAY;
+	}
+
+	return feedback;
+}
+
+//@author A0114301E
+//all events
+std::string cmdDisplay::allEvents(std::list<Event> events){
+	std::ostringstream display;
+	int i = 1;
+	std::list<Event>::iterator iter;
+	for (iter = events.begin(); iter != events.end(); ++iter) {
 		display  << std::setw(3) << i << Dot << (*iter).displayEvent() << NEW_LINE;
 		i++;
 	}
