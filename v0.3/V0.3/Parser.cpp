@@ -416,6 +416,12 @@ logic::CommandType Parser::changeToLogicCommandType(CommandType command) {
 	case REPEATDONE:
 		return logic::REPEATDONE;
 
+	case DISPLAYALL:
+		return logic::DISPLAYALL;
+
+	case DISPLAYTOMORROW:
+		return logic ::DISPLAYTOMORROW;
+
 	default:
 		return logic::HELP;
 	}
@@ -528,6 +534,10 @@ std::string Parser::displayEvent(std::string command) {
 		commandT = DISPLAYTODAY;
 	} else if (command == "display") {
 		commandT = DISPLAY;
+	} else if (command == "displayall") {
+		commandT = DISPLAYALL;
+	} else if (command == "displaytomorrow") {
+		commandT = DISPLAYTOMORROW;
 	}
 	
 	return VerifyAllAttributesAndCallLogic(commandT);
@@ -787,6 +797,10 @@ std::string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 	case DISPLAYTODAY:
 		
 	case DISPLAYDONE:
+
+	case DISPLAYTOMORROW:
+
+	case DISPLAYALL:
 		
 	case REPEAT:
 		

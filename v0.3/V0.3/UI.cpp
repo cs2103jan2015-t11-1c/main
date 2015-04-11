@@ -16,6 +16,8 @@ const static std::string STRING_DISPLAYTODAY = "displaytoday";
 const static std::string STRING_SEARCH = "search";
 const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
 const static std::string STRING_REPEAT = "repeat";
+const static std::string STRING_DISPLAYALL = "displayall";
+const static std::string STRING_DISPLAYTOMORROW = "displaytomorrow";
 const static std::string STRING_REPEATDONE = "repeatdone";
 const static std::string INVALID_INPUT_MESSAGE = "Invalid user input.\n\n";
 static const std::string WELCOME_MESSAGE = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n\n";
@@ -88,6 +90,10 @@ UI::CommandType UI::determineCommandType() {
 		return REPEATDONE;
 	} else if (_commandWord == STRING_HELP) {
 		return HELP;
+	} else if (_commandWord == STRING_DISPLAYALL) {
+		return DISPLAYALL;
+	} else if (_commandWord == STRING_DISPLAYTOMORROW){
+		return DISPLAYTOMORROW;
 	} else {
 		return HELP;
 	}
@@ -141,6 +147,20 @@ std::string UI::callToParser() {
 				return INVALID_INPUT_MESSAGE;
 			}
 		
+		case DISPLAYALL:
+			if (getToDoListAndCheckEmpty()) {
+				return _Parser.displayEvent(STRING_DISPLAYALL);
+			} else {
+				return INVALID_INPUT_MESSAGE;
+			}
+		
+		case DISPLAYTOMORROW:
+			if (getToDoListAndCheckEmpty()) {
+				return _Parser.displayEvent(STRING_DISPLAYTOMORROW);
+			} else {
+				return INVALID_INPUT_MESSAGE;
+			}
+
 		case DELETE:
 			if (getToDoListAndCheckEmpty()) {
 				return INVALID_INPUT_MESSAGE;
