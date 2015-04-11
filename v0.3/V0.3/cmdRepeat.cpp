@@ -76,7 +76,6 @@ std::string cmdRepeat::executecmdRepeat(Storage& _storage){
 
 //convert repeat type to DAILY, WEEKLY, MONTHLY, EVERYWEEKDAY
 cmdRepeat::repeatType cmdRepeat::determineRepeatType(){
-	std::cout << _repeatCommand << std::endl;
 	if (_repeatCommand == STRING_DAILY) {
 		_type = DAILY;
 	} else if (_repeatCommand == STRING_WEEKLY) {
