@@ -5,6 +5,7 @@
 
 const static std::string MESSAGE_EMPTY_ACTIVE_EVENTS = "Currently no active event. \n\n";
 const static std::string MESSAGE_NO_EVENT_TODAY = "No Event today! \n\n";
+const static std::string MESSAGE_NO_EVENT_TOMORROW = "No Event tomorrow! \n\n";
 const static int NUMBER_OF_TASK_TO_DISPLAY = 21;
 const static std::string NEW_LINE = "\n";
 const static std::string Dot = ".";
@@ -40,6 +41,10 @@ std::string cmdDisplay::executecmdDisplay(Storage& _storage){
 		return cmdDisplayDone(_storage);
 	case DISPLAYTODAY:
 		return cmdDisplayToday(_storage);
+	case DISPLAYALL:
+		return cmdDisplayAll(_storage);
+	case DISPLAYTOMORROW:
+		return cmdDisplayTomorrow(_storage);
 	default:
 		assert(false);
 		break;
@@ -62,17 +67,16 @@ std::string cmdDisplay::cmdDisplayActive(Storage& _storage){
 std::string cmdDisplay::cmdDisplayDone(Storage& _storage){
 	Eventlist doneEvents = _storage.displayDoneEvent();
 	std::list<Event> currentList = doneEvents.returnAllEvent();
-
 	std::string feedback;
 	feedback = eventsToDisplay(currentList);
 	return feedback;
 }
 
 std::string cmdDisplay::cmdDisplayAll(Storage& _storage){
-	Eventlist doneEvents = _storage.displayDoneEvent();
-	std::list<Event> currentList = doneEvents.returnAllEvent();
+	Eventlist allTasks = _storage.displayEvent();
+	std::list<Event> allEventList = allTasks.returnAllEvent();
 	std::string feedback;
-	feedback = allEvents(currentList);
+	feedback = allEvents(allEventList);
 	return feedback;
 }
 
@@ -132,8 +136,9 @@ bool cmdDisplay::isEventToday(int taskStartMonth, int taskStartDay, int taskEndM
 }
 
 //@author A0114301E
+
 bool cmdDisplay::isEventTomorrow(int taskStartMonth, int taskStartDay, int taskEndMonth, int taskEndDay){
-	bool isEventToday = false;
+	bool isEventTomorrow = false;
 	
 	time_t t = time(0);
 	struct tm now;
@@ -142,10 +147,10 @@ bool cmdDisplay::isEventTomorrow(int taskStartMonth, int taskStartDay, int taskE
 	int currentDay = now.tm_mday + 1;
 
 	if (((taskStartMonth == currentMonth) & (taskStartDay == currentDay)) || ((taskEndMonth == currentMonth) & (taskEndDay == currentDay))) {
-		isEventToday = true;
+		isEventTomorrow = true;
 	}
 
-	return isEventToday;
+	return isEventTomorrow;
 }
 
 //set the number of tasks to be displayed to be 20
@@ -162,9 +167,9 @@ std::string cmdDisplay::eventsToDisplay(std::list<Event> events){
 	return display.str();
 }
 
+//display events due tomorrow or start from tomorrow
 std::string cmdDisplay::cmdDisplayTomorrow(Storage& _storage){
 	std::string feedback;
-
 	std::list<Event> eventsTomorrow;
 	Eventlist events = _storage.displayEvent();
 	std::list<Event> allEvents = events.returnAllEvent();
@@ -193,7 +198,7 @@ std::string cmdDisplay::cmdDisplayTomorrow(Storage& _storage){
 	if (eventsTomorrow.size() != 0){
 		feedback = eventsToDisplay(eventsTomorrow);
 	}else{
-		feedback = MESSAGE_NO_EVENT_TODAY;
+		feedback = MESSAGE_NO_EVENT_TOMORROW;
 	}
 
 	return feedback;
