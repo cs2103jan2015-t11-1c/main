@@ -17,6 +17,8 @@ private:
 	COMMAND_TYPE findCommandType(std::string currentCommand);
 	std::string _filename;
 	std::string _locationFile;
+	char _defaultDirectory[260];
+	int _numberOfRecuring;
 
 public:
 	Storage(void);

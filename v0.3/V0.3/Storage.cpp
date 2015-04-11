@@ -4,6 +4,7 @@
 
 #include "Storage.h"
 #include "windows.h"
+#include <assert.h>
 
 const std::string LOGFILE = "log.txt";
 const std::string WARNING = "Warning";
@@ -49,17 +50,22 @@ const std::string END_INFO = "Ending Info: ";
 const std::string NIL_IDENTIFIER = "Nil";
 const std::string DEFAULT_LOCATION_NAME = "Directory.txt";
 const std::string READ_A_EVENT = "analysing event from local file.";
+const std::string RECURRING_NUMBER = "Recurring number: ";
 const int ZERO = 0;
 const int NUMBER_OF_DIGIT_FOR_DATE = 2;
 const int NUMBER_OF_DIGIT_FOR_TIME = 4;
 const int INVALID_NUMBER = -1;
+const int ONE = 1;
 char buffer[1000];
+const int bufferSize = MAX_PATH;
 
 
 Storage::Storage(void) {	
 	_filename = DEFAULT_FILE_NAME;
 	_locationFile = DEFAULT_LOCATION_NAME;
+	GetCurrentDirectory(bufferSize, _defaultDirectory);
 	getDirectory();
+	_numberOfRecuring = ZERO;
 }
 
 Storage::~Storage(void) {
@@ -185,9 +191,11 @@ void Storage::unDoAddEvent () {
 
 void Storage::repeatEvent(std::list<Event> allEvents) {
 	saveCurrentActiveEventList();
+	int identifier = _numberOfRecuring + ONE;
 	try {
 		while (!allEvents.empty()) {
 		_currentEvent = allEvents.back();
+		_currentEvent.changeRecurringTaskSeries(identifier);
 		_activeEvent.addEvent(_currentEvent);
 		allEvents.pop_back();
 		}
@@ -196,10 +204,12 @@ void Storage::repeatEvent(std::list<Event> allEvents) {
 	catch(...) {
 		std::cout << WRONG << EMPTY_SPACE << REPEAT_EVENTS;
 	}
+	_numberOfRecuring = _numberOfRecuring + ONE;
 }
 
 void Storage::unDoRepeatEvent() {
 	changeToPreviousActiveEventList();
+	_numberOfRecuring = _numberOfRecuring - 1;
 	writeToLogfile(INFOMATION, UNDO_REPEAT_EVENTS);
 }
 
@@ -367,6 +377,7 @@ void Storage::readEventsFromFile(std::string line) {
 	std::size_t foundDone = line.find(doneEventidentifier);
 	std::size_t startInfoFinder;
 	std::size_t endInfoFinder;
+	std::size_t recurringFinder;
 	std::string title;
 	std::string startday;
 	std::string startmonth;
@@ -376,8 +387,10 @@ void Storage::readEventsFromFile(std::string line) {
 	std::string endmonth;
 	std::string endtime;
 	std::string endyear;
+	std::string recurringNumber;
 	Event newEvent;
 	bool isActive = true;
+	bool isRecurring = false;
 	bool hasStartInfo = true;
 	bool hasEndInfo = true;
 
@@ -416,6 +429,13 @@ void Storage::readEventsFromFile(std::string line) {
 			endtime = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
 			line = line.substr(NUMBER_OF_DIGIT_FOR_TIME + EMPTY_SPACE.size());
 			endyear = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
+			line = line.substr(NUMBER_OF_DIGIT_FOR_TIME);
+		}
+		recurringFinder = line.find(RECURRING_NUMBER);
+		if ( recurringFinder < std::string::npos) {
+			line = line.substr(RECURRING_NUMBER.size() + EMPTY_SPACE.size());
+			recurringNumber = line;
+			isRecurring = true;
 		}
 	}
 	catch(...) {
@@ -433,6 +453,9 @@ void Storage::readEventsFromFile(std::string line) {
 		newEvent.changeStartTime(stoi(starttime));
 		newEvent.changeStartYear(stoi(startyear));
 	}
+	if (isRecurring) {
+		newEvent.changeRecurringTaskSeries(stoi(recurringNumber));
+	}
 	if (isActive) {	
 		_activeEvent.addEvent(newEvent);
 	} else { 
@@ -444,6 +467,7 @@ void Storage::readEventsFromFile(std::string line) {
 void Storage::changeCurrentDirectory(const char* newDirectory) {
 	try {
 		const char* newDir = newDirectory;
+		SetCurrentDirectory(_defaultDirectory);
 		std::ofstream destination;
 		destination.open(_locationFile);
 		destination << newDir;

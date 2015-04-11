@@ -33,6 +33,7 @@ const std::string NOVEMBER = "Nov";
 const std::string DECEMBER = "Dec";
 const std::string INVALID_MONTH = "Invalid Month";
 const std::string ERROR_YEAR = "Error: Setting year earlier than 2015 is not allowed";
+const std::string RECURRING_NUMBER = "Recurring number: ";
 const int DEFAUlTYEAR = 2015;
 const int THOUSAND = 1000;
 const int HUNDRED = 100;
@@ -78,6 +79,7 @@ Event::Event(std::string newTitle, int newDay, int newMonth, int newTime) {
 	_startYear = DEFAUlTYEAR;
 	updateDueRanking();
 	_durationEvent = false;
+	_recurringTaskSeries = 0;
 }
 
 Event::~Event(void) {
@@ -263,6 +265,10 @@ void Event::changeStartYear (int newYear) {
 	_startYear= newYear;
 }
 
+void Event::changeRecurringTaskSeries(int series) {
+	_recurringTaskSeries = series;
+}
+
 //For the purpose of sorting, arrange the events from earliest year and
 //then earliest month and then earliest endday and then earliest hour.
 //Events with no deadline are display first.
@@ -303,6 +309,10 @@ int Event::getEndTime() {
 	return _endTime;
 }
 
+int Event::getRecurringTaskSeries() {
+	return _recurringTaskSeries;
+}
+
 //Display all information of a Event out for saving data to local file.
 //Easier for advance user to change data in a local drive.
 std::string Event::saveEvent() {
@@ -325,6 +335,9 @@ std::string Event::saveEvent() {
 		Ostring	<< convertNumberToString(_endMonth) << EMPTY_SPACE;
 		Ostring << convertTimeToString(_endTime) << EMPTY_SPACE;
 		Ostring << convertTimeToString(_endYear);
+	}
+	if ( _recurringTaskSeries > 0) {
+		Ostring << EMPTY_SPACE << RECURRING_NUMBER << _recurringTaskSeries;
 	}
 	return Ostring.str();
 }
