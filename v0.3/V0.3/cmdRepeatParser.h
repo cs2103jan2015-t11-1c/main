@@ -4,7 +4,7 @@
 //repeat 1 every mon/tue / thurs
 //repeat 1 daily except mon.tue.wed
 //repeat 1 weekly except week 2
-class cmdRepeatParser
+class CmdRepeatParser
 {
 private:
 	std::string _repeatDetails; 
@@ -14,8 +14,8 @@ private:
 	std::string _exceptionDetail;
 
 public:
-	cmdRepeatParser(void);
-	~cmdRepeatParser(void);
+	CmdRepeatParser(void);
+	~CmdRepeatParser(void);
 	bool hasException();
 	bool isValidIndex(int);
 	bool getDetailsForRepeatCertainDayOfAWeek(std::string repeatDetail);

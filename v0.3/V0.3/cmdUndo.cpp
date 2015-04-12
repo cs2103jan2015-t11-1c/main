@@ -16,25 +16,23 @@ const static std::string STRING_DIRECTORY = "directory";
 
 
 
-cmdUndo::cmdUndo(void)
-{
+CmdUndo::CmdUndo(void){
 	noOfCommand = 0;
 }
 
 
-cmdUndo::~cmdUndo(void)
-{
+CmdUndo::~CmdUndo(void){
 }
 
-std::string cmdUndo::printUndoMessage(){
+std::string CmdUndo::printUndoMessage(){
 	return UNDO_MESSAGE;
 }
 
 //undo last command based on the last command word from the user
 //support undo for last two actions
-std::string cmdUndo::undo(Storage& _storage,std::vector<CommandType>& commandStored){
+std::string CmdUndo::undo(Storage& _storage,std::vector<CommandType>& commandStored) {
 	CommandType lastCommand = commandStored.back();
-	if(commandStored.size() <= 1) {
+	if (commandStored.size() <= 1) {
 		return UNDO_UNSUCCESSFUL_MESSAGE;
 	}
 	commandStored.pop_back();

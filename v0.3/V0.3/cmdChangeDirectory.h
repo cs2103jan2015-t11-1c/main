@@ -3,10 +3,10 @@
 #include "logicbaseclass.h"
 
 //This cmdChangeDirectory class will change the location of the file saved
-class cmdChangeDirectory: public logicBaseClass {
+class CmdChangeDirectory: public LogicBaseClass {
 public:
-	cmdChangeDirectory(void);
-	~cmdChangeDirectory(void);
+	CmdChangeDirectory(void);
+	~CmdChangeDirectory(void);
 	std::string executecmdChangeDirectory(Storage&);
 	std::string getFeedback(std::string);
 };

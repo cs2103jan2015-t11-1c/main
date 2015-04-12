@@ -3,9 +3,9 @@
 #include "logicBaseClass.h"
 
 //This cmdClear class will clear all the tasks in the file
-class cmdClear : public logicBaseClass {
+class CmdClear : public LogicBaseClass {
 public:
-	cmdClear(void);
-	~cmdClear(void);
+	CmdClear(void);
+	~CmdClear(void);
 	std::string executeClear(Storage&);
 };

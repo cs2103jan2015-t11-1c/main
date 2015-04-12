@@ -9,15 +9,15 @@ const static std::string ADD_SUCCESSFUL_MESSAGE = "\" is added successfully.\n\n
 const static std::string QUOTATION_MARKS = "\"";
 const static std::string EMPTY_STRING = "";
 
-cmdAdd::cmdAdd(void){
+CmdAdd::CmdAdd(void){
 }
 
 
-cmdAdd::~cmdAdd(void){
+CmdAdd::~CmdAdd(void){
 }
 
 //add event with deadline, floating task or timed event
-std:: string cmdAdd::executecmdAdd(Storage& _storage){
+std:: string CmdAdd::executecmdAdd(Storage& _storage){
 	_newEvent = Event(_taskName, _endingDate, _endingMonth, _endingTime);
 	switch (_commandWord)
 	{
@@ -35,14 +35,14 @@ std:: string cmdAdd::executecmdAdd(Storage& _storage){
 	return EMPTY_STRING;
 }
 
-std::string cmdAdd::addEventWithDeadline(Storage& _storage){
+std::string CmdAdd::addEventWithDeadline(Storage& _storage){
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
 	updateStorage(_storage);
 	return _feedback;
 }
 
-std::string cmdAdd::addEventWithoutDeadline(Storage& _storage){
+std::string CmdAdd::addEventWithoutDeadline(Storage& _storage){
 	_storage.addEvent(_newEvent);
 	_feedback = printFeedback(_newEvent);
 	updateStorage(_storage);
@@ -52,7 +52,7 @@ std::string cmdAdd::addEventWithoutDeadline(Storage& _storage){
 //check for clash for timed tasks 
 //print a reminder messge if there there is an existing task at that time
 //task will still be added if there is a clash
-std::string cmdAdd::addTimedEvent(Storage& _storage){
+std::string CmdAdd::addTimedEvent(Storage& _storage){
 	Eventlist events = _storage.displayEvent();
 	std::list<Event> allEvents = events.returnAllEvent();
 	int startingMonth = _startingMonth;
@@ -83,12 +83,12 @@ std::string cmdAdd::addTimedEvent(Storage& _storage){
 	return _feedback;
 }
 
-std::string cmdAdd::printFeedback(Event newEvent){
+std::string CmdAdd::printFeedback(Event newEvent){
 	std::string feedback = QUOTATION_MARKS + newEvent.displayEvent() + ADD_SUCCESSFUL_MESSAGE;
 	return feedback;
 }
 
-void cmdAdd::updateStorage(Storage& _storage){
+void CmdAdd::updateStorage(Storage& _storage){
 	_storage.sortActiveEventlist();
 	_storage.synchronizeDrive();
 }

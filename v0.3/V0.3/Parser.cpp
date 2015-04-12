@@ -530,94 +530,94 @@ int Parser::convertMonthTypeToInteger(MonthType monthType) {
 	}
 }
 
-logic::CommandType Parser::changeToLogicCommandType(CommandType command) {
+Logic::CommandType Parser::changeToLogicCommandType(CommandType command) {
 	switch (command) {
 		
 	case CHANGEDIRECTORY:
-		return logic::CHANGEDIRECTORY;
+		return Logic::CHANGEDIRECTORY;
 
 	case CLEAREND:
-		return logic::CLEAREND;
+		return Logic::CLEAREND;
 
 	case CLEARRECUREND:
-		return logic::CLEARRECUREND;
+		return Logic::CLEARRECUREND;
 
 	case CLEARSTART:
-		return logic::CLEARSTART;
+		return Logic::CLEARSTART;
 
 	case CLEARRECURSTART:
-		return logic::CLEARRECURSTART;
+		return Logic::CLEARRECURSTART;
 
 	case ADDEVENTWITHDEADLINE:
-		return logic::ADDEVENTWITHDEADLINE;
+		return Logic::ADDEVENTWITHDEADLINE;
 
 	case ADDFLOATINGEVENT:
-		return logic::ADDFLOATINGEVENT;
+		return Logic::ADDFLOATINGEVENT;
 
 	case ADDTIMEDEVENT:
-		return logic::ADDTIMEDEVENT;
+		return Logic::ADDTIMEDEVENT;
 
 	case UPDATENAME:
-		return logic::UPDATENAME;
+		return Logic::UPDATENAME;
 
 	case UPDATERECURNAME:
-		return logic::UPDATERECURNAME;
+		return Logic::UPDATERECURNAME;
 
 	case UPDATEENDINGTIME:
-		return logic::UPDATEENDINGTIME;
+		return Logic::UPDATEENDINGTIME;
 
 	case UPDATERECURENDINGTIME:
-		return logic::UPDATERECURENDINGTIME;
+		return Logic::UPDATERECURENDINGTIME;
 
 	case UPDATESTARTINGTIME:
-		return logic::UPDATESTARTINGTIME;
+		return Logic::UPDATESTARTINGTIME;
 
 	case UPDATERECURSTARTINGTIME:
-		return logic::UPDATERECURSTARTINGTIME;
+		return Logic::UPDATERECURSTARTINGTIME;
 	case DELETE:
-		return logic::DELETE;
+		return Logic::DELETE;
 
 	case DISPLAY:
-		return logic::DISPLAY;
+		return Logic::DISPLAY;
 
 	case DISPLAYTODAY:
-		return logic::DISPLAYTODAY;
+		return Logic::DISPLAYTODAY;
 
 	case DISPLAYDONE:
-		return logic::DISPLAYDONE;
+		return Logic::DISPLAYDONE;
 
 	case SEARCH:
-		return logic::SEARCH;
+		return Logic::SEARCH;
 
 	case UNDO:
-		return logic::UNDO;
+		return Logic::UNDO;
 
 	case MARKASDONE:
-		return logic::MARKASDONE;
+		return Logic::MARKASDONE;
 
 	case CLEAR:
-		return logic::CLEAR;
+		return Logic::CLEAR;
 
 	case HELP:
-		return logic::HELP;
+		return Logic::HELP;
 		
 	case REPEAT:
-		return logic::REPEAT;
+		return Logic::REPEAT;
 		
 	case REPEATDONE:
-		return logic::REPEATDONE;
+		return Logic::REPEATDONE;
 
 	case DISPLAYALL:
-		return logic::DISPLAYALL;
+		return Logic::DISPLAYALL;
 
 	case DISPLAYTOMORROW:
-		return logic::DISPLAYTOMORROW;
+		return Logic::DISPLAYTOMORROW;
 
 	case DELETERECUR:
-		return logic::DELETERECUR;
+		return Logic::DELETERECUR;
 
 	default:
-		return logic::HELP;
+		return Logic::HELP;
 	}
 }
 
@@ -842,7 +842,7 @@ std::string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 		return  INVALID_TIME_DATE_MONTH_MESSAGE;
 	}
 	
-	logic::CommandType _command;
+	Logic::CommandType _command;
 	_command = changeToLogicCommandType(command);
 	std::string feedback = EMPTY_STRING;
 

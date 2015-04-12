@@ -21,16 +21,17 @@ const static std::string LINE = "===============================================
 const static std::string LOG_HELP = "executed help";
 const static std::string INFO = "info";
 
-cmdHelp::cmdHelp(void){
+CmdHelp::CmdHelp(void) {
 }
 
-cmdHelp::~cmdHelp(void){
+CmdHelp::~CmdHelp(void) {
 }
 
 //display help for all functions 
-std::string cmdHelp::helpMessage(){
+std::string CmdHelp::helpMessage() {
 	Storage storage;
 	storage.writeToLogfile(INFO,LOG_HELP);
+
 	return LINE+ HELP_ADD + HELP_DELETE + HELP_DISPLAY + HELP_UPDATE + HELP_UPDATE_START  
 		   + HELP_UPDATE_CLEAR_START + HELP_UPDATE_CLEAR_END + HELP_UPDATE_END + HELP_MARKASDONE + HELP_UNDO 
 		   + HELP_SEARCH + HELP_RECURRING + HELP_DIRECTORY + HELP_DELETERECUR + HELP_UPDATERECUR + LINE;

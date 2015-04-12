@@ -6,15 +6,15 @@ const static std::string MESSAGE_EVENT_NOT_FOUND = "Sorry! No relevant event fou
 const static std::string DOT = ".";
 const static std::string TWO_LINES = "\n\n";
 
-cmdSearch::cmdSearch(void){
+CmdSearch::CmdSearch(void){
 }
 
 
-cmdSearch::~cmdSearch(void){
+CmdSearch::~CmdSearch(void){
 }
 
 //search for key words from task list
-std::string cmdSearch::executecmdSearch(Storage& _storage){
+std::string CmdSearch::executecmdSearch(Storage& _storage){
 	Eventlist events = _storage.displayEvent();
 	std::list<Event> allEvents = events.returnAllEvent();
 	int eventsNumber = events.getTotalNumberOfEvents();
@@ -35,7 +35,7 @@ std::string cmdSearch::executecmdSearch(Storage& _storage){
 }
 
 //this function converts upper case letter to lower case
-std::string cmdSearch::lowercaseCommandWord(std::string commandWord){
+std::string CmdSearch::lowercaseCommandWord(std::string commandWord){
 	int n = commandWord.size();
 	for( int i = 0; i < n; i++){
 		if(commandWord[i] <='Z' && commandWord[i] >= 'A'){
@@ -46,7 +46,7 @@ std::string cmdSearch::lowercaseCommandWord(std::string commandWord){
   return commandWord;
 }
 
-void cmdSearch::searchForEvent(std::list<Event> allEvents, int){
+void CmdSearch::searchForEvent(std::list<Event> allEvents, int){
 	std::string keyword = _taskName;
 	std::string taskName = lowercaseCommandWord(keyword);
 	std::list<Event>::iterator Tcount;
@@ -68,7 +68,7 @@ void cmdSearch::searchForEvent(std::list<Event> allEvents, int){
 	}
 }
 
-std::string cmdSearch::printEventFound(){
+std::string CmdSearch::printEventFound(){
 	std::ostringstream feedback;
 	std::list<Event>::iterator Titer;
 	Event currentEvent;

@@ -2,11 +2,11 @@
 #pragma once
 #include "logicBaseClass.h"
 
-class cmdHelp: public logicBaseClass {
+class CmdHelp: public LogicBaseClass {
 private:
 	
 public:
-	cmdHelp(void);
-	~cmdHelp(void);
+	CmdHelp(void);
+	~CmdHelp(void);
 	std::string helpMessage();
 };

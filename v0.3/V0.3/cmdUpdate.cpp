@@ -11,14 +11,14 @@ const static std::string QUOTATION_MARKS = "\"";
 const static std::string UPDATE_RECURRING_NAME = "Recurring Events' titles are changed.\n\n";
 const static std::string UPDATE_RECURRING_TIME = "Recurring Events' times are changed.\n\n";
 
-cmdUpdate::cmdUpdate(void){
+CmdUpdate::CmdUpdate(void){
 }
 
-cmdUpdate::~cmdUpdate(void){
+CmdUpdate::~CmdUpdate(void){
 }
 
 //update task name, start time, end time or remove start time or end time
-std::string cmdUpdate::executecmdUpdate(Storage& _storage){
+std::string CmdUpdate::executecmdUpdate(Storage& _storage){
 	int eventNumber;
 	eventNumber= _taskNumberList.front();
 	Event eventToUpdate; 
@@ -47,7 +47,7 @@ std::string cmdUpdate::executecmdUpdate(Storage& _storage){
 }
 
 //update task name
-std::string cmdUpdate::updateName(Event eventToUpdate, int eventNumber, Storage& _storage){
+std::string CmdUpdate::updateName(Event eventToUpdate, int eventNumber, Storage& _storage){
 	std::string Tempt = eventToUpdate.displayEvent();
 	eventToUpdate.changeTitle(_taskName);
 	_storage.updateEvent(eventNumber, eventToUpdate);
@@ -57,7 +57,7 @@ std::string cmdUpdate::updateName(Event eventToUpdate, int eventNumber, Storage&
 }
 
 //update task ending time
-std::string cmdUpdate::updateEndingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
+std::string CmdUpdate::updateEndingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
 	std::string Tempt = eventToUpdate.displayEvent();
 	eventToUpdate.changeEndDay(_endingDate);
 	eventToUpdate.changeEndMonth(_endingMonth);
@@ -69,7 +69,7 @@ std::string cmdUpdate::updateEndingTime(Event eventToUpdate, int eventNumber, St
 }
 
 //update task start time
-std::string cmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
+std::string CmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
 	std::string Tempt = eventToUpdate.displayEvent();
 	eventToUpdate.changeStartDay(_startingDate);
 	eventToUpdate.changeStartMonth(_startingMonth);
@@ -81,7 +81,7 @@ std::string cmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber, 
 }
 
 //remove task start time
-std::string cmdUpdate::clearStartingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
+std::string CmdUpdate::clearStartingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
 	std::string Tempt = eventToUpdate.displayEvent();
 	int endDay = eventToUpdate.getEndDate();
 	int endMonth = eventToUpdate.getEndMonth();
@@ -95,7 +95,7 @@ std::string cmdUpdate::clearStartingTime(Event eventToUpdate, int eventNumber, S
 }
 
 //remove task ending time
-std::string cmdUpdate::clearEndingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
+std::string CmdUpdate::clearEndingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
 	std::string Tempt = eventToUpdate.displayEvent();
 	eventToUpdate.changeEndDay(INVALID_DATE);
 	eventToUpdate.changeEndMonth(INVALID_MONTH);
@@ -106,7 +106,7 @@ std::string cmdUpdate::clearEndingTime(Event eventToUpdate, int eventNumber, Sto
 	return _feedback; 
 }
 
-std::string cmdUpdate::updateRecurringName(Event eventToUpdate, int eventNumber, Storage& _storage) {
+std::string CmdUpdate::updateRecurringName(Event eventToUpdate, int eventNumber, Storage& _storage) {
 	eventToUpdate.changeTitle(_taskName);
 	_storage.updateRecurring(eventNumber, eventToUpdate);
 	updateStorage(_storage);
@@ -114,26 +114,26 @@ std::string cmdUpdate::updateRecurringName(Event eventToUpdate, int eventNumber,
 	return _feedback;
 }
 
-std::string cmdUpdate::updateRecurringStartTime(int eventNumber, Storage& _storage) {
+std::string CmdUpdate::updateRecurringStartTime(int eventNumber, Storage& _storage) {
 	_storage.updateRecurringStartTime(eventNumber, _startingTime);
 	updateStorage(_storage);
 	_feedback = UPDATE_RECURRING_TIME;
 	return _feedback;
 }
 
-std::string cmdUpdate::updateRecurringEndTime(int eventNumber, Storage& _storage) {
+std::string CmdUpdate::updateRecurringEndTime(int eventNumber, Storage& _storage) {
 	_storage.updateRecurringEndTime(eventNumber, _endingTime);
 	updateStorage(_storage);
 	_feedback = UPDATE_RECURRING_TIME;
 	return _feedback;
 }
 
-std::string cmdUpdate::printFeedback(std::string Tempt, Event eventToUpdate){
+std::string CmdUpdate::printFeedback(std::string Tempt, Event eventToUpdate){
 	std::string feedback = QUOTATION_MARKS + Tempt + UPDATE_MESSAGE + QUOTATION_MARKS + eventToUpdate.displayEvent() +"\" \n\n";
 	return feedback;
 }
 
-void cmdUpdate::updateStorage(Storage& _storage){
+void CmdUpdate::updateStorage(Storage& _storage){
 	_storage.sortActiveEventlist();
 	_storage.synchronizeDrive();
 }

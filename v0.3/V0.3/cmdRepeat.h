@@ -10,12 +10,12 @@
 #include "findNextDate.h"
 #include "cmdRepeatParser.h"
 
-class cmdRepeat :
-	public logicBaseClass
+class CmdRepeat :
+	public LogicBaseClass
 {
 private:
 	findNextDate _findNextDate;
-	cmdRepeatParser _parser;
+	CmdRepeatParser _parser;
 	std::string _repeatDetails;
 	std::string _repeatCommand;
 	enum repeatType{DAILY, WEEKLY, MONTHLY, EVERYWEEKDAY};
@@ -28,8 +28,8 @@ private:
 	std::list<Event> _events;
 
 public:
-	cmdRepeat(void);
-	~cmdRepeat(void);
+	CmdRepeat(void);
+	~CmdRepeat(void);
 	std::string executecmdRepeat(Storage&);
 	void repeatTimedTask(Event, Storage&);
 	void repeatDeadlineTask(Event, Storage&);

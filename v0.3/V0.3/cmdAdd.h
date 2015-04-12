@@ -4,12 +4,12 @@
 
 //This cmdAdd class will add three types of event to the storage:
 //Floating task, Deadline task and Timed task
-class cmdAdd: public logicBaseClass{
+class CmdAdd: public LogicBaseClass{
 private:
 	Event _newEvent;
 public:
-	cmdAdd(void);
-	~cmdAdd(void);
+	CmdAdd(void);
+	~CmdAdd(void);
 	std::string executecmdAdd(Storage&);
 	std::string addEventWithDeadline(Storage&);
 	std::string addEventWithoutDeadline(Storage&);

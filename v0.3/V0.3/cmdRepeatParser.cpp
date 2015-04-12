@@ -12,20 +12,20 @@ const static int INVALID_REPEAT_TIME = -1;
 const static int DEFAULT_TIMES = 0;
 
 
-cmdRepeatParser::cmdRepeatParser(void) {
+CmdRepeatParser::CmdRepeatParser(void) {
 }
 
-cmdRepeatParser::~cmdRepeatParser(void) {
+CmdRepeatParser::~CmdRepeatParser(void) {
 }
 
-void cmdRepeatParser::initialzeAttributes() {
+void CmdRepeatParser::initialzeAttributes() {
 	_repeatDetails = EMPTY_STRING;
 	_repeatType = EMPTY_STRING;
 	_repeatTimes = DEFAULT_TIMES;
 	_exceptionDetail = EMPTY_STRING;
 }
 
-bool cmdRepeatParser::checkValidityAndGetDetails(std::string repeatDetail, std::string &repeatType, int &repeatTimes, bool &isWithException, std::string &exceptionType) {
+bool CmdRepeatParser::checkValidityAndGetDetails(std::string repeatDetail, std::string &repeatType, int &repeatTimes, bool &isWithException, std::string &exceptionType) {
 	initialzeAttributes();
 	repeatDetail = lowercaseRepeatDetail(repeatDetail);
 	_repeatDetails = repeatDetail;
@@ -62,7 +62,7 @@ bool cmdRepeatParser::checkValidityAndGetDetails(std::string repeatDetail, std::
 	return isValid;
 }
 
-bool cmdRepeatParser::getRepeatTimes(std::string repeatDetail) {
+bool CmdRepeatParser::getRepeatTimes(std::string repeatDetail) {
 
 	int repeatTypeSize = _repeatType.size();
 	int EIndex = repeatDetail.find(_repeatType);
@@ -111,7 +111,7 @@ bool cmdRepeatParser::getRepeatTimes(std::string repeatDetail) {
 	}
 }
 
-bool cmdRepeatParser::getExceptionDetails(std::string repeatDetail) {
+bool CmdRepeatParser::getExceptionDetails(std::string repeatDetail) {
 	int EIndex = repeatDetail.find(EXCEPT_STRING);
 	repeatDetail = repeatDetail.substr(EIndex);
 
@@ -145,7 +145,7 @@ bool cmdRepeatParser::getExceptionDetails(std::string repeatDetail) {
 }	
 
 
-bool cmdRepeatParser::getDetailsForRepeatCertainDayOfAWeek(std::string repeatDetail) {
+bool CmdRepeatParser::getDetailsForRepeatCertainDayOfAWeek(std::string repeatDetail) {
 
 	int TIndex = repeatDetail.find(STRING_EVERY);
 	repeatDetail = repeatDetail.substr(TIndex);
@@ -176,7 +176,7 @@ bool cmdRepeatParser::getDetailsForRepeatCertainDayOfAWeek(std::string repeatDet
 	}
 }		
 
-bool cmdRepeatParser::isValidIndex(int TIndex) {
+bool CmdRepeatParser::isValidIndex(int TIndex) {
 	if (TIndex != std::string::npos && TIndex >= 0) {
 		return true;
 	} else {
@@ -184,7 +184,7 @@ bool cmdRepeatParser::isValidIndex(int TIndex) {
 	}
 }
 
-bool cmdRepeatParser::hasException() {
+bool CmdRepeatParser::hasException() {
 	int TIndex;
 	TIndex = _repeatDetails.find(EXCEPT_STRING);
 
@@ -197,7 +197,7 @@ bool cmdRepeatParser::hasException() {
 	return _hasException;
 }
 
-bool cmdRepeatParser::isDailyWeeklyMonthly(std::string str) {
+bool CmdRepeatParser::isDailyWeeklyMonthly(std::string str) {
 	int indexOne = str.find(STRING_DAILY);
 	int indexTwo = str.find(STRING_WEEKLY);
 	int indexThree = str.find(STRING_MONTHLY);
@@ -216,7 +216,7 @@ bool cmdRepeatParser::isDailyWeeklyMonthly(std::string str) {
 	}
 }
 
-bool cmdRepeatParser::isCertainDayOfAWeek(std::string str) {
+bool CmdRepeatParser::isCertainDayOfAWeek(std::string str) {
 	int Tindex = str.find(STRING_EVERY);
 	if (isValidIndex(Tindex)) {
 		return true;
@@ -225,7 +225,7 @@ bool cmdRepeatParser::isCertainDayOfAWeek(std::string str) {
 	}
 }
 
-bool cmdRepeatParser::isStringAnInteger(std::string str) {
+bool CmdRepeatParser::isStringAnInteger(std::string str) {
 
 	for (int i = str.size()-1; i >= 0; i--) {
 
@@ -237,7 +237,7 @@ bool cmdRepeatParser::isStringAnInteger(std::string str) {
 	return true;
 }
 
-std::string cmdRepeatParser::lowercaseRepeatDetail(std::string repeatDetail) {
+std::string CmdRepeatParser::lowercaseRepeatDetail(std::string repeatDetail) {
 	int n = repeatDetail.size();
 
 	for (int i = 0; i < n; i++) {

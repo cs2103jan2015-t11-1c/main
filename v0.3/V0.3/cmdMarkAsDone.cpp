@@ -11,17 +11,15 @@ const static std::string LOG_MARKASDONE = "executed mark as done";
 const static std::string LOG_PRINT_FEEDBACK = "executed print feedback";
 const static std::string INFO = "Info";
 
-cmdMarkAsDone::cmdMarkAsDone(void)
-{
+CmdMarkAsDone::CmdMarkAsDone(void) {
 }
 
 
-cmdMarkAsDone::~cmdMarkAsDone(void)
-{
+CmdMarkAsDone::~CmdMarkAsDone(void) {
 }
 
 //mark one event or multiple tasks as done
-std::string cmdMarkAsDone::executeMarkAsDone(Storage& _storage){
+std::string CmdMarkAsDone::executeMarkAsDone(Storage& _storage) {
 	int eventNumber = _taskNumberList.size();
 	Eventlist activeEvents = _storage.displayEvent();
 
@@ -41,7 +39,7 @@ std::string cmdMarkAsDone::executeMarkAsDone(Storage& _storage){
 	}
 }
 	
-std::string cmdMarkAsDone::printFeedback(std::list<int> taskNumberList, Storage& _storage){
+std::string CmdMarkAsDone::printFeedback(std::list<int> taskNumberList, Storage& _storage) {
 	std::ostringstream feedback;
 	Event eventMarkedDone;
 	if (taskNumberList.size() == ONE_EVENT) {

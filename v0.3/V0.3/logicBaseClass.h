@@ -6,9 +6,8 @@
 #include "Storage.h"
 
 #pragma once
-class logicBaseClass {
-	protected:
-	
+class LogicBaseClass {
+protected:
 	std::string _taskName;
 	int _startingTime;
 	int _endingTime;
@@ -19,15 +18,15 @@ class logicBaseClass {
 	std::list<int> _taskNumberList;
 	Storage _storage;
 	std::string _feedback;
-	
 	int noOfCommand;
+
 public:
 	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATERECURNAME, UPDATEENDINGTIME, UPDATERECURENDINGTIME, UPDATESTARTINGTIME, UPDATERECURSTARTINGTIME, DELETE, DELETERECUR, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, DISPLAYTOMORROW, DISPLAYALL, SEARCH, UNDO, CLEAR, CLEAREND, CLEARRECUREND, CLEARSTART, CLEARRECURSTART, CHANGEDIRECTORY, HELP, EXIT, REPEAT, REPEATDONE};
 	CommandType _commandWord;
 	std::vector<CommandType> vectorCommand;
 	void initialise (CommandType,std::string, int, int, int, int, int, int, std::list<int>);
-	logicBaseClass(void);
-	logicBaseClass(Storage &storage);
-	~logicBaseClass(void);
+	LogicBaseClass(void);
+	LogicBaseClass(Storage &storage);
+	~LogicBaseClass(void);
 };
 

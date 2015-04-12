@@ -2,20 +2,22 @@
 #include "logic.h"
 #include <assert.h>
 #include <iostream>
-const static string EXIT_MESSAGE = "Thank you for using Minik:)";
-const static string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.";
+const static std::string EXIT_MESSAGE = "Thank you for using Minik:)";
+const static std::string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.";
 
-logic::logic(){
+Logic::Logic() {
 	_storage.readFile();
 }
-logic::logic(CommandType command){
+
+Logic::Logic(CommandType command) {
 	_commandWord = command;
 	_storage.readFile();
 }
-logic::~logic(){
+
+Logic::~Logic() {
 }
 
-void logic:: setCommand (string taskName, int startingDate, int startingMonth, int startingTime, int endingMonth, int endingDate, int endingTime, list<int> taskNumerlist){
+void Logic:: setCommand (std::string taskName, int startingDate, int startingMonth, int startingTime, int endingMonth, int endingDate, int endingTime, list<int> taskNumerlist) {
 	_taskName = taskName;
 	_startingDate = startingDate;
 	_startingMonth = startingMonth;
@@ -27,7 +29,7 @@ void logic:: setCommand (string taskName, int startingDate, int startingMonth, i
 }
 
 //taes in command word and execute command
-string logic::executeCommand(CommandType command ,string taskName, int startingDate, int startingMonth, int startingTime, int endingDate, int endingMonth, int endingTime, list<int> taskNumerlist){
+std::string Logic::executeCommand(CommandType command ,string taskName, int startingDate, int startingMonth, int startingTime, int endingDate, int endingMonth, int endingTime, list<int> taskNumerlist) {
 	_commandWord = command;
 	vectorCommand.push_back(command);
 	if (command == ADDEVENTWITHDEADLINE || command == ADDFLOATINGEVENT || command == ADDTIMEDEVENT) {

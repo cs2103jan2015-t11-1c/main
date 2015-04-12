@@ -16,27 +16,27 @@
 #include "cmdRepeat.h"
 
 using namespace std;
-class logic : public logicBaseClass {
+class Logic : public LogicBaseClass {
 private:	
-	cmdAdd _add;
-	cmdUpdate _update;
-	cmdDisplay _display;
-	cmdClear _clear;
-	cmdMarkAsDone _markAsDone;
-	cmdSearch _search;
-	cmdUndo _undo;
-	cmdDelete _delete;
-	cmdHelp _help;
-	cmdChangeDirectory _changeDirectory;
-	cmdRepeat _repeat;
+	CmdAdd _add;
+	CmdUpdate _update;
+	CmdDisplay _display;
+	CmdClear _clear;
+	CmdMarkAsDone _markAsDone;
+	CmdSearch _search;
+	CmdUndo _undo;
+	CmdDelete _delete;
+	CmdHelp _help;
+	CmdChangeDirectory _changeDirectory;
+	CmdRepeat _repeat;
 	//Storage _storage;
 
 public:
 
 	//METHODS
-	logic();
-	logic(CommandType commandWord);
-	~logic();
+	Logic();
+	Logic(CommandType commandWord);
+	~Logic();
 	//void logicStorage ();
 	void setCommand (std::string, int, int, int, int, int, int, list<int>);
 	std::string executeCommand(CommandType, std::string, int, int, int, int, int, int, list<int>);

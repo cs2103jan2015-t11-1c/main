@@ -3,14 +3,14 @@
 const static std::string MESSAGE_CHANGE_DIRECTORY = "Directory is changed to: ";
 const static std::string TWO_LINES = "\n\n";
 
-cmdChangeDirectory::cmdChangeDirectory(void){
+CmdChangeDirectory::CmdChangeDirectory(void){
 }
 
-cmdChangeDirectory::~cmdChangeDirectory(void){
+CmdChangeDirectory::~CmdChangeDirectory(void){
 }
 
 //Change directory for the local file
-std::string cmdChangeDirectory::executecmdChangeDirectory(Storage& _storage){
+std::string CmdChangeDirectory::executecmdChangeDirectory(Storage& _storage){
 	std::string directory = _taskName;
 	const char * newDirectory = directory.c_str();
 	_storage.changeCurrentDirectory(newDirectory);
@@ -19,7 +19,7 @@ std::string cmdChangeDirectory::executecmdChangeDirectory(Storage& _storage){
 	return _feedback;
 }
 
-std::string cmdChangeDirectory::getFeedback(std::string directory){
+std::string CmdChangeDirectory::getFeedback(std::string directory){
 	std::string feedback;
 	feedback = MESSAGE_CHANGE_DIRECTORY + directory + TWO_LINES;
 	return feedback;

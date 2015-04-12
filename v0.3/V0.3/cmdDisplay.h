@@ -4,10 +4,10 @@
 #include <ctime>
 
 //This cmdDisplay will display all events, active events, done events, today's events or tomorrow's events
-class cmdDisplay : public logicBaseClass {
+class CmdDisplay : public LogicBaseClass {
 public:
-	cmdDisplay(void);
-	~cmdDisplay(void);
+	CmdDisplay(void);
+	~CmdDisplay(void);
 	bool isEmptyEventsStorage(Storage& _storage);
 	std::string executecmdDisplay(Storage& _storage);
 	std::string cmdDisplayDone(Storage& _storage);

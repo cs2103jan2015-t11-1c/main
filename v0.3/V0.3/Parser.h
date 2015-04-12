@@ -21,8 +21,8 @@ private:
 	MonthType _startingMonth;
 	MonthType _endingMonth;
 	std::list<int> _taskNumberList;
-	logic _logic;
-	logicBaseClass _logicBaseClass;
+	Logic _logic;
+	LogicBaseClass _logicBaseClass;
 	VerificationDateTimeMonth _verificationDateTimeMonth;
 
 public:
@@ -62,7 +62,7 @@ public:
 	int getIndexOfFirstWhiteSpace(std::string );
 	int convertStringToInteger(std::string str);
 	int getUpdatetaskNumber(std::string &);
-	logic::CommandType changeToLogicCommandType(CommandType );
+	Logic::CommandType changeToLogicCommandType(CommandType );
 	MonthType determineMonthType(std::string );
 	void resetAttributesValue();
 	void replaceStringWithItsSubstring(std::string &, int );
