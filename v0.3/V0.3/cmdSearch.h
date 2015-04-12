@@ -1,8 +1,6 @@
 #pragma once
 #include "logicBaseClass.h"
-class cmdSearch :
-	public logicBaseClass
-{
+class cmdSearch : public logicBaseClass {
 private:
 	Eventlist _eventFound;
 	std::vector<int> _eventNumbers;

@@ -7,6 +7,6 @@ class cmdChangeDirectory: public logicBaseClass {
 public:
 	cmdChangeDirectory(void);
 	~cmdChangeDirectory(void);
-	std::string executecmdChangeDirectory(Storage& _storage);
+	std::string executecmdChangeDirectory(Storage&);
 	std::string getFeedback(std::string);
 };

@@ -1,4 +1,8 @@
 //@author A0115429H
+//This cmdRepeat class will repeat a event (either floating or deadline) daily, weekly, monthly
+//every weekday (for example, every monday, every thur) for a number of times.
+//It also supports one exception in the repeat
+//For example, repeat daily except a weekday; repeat weekly/monthly except for a certain week/month
 #pragma once
 #include <iostream>
 #include <string>
@@ -38,14 +42,15 @@ public:
 	repeatType determineRepeatType();
 	bool isDefaultRepeatTimes(int repeatTimes);
 	int determineDefaultRepeatTimes(int);
-	void determineEventNumber();
+	int determineEventNumber();
 	int determineInterval(int, int);
-	void getTheStartingDate(int, int, int, int&, int&);
+	std::string getTheStartingDate(int, int, int, int&, int&);
 	int getExceptionTime(std::string);
 	int getNumberOfDays(int, int);
 	bool isExceptionDay(int, int, int, int);
 	bool isValidDate(int, int, int);
 	bool isValidEvent(int, int,int, int, int);
+	bool isLeapYear(int);
 	std::string lowercaseCommandWord(std::string);
 	void updateStorage(Storage& _storage);
 };

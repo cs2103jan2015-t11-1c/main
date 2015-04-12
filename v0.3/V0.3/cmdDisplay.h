@@ -2,6 +2,8 @@
 #pragma once
 #include "logicBaseClass.h"
 #include <ctime>
+
+//This cmdDisplay will display all events, active events, done events, today's events or tomorrow's events
 class cmdDisplay : public logicBaseClass {
 public:
 	cmdDisplay(void);
