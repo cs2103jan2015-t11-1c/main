@@ -55,6 +55,6 @@ std::string CmdMarkAsDone::printFeedback(std::list<int> taskNumberList, Storage&
 	}
 	std::cout << feedback.str();
 	Storage storage;
-	storage.writeToLogfile(INFO,(LOG_PRINT_FEEDBACK));
+	storage.writeToLogfile(INFO, LOG_PRINT_FEEDBACK);
 	return NEW_Line;
 }

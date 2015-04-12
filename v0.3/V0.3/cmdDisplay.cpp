@@ -1,5 +1,6 @@
 //@author A0115429H
 #include "cmdDisplay.h"
+#include "Storage.h"
 #include <sstream>
 #include <assert.h>
 
@@ -8,7 +9,10 @@ const static std::string MESSAGE_NO_EVENT_TODAY = "No Event today! \n\n";
 const static std::string MESSAGE_NO_EVENT_TOMORROW = "No Event tomorrow! \n\n";
 const static int NUMBER_OF_TASK_TO_DISPLAY = 21;
 const static std::string NEW_LINE = "\n";
-const static std::string Dot = ".";
+const static std::string DOT = ".";
+const static std::string INFO = "Info";
+const static std::string LOG_DISPLAY = "executed cmdDisplay";
+const static std::string LOG_DISPLAYALL = "executed cmdDisplayall";
 
 CmdDisplay::CmdDisplay(void){
 }
@@ -69,6 +73,8 @@ std::string CmdDisplay::cmdDisplayDone(Storage& _storage) {
 	std::list<Event> currentList = doneEvents.returnAllEvent();
 	std::string feedback;
 	feedback = eventsToDisplay(currentList);
+	Storage storage;
+	storage.writeToLogfile(INFO,LOG_DISPLAY);
 	return feedback;
 }
 
@@ -77,6 +83,8 @@ std::string CmdDisplay::cmdDisplayAll(Storage& _storage) {
 	std::list<Event> allEventList = allTasks.returnAllEvent();
 	std::string feedback;
 	feedback = allEvents(allEventList);
+	Storage storage;
+	storage.writeToLogfile(INFO,LOG_DISPLAYALL);
 	return feedback;
 }
 
@@ -159,7 +167,7 @@ std::string CmdDisplay::eventsToDisplay(std::list<Event> events) {
 	int i = 1;
 	std::list<Event>::iterator iter;
 	for (iter = events.begin(); iter != events.end() && i < NUMBER_OF_TASK_TO_DISPLAY; ++iter) {
-		display  << std::setw(3) << i << Dot << (*iter).displayEvent() << NEW_LINE;
+		display  << std::setw(3) << i << DOT << (*iter).displayEvent() << NEW_LINE;
 		i++;
 	}
 	display << NEW_LINE;
@@ -211,7 +219,7 @@ std::string CmdDisplay::allEvents(std::list<Event> events) {
 	int i = 1;
 	std::list<Event>::iterator iter;
 	for (iter = events.begin(); iter != events.end(); ++iter) {
-		display  << std::setw(3) << i << Dot << (*iter).displayEvent() << NEW_LINE;
+		display  << std::setw(3) << i << DOT << (*iter).displayEvent() << NEW_LINE;
 		i++;
 	}
 	display << NEW_LINE;
