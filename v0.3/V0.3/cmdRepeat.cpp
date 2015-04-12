@@ -305,7 +305,7 @@ bool CmdRepeat::isValidEvent(int date, int month, int year, int Tcount, int exce
 
 bool CmdRepeat::isValidDate(int date, int month, int year){
 	bool isValidDate = false;
-	if (date <= getNumberOfDays(month, year)) {
+	if (date <= getNumberOfDays(month, year) && date > 0) {
 		isValidDate = true;
 	}
 	return isValidDate;

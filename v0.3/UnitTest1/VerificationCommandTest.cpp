@@ -1,7 +1,10 @@
+//@author A0114301E
+//unit testing for VerificationCommandTest class
+
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "VerificationCommand.h"
-#include "VerificationDateTimeMonth.h"
+#include "../v0.3/VerificationCommand.h"
+#include "../v0.3/VerificationDateTimeMonth.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -82,14 +85,14 @@ namespace UnitTest1
 		TEST_METHOD(lowerCaseCommandWord)
 		{
 			VerificationCommand verification;
-			string actualOne = verification.lowercaseCommandWord("ADD");
-			string expectedOne = "add";
+			std::string actualOne = verification.lowercaseCommandWord("ADD");
+			std::string expectedOne = "add";
 			Assert::AreEqual(expectedOne,actualOne);
-			string actualTwo = verification.lowercaseCommandWord("Delete");
-			string expectedTwo = "delete";
+			std::string actualTwo = verification.lowercaseCommandWord("Delete");
+			std::string expectedTwo = "delete";
 			Assert::AreEqual(expectedTwo,actualTwo);
-			string actualThree = verification.lowercaseCommandWord("clear");
-			string expectedThree= "clear";
+			std::string actualThree = verification.lowercaseCommandWord("clear");
+			std::string expectedThree= "clear";
 			Assert::AreEqual(expectedThree,actualThree);
 
 		}
@@ -104,41 +107,41 @@ TEST_CLASS(VerificationDateTimeMonthTest)
 		TEST_METHOD(lowerCaseMonth)
 		{
 			VerificationDateTimeMonth verify;
-			string actualOne = verify.lowercaseMonth("Jan");
-			string expectedOne = "jan";
+			std::string actualOne = verify.lowercaseMonth("Jan");
+			std::string expectedOne = "jan";
 			Assert::AreEqual(actualOne, expectedOne);
-			string actualTwo = verify.lowercaseMonth("FEB");
-			string expectedTwo = "feb";
+			std::string actualTwo = verify.lowercaseMonth("FEB");
+			std::string expectedTwo = "feb";
 			Assert::AreEqual(actualTwo, expectedTwo);
-			string actualThree = verify.lowercaseMonth("MArch");
-			string expectedThree = "march";
+			std::string actualThree = verify.lowercaseMonth("MArch");
+			std::string expectedThree = "march";
 			Assert::AreEqual(actualThree, expectedThree);
-			string actualFour = verify.lowercaseMonth("april");
-			string expectedFour = "april";
+			std::string actualFour = verify.lowercaseMonth("april");
+			std::string expectedFour = "april";
 			Assert::AreEqual(actualFour, expectedFour);
-			string actualFive = verify.lowercaseMonth("MaY");
-			string expectedFive = "may";
+			std::string actualFive = verify.lowercaseMonth("MaY");
+			std::string expectedFive = "may";
 			Assert::AreEqual(actualFive, expectedFive);
-			string actualSix = verify.lowercaseMonth("juNe");
-			string expectedSix = "june";
+			std::string actualSix = verify.lowercaseMonth("juNe");
+			std::string expectedSix = "june";
 			Assert::AreEqual(actualSix, expectedSix);
-			string actualSeven = verify.lowercaseMonth("jul");
-			string expectedSeven = "jul";
+			std::string actualSeven = verify.lowercaseMonth("jul");
+			std::string expectedSeven = "jul";
 			Assert::AreEqual(actualSeven, expectedSeven);
-			string actualEight = verify.lowercaseMonth("AugUST");
-			string expectedEight = "aug";
+			std::string actualEight = verify.lowercaseMonth("AugUST");
+			std::string expectedEight = "august";
 			Assert::AreEqual(actualEight, expectedEight);
-			string actualNine = verify.lowercaseMonth("SEP");
-			string expectedNine = "sep";
+			std::string actualNine = verify.lowercaseMonth("SEP");
+			std::string expectedNine = "sep";
 			Assert::AreEqual(actualNine, expectedNine);
-			string actualTen = verify.lowercaseMonth("oct");
-			string expectedTen = "oct";
+			std::string actualTen = verify.lowercaseMonth("oct");
+			std::string expectedTen = "oct";
 			Assert::AreEqual(actualTen, expectedTen);
-			string actualEleven = verify.lowercaseMonth("NOv");
-			string expectedEleven = "nov";
+			std::string actualEleven = verify.lowercaseMonth("NOv");
+			std::string expectedEleven = "nov";
 			Assert::AreEqual(actualEleven, expectedEleven);
-			string actualTweleve = verify.lowercaseMonth("Dec");
-			string expectedTweleve = "Dec";
+			std::string actualTweleve = verify.lowercaseMonth("Dec");
+			std::string expectedTweleve = "dec";
 			Assert::AreEqual(actualTweleve, expectedTweleve);
 		}
 

@@ -26,7 +26,7 @@ std::string CmdDelete::executecmdDelete(Storage& _storage) {
 	}
 
 	int eventNumber = _taskNumberList.size();
-	assert (eventNumber != 0);
+	//assert (eventNumber != 0);
 	Eventlist activeEvents = _storage.displayEvent();
 	try {
 		if (eventNumber>activeEvents.getTotalNumberOfEvents()) {
