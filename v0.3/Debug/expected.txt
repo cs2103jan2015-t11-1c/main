@@ -1,0 +1,450 @@
+================================================
+Welcome to Minik!What would you like to do today?
+================================================
+
+Command: ================================================
+[1] add <task name> by: date month time
+e.g. add submit report by: 2 mar 1211
+
+[2] delete <task no.(s)>
+e.g. delete 1   delete 1 2 3
+
+[3] display undone/done tasks: display/displaydone
+    today/tomorrow: displaytoday   displaytomorrow
+
+[4] update <task no.> .name new name
+e.g update 1 .name collect homework
+
+[5] update <task no.> .start new start time
+e.g. update 1 .start 1 Mar 1211
+
+[6] update <task no.> .clear start
+e.g. update 2 .start 2 march 1211
+
+[7] update <task no.> .clear end
+e.g. update 2 .end 2 02 1211
+
+[8] update <task no.> .start new end time
+e.g. update 1 .end 1 mar 1211
+
+[9] mark task(s) as done
+e.g. done 1   done 1 2 3
+
+[10] undo last action: undo
+
+[11] search <key words>
+e.g. search homework
+
+[12] repeat <task no.> <frequency> <no. of repetitions>
+e.g. repeat 1 weekly 13 except 8   repeat 2 monthly 2
+     repeat 3 every mon/Monday/monday
+
+[13] change directory: changedirectory <new directory>
+e.g. changedirectory c:desktop
+
+[14] delete recurring task: deleterecur <task no.>
+e.g. deleterecur 1
+
+[15] update recurring task: updaterecur <task no.>
+e.g. updaterecur 1 .name   updaterecur 1 .start
+
+================================================
+Command: Reminder: You will be doing something else at this time. You may want to reschedule.
+"[16 Apr 11:00 - 16 Apr 11:30] cs demo" is added successfully.
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 13 Apr 11:59            ] submit v0.5
+  3.[by 16 Apr 10:00            ] 2130 report due
+  4.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  5.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  6.[05 May 19:10 - 05 May 20:00] swim at utown
+  7.[06 May 19:00 - 06 May 20:00] swim at utown
+  8.[07 May 19:00 - 07 May 20:00] swim at utown
+  9.[08 May 19:00 - 08 May 20:00] swim at utown
+ 10.[09 May 19:00 - 09 May 20:00] swim at utown
+ 11.[10 May 19:00 - 10 May 20:00] swim at utown
+ 12.[17 May 19:00 - 17 May 20:00] swim at utown
+ 13.[24 May 19:00 - 24 May 20:00] swim at utown
+ 14.[31 May 19:00 - 31 May 20:00] swim at utown
+ 15.[07 Jun 19:00 - 07 Jun 20:00] swim at utown
+ 16.[14 Jun 19:00 - 14 Jun 20:00] swim at utown
+ 17.[21 Jun 19:00 - 21 Jun 20:00] swim at utown
+ 18.[28 Jun 19:00 - 28 Jun 20:00] swim at utown
+ 19.[05 Jul 19:00 - 05 Jul 20:00] swim at utown
+ 20.[12 Jul 19:00 - 12 Jul 20:00] swim at utown
+
+Command: "[by 13 Apr 11:59            ] submit v0.5" is added successfully.
+
+Command: "[13 Apr 15:30 - 13 Apr 16:00] 2150 presentation" is added successfully.
+
+Command: "[by 16 Apr 12:00            ] 2130 report due" is added successfully.
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 13 Apr 11:59            ] submit v0.5
+  3.[by 13 Apr 11:59            ] submit v0.5
+  4.[13 Apr 15:30 - 13 Apr 16:00] 2150 presentation
+  5.[by 16 Apr 10:00            ] 2130 report due
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  8.[by 16 Apr 12:00            ] 2130 report due
+  9.[05 May 19:10 - 05 May 20:00] swim at utown
+ 10.[06 May 19:00 - 06 May 20:00] swim at utown
+ 11.[07 May 19:00 - 07 May 20:00] swim at utown
+ 12.[08 May 19:00 - 08 May 20:00] swim at utown
+ 13.[09 May 19:00 - 09 May 20:00] swim at utown
+ 14.[10 May 19:00 - 10 May 20:00] swim at utown
+ 15.[17 May 19:00 - 17 May 20:00] swim at utown
+ 16.[24 May 19:00 - 24 May 20:00] swim at utown
+ 17.[31 May 19:00 - 31 May 20:00] swim at utown
+ 18.[07 Jun 19:00 - 07 Jun 20:00] swim at utown
+ 19.[14 Jun 19:00 - 14 Jun 20:00] swim at utown
+ 20.[21 Jun 19:00 - 21 Jun 20:00] swim at utown
+
+Command: "[13 Apr 15:30 - 13 Apr 16:00] 2150 presentation" is updated to "[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation" 
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 13 Apr 11:59            ] submit v0.5
+  3.[by 13 Apr 11:59            ] submit v0.5
+  4.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  5.[by 16 Apr 10:00            ] 2130 report due
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  8.[by 16 Apr 12:00            ] 2130 report due
+  9.[05 May 19:10 - 05 May 20:00] swim at utown
+ 10.[06 May 19:00 - 06 May 20:00] swim at utown
+ 11.[07 May 19:00 - 07 May 20:00] swim at utown
+ 12.[08 May 19:00 - 08 May 20:00] swim at utown
+ 13.[09 May 19:00 - 09 May 20:00] swim at utown
+ 14.[10 May 19:00 - 10 May 20:00] swim at utown
+ 15.[17 May 19:00 - 17 May 20:00] swim at utown
+ 16.[24 May 19:00 - 24 May 20:00] swim at utown
+ 17.[31 May 19:00 - 31 May 20:00] swim at utown
+ 18.[07 Jun 19:00 - 07 Jun 20:00] swim at utown
+ 19.[14 Jun 19:00 - 14 Jun 20:00] swim at utown
+ 20.[21 Jun 19:00 - 21 Jun 20:00] swim at utown
+
+Command: The following event is deleted: 
+[by 13 Apr 11:59            ] submit v0.5
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 13 Apr 11:59            ] submit v0.5
+  3.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  4.[by 16 Apr 10:00            ] 2130 report due
+  5.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[by 16 Apr 12:00            ] 2130 report due
+  8.[05 May 19:10 - 05 May 20:00] swim at utown
+  9.[06 May 19:00 - 06 May 20:00] swim at utown
+ 10.[07 May 19:00 - 07 May 20:00] swim at utown
+ 11.[08 May 19:00 - 08 May 20:00] swim at utown
+ 12.[09 May 19:00 - 09 May 20:00] swim at utown
+ 13.[10 May 19:00 - 10 May 20:00] swim at utown
+ 14.[17 May 19:00 - 17 May 20:00] swim at utown
+ 15.[24 May 19:00 - 24 May 20:00] swim at utown
+ 16.[31 May 19:00 - 31 May 20:00] swim at utown
+ 17.[07 Jun 19:00 - 07 Jun 20:00] swim at utown
+ 18.[14 Jun 19:00 - 14 Jun 20:00] swim at utown
+ 19.[21 Jun 19:00 - 21 Jun 20:00] swim at utown
+ 20.[28 Jun 19:00 - 28 Jun 20:00] swim at utown
+
+Command: Undo last action successfully
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 13 Apr 11:59            ] submit v0.5
+  3.[by 13 Apr 11:59            ] submit v0.5
+  4.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  5.[by 16 Apr 10:00            ] 2130 report due
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  8.[by 16 Apr 12:00            ] 2130 report due
+  9.[05 May 19:10 - 05 May 20:00] swim at utown
+ 10.[06 May 19:00 - 06 May 20:00] swim at utown
+ 11.[07 May 19:00 - 07 May 20:00] swim at utown
+ 12.[08 May 19:00 - 08 May 20:00] swim at utown
+ 13.[09 May 19:00 - 09 May 20:00] swim at utown
+ 14.[10 May 19:00 - 10 May 20:00] swim at utown
+ 15.[17 May 19:00 - 17 May 20:00] swim at utown
+ 16.[24 May 19:00 - 24 May 20:00] swim at utown
+ 17.[31 May 19:00 - 31 May 20:00] swim at utown
+ 18.[07 Jun 19:00 - 07 Jun 20:00] swim at utown
+ 19.[14 Jun 19:00 - 14 Jun 20:00] swim at utown
+ 20.[21 Jun 19:00 - 21 Jun 20:00] swim at utown
+
+Command: "[05 May 19:00 - 05 May 20:00] swim at utown" is added successfully.
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 13 Apr 11:59            ] submit v0.5
+  3.[by 13 Apr 11:59            ] submit v0.5
+  4.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  5.[by 16 Apr 10:00            ] 2130 report due
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  8.[by 16 Apr 12:00            ] 2130 report due
+  9.[05 May 19:10 - 05 May 20:00] swim at utown
+ 10.[05 May 19:00 - 05 May 20:00] swim at utown
+ 11.[06 May 19:00 - 06 May 20:00] swim at utown
+ 12.[07 May 19:00 - 07 May 20:00] swim at utown
+ 13.[08 May 19:00 - 08 May 20:00] swim at utown
+ 14.[09 May 19:00 - 09 May 20:00] swim at utown
+ 15.[10 May 19:00 - 10 May 20:00] swim at utown
+ 16.[17 May 19:00 - 17 May 20:00] swim at utown
+ 17.[24 May 19:00 - 24 May 20:00] swim at utown
+ 18.[31 May 19:00 - 31 May 20:00] swim at utown
+ 19.[07 Jun 19:00 - 07 Jun 20:00] swim at utown
+ 20.[14 Jun 19:00 - 14 Jun 20:00] swim at utown
+
+Command: 
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 13 Apr 11:59            ] submit v0.5
+  3.[by 13 Apr 11:59            ] submit v0.5
+  4.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  5.[by 16 Apr 10:00            ] 2130 report due
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  8.[by 16 Apr 12:00            ] 2130 report due
+  9.[by 17 Apr 10:00            ] 2130 report due
+ 10.[by 18 Apr 10:00            ] 2130 report due
+ 11.[by 19 Apr 10:00            ] 2130 report due
+ 12.[by 20 Apr 10:00            ] 2130 report due
+ 13.[by 21 Apr 10:00            ] 2130 report due
+ 14.[05 May 19:10 - 05 May 20:00] swim at utown
+ 15.[05 May 19:00 - 05 May 20:00] swim at utown
+ 16.[06 May 19:00 - 06 May 20:00] swim at utown
+ 17.[07 May 19:00 - 07 May 20:00] swim at utown
+ 18.[08 May 19:00 - 08 May 20:00] swim at utown
+ 19.[09 May 19:00 - 09 May 20:00] swim at utown
+ 20.[10 May 19:00 - 10 May 20:00] swim at utown
+
+Command: "[by 16 Apr 10:00            ] 2130 report due" is updated to "[05 May 19:10 - 16 Apr 10:00] 2130 report due" 
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 13 Apr 11:59            ] submit v0.5
+  3.[by 13 Apr 11:59            ] submit v0.5
+  4.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  5.[05 May 19:10 - 16 Apr 10:00] 2130 report due
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  8.[by 16 Apr 12:00            ] 2130 report due
+  9.[by 17 Apr 10:00            ] 2130 report due
+ 10.[by 18 Apr 10:00            ] 2130 report due
+ 11.[by 19 Apr 10:00            ] 2130 report due
+ 12.[by 20 Apr 10:00            ] 2130 report due
+ 13.[by 21 Apr 10:00            ] 2130 report due
+ 14.[05 May 19:10 - 05 May 20:00] swim at utown
+ 15.[05 May 19:00 - 05 May 20:00] swim at utown
+ 16.[06 May 19:00 - 06 May 20:00] swim at utown
+ 17.[07 May 19:00 - 07 May 20:00] swim at utown
+ 18.[08 May 19:00 - 08 May 20:00] swim at utown
+ 19.[09 May 19:00 - 09 May 20:00] swim at utown
+ 20.[10 May 19:00 - 10 May 20:00] swim at utown
+
+Command: The following event is marked as done: 
+[by 13 Apr 11:59            ] submit v0.5
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 13 Apr 11:59            ] submit v0.5
+  3.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  4.[05 May 19:10 - 16 Apr 10:00] 2130 report due
+  5.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[by 16 Apr 12:00            ] 2130 report due
+  8.[by 17 Apr 10:00            ] 2130 report due
+  9.[by 18 Apr 10:00            ] 2130 report due
+ 10.[by 19 Apr 10:00            ] 2130 report due
+ 11.[by 20 Apr 10:00            ] 2130 report due
+ 12.[by 21 Apr 10:00            ] 2130 report due
+ 13.[05 May 19:10 - 05 May 20:00] swim at utown
+ 14.[05 May 19:00 - 05 May 20:00] swim at utown
+ 15.[06 May 19:00 - 06 May 20:00] swim at utown
+ 16.[07 May 19:00 - 07 May 20:00] swim at utown
+ 17.[08 May 19:00 - 08 May 20:00] swim at utown
+ 18.[09 May 19:00 - 09 May 20:00] swim at utown
+ 19.[10 May 19:00 - 10 May 20:00] swim at utown
+ 20.[17 May 19:00 - 17 May 20:00] swim at utown
+
+Command:   1.[13 Apr 15:30 - 13 Apr 16:00] 2150 presentation
+  2.[by 13 Apr 11:59            ] submit v0.5
+
+Command: No Event today! 
+
+Command:   1.[by 13 Apr 11:59            ] submit v0.5
+  2.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+
+Command: Sorry, invalid command.
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 13 Apr 11:59            ] submit v0.5
+  3.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  4.[05 May 19:10 - 16 Apr 10:00] 2130 report due
+  5.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[by 16 Apr 12:00            ] 2130 report due
+  8.[by 17 Apr 10:00            ] 2130 report due
+  9.[by 18 Apr 10:00            ] 2130 report due
+ 10.[by 19 Apr 10:00            ] 2130 report due
+ 11.[by 20 Apr 10:00            ] 2130 report due
+ 12.[by 21 Apr 10:00            ] 2130 report due
+ 13.[05 May 19:10 - 05 May 20:00] swim at utown
+ 14.[05 May 19:00 - 05 May 20:00] swim at utown
+ 15.[06 May 19:00 - 06 May 20:00] swim at utown
+ 16.[07 May 19:00 - 07 May 20:00] swim at utown
+ 17.[08 May 19:00 - 08 May 20:00] swim at utown
+ 18.[09 May 19:00 - 09 May 20:00] swim at utown
+ 19.[10 May 19:00 - 10 May 20:00] swim at utown
+ 20.[17 May 19:00 - 17 May 20:00] swim at utown
+ 21.[24 May 19:00 - 24 May 20:00] swim at utown
+ 22.[31 May 19:00 - 31 May 20:00] swim at utown
+ 23.[07 Jun 19:00 - 07 Jun 20:00] swim at utown
+ 24.[14 Jun 19:00 - 14 Jun 20:00] swim at utown
+ 25.[21 Jun 19:00 - 21 Jun 20:00] swim at utown
+ 26.[28 Jun 19:00 - 28 Jun 20:00] swim at utown
+ 27.[05 Jul 19:00 - 05 Jul 20:00] swim at utown
+ 28.[12 Jul 19:00 - 12 Jul 20:00] swim at utown
+ 29.[19 Jul 19:00 - 19 Jul 20:00] swim at utown
+ 30.[26 Jul 19:00 - 26 Jul 20:00] swim at utown
+ 31.[02 Aug 19:00 - 02 Aug 20:00] swim at utown
+
+Command: "[by 13 Apr 11:59            ] submit v0.5" is updated to "[---------------------------] submit v0.5" 
+
+Command: Undo last action successfully
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 13 Apr 11:59            ] submit v0.5
+  3.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  4.[05 May 19:10 - 16 Apr 10:00] 2130 report due
+  5.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[by 16 Apr 12:00            ] 2130 report due
+  8.[by 17 Apr 10:00            ] 2130 report due
+  9.[by 18 Apr 10:00            ] 2130 report due
+ 10.[by 19 Apr 10:00            ] 2130 report due
+ 11.[by 20 Apr 10:00            ] 2130 report due
+ 12.[by 21 Apr 10:00            ] 2130 report due
+ 13.[05 May 19:10 - 05 May 20:00] swim at utown
+ 14.[05 May 19:00 - 05 May 20:00] swim at utown
+ 15.[06 May 19:00 - 06 May 20:00] swim at utown
+ 16.[07 May 19:00 - 07 May 20:00] swim at utown
+ 17.[08 May 19:00 - 08 May 20:00] swim at utown
+ 18.[09 May 19:00 - 09 May 20:00] swim at utown
+ 19.[10 May 19:00 - 10 May 20:00] swim at utown
+ 20.[17 May 19:00 - 17 May 20:00] swim at utown
+
+Command: "[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation" is updated to "[by 16 Apr 10:00            ] 2150 presentation" 
+
+Command: Undo last action successfully
+
+Command: "[by 10 Apr 12:00            ] pay phone bills" is added successfully.
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 10 Apr 12:00            ] pay phone bills
+  3.[by 13 Apr 11:59            ] submit v0.5
+  4.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  5.[05 May 19:10 - 16 Apr 10:00] 2130 report due
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  8.[by 16 Apr 12:00            ] 2130 report due
+  9.[by 17 Apr 10:00            ] 2130 report due
+ 10.[by 18 Apr 10:00            ] 2130 report due
+ 11.[by 19 Apr 10:00            ] 2130 report due
+ 12.[by 20 Apr 10:00            ] 2130 report due
+ 13.[by 21 Apr 10:00            ] 2130 report due
+ 14.[05 May 19:10 - 05 May 20:00] swim at utown
+ 15.[05 May 19:00 - 05 May 20:00] swim at utown
+ 16.[06 May 19:00 - 06 May 20:00] swim at utown
+ 17.[07 May 19:00 - 07 May 20:00] swim at utown
+ 18.[08 May 19:00 - 08 May 20:00] swim at utown
+ 19.[09 May 19:00 - 09 May 20:00] swim at utown
+ 20.[10 May 19:00 - 10 May 20:00] swim at utown
+
+Command: 
+Command: Undo last action successfully
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 10 Apr 12:00            ] pay phone bills
+  3.[by 13 Apr 11:59            ] submit v0.5
+  4.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  5.[05 May 19:10 - 16 Apr 10:00] 2130 report due
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  8.[by 16 Apr 12:00            ] 2130 report due
+  9.[by 17 Apr 10:00            ] 2130 report due
+ 10.[by 18 Apr 10:00            ] 2130 report due
+ 11.[by 19 Apr 10:00            ] 2130 report due
+ 12.[by 20 Apr 10:00            ] 2130 report due
+ 13.[by 21 Apr 10:00            ] 2130 report due
+ 14.[05 May 19:10 - 05 May 20:00] swim at utown
+ 15.[05 May 19:00 - 05 May 20:00] swim at utown
+ 16.[06 May 19:00 - 06 May 20:00] swim at utown
+ 17.[07 May 19:00 - 07 May 20:00] swim at utown
+ 18.[08 May 19:00 - 08 May 20:00] swim at utown
+ 19.[09 May 19:00 - 09 May 20:00] swim at utown
+ 20.[10 May 19:00 - 10 May 20:00] swim at utown
+
+Command: 
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 10 Apr 12:00            ] pay phone bills
+  3.[by 13 Apr 11:59            ] submit v0.5
+  4.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  5.[05 May 19:10 - 16 Apr 10:00] 2130 report due
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  8.[by 16 Apr 12:00            ] 2130 report due
+  9.[by 17 Apr 10:00            ] 2130 report due
+ 10.[by 18 Apr 10:00            ] 2130 report due
+ 11.[by 19 Apr 10:00            ] 2130 report due
+ 12.[by 20 Apr 10:00            ] 2130 report due
+ 13.[by 21 Apr 10:00            ] 2130 report due
+ 14.[by 25 Apr 10:00            ] 2130 report due
+ 15.[by 02 May 10:00            ] 2130 report due
+ 16.[05 May 19:10 - 05 May 20:00] swim at utown
+ 17.[05 May 19:00 - 05 May 20:00] swim at utown
+ 18.[06 May 19:00 - 06 May 20:00] swim at utown
+ 19.[07 May 19:00 - 07 May 20:00] swim at utown
+ 20.[08 May 19:00 - 08 May 20:00] swim at utown
+
+Command:   1.[by 10 Apr 12:00            ] pay phone bills
+  2.[by 10 Apr 12:00            ] pay phone bills
+  3.[by 13 Apr 11:59            ] submit v0.5
+  4.[13 Apr 15:30 - 16 Apr 10:00] 2150 presentation
+  5.[05 May 19:10 - 16 Apr 10:00] 2130 report due
+  6.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  7.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  8.[by 16 Apr 12:00            ] 2130 report due
+  9.[by 17 Apr 10:00            ] 2130 report due
+ 10.[by 18 Apr 10:00            ] 2130 report due
+ 11.[by 19 Apr 10:00            ] 2130 report due
+ 12.[by 20 Apr 10:00            ] 2130 report due
+ 13.[by 21 Apr 10:00            ] 2130 report due
+ 14.[by 25 Apr 10:00            ] 2130 report due
+ 15.[by 02 May 10:00            ] 2130 report due
+ 16.[05 May 19:10 - 05 May 20:00] swim at utown
+ 17.[05 May 19:00 - 05 May 20:00] swim at utown
+ 18.[06 May 19:00 - 06 May 20:00] swim at utown
+ 19.[07 May 19:00 - 07 May 20:00] swim at utown
+ 20.[08 May 19:00 - 08 May 20:00] swim at utown
+ 21.[by 09 May 10:00            ] 2130 report due
+ 22.[09 May 19:00 - 09 May 20:00] swim at utown
+ 23.[10 May 19:00 - 10 May 20:00] swim at utown
+ 24.[by 16 May 10:00            ] 2130 report due
+ 25.[17 May 19:00 - 17 May 20:00] swim at utown
+ 26.[by 23 May 10:00            ] 2130 report due
+ 27.[24 May 19:00 - 24 May 20:00] swim at utown
+ 28.[by 30 May 10:00            ] 2130 report due
+ 29.[31 May 19:00 - 31 May 20:00] swim at utown
+ 30.[by 06 Jun 10:00            ] 2130 report due
+ 31.[07 Jun 19:00 - 07 Jun 20:00] swim at utown
+ 32.[by 13 Jun 10:00            ] 2130 report due
+ 33.[14 Jun 19:00 - 14 Jun 20:00] swim at utown
+ 34.[by 20 Jun 10:00            ] 2130 report due
+ 35.[21 Jun 19:00 - 21 Jun 20:00] swim at utown
+ 36.[by 27 Jun 10:00            ] 2130 report due
+ 37.[28 Jun 19:00 - 28 Jun 20:00] swim at utown
+ 38.[by 04 Jul 10:00            ] 2130 report due
+ 39.[05 Jul 19:00 - 05 Jul 20:00] swim at utown
+ 40.[by 11 Jul 10:00            ] 2130 report due
+ 41.[12 Jul 19:00 - 12 Jul 20:00] swim at utown
+ 42.[19 Jul 19:00 - 19 Jul 20:00] swim at utown
+ 43.[26 Jul 19:00 - 26 Jul 20:00] swim at utown
+ 44.[02 Aug 19:00 - 02 Aug 20:00] swim at utown
+
+Command: 

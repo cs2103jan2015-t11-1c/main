@@ -1,0 +1,40 @@
+help
+add cs demo from: 16 apr 1100 to: 16 apr 1130
+display
+add submit v0.5 by: 13 apr 1159
+add 2150 presentation from: 13 apr 1530 to: 13 apr 1600
+add 2130 report due by: 16 apr 1200
+display
+update 4 .end 16 apr 1000
+display
+delete 3
+display
+undo
+display
+add swim at utown from: 5 may 1900 to: 5 may 2000
+display
+repeat 5 daily 5
+display
+update 5 .start 5 may 1910
+display
+done 2
+display
+displaydone
+displaytoday
+displaytomorrow
+displayal
+displayall
+update 2 .clear end
+undo
+display
+update 3 .clear start
+undo
+add pay phone bills by: 10 apr 1200
+display
+repeat 1 monthly 12
+undo
+display
+repeat 10 weekly 12
+display
+displayall
+exit
