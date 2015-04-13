@@ -1,4 +1,3 @@
-//@author A0115253R
 #include "UI\UI.h"
 #include <assert.h>
 #include <iostream>
