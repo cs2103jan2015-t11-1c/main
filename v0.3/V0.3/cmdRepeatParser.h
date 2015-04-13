@@ -1,3 +1,4 @@
+//@author A0115253R
 #pragma once
 #include <iostream>
 //repeat 1 daily/monthly/weekly 60
