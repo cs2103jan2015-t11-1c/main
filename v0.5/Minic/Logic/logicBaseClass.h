@@ -1,4 +1,7 @@
 //@author A0114301E
+//This LogicBaseClass is the parent class for other classes in logic 
+//component to inherit
+
 #include <iostream>
 #include <sstream>
 #include <string>

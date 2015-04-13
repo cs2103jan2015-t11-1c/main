@@ -15,12 +15,9 @@ const static std::string STRING_UPDATE_RECUR = "update repeat";
 const static std::string STRING_DELETE_RECUR = "delete repeat";
 const static std::string STRING_DIRECTORY = "directory";
 
-
-
 CmdUndo::CmdUndo(void){
 	noOfCommand = 0;
 }
-
 
 CmdUndo::~CmdUndo(void){
 }

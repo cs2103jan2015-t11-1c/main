@@ -34,7 +34,7 @@ const std::string OCTOBER = "Oct";
 const std::string NOVEMBER = "Nov";
 const std::string DECEMBER = "Dec";
 const std::string INVALID_MONTH = "Invalid Month";
-const std::string ERROR_YEAR = "Error: Setting year earlier than 2015 is not allowed. \\n";
+const std::string ERROR_YEAR = "Error: Setting year earlier than 2015 is not allowed. \n\n";
 const std::string RECURRING_NUMBER = "Recurring number: ";
 const int DEFAUlTYEAR = 2015;
 const int THOUSAND = 1000;
@@ -75,7 +75,7 @@ Event::Event(void) {
 Event::Event(std::string newTitle, int newDay, int newMonth, int newTime) {
 	assert(newTitle != EMPTY_STRING );
 	_title = newTitle;
-	_endDay= newDay;
+	_endDay = newDay;
 	_endMonth = newMonth;
 	_endTime = newTime;
 	_endYear = DEFAUlTYEAR;
@@ -266,7 +266,7 @@ void Event::changeStartYear (int newYear) {
 	if (newYear < DEFAUlTYEAR) {
 		throw std::string(ERROR_YEAR);
 	}
-	_startYear= newYear;
+	_startYear = newYear;
 }
 
 void Event::changeRecurringTaskSeries(int series) {
@@ -340,7 +340,7 @@ std::string Event::saveEvent() {
 		Ostring << convertTimeToString(_endTime) << EMPTY_SPACE;
 		Ostring << convertTimeToString(_endYear);
 	}
-	if ( _recurringTaskSeries > 0) {
+	if (_recurringTaskSeries > 0) {
 		Ostring << EMPTY_SPACE << RECURRING_NUMBER << _recurringTaskSeries;
 	}
 	return Ostring.str();

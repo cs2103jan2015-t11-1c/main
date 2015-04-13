@@ -2,6 +2,7 @@
 #include "cmdMarkAsDone.h"
 #include "Storage\Storage.h"
 #include <sstream>
+
 const static std::string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.";
 const static int ONE_EVENT = 1;
 const static std::string MESSAGE_MarkDone_ONE_EVENT = "The following event is marked as done: \n";
@@ -30,6 +31,8 @@ std::string CmdMarkAsDone::executeMarkAsDone(Storage& _storage) {
 	_feedback = printFeedback(_taskNumberList, _storage);
 	_storage.markEventAsDone(_taskNumberList);
 	_storage.synchronizeDrive();
+
+	//logging
 	Storage storage;
 	storage.writeToLogfile(INFO,LOG_MARKASDONE);
 	return _feedback;
@@ -54,6 +57,8 @@ std::string CmdMarkAsDone::printFeedback(std::list<int> taskNumberList, Storage&
 		}
 	}
 	std::cout << feedback.str();
+
+	//logging
 	Storage storage;
 	storage.writeToLogfile(INFO, LOG_PRINT_FEEDBACK);
 	return NEW_Line;

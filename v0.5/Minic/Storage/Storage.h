@@ -27,15 +27,15 @@ private:
 public:
 	Storage(void);
 	~Storage(void);
-	void addEvent (Event);
-	void unDoAddEvent ();
+	void addEvent(Event);
+	void unDoAddEvent();
 	void repeatEvent(std::list<Event>);
 	void unDoRepeatEvent();
-	void deleteEvent (std::list<int>);
-	void unDoDeleteEvent ();
-	void updateEvent (int, Event);
-	void unDoUpdateEvent ();
-	void markEventAsDone (std::list<int>);
+	void deleteEvent(std::list<int>);
+	void unDoDeleteEvent();
+	void updateEvent(int, Event);
+	void unDoUpdateEvent();
+	void markEventAsDone(std::list<int>);
 	void unDomarkEventAsDone();
 	void clearActiveEvent();
 	void unDoClearActiveEvent();
@@ -66,7 +66,7 @@ public:
 	void updateRecurringEndTime(int, int);
 	void undoUpdateRecurring();
 	bool unDopreviousActions(std::string);
-	Eventlist displayEvent (void);
+	Eventlist displayEvent(void);
 	Eventlist displayDoneEvent (void);
 	Event getEvent(int);
 	Event getDoneEvent(int);

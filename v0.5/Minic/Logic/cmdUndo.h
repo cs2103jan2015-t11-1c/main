@@ -1,6 +1,10 @@
 //@author A0114301E
+
+//This undo class performs undo action, which allows user to 
+//recover last action (as long as there is action to undo)
 #pragma once
 #include "logicBaseClass.h"
+
 class CmdUndo :
 	public LogicBaseClass
 {

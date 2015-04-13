@@ -291,7 +291,7 @@ void Storage::deleteRecurring(int inputIndex) {
 	int index = ZERO;
 	_currentEvent = _activeEvent.getEvent(inputIndex);
 	int recurringNumber = _currentEvent.getRecurringTaskSeries();
-	if ( recurringNumber == 0) {
+	if (recurringNumber == 0) {
 		throw std::string(NOT_RECURRING);
 	}
 	std::list<int> numbers;
@@ -576,7 +576,7 @@ void Storage::readEventsFromFile(std::string line) {
 			line = line.substr(NUMBER_OF_DIGIT_FOR_TIME);
 		}
 		recurringFinder = line.find(RECURRING_NUMBER);
-		if ( recurringFinder < std::string::npos) {
+		if (recurringFinder < std::string::npos) {
 			line = line.substr(RECURRING_NUMBER.size() + EMPTY_SPACE.size());
 			recurringNumber = line;
 			isRecurring = true;

@@ -2,6 +2,7 @@
 #pragma once
 #include "logicBaseClass.h"
 
+//This class displays help function for user to see all commands available
 class CmdHelp: public LogicBaseClass {
 private:
 	

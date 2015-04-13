@@ -32,7 +32,7 @@ VerificationCommand::~VerificationCommand(void) {
 std::string VerificationCommand::lowercaseCommandWord(std::string commandWord) {
 	int n = commandWord.size();
 
-	for ( int i = 0; i < n; i++) {
+	for (int i = 0; i < n; i++) {
 		if (commandWord[i] <= 'Z' && commandWord[i] >= 'A') {
 			commandWord[i] = commandWord[i] - ('Z' - 'z');
 		}

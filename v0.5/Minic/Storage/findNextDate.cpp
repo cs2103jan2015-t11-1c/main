@@ -104,7 +104,7 @@ void findNextDate::calculateTheNextDate() {
 
 //For extreme case that 2 dates are separated by more than 1 year.
 void findNextDate::calculateExtraLongDay() {
-	while( _day > MAX_DATE) {
+	while (_day > MAX_DATE) {
 		if (isLeapYear(_year)) {
 			advanceMonthLeapYear();
 		} else { 
@@ -117,7 +117,7 @@ void findNextDate::calculateExtraLongDay() {
 int findNextDate::calculateDayInMonth() {
 	int monthFromJanuary = MIN_MONTH;
 	int numberOfDaysInMonth = _day;
-	while(monthFromJanuary < _month) {
+	while (monthFromJanuary < _month) {
 		numberOfDaysInMonth = numberOfDaysInMonth + MONTH[monthFromJanuary];
 		monthFromJanuary ++;
 	}
@@ -128,7 +128,7 @@ int findNextDate::calculateDayInMonth() {
 int findNextDate::calculateDayInMonthForLeapYear() {
 	int monthFromJanuary = MIN_MONTH;
 	int numberOfDaysInMonth = _day;
-	while(monthFromJanuary < _month) {
+	while (monthFromJanuary < _month) {
 		numberOfDaysInMonth = numberOfDaysInMonth + MONTH_LEAP[monthFromJanuary];
 		monthFromJanuary ++;
 	}
@@ -139,7 +139,7 @@ int findNextDate::calculateDayInMonthForLeapYear() {
 int findNextDate::calculateDayInYear() {
 	int year = _year;
 	int numberOfDaysInYear = ZERO;
-	while( year > STARTING_YEAR) {
+	while (year > STARTING_YEAR) {
 		year = year - PREVIOUS_OR_NEXT;
 		if (isLeapYear(year)) {
 			numberOfDaysInYear += NUMBER_OF_DAYS_IN_LEAP_YEAR;
@@ -153,15 +153,15 @@ int findNextDate::calculateDayInYear() {
 //Calculate the total number of days since 1 Jan 2015.
 int findNextDate::totalNumberOfDays() {
 	int numberOfDaysInMonth;
-	if (	_year > STARTING_YEAR) {
-		if ( isLeapYear(_year)) {
+	if (_year > STARTING_YEAR) {
+		if (isLeapYear(_year)) {
 			numberOfDaysInMonth = calculateDayInMonthForLeapYear();
 		} else {
 			numberOfDaysInMonth = calculateDayInMonth();
 		}
 		numberOfDaysInMonth += calculateDayInYear();
 	} else {
-		if ( isLeapYear(_year)) {
+		if (isLeapYear(_year)) {
 			numberOfDaysInMonth = calculateDayInMonthForLeapYear();
 		} else {
 			numberOfDaysInMonth = calculateDayInMonth();

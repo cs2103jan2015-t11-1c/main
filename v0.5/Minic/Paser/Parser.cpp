@@ -33,9 +33,9 @@ static const int NOV = 11;
 static const int DEC = 12;
 const static std::string INVALID_INPUT_MESSAGE = "Invalid user input.\n\n";
 const static std::string INVALID_TIME_DATE_MONTH_MESSAGE ="Please check your user input time, date and month.\n\n";
-static const std::string EMPTY_STRING = "";
-static const std::string TIME_NOT_ASSIGNED = "2400";
-static const std::string TASK_NAME_NOT_ASSIGNED = "";
+const static std::string EMPTY_STRING = "";
+const static std::string TIME_NOT_ASSIGNED = "2400";
+const static std::string TASK_NAME_NOT_ASSIGNED = "";
 const static std::string STRING_END = "end";
 const static std::string STRING_START = "start";
 const static std::string STRING_NAME = "name";
@@ -60,7 +60,7 @@ const static std::string STRING_DELETERECUR = "deleterecur";
 const static std::string STRING_UPDATERECUR = "updaterecur";
 
 //All attributes are initialized with their respective NOTASSIGNED value. Assume 24:00 as time not assigned, "" as task not assigned, 0 as date not assigned.
-Parser::Parser(void){
+Parser::Parser(void) {
 	_taskName = TASK_NAME_NOT_ASSIGNED;
 	_startingTime = TIME_NOT_ASSIGNED; 
 	_endingTime = TIME_NOT_ASSIGNED;
@@ -71,7 +71,7 @@ Parser::Parser(void){
 	_taskNumberList.clear();
 }
 
-Parser::~Parser(void){
+Parser::~Parser(void) {
 }
 
 std::string Parser::clearEvent() {
@@ -278,7 +278,6 @@ std::string Parser::updateEvent(std::string command, std::string toDoList) {
 		replaceStringWithItsSubstring(buffer, TIndex);
 		std::string clearType = buffer.substr(0,getIndexOfFirstWhiteSpace(buffer));
 		return updateClear(clearType, command);
-
 	} else if (updateType == STRING_END) {
 		return updateEndingTime(buffer, command);
 	} else if (updateType == STRING_START) {
@@ -636,7 +635,7 @@ void Parser :: resetAttributesValue(){
 //This method checks whether the string can be converted to an integer.
 bool Parser::isStringAnInteger(std::string str) {
 
-	for (int i = str.size()-1; i >= 0; i--) {
+	for (int i = str.size() - 1; i >= 0; i--) {
 
 		if (!isdigit(str[i])) {
 			return false;
@@ -657,7 +656,7 @@ bool Parser::isEmpty(std::string str) {
 		return true;
 	} else {
 
-		for (int i = str.size()-1; i >= 0; i--) {
+		for (int i = str.size() - 1; i >= 0; i--) {
 			if (str[i] != ' ') {
 				return false;
 			}
@@ -835,7 +834,7 @@ std::string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
 	int integerStartingTime;
 	int integerEndingTime;
 
-	if(isTimeInteger) {
+	if (isTimeInteger) {
 		integerStartingTime = convertStringToInteger(_startingTime);
 		integerEndingTime = convertStringToInteger(_endingTime);
 	} else {

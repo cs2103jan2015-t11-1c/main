@@ -29,6 +29,7 @@ CmdHelp::~CmdHelp(void) {
 
 //display help for all functions 
 std::string CmdHelp::helpMessage() {
+	//logging
 	Storage storage;
 	storage.writeToLogfile(INFO,LOG_HELP);
 

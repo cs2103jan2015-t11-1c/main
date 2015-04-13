@@ -13,10 +13,10 @@ const static std::string LOG_DELETE = "executed delete";
 const static std::string RECURRING_EVENTS_DELETED = "Recurring events are deleted. \n\n";
 const static std::string INFO = "Info";
 
-CmdDelete::CmdDelete(void){
+CmdDelete::CmdDelete(void) {
 }
 
-CmdDelete::~CmdDelete(void){
+CmdDelete::~CmdDelete(void) {
 }
 
 //delete one task or multiple tasks
@@ -33,6 +33,8 @@ std::string CmdDelete::executecmdDelete(Storage& _storage) {
 			throw EXCEPTION_INVALID_INDEX;
 	}
 	_feedback = printFeedback(_taskNumberList, _storage);
+
+	//logging
 	_storage.deleteEvent(_taskNumberList);
 	_storage.synchronizeDrive();
 	Storage storage;

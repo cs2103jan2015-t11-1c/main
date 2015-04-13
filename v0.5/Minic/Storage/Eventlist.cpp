@@ -40,7 +40,7 @@ Event Eventlist::getEvent(unsigned int index) {
 	if (index < 1 || index > _allEvent.size()) {
 		throw std::string(ERROR_INDEX);
 	}
-	std::list<Event>::iterator eventPosition =_allEvent.begin();
+	std::list<Event>::iterator eventPosition = _allEvent.begin();
 	advance(eventPosition, index + GO_TO_PREVIOUS);
 	return *eventPosition;
 }
@@ -67,7 +67,7 @@ int Eventlist::getTotalNumberOfEvents (void) {
 //Event with no due time will be put to the end.
 void Eventlist::sortEvent(void) {  
 	_allEvent.sort([](const Event & a, const Event & b) { //given two event.
-	return a._dueRanking< b._dueRanking; });			  //compare their ranking.
+	return a._dueRanking < b._dueRanking; });			  //compare their ranking.
 }
 
 //Make a copy of list, for undo delete Eventlist

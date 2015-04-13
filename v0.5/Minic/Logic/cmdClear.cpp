@@ -16,6 +16,8 @@ std::string CmdClear::executeClear(Storage& _storage) {
 	_storage.clearActiveEvent();
 	_storage.clearDoneEvent();
 	_storage.synchronizeDrive();
+	
+	//logging
 	Storage storage;
 	storage.writeToLogfile(INFO,LOG_CLEAR);
 	return CLEAR_MESSAGE;

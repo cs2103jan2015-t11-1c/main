@@ -1,4 +1,9 @@
 //@author A0114301E
+
+//This Update class updates tasks
+//attributes can be updated including:
+//task name, ending date&time, starting date&time, remove starting time,
+//remove ending time
 #pragma once
 #include "logicBaseClass.h"
 class CmdUpdate : public LogicBaseClass {
