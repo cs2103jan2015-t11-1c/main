@@ -55,29 +55,40 @@ void CmdSearch::searchForEvent(std::list<Event> allEvents, int){
 	int eventNumber = 0;
 	Event currentEvent;
 
+	//tokenize key words
 	using namespace std;
 	stringstream ss(taskName);
 	string buffer;
 	vector<string> tokens;
-	while(ss >> buffer){
+	while (ss >> buffer) {
 		tokens.push_back(buffer);
 	}
 	int i = 0;
 	int size = tokens.size();
 
-	for(Tcount = allEvents.begin(); Tcount != allEvents.end(); Tcount++){
+	for (Tcount = allEvents.begin(); Tcount != allEvents.end(); Tcount++) {
 		eventNumber++;
 		currentEvent = *Tcount;
 		eventName = currentEvent.getTaskName();
+		stringstream str(eventName);
+		string buf;
+		vector<string> task;
+		while (str >> buf) {
+			task.push_back(buf);
+		}
+		int taskSize = task.size();
 		std::string newEventName = lowercaseCommandWord(eventName);
-		for(i = 0 ; i < size ; i++){
-		Tindex = newEventName.find(tokens[i]);
-		if(Tindex !=std:: string::npos){
+
+		//check if each token of key words match each token of task name
+	for (i = 0 ; i < taskSize ; i++) {
+		for (int j = 0; j < size; j++){
+			if(tokens[j] == task[i]) {
 			_eventNumbers.push_back(eventNumber);
 			_eventFound.addEvent(currentEvent);
 			break;
+			}
 		}
-		}
+	}
 	}
 }
 
