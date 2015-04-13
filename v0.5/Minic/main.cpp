@@ -2,7 +2,7 @@
 #include "UI\UI.h"
 #include <assert.h>
 #include <iostream>
-#include <Windows.h>
+#include <windows.h>
 #include <cstdlib>
 #include <assert.h>
 
@@ -12,7 +12,7 @@ int main() {
 
 	system("mode 100,50");   //Set mode to ensure window does not exceed buffer size
     SMALL_RECT WinRect = {0, 0, 100, 50};   //New dimensions for window in 8x12 pixel chars
-    SMALL_RECT* WinSize = &WinRect;
+    SMALL_RECT* WinSize = &WinRect;			//Before integration testing, these 4 lines must be removed.
     SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, WinSize); 
 	
 //@author A0115253R
