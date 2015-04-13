@@ -56,7 +56,7 @@ std::string CmdUndo::undo(Storage& _storage,std::vector<CommandType>& commandSto
 		std::cout<<UNDO_ERROR_MESSAGE;
 	} else if (lastCommand == HELP) {
 		std::cout<<UNDO_ERROR_MESSAGE;
-	} else if (lastCommand == REPEAT) {
+	} else if (lastCommand == REPEAT || lastCommand == REPEATDONE) {
 		lastCommandString = STRING_REPEAT;
 	} else if (lastCommand == DELETERECUR) {
 		lastCommandString = STRING_DELETE_RECUR;
