@@ -67,11 +67,13 @@ std::string CmdUndo::undo(Storage& _storage,std::vector<CommandType>& commandSto
 	} else {
 		return UNDO_UNSUCCESSFUL_MESSAGE;
 	}
+	try{
 	if (_storage.unDopreviousActions(lastCommandString)) {	
 		_storage.synchronizeDrive();
 		return printUndoMessage();
-	} else {
-		return UNDO_UNSUCCESSFUL_MESSAGE;
+	} 
+	}catch(...) {
+		throw UNDO_UNSUCCESSFUL_MESSAGE;
 	}
 }
 
