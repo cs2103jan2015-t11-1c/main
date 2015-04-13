@@ -2,7 +2,6 @@
 #include "cmdDisplay.h"
 #include "Storage\Storage.h"
 #include <sstream>
-#include <assert.h>
 
 const static std::string MESSAGE_EMPTY_ACTIVE_EVENTS = "Currently no active event. \n\n";
 const static std::string MESSAGE_NO_EVENT_TODAY = "No Event today! \n\n";
@@ -11,12 +10,12 @@ const static int NUMBER_OF_TASK_TO_DISPLAY = 21;
 const static std::string NEW_LINE = "\n";
 const static std::string DOT = ".";
 const static std::string INFO = "Info";
+const static std::string EMPTY_STRING = "";
 const static std::string LOG_DISPLAY = "executed cmdDisplay";
 const static std::string LOG_DISPLAYALL = "executed cmdDisplayall";
 
 CmdDisplay::CmdDisplay(void){
 }
-
 
 CmdDisplay::~CmdDisplay(void){
 }
@@ -31,7 +30,7 @@ bool CmdDisplay::isEmptyEventsStorage(Storage& _storage){
 
 	return isEmpty;
 }
-//display active tasks, tasks done or tasks due/start today
+//Display all tasks, active tasks, tasks done, tasks due/start today or tasks due/start tomorrow.
 std::string CmdDisplay::executecmdDisplay(Storage& _storage){
 	if(isEmptyEventsStorage(_storage)){
 		return MESSAGE_EMPTY_ACTIVE_EVENTS;
@@ -50,10 +49,9 @@ std::string CmdDisplay::executecmdDisplay(Storage& _storage){
 	case DISPLAYTOMORROW:
 		return cmdDisplayTomorrow(_storage);
 	default:
-		assert(false);
 		break;
 	} 	
-	return "";
+	return EMPTY_STRING;
 }
 
 //display active events

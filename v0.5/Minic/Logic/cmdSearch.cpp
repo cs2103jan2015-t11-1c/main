@@ -9,7 +9,6 @@ const static std::string TWO_LINES = "\n\n";
 cmdSearch::cmdSearch(void){
 }
 
-
 cmdSearch::~cmdSearch(void){
 }
 
@@ -23,7 +22,7 @@ std::string cmdSearch::executecmdSearch(Storage& _storage){
 
 	if (_eventFound.getTotalNumberOfEvents() != 0) {
 		_feedback = printEventFound();
-	}else{
+	} else {
 		_feedback = MESSAGE_EVENT_NOT_FOUND;
 	}
 
@@ -37,12 +36,11 @@ std::string cmdSearch::executecmdSearch(Storage& _storage){
 //this function converts upper case letter to lower case
 std::string cmdSearch::lowercaseCommandWord(std::string commandWord){
 	int n = commandWord.size();
-	for( int i = 0; i < n; i++){
-		if(commandWord[i] <='Z' && commandWord[i] >= 'A'){
+	for ( int i = 0; i < n; i++) {
+		if (commandWord[i] <='Z' && commandWord[i] >= 'A') {
 			commandWord[i] = commandWord[i] - ('Z'-'z');
 		}
 	}
-
   return commandWord;
 }
 
@@ -61,7 +59,7 @@ void cmdSearch::searchForEvent(std::list<Event> allEvents, int){
 		eventName = currentEvent.getTaskName();
 		std::string newEventName = lowercaseCommandWord(eventName);
 		Tindex = newEventName.find(taskName);
-		if(Tindex !=std:: string::npos){
+		if (Tindex !=std::string::npos) {
 			_eventNumbers.push_back(eventNumber);
 			_eventFound.addEvent(currentEvent);
 		}
@@ -76,12 +74,11 @@ std::string cmdSearch::printEventFound(){
 	int Tcount = 0;
 	std::list<Event> eventFound = _eventFound.returnAllEvent();
 	
-	for(Titer = eventFound.begin(); Titer != eventFound.end(); Titer++){
+	for (Titer = eventFound.begin(); Titer != eventFound.end(); Titer++) {
 		currentEvent = *Titer;
 		eventNumber = _eventNumbers[Tcount];
 		feedback << eventNumber << DOT << currentEvent.displayEvent() << TWO_LINES;
 		Tcount ++;
 	}
-
 	return feedback.str();
 }

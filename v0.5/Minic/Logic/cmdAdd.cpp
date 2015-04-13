@@ -12,7 +12,6 @@ const static std::string EMPTY_STRING = "";
 CmdAdd::CmdAdd(void){
 }
 
-
 CmdAdd::~CmdAdd(void){
 }
 
@@ -28,10 +27,8 @@ std:: string CmdAdd::executecmdAdd(Storage& _storage){
 	case ADDTIMEDEVENT:
 		return addTimedEvent(_storage);
 	default:
-		assert(false);
 		break;
 	} 
-
 	return EMPTY_STRING;
 }
 
