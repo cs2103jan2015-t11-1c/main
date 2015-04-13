@@ -6,7 +6,7 @@ static const int INVALID_DATE = 0;
 static const int INVALID_MONTH = 13;
 static const int INVALID_TIME = 2400;
 const static std::string UPDATE_MESSAGE = "\" is updated to ";
-const static std::string ERROR = "Error";
+const static std::string EMPTY_STRING = "";
 const static std::string QUOTATION_MARKS = "\"";
 const static std::string UPDATE_RECURRING_NAME = "Recurring Events' titles are changed.\n\n";
 const static std::string UPDATE_RECURRING_TIME = "Recurring Events' times are changed.\n\n";
@@ -23,7 +23,7 @@ std::string CmdUpdate::executecmdUpdate(Storage& _storage){
 	eventNumber= _taskNumberList.front();
 	Event eventToUpdate; 
 	eventToUpdate= _storage.getEvent(eventNumber);
-	switch(_commandWord){
+	switch(_commandWord) {
 	case UPDATENAME:
 		return updateName(eventToUpdate, eventNumber, _storage);
 	case UPDATESTARTINGTIME:
@@ -43,13 +43,14 @@ std::string CmdUpdate::executecmdUpdate(Storage& _storage){
 	default:
 		break;
 	}
-	return ERROR;
+	return EMPTY_STRING;
 }
 
 //update task name
 std::string CmdUpdate::updateName(Event eventToUpdate, int eventNumber, Storage& _storage){
 	std::string Tempt = eventToUpdate.displayEvent();
 	eventToUpdate.changeTitle(_taskName);
+	
 	_storage.updateEvent(eventNumber, eventToUpdate);
 	updateStorage(_storage);
 	_feedback = printFeedback(Tempt, eventToUpdate);
@@ -62,6 +63,7 @@ std::string CmdUpdate::updateEndingTime(Event eventToUpdate, int eventNumber, St
 	eventToUpdate.changeEndDay(_endingDate);
 	eventToUpdate.changeEndMonth(_endingMonth);
 	eventToUpdate.changeEndTime(_endingTime);
+	
 	_storage.updateEvent(eventNumber, eventToUpdate);
 	updateStorage(_storage);
 	_feedback = printFeedback(Tempt, eventToUpdate);
@@ -74,6 +76,7 @@ std::string CmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber, 
 	eventToUpdate.changeStartDay(_startingDate);
 	eventToUpdate.changeStartMonth(_startingMonth);
 	eventToUpdate.changeStartTime(_startingTime);
+	
 	_storage.updateEvent(eventNumber, eventToUpdate);
 	updateStorage(_storage);
 	_feedback = printFeedback(Tempt, eventToUpdate);
@@ -86,8 +89,9 @@ std::string CmdUpdate::clearStartingTime(Event eventToUpdate, int eventNumber, S
 	int endDay = eventToUpdate.getEndDate();
 	int endMonth = eventToUpdate.getEndMonth();
 	int endTime = eventToUpdate.getEndTime();
-	std::string eventName = eventToUpdate.getTaskName();
+	std::string eventName = eventToUpdate.getTaskName();	
 	Event newEvent(eventName, endDay, endMonth, endTime);
+	
 	_storage.updateEvent(eventNumber, newEvent);	
     updateStorage(_storage);
 	_feedback = printFeedback(Tempt, newEvent);
@@ -100,6 +104,7 @@ std::string CmdUpdate::clearEndingTime(Event eventToUpdate, int eventNumber, Sto
 	eventToUpdate.changeEndDay(INVALID_DATE);
 	eventToUpdate.changeEndMonth(INVALID_MONTH);
 	eventToUpdate.changeEndTime(INVALID_TIME);
+
 	_storage.updateEvent(eventNumber, eventToUpdate);
 	updateStorage(_storage);
 	_feedback = printFeedback(Tempt, eventToUpdate);

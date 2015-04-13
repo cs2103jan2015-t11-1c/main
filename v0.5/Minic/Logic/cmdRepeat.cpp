@@ -62,7 +62,7 @@ CmdRepeat::~CmdRepeat(void){
 //repeat a task
 std::string CmdRepeat::executecmdRepeat(Storage& _storage){
 	_repeatDetails = _taskName;
-	if(!_parser.checkValidityAndGetDetails(_repeatDetails, _repeatCommand, _repeatTimes, _hasException, _exceptionDetails)) {
+	if (!_parser.checkValidityAndGetDetails(_repeatDetails, _repeatCommand, _repeatTimes, _hasException, _exceptionDetails)) {
 		return INVALID_REPEATING_TYPE;
 	}
 	determineEventNumber();
