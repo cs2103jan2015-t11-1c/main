@@ -31,6 +31,7 @@ void Logic:: setCommand (std::string taskName, int startingDate, int startingMon
 //taes in command word and execute command
 std::string Logic::executeCommand(CommandType command ,string taskName, int startingDate, int startingMonth, int startingTime, int endingDate, int endingMonth, int endingTime, list<int> taskNumerlist) {
 	_commandWord = command;
+	assert(_commandWord == command);
 	vectorCommand.push_back(command);
 	if (command == ADDEVENTWITHDEADLINE || command == ADDFLOATINGEVENT || command == ADDTIMEDEVENT) {
 		_add.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
