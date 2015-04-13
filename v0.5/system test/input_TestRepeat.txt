@@ -1,0 +1,53 @@
+clear
+display
+add IE2130 meeting from: 15 04 2000 to: 15 04 2300
+repeat 1 daily
+display
+undo
+repeat 1 weekly
+display
+undo
+repeat 1 monthly
+display
+undo
+repeat 1 every tue
+display
+undo
+repeat 1 daily 3
+display
+undo
+repeat 1 weekly 3
+display
+undo
+repeat 1 monthly 3
+display
+undo
+repeat 1 every tue 3
+display
+undo
+repeat 1 daily except fri
+display
+undo
+repeat 1 weekly except 2
+display
+undo
+repeat 1 monthly except 2
+display
+undo
+repeat 1 every tue except 2
+display
+undo
+repeat 1 daily 3 except fri
+display
+undo
+repeat 1 weekly 3 except 2
+display
+undo
+repeat 1 monthly 3 except 2
+display
+undo
+repeat 1 every tue 3 except 2
+display
+undo
+exit
+

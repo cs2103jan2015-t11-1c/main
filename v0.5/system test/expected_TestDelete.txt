@@ -1,0 +1,39 @@
+================================================
+Welcome to Minik!What would you like to do today?
+================================================
+
+Command: all tasks cleared
+
+Command: Currently no active event. 
+
+Command: "[---------------------------] MA assignment" is added successfully.
+
+Command: "[14 Apr 10:00 - 14 Apr 11:00] MA tutorial" is added successfully.
+
+Command: "[---------------------------] buy ticket" is added successfully.
+
+Command:   1.[14 Apr 10:00 - 14 Apr 11:00] MA tutorial
+  2.[---------------------------] MA assignment
+  3.[---------------------------] buy ticket
+
+Command: The following event is deleted: 
+[14 Apr 10:00 - 14 Apr 11:00] MA tutorial
+
+Command:   1.[---------------------------] MA assignment
+  2.[---------------------------] buy ticket
+
+Command: Invalid user input.
+
+Command:   1.[---------------------------] MA assignment
+  2.[---------------------------] buy ticket
+
+Command: The following events are deleted: 
+[---------------------------] buy ticket
+[---------------------------] MA assignment
+
+Command: Currently no active event. 
+
+Command: ERROR: Invalid task number. Please enter a valid task number.
+Command: Currently no active event. 
+
+Command: 

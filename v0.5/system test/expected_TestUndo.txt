@@ -1,0 +1,22 @@
+================================================
+Welcome to Minik!What would you like to do today?
+================================================
+
+Command: all tasks cleared
+
+Command: Currently no active event. 
+
+Command: "[02 May 20:11 - 02 May 23:00] cs meeting" is added successfully.
+
+Command: "[02 May 20:11 - 02 May 23:00] cs meeting" is updated to "[02 May 20:11 - 02 May 23:00] IE project" 
+
+Command: 
+Command: The event is not a recurring event.Command: Undo last action successfully
+
+Command: Undo last action successfully
+
+Command: Undo last action successfully
+
+Command: Undo last action successfully
+
+Command: 

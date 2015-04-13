@@ -1,0 +1,15 @@
+clear
+display
+add MA assignment
+add MA tutorial from: 14 04 1000 to: 14 04 1100
+add buy ticket
+display
+delete 1
+display
+delete djhfjdhf
+display
+delete 1 2
+display
+delete 1
+display
+exit

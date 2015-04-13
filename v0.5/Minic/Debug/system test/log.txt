@@ -1,0 +1,894 @@
+Mon Apr 13 22:08:20 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:08:20 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> executed clear
+Mon Apr 13 22:08:20 2015
+ <info> executed help
+Mon Apr 13 22:08:20 2015
+ <Info> [16 Apr 11:00 - 16 Apr 11:30] cs demo added to incomplete events.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> [by 13 Apr 11:59            ] submit v0.5 added to incomplete events.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> [13 Apr 15:30 - 13 Apr 16:00] 2150 presentation added to incomplete events.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> [by 16 Apr 12:00            ] 2130 report due added to incomplete events.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> Update active event.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> Incomplete event(s) has been deleted.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> executed delete
+Mon Apr 13 22:08:20 2015
+ <Info> Undo delete active event(s).
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> [05 May 19:00 - 05 May 20:00] swim at utown added to incomplete events.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> Update active event.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> executed print feedback
+Mon Apr 13 22:08:20 2015
+ <Info> Event(s) has been marked as done.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> executed mark as done
+Mon Apr 13 22:08:20 2015
+ <Info> executed cmdDisplay
+Mon Apr 13 22:08:20 2015
+ <Info> executed cmdDisplayall
+Mon Apr 13 22:08:20 2015
+ <Info> Update active event.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> Undo update active event.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> Update active event.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> Undo update active event.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> [by 10 Apr 12:00            ] pay phone bills added to incomplete events.
+Mon Apr 13 22:08:20 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:20 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:08:21 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:21 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:08:21 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:21 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:08:21 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:21 2015
+ <Info> executed cmdDisplayall
+Mon Apr 13 22:08:37 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:08:37 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:08:37 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:08:37 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:37 2015
+ <Info> executed clear
+Mon Apr 13 22:08:37 2015
+ <Info> [16 Apr 11:00 - 16 Apr 11:30] cs demo added to incomplete events.
+Mon Apr 13 22:08:37 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:37 2015
+ <Info> [03 May 10:00 - 03 May 11:00] IE2130 project discussion added to incomplete events.
+Mon Apr 13 22:08:37 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:37 2015
+ <Info> [by 13 Apr 11:59            ] submit V0.5 added to incomplete events.
+Mon Apr 13 22:08:37 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:08:37 2015
+ <Info> [by 17 Apr 17:00            ] submit MA2213 homework added to incomplete events.
+Mon Apr 13 22:08:37 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:09:49 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:09:49 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:09:49 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:09:49 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:09:49 2015
+ <Info> executed clear
+Mon Apr 13 22:09:49 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:09:49 2015
+ <Info> Directory changed to: C:\Users\Desktop
+Mon Apr 13 22:11:03 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:11:03 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:11:03 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:11:03 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:03 2015
+ <Info> executed clear
+Mon Apr 13 22:11:03 2015
+ <Info> [---------------------------] MA assignment added to incomplete events.
+Mon Apr 13 22:11:03 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:03 2015
+ <Info> [14 Apr 10:00 - 14 Apr 11:00] MA tutorial added to incomplete events.
+Mon Apr 13 22:11:03 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:03 2015
+ <Info> [---------------------------] buy ticket added to incomplete events.
+Mon Apr 13 22:11:03 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:03 2015
+ <Info> Incomplete event(s) has been deleted.
+Mon Apr 13 22:11:03 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:03 2015
+ <Info> executed delete
+Mon Apr 13 22:11:03 2015
+ <Info> Incomplete event(s) has been deleted.
+Mon Apr 13 22:11:03 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:03 2015
+ <Info> executed delete
+Mon Apr 13 22:11:18 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> executed clear
+Mon Apr 13 22:11:18 2015
+ <Info> [13 Apr 08:00 - 13 Apr 23:00] CS meeting added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [14 Apr 09:00 - 14 Apr 23:00] IE2130 meeting added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] write report added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework1 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework2 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework3 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework4 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework5 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework6 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework7 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework8 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework9 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework10 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework11 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework12 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework13 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework14 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework15 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework16 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework17 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework18 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework19 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework20 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> [---------------------------] homework21 added to incomplete events.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> executed cmdDisplayall
+Mon Apr 13 22:11:18 2015
+ <Info> executed cmdDisplayall
+Mon Apr 13 22:11:18 2015
+ <Info> executed print feedback
+Mon Apr 13 22:11:18 2015
+ <Info> Event(s) has been marked as done.
+Mon Apr 13 22:11:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:18 2015
+ <Info> executed mark as done
+Mon Apr 13 22:11:18 2015
+ <Info> executed cmdDisplay
+Mon Apr 13 22:11:30 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:11:30 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:11:30 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:11:30 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:30 2015
+ <Info> executed clear
+Mon Apr 13 22:11:30 2015
+ <info> executed help
+Mon Apr 13 22:11:41 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:11:41 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> executed clear
+Mon Apr 13 22:11:41 2015
+ <Info> [15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting added to incomplete events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:41 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:41 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:42 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:42 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:42 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:42 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:42 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:42 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:42 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:42 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:42 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:42 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:42 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:42 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:42 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:42 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:42 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:42 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:11:42 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:42 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:11:42 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:55 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:11:55 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:11:55 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:11:55 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:55 2015
+ <Info> executed clear
+Mon Apr 13 22:11:55 2015
+ <Info> [---------------------------] homework 1 added to incomplete events.
+Mon Apr 13 22:11:55 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:55 2015
+ <Info> [---------------------------] homework 2 added to incomplete events.
+Mon Apr 13 22:11:55 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:11:55 2015
+ <Info> [16 Apr 11:00 - 16 Apr 12:00] CS presentation added to incomplete events.
+Mon Apr 13 22:11:55 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:14:09 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> executed clear
+Mon Apr 13 22:14:09 2015
+ <Info> [13 Apr 08:00 - 13 Apr 23:00] CS meeting added to incomplete events.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> [by 14 Apr 09:00            ] IE2130 meeting added to incomplete events.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> [---------------------------] homework1 added to incomplete events.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:09 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:09 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:25 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:14:25 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:14:25 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:14:25 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:25 2015
+ <Info> executed clear
+Mon Apr 13 22:14:25 2015
+ <Info> [02 May 20:11 - 02 May 23:00] cs meeting added to incomplete events.
+Mon Apr 13 22:14:25 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:25 2015
+ <Info> Update active event.
+Mon Apr 13 22:14:25 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:25 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:14:25 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:25 2015
+ <Info> Undo delete recurring events
+Mon Apr 13 22:14:25 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:25 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:14:25 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:25 2015
+ <Info> Undo update active event.
+Mon Apr 13 22:14:25 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:14:25 2015
+ <Info> Undo add event.
+Mon Apr 13 22:14:25 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:16:56 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:16:56 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:16:56 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:16:56 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:16:56 2015
+ <Info> executed clear
+Mon Apr 13 22:16:56 2015
+ <Info> [---------------------------] homework 1 added to incomplete events.
+Mon Apr 13 22:16:56 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:16:56 2015
+ <Info> [---------------------------] homework 2 added to incomplete events.
+Mon Apr 13 22:16:56 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:16:56 2015
+ <Info> [16 Apr 11:00 - 16 Apr 12:00] CS presentation added to incomplete events.
+Mon Apr 13 22:16:56 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:25:18 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> executed clear
+Mon Apr 13 22:25:18 2015
+ <info> executed help
+Mon Apr 13 22:25:18 2015
+ <Info> [16 Apr 11:00 - 16 Apr 11:30] cs demo added to incomplete events.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> [by 13 Apr 11:59            ] submit v0.5 added to incomplete events.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> [13 Apr 15:30 - 13 Apr 16:00] 2150 presentation added to incomplete events.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> [by 16 Apr 12:00            ] 2130 report due added to incomplete events.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> Update active event.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> Incomplete event(s) has been deleted.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> executed delete
+Mon Apr 13 22:25:18 2015
+ <Info> Undo delete active event(s).
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> [05 May 19:00 - 05 May 20:00] swim at utown added to incomplete events.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> executed print feedback
+Mon Apr 13 22:25:18 2015
+ <Info> Event(s) has been marked as done.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> executed mark as done
+Mon Apr 13 22:25:18 2015
+ <Info> executed cmdDisplay
+Mon Apr 13 22:25:18 2015
+ <Info> executed cmdDisplayall
+Mon Apr 13 22:25:18 2015
+ <Info> Update active event.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> Undo update active event.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> Update active event.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> Undo update active event.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> [by 10 Apr 12:00            ] pay phone bills added to incomplete events.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:25:18 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:25:18 2015
+ <Info> executed cmdDisplayall
+Mon Apr 13 22:26:35 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:26:35 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> executed clear
+Mon Apr 13 22:26:35 2015
+ <info> executed help
+Mon Apr 13 22:26:35 2015
+ <Info> [16 Apr 11:00 - 16 Apr 11:30] cs demo added to incomplete events.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> [by 13 Apr 11:59            ] submit v0.5 added to incomplete events.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> [13 Apr 15:30 - 13 Apr 16:00] 2150 presentation added to incomplete events.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> [by 16 Apr 12:00            ] 2130 report due added to incomplete events.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> Update active event.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> Incomplete event(s) has been deleted.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> executed delete
+Mon Apr 13 22:26:35 2015
+ <Info> Undo delete active event(s).
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> [05 May 19:00 - 05 May 20:00] swim at utown added to incomplete events.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> executed print feedback
+Mon Apr 13 22:26:35 2015
+ <Info> Event(s) has been marked as done.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> executed mark as done
+Mon Apr 13 22:26:35 2015
+ <Info> executed cmdDisplay
+Mon Apr 13 22:26:35 2015
+ <Info> executed cmdDisplayall
+Mon Apr 13 22:26:35 2015
+ <Info> Update active event.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> Undo update active event.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> Update active event.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> Undo update active event.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> [by 10 Apr 12:00            ] pay phone bills added to incomplete events.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> Recuring events added.
+Mon Apr 13 22:26:35 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:26:35 2015
+ <Info> executed cmdDisplayall
+Mon Apr 13 22:28:45 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:28:45 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:28:45 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:28:45 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:28:45 2015
+ <Info> executed clear
+Mon Apr 13 22:28:45 2015
+ <Info> [---------------------------] homework 1 added to incomplete events.
+Mon Apr 13 22:28:45 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:28:45 2015
+ <Info> [---------------------------] homework 2 added to incomplete events.
+Mon Apr 13 22:28:45 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:28:45 2015
+ <Info> [16 Apr 11:00 - 16 Apr 11:30] CS presentation added to incomplete events.
+Mon Apr 13 22:28:45 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:30:13 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:30:13 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:30:13 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:30:13 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:30:13 2015
+ <Info> executed clear
+Mon Apr 13 22:30:13 2015
+ <Info> [---------------------------] homework 1 added to incomplete events.
+Mon Apr 13 22:30:13 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:30:13 2015
+ <Info> [---------------------------] homework 2 added to incomplete events.
+Mon Apr 13 22:30:13 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:30:13 2015
+ <Info> [16 Apr 11:00 - 16 Apr 11:30] CS presentation added to incomplete events.
+Mon Apr 13 22:30:13 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:31:04 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:31:04 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:31:04 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:31:04 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:31:04 2015
+ <Info> executed clear
+Mon Apr 13 22:31:04 2015
+ <Info> [---------------------------] homework 1 added to incomplete events.
+Mon Apr 13 22:31:04 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:31:04 2015
+ <Info> [---------------------------] homework 2 added to incomplete events.
+Mon Apr 13 22:31:04 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:31:04 2015
+ <Info> [16 Apr 11:00 - 16 Apr 11:30] CS presentation added to incomplete events.
+Mon Apr 13 22:31:04 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:32:14 2015
+ <Info> Read data from local drive.
+Mon Apr 13 22:32:14 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 22:32:14 2015
+ <Info> Delete all completed events.
+Mon Apr 13 22:32:14 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:32:14 2015
+ <Info> executed clear
+Mon Apr 13 22:32:14 2015
+ <Info> [---------------------------] homework 1 added to incomplete events.
+Mon Apr 13 22:32:14 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:32:14 2015
+ <Info> [---------------------------] homework 2 added to incomplete events.
+Mon Apr 13 22:32:14 2015
+ <Info> Save data to local drive.
+Mon Apr 13 22:32:14 2015
+ <Info> [16 Apr 11:00 - 16 Apr 11:30] CS presentation added to incomplete events.
+Mon Apr 13 22:32:14 2015
+ <Info> Save data to local drive.

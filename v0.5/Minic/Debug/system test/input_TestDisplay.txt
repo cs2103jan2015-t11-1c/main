@@ -1,0 +1,36 @@
+clear
+display
+add CS meeting from: 13 04 0800 to: 13 04 2300
+add IE2130 meeting from: 14 04 0900 to: 14 04 2300
+add write report
+add homework1
+add homework2
+add homework3
+add homework4
+add homework5
+add homework6
+add homework7
+add homework8
+add homework9
+add homework10
+add homework11
+add homework12
+add homework13
+add homework14
+add homework15
+add homework16
+add homework17
+add homework18
+add homework19
+add homework20
+add homework21
+displayALL
+displayAll
+display
+displayToday
+DISPLAYTODAY
+DISPLAYTOMORROW
+displayTomorrow
+done 20
+displayDone
+exit

@@ -1,0 +1,904 @@
+//@author: a0115429h
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdAdd.cpp
+	 */
+
+#include "cmdAdd.h"
+#include <iostream>
+#include <sstream>
+#include <assert.h>
+
+const static std::string CLASH_MESSAGE = "Reminder: You will be doing something else at this time. You may want to reschedule.\n";
+const static std::string ADD_SUCCESSFUL_MESSAGE = "\" is added successfully.\n\n";
+const static std::string QUOTATION_MARKS = "\"";
+const static std::string EMPTY_STRING = "";
+
+CmdAdd::CmdAdd(void){
+}
+
+CmdAdd::~CmdAdd(void){
+}
+
+//add event with deadline, floating task or timed event
+std:: string CmdAdd::executecmdAdd(Storage& _storage){
+	_newEvent = Event(_taskName, _endingDate, _endingMonth, _endingTime);
+	switch (_commandWord)
+	{
+	case ADDEVENTWITHDEADLINE:	
+		return addEventWithDeadline(_storage);
+	case ADDFLOATINGEVENT:
+		return addEventWithoutDeadline(_storage);
+	case ADDTIMEDEVENT:
+		return addTimedEvent(_storage);
+	default:
+		break;
+	} 
+	return EMPTY_STRING;
+}
+
+std::string CmdAdd::addEventWithDeadline(Storage& _storage){
+	_storage.addEvent(_newEvent);
+	_feedback = printFeedback(_newEvent);
+	updateStorage(_storage);
+	return _feedback;
+}
+
+std::string CmdAdd::addEventWithoutDeadline(Storage& _storage){
+	_storage.addEvent(_newEvent);
+	_feedback = printFeedback(_newEvent);
+	updateStorage(_storage);
+	return _feedback;
+}
+
+//check for clash for timed tasks 
+//print a reminder messge if there there is an existing task at that time
+//task will still be added if there is a clash
+std::string CmdAdd::addTimedEvent(Storage& _storage){
+	Eventlist events = _storage.displayEvent();
+	std::list<Event> allEvents = events.returnAllEvent();
+	int startingMonth = _startingMonth;
+	int startingDate = _startingDate;
+	int startingTime = _startingTime;
+	int endingTime = _endingTime;
+	
+	std::list<Event>::iterator Tcount;
+	Event currentEvent;
+	for(Tcount = allEvents.begin(); Tcount != allEvents.end(); Tcount++){
+		currentEvent = *Tcount;
+		int startMonth = currentEvent.getStartMonth();
+		int startDate = currentEvent.getStartDate();
+		int startTime = currentEvent.getStartTime();
+		int endTime = currentEvent.getEndTime();
+		if (startMonth == startingMonth && startDate == startingDate && startingTime >= startTime && startingTime <= endTime) {
+			std::cout << CLASH_MESSAGE;
+			break;
+		}
+	}
+	_newEvent.changeStartDay(_startingDate);
+	_newEvent.changeStartMonth(_startingMonth);
+	_newEvent.changeStartTime(_startingTime);
+	_storage.addEvent(_newEvent);
+
+	_feedback = printFeedback(_newEvent);
+	updateStorage(_storage);
+	return _feedback;
+}
+
+std::string CmdAdd::printFeedback(Event newEvent){
+	std::string feedback = QUOTATION_MARKS + newEvent.displayEvent() + ADD_SUCCESSFUL_MESSAGE;
+	return feedback;
+}
+
+void CmdAdd::updateStorage(Storage& _storage){
+	_storage.sortActiveEventlist();
+	_storage.synchronizeDrive();
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdAdd.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdAdd.h
+	 */
+
+#pragma once
+#include "logicBaseClass.h"
+
+//This cmdAdd class will add three types of event to the storage:
+//Floating task, Deadline task and Timed task
+class CmdAdd: public LogicBaseClass{
+private:
+	Event _newEvent;
+public:
+	CmdAdd(void);
+	~CmdAdd(void);
+	std::string executecmdAdd(Storage&);
+	std::string addEventWithDeadline(Storage&);
+	std::string addEventWithoutDeadline(Storage&);
+	std::string addTimedEvent(Storage&);
+	std::string printFeedback(Event);
+	void updateStorage(Storage&);
+};
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdAdd.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdChangeDirectory.cpp
+	 */
+
+#include "cmdChangeDirectory.h"
+const static std::string MESSAGE_CHANGE_DIRECTORY = "Directory is changed to: ";
+const static std::string TWO_LINES = "\n\n";
+
+CmdChangeDirectory::CmdChangeDirectory(void){
+}
+
+CmdChangeDirectory::~CmdChangeDirectory(void){
+}
+
+//Change directory for the local file
+std::string CmdChangeDirectory::executecmdChangeDirectory(Storage& _storage){
+	std::string directory = _taskName;
+	const char * newDirectory = directory.c_str();
+	_storage.changeCurrentDirectory(newDirectory);
+
+	_feedback = getFeedback(directory);
+	return _feedback;
+}
+
+std::string CmdChangeDirectory::getFeedback(std::string directory){
+	std::string feedback;
+	feedback = MESSAGE_CHANGE_DIRECTORY + directory + TWO_LINES;
+	return feedback;
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdChangeDirectory.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdChangeDirectory.h
+	 */
+
+#pragma once
+#include "logicbaseclass.h"
+
+//This cmdChangeDirectory class will change the location of the file saved
+class CmdChangeDirectory: public LogicBaseClass {
+public:
+	CmdChangeDirectory(void);
+	~CmdChangeDirectory(void);
+	std::string executecmdChangeDirectory(Storage&);
+	std::string getFeedback(std::string);
+};
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdChangeDirectory.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDelete.cpp
+	 */
+
+//This method return the feedback for either deleting one event or multiple events
+std::string CmdDelete::printFeedback(std::list<int> taskNumberList, Storage& _storage) {
+	std::ostringstream feedback;
+	int eventNumber;
+	Event eventDeleted;
+	if (taskNumberList.size() == ONE_EVENT) {
+		feedback << MESSAGE_DELETE_ONE_EVENT;
+		eventNumber = taskNumberList.back();
+		eventDeleted = _storage.getEvent(eventNumber);
+		feedback << eventDeleted.displayEvent() << NEW_LINE;
+	} else {
+		feedback << MESSAGE_DELETE_MUTIPLE_EVENTS;
+		while (!taskNumberList.empty()) {
+			eventNumber = taskNumberList.back();
+			eventDeleted = _storage.getEvent(eventNumber);
+			feedback << eventDeleted.displayEvent() << NEW_LINE;
+			taskNumberList.pop_back();
+		} 
+	}
+	feedback << NEW_LINE;
+	return feedback.str();
+}
+
+std::string CmdDelete::deleteRecurringEvents(std::list<int> taskNumberList, Storage& _storage) {
+	int recurringEventNumber = taskNumberList.back();
+	_storage.deleteRecurring(recurringEventNumber);
+	_storage.synchronizeDrive();
+	return RECURRING_EVENTS_DELETED;
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDelete.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDisplay.cpp
+	 */
+
+#include "cmdDisplay.h"
+#include "Storage\Storage.h"
+#include <sstream>
+
+const static std::string MESSAGE_EMPTY_ACTIVE_EVENTS = "Currently no active event. \n\n";
+const static std::string MESSAGE_NO_EVENT_TODAY = "No Event today! \n\n";
+const static std::string MESSAGE_NO_EVENT_TOMORROW = "No Event tomorrow! \n\n";
+const static int NUMBER_OF_TASK_TO_DISPLAY = 21;
+const static std::string NEW_LINE = "\n";
+const static std::string DOT = ".";
+const static std::string INFO = "Info";
+const static std::string EMPTY_STRING = "";
+const static std::string LOG_DISPLAY = "executed cmdDisplay";
+const static std::string LOG_DISPLAYALL = "executed cmdDisplayall";
+
+CmdDisplay::CmdDisplay(void){
+}
+
+CmdDisplay::~CmdDisplay(void){
+}
+
+//check if number of task is zero
+bool CmdDisplay::isEmptyEventsStorage(Storage& _storage){
+	bool isEmpty = false;
+	Eventlist activeEvents = _storage.displayEvent();
+	if(activeEvents.getTotalNumberOfEvents() == 0){
+		isEmpty = true;
+	}
+
+	return isEmpty;
+}
+//Display all tasks, active tasks, tasks done, tasks due/start today or tasks due/start tomorrow.
+std::string CmdDisplay::executecmdDisplay(Storage& _storage){
+	if(isEmptyEventsStorage(_storage)){
+		return MESSAGE_EMPTY_ACTIVE_EVENTS;
+	}
+
+	switch (_commandWord)
+	{
+	case DISPLAY:
+		return cmdDisplayActive(_storage);
+	case DISPLAYDONE:
+		return cmdDisplayDone(_storage);
+	case DISPLAYTODAY:
+		return cmdDisplayToday(_storage);
+	case DISPLAYALL:
+		return cmdDisplayAll(_storage);
+	case DISPLAYTOMORROW:
+		return cmdDisplayTomorrow(_storage);
+	default:
+		break;
+	} 	
+	return EMPTY_STRING;
+}
+
+//display active events
+std::string CmdDisplay::cmdDisplayActive(Storage& _storage){
+	Eventlist activeEvents = _storage.displayEvent();
+	std::list<Event> currentList = activeEvents.returnAllEvent();
+
+	std::string feedback;
+	feedback = eventsToDisplay(currentList);
+	return feedback;
+}
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDisplay.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDisplay.cpp
+	 */
+
+//display events today
+std::string CmdDisplay::cmdDisplayToday(Storage& _storage){
+	std::string feedback;
+
+	std::list<Event> eventsToday;
+	Eventlist events = _storage.displayEvent();
+	std::list<Event> allEvents = events.returnAllEvent();
+	int eventsNumber = events.getTotalNumberOfEvents();
+
+	std::list<Event>::iterator Tcount;
+
+	Event currentEvent;
+	int taskStartMonth;
+	int taskStartDay;
+	int taskEndMonth;
+	int taskEndDay;
+
+	for(Tcount = allEvents.begin(); Tcount != allEvents.end(); Tcount++){
+		currentEvent = *Tcount;
+		taskStartMonth = currentEvent.getStartMonth();
+		taskStartDay = currentEvent.getStartDate();
+	    taskEndMonth = currentEvent.getEndMonth();
+	    taskEndDay = currentEvent.getEndDate();
+
+		if(isEventToday(taskStartMonth, taskStartDay, taskEndMonth, taskEndDay)){
+			eventsToday.push_back(currentEvent);
+		}
+	}
+
+	if (eventsToday.size() != 0){
+		feedback = eventsToDisplay(eventsToday);
+	}else{
+		feedback = MESSAGE_NO_EVENT_TODAY;
+	}
+
+	return feedback;
+}
+
+bool CmdDisplay::isEventToday(int taskStartMonth, int taskStartDay, int taskEndMonth, int taskEndDay){
+	bool isEventToday = false;
+	
+	time_t t = time(0);
+	struct tm now;
+	localtime_s (&now, &t);
+	int currentMonth = now.tm_mon + 1;
+	int currentDay = now.tm_mday;
+
+	if (((taskStartMonth == currentMonth) & (taskStartDay == currentDay)) || ((taskEndMonth == currentMonth) & (taskEndDay == currentDay))) {
+		isEventToday = true;
+	}
+
+	return isEventToday;
+}
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDisplay.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDisplay.h
+	 */
+
+#pragma once
+#include "logicBaseClass.h"
+#include <ctime>
+
+//This cmdDisplay will display all events, active events, done events, today's events or tomorrow's events
+class CmdDisplay : public LogicBaseClass {
+public:
+	CmdDisplay(void);
+	~CmdDisplay(void);
+	bool isEmptyEventsStorage(Storage& _storage);
+	std::string executecmdDisplay(Storage& _storage);
+	std::string cmdDisplayDone(Storage& _storage);
+	std::string cmdDisplayActive(Storage& _storage);
+	std::string cmdDisplayToday(Storage& _storage);
+	std::string cmdDisplayTomorrow(Storage& _storage);
+	std::string cmdDisplayAll(Storage& _storage);
+	bool isEventToday(int taskStartMonth, int taskStartDay, int taskEndMonth, int taskEndDay);
+	bool isEventTomorrow(int taskStartMonth, int taskStartDay, int taskEndMonth, int taskEndDay);
+	std::string eventsToDisplay(std::list<Event> events);
+	std::string allEvents(std::list<Event> events);
+};
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDisplay.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdRepeat.h
+	 */
+
+//This cmdRepeat class will repeat a event (either floating or deadline) daily, weekly, monthly
+//every weekday (for example, every monday, every thur) for a number of times.
+//It also supports one exception in the repeat
+//For example, repeat daily except a weekday; repeat weekly/monthly except for a certain week/month
+#pragma once
+#include <iostream>
+#include <string>
+#include "logicbaseclass.h"
+#include "Storage\findNextDate.h"
+#include "cmdRepeatParser.h"
+
+class CmdRepeat :
+	public LogicBaseClass
+{
+private:
+	findNextDate _findNextDate;
+	CmdRepeatParser _parser;
+	std::string _repeatDetails;
+	std::string _repeatCommand;
+	enum repeatType{DAILY, WEEKLY, MONTHLY, EVERYWEEKDAY, INVALID};
+	repeatType _type;
+	int _repeatTimes;
+	int _eventNumber;
+	int _interval;
+	bool _hasException;
+	std::string _exceptionDetails;
+	std::list<Event> _events;
+
+public:
+	CmdRepeat(void);
+	~CmdRepeat(void);
+	std::string executecmdRepeat(Storage&);
+	std::string repeatTimedTask(Event, Storage&);
+	std::string repeatDeadlineTask(Event, Storage&);
+	std::string getStartingRepeatDate(int, int, int, int&, int&, int&);
+	void getNextDate(int&, int&, int&);
+	bool isWeekday(std::string);
+	int determineWeekday(std::string);
+	int changeWeekdayToInteger(std::string);
+	int getWeekdayToday(int, int, int);
+	repeatType determineRepeatType();
+	bool isDefaultRepeatTimes(int repeatTimes);
+	int determineDefaultRepeatTimes(int);
+	int determineEventNumber();
+	int determineInterval(int, int);
+	void getTheStartingDate(int, int, int, int&, int&);
+	int getExceptionTime(std::string);
+	int getNumberOfDays(int, int);
+	bool isExceptionDay(int, int, int, int);
+	bool isValidDate(int, int, int);
+	bool isValidEvent(int, int,int, int, int);
+	bool isLeapYear(int);
+	std::string lowercaseCommandWord(std::string);
+	void updateStorage(Storage& _storage);
+	bool isNumber(std::string details);
+};
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdRepeat.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdSearch.cpp
+	 */
+
+#include "cmdSearch.h"
+#include <sstream>
+
+const static std::string MESSAGE_EVENT_NOT_FOUND = "Sorry! No relevant event found.\n\n"; 
+const static std::string DOT = ".";
+const static std::string TWO_LINES = "\n\n";
+
+cmdSearch::cmdSearch(void){
+}
+
+cmdSearch::~cmdSearch(void){
+}
+
+//search for key words from task list
+std::string cmdSearch::executecmdSearch(Storage& _storage){
+	Eventlist events = _storage.displayEvent();
+	std::list<Event> allEvents = events.returnAllEvent();
+	int eventsNumber = events.getTotalNumberOfEvents();
+
+	searchForEvent(allEvents, eventsNumber);
+
+	if (_eventFound.getTotalNumberOfEvents() != 0) {
+		_feedback = printEventFound();
+	} else {
+		_feedback = MESSAGE_EVENT_NOT_FOUND;
+	}
+
+	_eventFound.clearEventlist();
+	_eventNumbers.clear();
+
+	return _feedback;
+
+}
+
+//this function converts upper case letter to lower case
+std::string cmdSearch::lowercaseCommandWord(std::string commandWord){
+	int n = commandWord.size();
+	for ( int i = 0; i < n; i++) {
+		if (commandWord[i] <='Z' && commandWord[i] >= 'A') {
+			commandWord[i] = commandWord[i] - ('Z'-'z');
+		}
+	}
+  return commandWord;
+}
+
+void cmdSearch::searchForEvent(std::list<Event> allEvents, int){
+	std::string keyword = _taskName;
+	std::string taskName = lowercaseCommandWord(keyword);
+	std::list<Event>::iterator Tcount;
+	std::string eventName;
+	int Tindex;
+	int eventNumber = 0;
+	Event currentEvent;
+
+	for(Tcount = allEvents.begin(); Tcount != allEvents.end(); Tcount++){
+		eventNumber++;
+		currentEvent = *Tcount;
+		eventName = currentEvent.getTaskName();
+		std::string newEventName = lowercaseCommandWord(eventName);
+		Tindex = newEventName.find(taskName);
+		if (Tindex !=std::string::npos) {
+			_eventNumbers.push_back(eventNumber);
+			_eventFound.addEvent(currentEvent);
+		}
+	}
+}
+
+std::string cmdSearch::printEventFound(){
+	std::ostringstream feedback;
+	std::list<Event>::iterator Titer;
+	Event currentEvent;
+	int eventNumber;
+	int Tcount = 0;
+	std::list<Event> eventFound = _eventFound.returnAllEvent();
+	
+	for (Titer = eventFound.begin(); Titer != eventFound.end(); Titer++) {
+		currentEvent = *Titer;
+		eventNumber = _eventNumbers[Tcount];
+		feedback << eventNumber << DOT << currentEvent.displayEvent() << TWO_LINES;
+		Tcount ++;
+	}
+	return feedback.str();
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdSearch.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdSearch.h
+	 */
+
+
+#pragma once
+#include "logicBaseClass.h"
+class cmdSearch :
+	public LogicBaseClass
+{
+private:
+	Eventlist _eventFound;
+	std::vector<int> _eventNumbers;
+public:
+	cmdSearch(void);
+	~cmdSearch(void);
+	std::string executecmdSearch(Storage& _storage);
+	void searchForEvent(std::list<Event>, int);
+	std::string printEventFound();
+	std::string lowercaseCommandWord(std::string commandWord);
+};
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdSearch.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdUpdate.cpp
+	 */
+
+#include "cmdUpdate.h"
+#include <assert.h>
+
+static const int INVALID_DATE = 0;
+static const int INVALID_MONTH = 13;
+static const int INVALID_TIME = 2400;
+const static std::string UPDATE_MESSAGE = "\" is updated to ";
+const static std::string EMPTY_STRING = "";
+const static std::string QUOTATION_MARKS = "\"";
+const static std::string UPDATE_RECURRING_NAME = "Recurring Events' titles are changed.\n\n";
+const static std::string UPDATE_RECURRING_TIME = "Recurring Events' times are changed.\n\n";
+
+CmdUpdate::CmdUpdate(void){
+}
+
+CmdUpdate::~CmdUpdate(void){
+}
+
+//update task name, start time, end time or remove start time or end time
+std::string CmdUpdate::executecmdUpdate(Storage& _storage){
+	int eventNumber;
+	eventNumber= _taskNumberList.front();
+	Event eventToUpdate; 
+	eventToUpdate= _storage.getEvent(eventNumber);
+	switch(_commandWord) {
+	case UPDATENAME:
+		return updateName(eventToUpdate, eventNumber, _storage);
+	case UPDATESTARTINGTIME:
+		return updateStartingTime(eventToUpdate, eventNumber, _storage);
+	case UPDATEENDINGTIME:
+		return updateEndingTime(eventToUpdate, eventNumber, _storage);
+	case CLEARSTART:
+		return clearStartingTime(eventToUpdate, eventNumber, _storage);
+	case CLEAREND:
+		return clearEndingTime(eventToUpdate, eventNumber, _storage);
+	case UPDATERECURNAME:
+		return updateRecurringName(eventToUpdate, eventNumber, _storage);
+	case UPDATERECURSTARTINGTIME:
+		return updateRecurringStartTime(eventNumber, _storage);
+	case UPDATERECURENDINGTIME:
+		return updateRecurringEndTime(eventNumber, _storage);
+	default:
+		break;
+	}
+	return EMPTY_STRING;
+}
+
+//update task name
+std::string CmdUpdate::updateName(Event eventToUpdate, int eventNumber, Storage& _storage){
+	std::string Tempt = eventToUpdate.displayEvent();
+	eventToUpdate.changeTitle(_taskName);
+	
+	_storage.updateEvent(eventNumber, eventToUpdate);
+	updateStorage(_storage);
+	_feedback = printFeedback(Tempt, eventToUpdate);
+	return _feedback;
+}
+
+//update task ending time
+std::string CmdUpdate::updateEndingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
+	std::string Tempt = eventToUpdate.displayEvent();
+	eventToUpdate.changeEndDay(_endingDate);
+	eventToUpdate.changeEndMonth(_endingMonth);
+	eventToUpdate.changeEndTime(_endingTime);
+	
+	_storage.updateEvent(eventNumber, eventToUpdate);
+	updateStorage(_storage);
+	_feedback = printFeedback(Tempt, eventToUpdate);
+	return _feedback; 
+}
+
+//update task start time
+std::string CmdUpdate::updateStartingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
+	std::string Tempt = eventToUpdate.displayEvent();
+	eventToUpdate.changeStartDay(_startingDate);
+	eventToUpdate.changeStartMonth(_startingMonth);
+	eventToUpdate.changeStartTime(_startingTime);
+	
+	_storage.updateEvent(eventNumber, eventToUpdate);
+	updateStorage(_storage);
+	_feedback = printFeedback(Tempt, eventToUpdate);
+	return _feedback;
+}
+
+//remove task start time
+std::string CmdUpdate::clearStartingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
+	std::string Tempt = eventToUpdate.displayEvent();
+	int endDay = eventToUpdate.getEndDate();
+	int endMonth = eventToUpdate.getEndMonth();
+	int endTime = eventToUpdate.getEndTime();
+	std::string eventName = eventToUpdate.getTaskName();	
+	Event newEvent(eventName, endDay, endMonth, endTime);
+	
+	_storage.updateEvent(eventNumber, newEvent);	
+    updateStorage(_storage);
+	_feedback = printFeedback(Tempt, newEvent);
+	return _feedback;
+}
+
+//remove task ending time
+std::string CmdUpdate::clearEndingTime(Event eventToUpdate, int eventNumber, Storage& _storage){
+	std::string Tempt = eventToUpdate.displayEvent();
+	eventToUpdate.changeEndDay(INVALID_DATE);
+	eventToUpdate.changeEndMonth(INVALID_MONTH);
+	eventToUpdate.changeEndTime(INVALID_TIME);
+
+	_storage.updateEvent(eventNumber, eventToUpdate);
+	updateStorage(_storage);
+	_feedback = printFeedback(Tempt, eventToUpdate);
+	return _feedback; 
+}
+
+std::string CmdUpdate::updateRecurringName(Event eventToUpdate, int eventNumber, Storage& _storage) {
+	eventToUpdate.changeTitle(_taskName);
+	_storage.updateRecurring(eventNumber, eventToUpdate);
+	updateStorage(_storage);
+	_feedback = UPDATE_RECURRING_NAME;
+	return _feedback;
+}
+
+std::string CmdUpdate::updateRecurringStartTime(int eventNumber, Storage& _storage) {
+	_storage.updateRecurringStartTime(eventNumber, _startingTime);
+	updateStorage(_storage);
+	_feedback = UPDATE_RECURRING_TIME;
+	return _feedback;
+}
+
+std::string CmdUpdate::updateRecurringEndTime(int eventNumber, Storage& _storage) {
+	_storage.updateRecurringEndTime(eventNumber, _endingTime);
+	updateStorage(_storage);
+	_feedback = UPDATE_RECURRING_TIME;
+	return _feedback;
+}
+
+std::string CmdUpdate::printFeedback(std::string Tempt, Event eventToUpdate){
+	std::string feedback = QUOTATION_MARKS + Tempt + UPDATE_MESSAGE + QUOTATION_MARKS + eventToUpdate.displayEvent() +"\" \n\n";
+	return feedback;
+}
+
+void CmdUpdate::updateStorage(Storage& _storage){
+	_storage.sortActiveEventlist();
+	_storage.synchronizeDrive();
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdUpdate.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\RepeatTest.cpp
+	 */
+
+#include "stdafx.h"
+#include "CppUnitTest.h"
+#include "Logic\cmdRepeat.h"
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+namespace RepeatUnitTest
+{		
+	TEST_CLASS(UnitTest1)
+	{
+	public:
+		CmdRepeat _repeat;
+		TEST_METHOD(isWeekday)
+		{
+			std::string repeatCommand1 = "MONDAY";
+			std::string repeatCommand2 = "Tuesday";
+			std::string repeatCommand3 = "Wed";
+			std::string repeatCommand4 = "Thud";
+			bool isWeekday1 = _repeat.isWeekday(repeatCommand1);
+			bool expected1 = true;
+			Assert::AreEqual(expected1, isWeekday1);
+			bool isWeekday2 = _repeat.isWeekday(repeatCommand2);
+			bool expected2 = true;
+			Assert::AreEqual(expected2, isWeekday2);
+			bool isWeekday3 = _repeat.isWeekday(repeatCommand3);
+			bool expected3 = true;
+			Assert::AreEqual(expected3, isWeekday3);
+			bool isWeekday4 = _repeat.isWeekday(repeatCommand4);
+			bool expected4 = false;
+			Assert::AreEqual(expected4, isWeekday4);
+		}
+
+		TEST_METHOD(isDefaultRepeatTimes)
+		{
+			int repeatTime1 = 0;
+			bool isDefault1 = _repeat.isDefaultRepeatTimes(repeatTime1);
+			bool expected1 = true;
+			Assert::AreEqual(expected1, isDefault1);
+			int repeatTime2 = 10;
+			bool isDefault2 = _repeat.isDefaultRepeatTimes(repeatTime2);
+			bool expected2 = false;
+			Assert::AreEqual(expected2, isDefault2);
+		}
+
+		//Test for an invalid Feb date in a nonleap year
+		//a valid Feb date in a leap year
+		//and a normal valid date
+		TEST_METHOD(isValidDate)
+		{
+			bool isValid1 = _repeat.isValidDate(29, 2, 2015);
+			bool expected1 = false;
+			Assert::AreEqual(expected1, isValid1);
+			bool isValid2 = _repeat.isValidDate(29, 2, 2016);
+			bool expected2 = true;
+			Assert::AreEqual(expected2, isValid2);
+			bool isValid3 = _repeat.isValidDate(30, 1, 2015);
+			bool expected3 = true;
+			Assert::AreEqual(expected3, isValid3);
+		}
+		
+		TEST_METHOD(isExceptionDay)
+		{
+			bool isExceptionDay1 = _repeat.isExceptionDay(11, 4, 2015, 5);
+			bool expected1 = true;
+			Assert::AreEqual(expected1, isExceptionDay1);
+			bool isExceptionDay2 = _repeat.isExceptionDay(11, 4, 2016, 5);
+			bool expected2 = false;
+			Assert::AreEqual( expected2, isExceptionDay2);
+		}
+
+		TEST_METHOD(determineWeekday)
+		{
+			std::string repeatCommand1 = "monday";
+			int output1 = _repeat.determineWeekday(repeatCommand1);
+			int expected1 = 0;
+			Assert::AreEqual(expected1, output1);
+			std::string repeatCommand2 = "tue";
+			int output2 = _repeat.determineWeekday(repeatCommand2);
+			int expected2 = 1;
+			Assert::AreEqual(expected2, output2);
+		}
+
+		TEST_METHOD(getWeekdayToday)
+		{
+			findNextDate _findNextDate;
+			int weekday1 = _repeat.getWeekdayToday(11, 4, 2015);
+			int expected1 = 5;
+			Assert::AreEqual(expected1, weekday1);
+			int weekday2 = _repeat.getWeekdayToday(11, 4, 2016);
+			int expected2 = 0;
+			Assert::AreEqual(expected2, weekday2);
+		}
+
+		TEST_METHOD(changeWeekdayToInteger)
+		{
+			std::string string1 = "MONDAY";
+			int weekday1 = _repeat.changeWeekdayToInteger(string1);
+			int expected1 = 0;
+			Assert::AreEqual(expected1, weekday1);
+			std::string string2 = "Tuesday";
+			int weekday2 = _repeat.changeWeekdayToInteger(string2);
+			int expected2 = 1;
+			Assert::AreEqual(expected2, weekday2);
+			std::string string3 = "WED";
+			int weekday3 = _repeat.changeWeekdayToInteger(string3);
+			int expected3 = 2;
+			Assert::AreEqual(expected3, weekday3);
+			std::string string4 = "thur";
+			int weekday4 = _repeat.changeWeekdayToInteger(string4);
+			int expected4 = 3;
+			Assert::AreEqual(expected4, weekday4);
+			std::string string5 = "friday";
+			int weekday5 = _repeat.changeWeekdayToInteger(string5);
+			int expected5 = 4;
+			Assert::AreEqual(expected5, weekday5);
+			std::string string6 = "SAT";
+			int weekday6 = _repeat.changeWeekdayToInteger(string6);
+			int expected6 = 5;
+			Assert::AreEqual(expected6, weekday6);	
+			std::string string7 = "SunDay";
+			int weekday7 = _repeat.changeWeekdayToInteger(string7);
+			int expected7 = 6;
+			Assert::AreEqual(expected7, weekday7);
+		}
+
+		TEST_METHOD(getExceptionTime)
+		{
+			std::string exception1 = "friday";
+			int exceptionTime1 = _repeat.getExceptionTime(exception1);
+			int expected1 = 4;
+			Assert::AreEqual(expected1, exceptionTime1);
+			std::string exception2 = "2";
+			int exceptionTime2 = _repeat.getExceptionTime(exception2);
+			int expected2 = 2;
+			Assert::AreEqual(expected2, exceptionTime2);
+		}
+
+		TEST_METHOD(getNumberOfDays)
+		{
+			int year = 2015;
+			int month1 = 1;
+			int numberOfDays1 = _repeat.getNumberOfDays(month1, year);
+			int expected1 = 31;
+			Assert::AreEqual(expected1, numberOfDays1);
+			int month2 = 2;
+			int numberOfDays2 = _repeat.getNumberOfDays(month2, year);
+			int expected2 = 28;
+			Assert::AreEqual(expected2, numberOfDays2);
+			int month3 = 4;
+			int numberOfDays3 = _repeat.getNumberOfDays(month3, year);
+			int expected3 = 30;
+			Assert::AreEqual(expected3, numberOfDays3);
+		}
+	};
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\RepeatTest.cpp
+
+
+
+
+

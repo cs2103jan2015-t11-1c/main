@@ -1,0 +1,31 @@
+clear
+display
+add cs demo from: 16 apr 1100 to: 16 apr 1130
+display
+add 2150 presentation from: 13 apr 1530 to: 12 apr 1600
+display
+add 2150 group discussion from: 11 02 2222
+display
+add MA consultation from: 11 02 2222 to:
+display
+add MA2213 tutorial from: 31 February 1000 to: 31 February 1100
+display
+add MA1104 tutorial from: 29 feb 1100 to: 29 feb 1178
+display
+add IE2150 meeting from: 16 April 1525 to: 16 April 1300
+display
+add IE2130 project discussion from:03   05   1000   to:  03 05     1100
+display
+add submit V0.5 by: 13 apr 1159
+display
+add submit MA2213 homework by:    17  aPril    1700 
+display  
+add MA assignment by: 08 hfjdfhd 2011
+display
+add MA assignment by: hfdhfdh 04 2011
+display
+add MA assignment by: 08 04 hfjdhfjdfhjd
+display
+add return books to Zhong Ning
+display
+exit

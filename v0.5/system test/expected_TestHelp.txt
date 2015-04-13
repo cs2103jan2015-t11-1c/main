@@ -1,0 +1,54 @@
+================================================
+Welcome to Minik!What would you like to do today?
+================================================
+
+Command: all tasks cleared
+
+Command: ================================================
+[1] add <task name> by: date month time
+e.g. add submit report by: 2 mar 1211
+
+[2] delete <task no.(s)>
+e.g. delete 1   delete 1 2 3
+
+[3] display undone/done tasks: display/displaydone
+    today/tomorrow: displaytoday   displaytomorrow
+
+[4] update <task no.> .name new name
+e.g update 1 .name collect homework
+
+[5] update <task no.> .start new start time
+e.g. update 1 .start 1 Mar 1211
+
+[6] update <task no.> .clear start
+e.g. update 2 .start 2 march 1211
+
+[7] update <task no.> .clear end
+e.g. update 2 .end 2 02 1211
+
+[8] update <task no.> .start new end time
+e.g. update 1 .end 1 mar 1211
+
+[9] mark task(s) as done
+e.g. done 1   done 1 2 3
+
+[10] undo last action: undo
+
+[11] search <key words>
+e.g. search homework
+
+[12] repeat <task no.> <frequency> <no. of repetitions>
+e.g. repeat 1 weekly 13 except 8   repeat 2 monthly 2
+     repeat 3 every mon/Monday/monday
+
+[13] change directory: changedirectory <new directory>
+e.g. changedirectory c:desktop
+
+[14] delete recurring task: deleterecur <task no.>
+e.g. deleterecur 1
+
+[15] update recurring task: updaterecur <task no.>
+e.g. updaterecur 1 .name   updaterecur 1 .start
+
+================================================
+Command: 

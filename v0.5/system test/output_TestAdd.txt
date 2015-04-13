@@ -1,0 +1,77 @@
+================================================
+Welcome to Minik!What would you like to do today?
+================================================
+
+Command: all tasks cleared
+
+Command: Currently no active event. 
+
+Command: "[16 Apr 11:00 - 16 Apr 11:30] cs demo" is added successfully.
+
+Command:   1.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+
+Command: Please check your user input time, date and month.
+
+Command:   1.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+
+Command: Invalid user input.
+
+Command:   1.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+
+Command: Invalid user input.
+
+Command:   1.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+
+Command: Please check your user input time, date and month.
+
+Command:   1.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+
+Command: Please check your user input time, date and month.
+
+Command:   1.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+
+Command: Please check your user input time, date and month.
+
+Command:   1.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+
+Command: "[03 May 10:00 - 03 May 11:00] IE2130 project discussion" is added successfully.
+
+Command:   1.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  2.[03 May 10:00 - 03 May 11:00] IE2130 project discussion
+
+Command: "[by 13 Apr 11:59            ] submit V0.5" is added successfully.
+
+Command:   1.[by 13 Apr 11:59            ] submit V0.5
+  2.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  3.[03 May 10:00 - 03 May 11:00] IE2130 project discussion
+
+Command: "[by 17 Apr 17:00            ] submit MA2213 homework" is added successfully.
+
+Command:   1.[by 13 Apr 11:59            ] submit V0.5
+  2.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  3.[by 17 Apr 17:00            ] submit MA2213 homework
+  4.[03 May 10:00 - 03 May 11:00] IE2130 project discussion
+
+Command: Please check your user input time, date and month.
+
+Command:   1.[by 13 Apr 11:59            ] submit V0.5
+  2.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  3.[by 17 Apr 17:00            ] submit MA2213 homework
+  4.[03 May 10:00 - 03 May 11:00] IE2130 project discussion
+
+Command: Please check your user input time, date and month.
+
+Command:   1.[by 13 Apr 11:59            ] submit V0.5
+  2.[16 Apr 11:00 - 16 Apr 11:30] cs demo
+  3.[by 17 Apr 17:00            ] submit MA2213 homework
+  4.[03 May 10:00 - 03 May 11:00] IE2130 project discussion
+
+Command: Please check your user input time, date and month.
+
+Command: Please check your user input time, date and month.
+
+Command: Please check your user input time, date and month.
+
+Command: Please check your user input time, date and month.
+
+Command: 

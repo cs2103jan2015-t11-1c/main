@@ -1,0 +1,2470 @@
+//@author: a0115253r
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdRepeatParser.cpp
+	 */
+
+#include "cmdRepeatParser.h"
+#include <string>
+
+const static std::string EMPTY_STRING = "";
+const static std::string INVALID_EXCEPTION_TYPE = "INVALID";
+const static std::string EXCEPT_STRING = "except";
+const static std::string STRING_DAILY = "daily";
+const static std::string STRING_WEEKLY = "weekly";
+const static std::string STRING_MONTHLY = "monthly";
+const static std::string STRING_EVERY = "every";
+const static int INVALID_REPEAT_TIME = -1;
+const static int DEFAULT_TIMES = 0;
+
+
+CmdRepeatParser::CmdRepeatParser(void) {
+}
+
+CmdRepeatParser::~CmdRepeatParser(void) {
+}
+
+void CmdRepeatParser::initialzeAttributes() {
+	_repeatDetails = EMPTY_STRING;
+	_repeatType = EMPTY_STRING;
+	_repeatTimes = DEFAULT_TIMES;
+	_exceptionDetail = EMPTY_STRING;
+}
+
+bool CmdRepeatParser::checkValidityAndGetDetails(std::string repeatDetail, std::string &repeatType, int &repeatTimes, bool &isWithException, std::string &exceptionType) {
+	initialzeAttributes();
+	repeatDetail = lowercaseRepeatDetail(repeatDetail);
+	_repeatDetails = repeatDetail;
+	bool isValid = false;
+	bool isDefault = false;
+	bool hasAnException = hasException();
+	
+	if (isDailyWeeklyMonthly(repeatDetail)) {
+
+		if(!hasAnException) {
+			isValid = getRepeatTimes(repeatDetail);
+		} else {
+			isValid = getRepeatTimes(repeatDetail) && getExceptionDetails(repeatDetail);
+		}
+
+	}  else if (isCertainDayOfAWeek(repeatDetail)) {
+
+		if (!hasAnException) {
+			isValid = getDetailsForRepeatCertainDayOfAWeek( repeatDetail) && getRepeatTimes(repeatDetail);
+		} else {
+			isValid = getDetailsForRepeatCertainDayOfAWeek(repeatDetail) && getRepeatTimes(repeatDetail) && getExceptionDetails(repeatDetail);
+		}
+
+	} else {
+		isValid = false;
+	}		
+
+	repeatType = _repeatType;
+	repeatTimes = _repeatTimes; 
+	isWithException = hasException();
+	exceptionType = _exceptionDetail;
+	initialzeAttributes();
+
+	return isValid;
+}
+
+bool CmdRepeatParser::getRepeatTimes(std::string repeatDetail) {
+
+	int repeatTypeSize = _repeatType.size();
+	int EIndex = repeatDetail.find(_repeatType);
+
+	repeatDetail = repeatDetail.substr(EIndex +  repeatTypeSize - 1);
+	std::string repeatTimeString;
+
+	int TIndex = repeatDetail.find_first_of(" ");
+
+	if (isValidIndex(TIndex)) {
+		repeatDetail = repeatDetail.substr(TIndex);
+	} else {
+		_repeatTimes = DEFAULT_TIMES;
+		return true;
+	}
+		
+	TIndex = repeatDetail.find_first_not_of(" ");
+
+	if (isValidIndex(TIndex)) {
+		repeatDetail = repeatDetail.substr(TIndex);
+	} else {
+		_repeatTimes = DEFAULT_TIMES;
+		return true;
+	}
+		
+	TIndex = repeatDetail.find_first_of(" ");
+
+	if (isValidIndex(TIndex)) {
+		repeatTimeString = repeatDetail.substr(0, TIndex);
+	} else {
+		repeatTimeString = repeatDetail;
+	}
+		
+	if (isStringAnInteger(repeatTimeString)) {
+		_repeatTimes = std::stoi(repeatTimeString);
+		return true;
+	} else {
+
+		if (repeatTimeString == EXCEPT_STRING) {
+			_repeatTimes = DEFAULT_TIMES;
+		} else {
+			_repeatTimes = INVALID_REPEAT_TIME;
+			return false;
+		}
+
+	}
+}
+
+bool CmdRepeatParser::getExceptionDetails(std::string repeatDetail) {
+	int EIndex = repeatDetail.find(EXCEPT_STRING);
+	repeatDetail = repeatDetail.substr(EIndex);
+
+	int TIndex = EXCEPT_STRING.size() - 1;
+	repeatDetail = repeatDetail.substr(TIndex);
+	TIndex = repeatDetail.find_first_of(" ");
+	if (isValidIndex(TIndex)) {
+		repeatDetail = repeatDetail.substr(TIndex);
+	} else {
+		_exceptionDetail = INVALID_EXCEPTION_TYPE;
+		return false;
+	}
+
+	TIndex = repeatDetail.find_first_not_of(" ");
+
+	if(isValidIndex(TIndex)) {
+		repeatDetail = repeatDetail.substr(TIndex);
+	} else {
+		return false;
+	}
+
+	TIndex = repeatDetail.find_first_of(" ");
+
+	if (isValidIndex(TIndex)) {
+		_exceptionDetail = repeatDetail.substr(0, TIndex);
+	    return true;
+	} else {
+		_exceptionDetail = repeatDetail;
+		return true;
+	}
+}	
+
+
+bool CmdRepeatParser::getDetailsForRepeatCertainDayOfAWeek(std::string repeatDetail) {
+
+	int TIndex = repeatDetail.find(STRING_EVERY);
+	repeatDetail = repeatDetail.substr(TIndex);
+	TIndex = repeatDetail.find_first_of(" ");
+
+	if (isValidIndex(TIndex)) {
+		repeatDetail = repeatDetail.substr(TIndex);
+	} else {
+		return false;
+	}
+	
+	TIndex = repeatDetail.find_first_not_of(" ");
+
+	if (isValidIndex(TIndex)) {
+		repeatDetail = repeatDetail.substr(TIndex);
+	} else {
+		return false;
+	}
+
+	TIndex = repeatDetail.find_first_of(" ");
+
+	if (isValidIndex(TIndex)) {
+		_repeatType = repeatDetail.substr(0, TIndex);
+		return true;
+	} else {
+		_repeatType = repeatDetail;
+		return true;
+	}
+}		
+
+bool CmdRepeatParser::isValidIndex(int TIndex) {
+	if (TIndex != std::string::npos && TIndex >= 0) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool CmdRepeatParser::hasException() {
+	int TIndex;
+	TIndex = _repeatDetails.find(EXCEPT_STRING);
+
+	if (isValidIndex(TIndex)) {
+		_hasException = true;
+	} else { 
+		_hasException = false;
+	}
+	
+	return _hasException;
+}
+
+bool CmdRepeatParser::isDailyWeeklyMonthly(std::string str) {
+	int indexOne = str.find(STRING_DAILY);
+	int indexTwo = str.find(STRING_WEEKLY);
+	int indexThree = str.find(STRING_MONTHLY);
+
+	if (isValidIndex(indexOne)) {
+		_repeatType = STRING_DAILY;
+		return true;
+	} else if (isValidIndex(indexTwo)) {
+		_repeatType = STRING_WEEKLY;
+		return true;
+	} else if (isValidIndex(indexThree)) {
+		_repeatType = STRING_MONTHLY;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool CmdRepeatParser::isCertainDayOfAWeek(std::string str) {
+	int Tindex = str.find(STRING_EVERY);
+	if (isValidIndex(Tindex)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool CmdRepeatParser::isStringAnInteger(std::string str) {
+
+	for (int i = str.size()-1; i >= 0; i--) {
+
+		if (!isdigit(str[i])) {
+			return false;
+		}
+
+	}
+	return true;
+}
+
+std::string CmdRepeatParser::lowercaseRepeatDetail(std::string repeatDetail) {
+	int n = repeatDetail.size();
+
+	for (int i = 0; i < n; i++) {
+
+		if (repeatDetail[i] <= 'Z' && repeatDetail[i] >= 'A') {
+			repeatDetail[i] = repeatDetail[i] - ('Z'-'z');
+		}
+
+	}
+
+  return repeatDetail;
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdRepeatParser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdRepeatParser.h
+	 */
+
+#pragma once
+#include <iostream>
+//repeat 1 daily/monthly/weekly 60
+//repeat 1 every mon/tue / thurs
+//repeat 1 daily except mon.tue.wed
+//repeat 1 weekly except week 2
+class CmdRepeatParser
+{
+private:
+	std::string _repeatDetails; 
+	std::string _repeatType;
+	int _repeatTimes; 
+	bool _hasException;
+	std::string _exceptionDetail;
+
+public:
+	CmdRepeatParser(void);
+	~CmdRepeatParser(void);
+	bool hasException();
+	bool isValidIndex(int);
+	bool getDetailsForRepeatCertainDayOfAWeek(std::string repeatDetail);
+	bool isDailyWeeklyMonthly(std::string );
+	bool isCertainDayOfAWeek(std::string );
+	bool getRepeatTimes(std::string);
+	bool getExceptionDetails(std::string );
+	bool checkValidityAndGetDetails(std::string ,std::string &,int &, bool &, std::string &); 
+	bool isStringAnInteger(std::string );
+	std::string lowercaseRepeatDetail(std::string );
+	void initialzeAttributes();
+};
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdRepeatParser.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\main.cpp
+	 */
+
+#include "UI\UI.h"
+#include <assert.h>
+#include <iostream>
+#include <windows.h>
+#include <cstdlib>
+#include <assert.h>
+
+const static std::string INVALID_COMMAND_MESSAGE ="Sorry, invalid command.\n\n";
+
+int main() {
+
+	system("mode 100,50");   //Set mode to ensure window does not exceed buffer size
+    SMALL_RECT WinRect = {0, 0, 100, 50};   //New dimensions for window in 8x12 pixel chars
+    SMALL_RECT* WinSize = &WinRect;			//Before integration testing, these 4 lines must be removed.
+    SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, WinSize); 
+	
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\main.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\main.cpp
+	 */
+
+	std::string message;
+	UI Minik;
+	std::string welcomeMessage = Minik.showWelcomeMessage();
+
+	assert( welcomeMessage =="================================================\nWelcome to Minik!What would you like to do today?\n================================================\n\n");
+
+	std::cout << welcomeMessage;
+
+	std::cout << "Command: ";
+
+	while (1) {
+
+		if (Minik.readCommandAndVerifyCommand()) {
+			message = Minik.callToParser();
+
+			assert( message != "" );
+
+			std::cout << message;
+		} else {
+			std::string invalidToDoList;
+			getline(std::cin, invalidToDoList);
+			std::cout << INVALID_COMMAND_MESSAGE;
+		}
+		
+		std::cout << "Command: ";
+	}
+
+    return 0;	
+}
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\main.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Paser\Parser.cpp
+	 */
+
+
+//The purpose of Parser class is to separate all the details of the user input.
+//Different command requires different details of user input. (For example, undo requires task numbers, while add requires event name or event time or both.
+//User input is analyzed diffently based on the type of command: add, delete, update, undo ,etc requires the users to key in different details.
+//The details of user input include: event name, starting date, ending date, starting month, ending month,starting time, ending time and task number list.
+//This details are initially assigned with default invalid values. If the user input contains the value of any parameter, it will overwrite the default value.
+//The validity of the details is being checked by calling verificationDateTimeMonth class. Invalid details will result in an error message.
+//All details are eventually passed to logic class for further execution.
+
+// *** Because the user input is being read as a string, the way we used to separate a piece of detail is by always finding first space and first nonspace.
+//     The validity of the index obtained is being checked everytime such an action is taken. In this way, exception errors are eliminated.
+
+
+#include "Parser.h"
+#include <string>
+#include <assert.h>
+
+static const int MONTH_NOT_ASSIGNED = 13; 
+static const int INVALID_EVENT_NUMBER = 0;
+static const int DATE_NOT_ASSIGNED = 0;
+static const int JAN = 1;
+static const int FEB = 2;
+static const int MAR = 3;
+static const int APR = 4;
+static const int INTEGER_MAY = 5;
+static const int JUN = 6;
+static const int JUL = 7;
+static const int AUG = 8;
+static const int SEP = 9;
+static const int OCT = 10;
+static const int NOV = 11;
+static const int DEC = 12;
+const static std::string INVALID_INPUT_MESSAGE = "Invalid user input.\n\n";
+const static std::string INVALID_TIME_DATE_MONTH_MESSAGE ="Please check your user input time, date and month.\n\n";
+const static std::string EMPTY_STRING = "";
+const static std::string TIME_NOT_ASSIGNED = "2400";
+const static std::string TASK_NAME_NOT_ASSIGNED = "";
+const static std::string STRING_END = "end";
+const static std::string STRING_START = "start";
+const static std::string STRING_NAME = "name";
+const static std::string STRING_ADD = "add";
+const static std::string STRING_DELETE = "delete";
+const static std::string STRING_UPDATE ="update" ;
+const static std::string STRING_UNDO = "undo";
+const static std::string STRING_DONE = "done";
+const static std::string STRING_DISPLAY = "display";
+const static std::string STRING_HELP = "help";
+const static std::string STRING_EXIT = "exit";
+const static std::string STRING_CLEAR = "clear";
+const static std::string STRING_DISPLAYDONE = "displaydone";
+const static std::string STRING_DISPLAYTODAY = "displaytoday";
+const static std::string STRING_DISPLAYTOMORROW = "displaytomorrow";
+const static std::string STRING_DISPLAYALL = "displayall";
+const static std::string STRING_SEARCH = "search";
+const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
+const static std::string STRING_REPEAT = "repeat";
+const static std::string STRING_REPEATDONE = "repeatdone";
+const static std::string STRING_DELETERECUR = "deleterecur";
+const static std::string STRING_UPDATERECUR = "updaterecur";
+
+//All attributes are initialized with their respective NOTASSIGNED value. Assume 24:00 as time not assigned, "" as task not assigned, 0 as date not assigned.
+Parser::Parser(void) {
+	_taskName = TASK_NAME_NOT_ASSIGNED;
+	_startingTime = TIME_NOT_ASSIGNED; 
+	_endingTime = TIME_NOT_ASSIGNED;
+	_startingDate = DATE_NOT_ASSIGNED;
+	_endingDate = DATE_NOT_ASSIGNED;
+	_startingMonth = MONTHNOTASSIGNED;
+	_endingMonth = MONTHNOTASSIGNED;
+	_taskNumberList.clear();
+}
+
+Parser::~Parser(void) {
+}
+
+std::string Parser::clearEvent() {
+	return VerifyAllAttributesAndCallLogic(CLEAR);
+}
+
+
+std::string Parser::markAsDone(std::string numberList) {
+	if (isAbleToGetNumberList(numberList)) {
+		return VerifyAllAttributesAndCallLogic(MARKASDONE);
+	} else {
+		return INVALID_INPUT_MESSAGE;
+	}
+}
+
+std::string Parser::deleteEvent(std::string command, ::string numberList) {
+	if (isAbleToGetNumberList(numberList)) {
+		if (command == STRING_DELETE) {
+			return VerifyAllAttributesAndCallLogic(DELETE);
+		} else if (command == STRING_DELETERECUR) {
+			return VerifyAllAttributesAndCallLogic(DELETERECUR);
+		}
+	} else {
+		return INVALID_INPUT_MESSAGE;
+	}
+}
+
+std::string Parser::searchEvent(std::string partToSearch) {
+	_taskName = partToSearch;
+	return VerifyAllAttributesAndCallLogic(SEARCH);
+}
+
+std::string Parser::unDo() {
+	return VerifyAllAttributesAndCallLogic(UNDO);
+}
+
+std::string Parser::help() {
+	return VerifyAllAttributesAndCallLogic(HELP);
+}
+
+std::string Parser::displayEvent(std::string command) {
+	CommandType commandT;
+
+	if (command == STRING_DISPLAYDONE) {
+		commandT = DISPLAYDONE;
+	} else if (command == STRING_DISPLAYTODAY) {
+		commandT = DISPLAYTODAY;
+	} else if (command == STRING_DISPLAY) {
+		commandT = DISPLAY;
+	} else if (command == STRING_DISPLAYALL) {
+		commandT = DISPLAYALL;
+	} else if (command == STRING_DISPLAYTOMORROW) {
+		commandT = DISPLAYTOMORROW;
+	}
+	
+	return VerifyAllAttributesAndCallLogic(commandT);
+}
+
+std::string Parser::repeat(std::string toDoList, std::string command) {
+	CommandType CommandTypeCommand;
+	std::string strTaskNumber;
+	int integerTaskNumber;
+
+	if (command == STRING_REPEAT) {
+		CommandTypeCommand = REPEAT;
+	} else if (command == STRING_REPEATDONE) {
+		CommandTypeCommand = REPEATDONE;
+	} else {
+		return INVALID_INPUT_MESSAGE;
+	}
+	
+	int TIndex = getIndexOfFirstWhiteSpace(toDoList);
+	
+	if (isValidIndex(TIndex)) {
+		strTaskNumber = toDoList.substr(0, TIndex);		
+	} else {
+		return INVALID_INPUT_MESSAGE;
+	}
+	
+	if (isStringAnInteger(strTaskNumber)) {
+		integerTaskNumber = convertStringToInteger(strTaskNumber);
+		_taskNumberList.push_back(integerTaskNumber);
+	} else {
+		return INVALID_INPUT_MESSAGE;
+	}
+	
+	toDoList = toDoList.substr(TIndex + 1);
+
+	if (!isEmpty(toDoList)) {
+		int IndexTwo = getIndexOfFirstNonWhiteSpace(toDoList);
+		replaceStringWithItsSubstring(toDoList, IndexTwo);
+		_taskName = toDoList;
+		return VerifyAllAttributesAndCallLogic(CommandTypeCommand);
+	} else {
+		return INVALID_INPUT_MESSAGE;
+	}
+
+	return INVALID_INPUT_MESSAGE;
+}
+		
+std::string Parser::changeDirectory(std::string directory) {
+	_taskName = directory;
+	return VerifyAllAttributesAndCallLogic(CHANGEDIRECTORY);
+}
+
+std::string Parser::addEvent(std::string toDoList){
+	
+	if (isTimedTask(toDoList)) {
+		return addTimedEvent(toDoList);
+	} else if (isTaskWithDeadline(toDoList)) {
+		return addEventWithDeadline(toDoList);
+	} else {
+		return addFloatingEvent(toDoList);
+	}
+
+}
+
+std::string Parser::updateName(std::string command) {
+	if (command == STRING_UPDATE) {
+		return VerifyAllAttributesAndCallLogic(UPDATENAME);
+	} else if (command == STRING_UPDATERECUR ) {
+		return  VerifyAllAttributesAndCallLogic(UPDATERECURNAME);
+	}
+}
+
+//This method is to update the starting/ending time to none, i.e. clear the starting/ ending time of existing event.
+std::string Parser:: updateClear(std::string clearType, std::string command) {
+	try {
+		if (clearType == STRING_END && command == STRING_UPDATE) {
+				return VerifyAllAttributesAndCallLogic(CLEAREND);
+			} else if (clearType == STRING_END && command == STRING_UPDATERECUR) {
+				return VerifyAllAttributesAndCallLogic(CLEARRECUREND);
+			} else if (clearType == STRING_START && command == STRING_UPDATE) {
+				return VerifyAllAttributesAndCallLogic(CLEARSTART);
+			} else if (clearType == STRING_START && command == STRING_UPDATERECUR) {
+				return VerifyAllAttributesAndCallLogic(CLEARRECURSTART);
+			} else {
+				throw INVALID_INPUT_MESSAGE;
+			}
+		} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+	}
+}
+
+//This method is to get details for updating end time of an existing event.
+std::string Parser::updateEndingTime(std::string buffer, std::string command) {
+		int date = 0;
+		MonthType month = MONTHNOTASSIGNED;
+
+		if (!isAbleToGetEventDateAndMonth(buffer,date, month)) {
+			return  INVALID_TIME_DATE_MONTH_MESSAGE;
+		} else {
+			_endingDate = date;
+			_endingMonth = month;
+			_endingTime = getEventTime(buffer);
+
+			if (command == STRING_UPDATE) {
+				return VerifyAllAttributesAndCallLogic(UPDATEENDINGTIME);
+			} else if (command == STRING_UPDATERECUR) {
+				return VerifyAllAttributesAndCallLogic(UPDATERECURENDINGTIME);
+			}
+
+		}
+}
+
+//This method is get details for update the starting time of an existing event.
+std::string Parser::updateStartingTime(std::string buffer, std::string command) {
+	int date= 0;
+	MonthType month= MONTHNOTASSIGNED;
+
+	if (!isAbleToGetEventDateAndMonth(buffer,date, month)) {
+		return  INVALID_TIME_DATE_MONTH_MESSAGE;
+	} else {
+		_startingDate=date;
+		_startingMonth = month;
+		_startingTime = getEventTime(buffer);
+		if (command == STRING_UPDATE) {
+			return VerifyAllAttributesAndCallLogic(UPDATESTARTINGTIME);
+		} else if (command == STRING_UPDATERECUR) {
+			return VerifyAllAttributesAndCallLogic(UPDATERECURSTARTINGTIME);
+		}
+	}
+}
+
+//This method is to gathers all update cases and call the respective update functions.
+std::string Parser::updateEvent(std::string command, std::string toDoList) {
+	std::string buffer;
+	int TIndex;
+	int taskNumber;
+	buffer = toDoList;
+	taskNumber = getUpdatetaskNumber(buffer);
+	_taskNumberList.push_back(taskNumber);
+	TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+	replaceStringWithItsSubstring(buffer, TIndex);
+	TIndex = getIndexOfFirstWhiteSpace(buffer);
+	std::string updateType = buffer.substr(0, TIndex);
+	replaceStringWithItsSubstring(buffer, TIndex + 1);
+    
+	if (updateType == STRING_NAME) {
+		_taskName=buffer;
+		return updateName(command);
+	} else if ( updateType == STRING_CLEAR) {
+		TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+		replaceStringWithItsSubstring(buffer, TIndex);
+		std::string clearType = buffer.substr(0,getIndexOfFirstWhiteSpace(buffer));
+		return updateClear(clearType, command);
+	} else if (updateType == STRING_END) {
+		return updateEndingTime(buffer, command);
+	} else if (updateType == STRING_START) {
+		return updateStartingTime(buffer, command);
+	} else {
+		return  INVALID_INPUT_MESSAGE;
+	}
+}
+
+//This Method checks whether a task is a task with deadline.
+bool Parser::isTaskWithDeadline(std::string toDoList){
+	bool isATaskWithDeadline;
+	int TIndex = toDoList.find("by:");
+
+	if (TIndex != std::string::npos) {
+		isATaskWithDeadline = true;
+	} else {
+		isATaskWithDeadline = false;
+	}
+
+	return isATaskWithDeadline;
+}
+
+//This method checks whether a task is timed task with starting and ending time.
+bool Parser::isTimedTask(std::string toDoList) {
+	bool isTimedTask;
+	int TIndex = toDoList.find("from:");
+
+	if (isValidIndex(TIndex)) {
+		isTimedTask = true;
+	} else {
+		isTimedTask = false;
+	}
+
+	return isTimedTask;
+}
+
+//This method checks whether an index is valid.
+bool Parser::isValidIndex(int TIndex) {
+	if (TIndex != std::string::npos && TIndex >= 0) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+//This method checks whether date and month can be separated from the user input and at the same time, separate date and month.
+bool Parser::isAbleToGetEventDateAndMonth(std::string &buffer,int &date,MonthType &month) {
+	std::string dateString;
+	std::string monthString;
+	int TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+	replaceStringWithItsSubstring(buffer, TIndex);
+	TIndex = getIndexOfFirstWhiteSpace(buffer);
+
+	if (isValidIndex(TIndex)) {
+		dateString = buffer.substr(0, TIndex);
+	} else {
+		return false;
+	}
+	
+	if (!isStringAnInteger(dateString)) {
+			return false;			
+	} else {
+		date = convertStringToInteger(dateString);
+	}
+
+	replaceStringWithItsSubstring(buffer, TIndex + 1);
+	TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+	
+	int EIndex;
+
+	if (isValidIndex(TIndex)) {
+		replaceStringWithItsSubstring(buffer, TIndex);
+		EIndex = getIndexOfFirstWhiteSpace(buffer);
+
+		if (isValidIndex(EIndex)) {
+			monthString = buffer.substr(0, EIndex);
+		} else {
+			return false;
+		}
+
+	} else {
+		return false;
+	}
+
+	month = determineMonthType(monthString);
+	replaceStringWithItsSubstring(buffer, EIndex);
+	TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+
+	if (isValidIndex(TIndex)) {
+		replaceStringWithItsSubstring(buffer, TIndex);
+	} else {
+		return false;
+	}
+
+	return true;
+}
+
+//This method assigns a corresponding enum MonthType to user input month which is a string.
+MonthType Parser :: determineMonthType(std::string monthString) {
+
+	monthString = _verificationDateTimeMonth.lowercaseMonth(monthString);
+
+	for (int i = monthString.size() - 1; i >= 0; i--) {
+		assert( !(isupper(monthString[i])) );
+	}
+
+	if (monthString == "jan" ||  monthString == "january" || monthString == "01" || monthString == "1" ) {
+		return JANUARY;
+	} else if (monthString == "feb" || monthString == "february"|| monthString == "02" || monthString == "2") {
+		return FEBRUARY;
+	} else if (monthString == "mar" || monthString == "march" || monthString == "03" || monthString == "3") {
+		return MARCH;
+	} else if (monthString == "apr" || monthString == "april" || monthString == "04" || monthString == "4") {
+		return APRIL;
+	} else if ( monthString == "may" ||  monthString == "may" || monthString == "05" || monthString == "5") {
+		return MAY;
+	} else if (monthString == "jun" || monthString == "june"|| monthString == "06" || monthString == "6") {
+		return JUNE;
+	} else if (monthString == "jul" || monthString == "july" || monthString =="07" || monthString =="7" ) {
+		return JULY;
+	} else if (monthString == "aug" || monthString == "august" || monthString == "08" || monthString == "8") {
+		return AUGUST;
+	} else if (monthString == "sep" || monthString == "september" || monthString == "09" || monthString == "9") {
+		return SEPTEMBER;
+	} else if (monthString == "oct" ||  monthString == "october" || monthString =="10") {
+		return OCTOBER;
+	} else if (monthString == "nov" || monthString == "november" || monthString == "11") {
+		return NOVEMBER;
+	} else if (monthString == "dec" || monthString == "december" || monthString == "12") {
+		return DECEMBER;
+	} else {
+		return MONTHNOTASSIGNED;
+	}
+}
+
+void Parser::replaceStringWithItsSubstring(std::string &buffer, int TIndex) {
+	buffer = buffer.substr(TIndex);
+}
+
+//This method get the number of the event to be updated from the user input.
+int Parser :: getUpdatetaskNumber(std::string &buffer) {
+	int indexOne;
+	int indexTwo;
+	std::string taskNumberString;
+	int taskNumberInteger;
+	indexOne = getIndexOfFirstNonWhiteSpace(buffer);
+	replaceStringWithItsSubstring(buffer, indexOne);
+	taskNumberString = buffer.substr(0, getIndexOfFirstWhiteSpace(buffer));
+
+	if (isStringAnInteger(taskNumberString)) {
+		taskNumberInteger = convertStringToInteger(taskNumberString);
+		indexTwo = buffer.find_first_of(".");
+		replaceStringWithItsSubstring(buffer, indexTwo + 1);
+		return taskNumberInteger;
+	} else {
+		return INVALID_EVENT_NUMBER;
+	}
+}
+
+//This method check whether the task numbers inputted by the user is valid, and store the task numbers into a list.
+bool Parser::isAbleToGetNumberList(std::string numberList) {
+	std::string taskNumberString;
+	int taskNumberInteger;
+	numberList = numberList.substr(getIndexOfFirstNonWhiteSpace(numberList));
+	int TIndex = getIndexOfFirstWhiteSpace(numberList);
+
+	while (isValidIndex(TIndex)) {
+		taskNumberString = numberList.substr(0,TIndex);
+		 
+		if (isStringAnInteger(taskNumberString)) {
+			taskNumberInteger = convertStringToInteger(taskNumberString);
+			_taskNumberList.push_back(taskNumberInteger);
+			replaceStringWithItsSubstring(numberList, TIndex);
+			int EIndex = getIndexOfFirstNonWhiteSpace(numberList);
+
+			if (isValidIndex(EIndex) && !isEmpty(numberList)) {
+				replaceStringWithItsSubstring(numberList, EIndex);
+			    TIndex = getIndexOfFirstWhiteSpace(numberList);
+			}
+			else{
+				break;
+			}
+
+		} else {
+			return false;			
+		}
+	}
+
+	if (!isEmpty(numberList)) {		
+
+		if (isStringAnInteger(numberList)) {
+			taskNumberString = numberList;
+			taskNumberInteger = convertStringToInteger(numberList);
+			_taskNumberList.push_back(taskNumberInteger);
+		} else {
+			return false;
+		}
+
+	}
+	return true;
+}
+
+int Parser::convertMonthTypeToInteger(MonthType monthType) {
+
+	switch(monthType) {
+
+	case JANUARY:
+		return  JAN;
+
+	case FEBRUARY:
+		return FEB;
+
+	case MARCH:
+		return MAR;
+
+	case APRIL:
+		return APR;
+
+	case MAY:
+		return INTEGER_MAY;
+
+	case JUNE:
+		return JUN;
+
+	case JULY:
+		return JUL;
+
+	case AUGUST:
+		return AUG;
+
+	case SEPTEMBER:
+		return SEP;
+
+	case OCTOBER:
+		return OCT;
+
+	case NOVEMBER:
+		return NOV;
+
+	case DECEMBER:
+		return DEC;
+
+	case MONTHNOTASSIGNED:
+		return MONTH_NOT_ASSIGNED;
+
+	default:
+		return MONTH_NOT_ASSIGNED;
+	}
+}
+
+Logic::CommandType Parser::changeToLogicCommandType(CommandType command) {
+	switch (command) {
+		
+	case CHANGEDIRECTORY:
+		return Logic::CHANGEDIRECTORY;
+
+	case CLEAREND:
+		return Logic::CLEAREND;
+
+	case CLEARRECUREND:
+		return Logic::CLEARRECUREND;
+
+	case CLEARSTART:
+		return Logic::CLEARSTART;
+
+	case CLEARRECURSTART:
+		return Logic::CLEARRECURSTART;
+
+	case ADDEVENTWITHDEADLINE:
+		return Logic::ADDEVENTWITHDEADLINE;
+
+	case ADDFLOATINGEVENT:
+		return Logic::ADDFLOATINGEVENT;
+
+	case ADDTIMEDEVENT:
+		return Logic::ADDTIMEDEVENT;
+
+	case UPDATENAME:
+		return Logic::UPDATENAME;
+
+	case UPDATERECURNAME:
+		return Logic::UPDATERECURNAME;
+
+	case UPDATEENDINGTIME:
+		return Logic::UPDATEENDINGTIME;
+
+	case UPDATERECURENDINGTIME:
+		return Logic::UPDATERECURENDINGTIME;
+
+	case UPDATESTARTINGTIME:
+		return Logic::UPDATESTARTINGTIME;
+
+	case UPDATERECURSTARTINGTIME:
+		return Logic::UPDATERECURSTARTINGTIME;
+	case DELETE:
+		return Logic::DELETE;
+
+	case DISPLAY:
+		return Logic::DISPLAY;
+
+	case DISPLAYTODAY:
+		return Logic::DISPLAYTODAY;
+
+	case DISPLAYDONE:
+		return Logic::DISPLAYDONE;
+
+	case SEARCH:
+		return Logic::SEARCH;
+
+	case UNDO:
+		return Logic::UNDO;
+
+	case MARKASDONE:
+		return Logic::MARKASDONE;
+
+	case CLEAR:
+		return Logic::CLEAR;
+
+	case HELP:
+		return Logic::HELP;
+		
+	case REPEAT:
+		return Logic::REPEAT;
+		
+	case REPEATDONE:
+		return Logic::REPEATDONE;
+
+	case DISPLAYALL:
+		return Logic::DISPLAYALL;
+
+	case DISPLAYTOMORROW:
+		return Logic::DISPLAYTOMORROW;
+
+	case DELETERECUR:
+		return Logic::DELETERECUR;
+
+	default:
+		return Logic::HELP;
+	}
+}
+
+//Reset the value of all private attributes.
+void Parser :: resetAttributesValue(){
+	_taskName = TASK_NAME_NOT_ASSIGNED;
+	_startingTime = TIME_NOT_ASSIGNED;
+	_endingTime = TIME_NOT_ASSIGNED;
+	_startingDate = DATE_NOT_ASSIGNED;
+	_endingDate = DATE_NOT_ASSIGNED;
+	_startingMonth = MONTHNOTASSIGNED;
+	_endingMonth = MONTHNOTASSIGNED;
+	_taskNumberList.clear();
+}
+
+//This method checks whether the string can be converted to an integer.
+bool Parser::isStringAnInteger(std::string str) {
+
+	for (int i = str.size() - 1; i >= 0; i--) {
+
+		if (!isdigit(str[i])) {
+			return false;
+		}
+
+	}
+
+	return true;
+}
+
+int Parser::convertStringToInteger(std::string str){
+	return stoi(str);
+}
+
+//This method checks whether a string is an empty string or blank string
+bool Parser::isEmpty(std::string str) {
+	if (str.empty()) {
+		return true;
+	} else {
+
+		for (int i = str.size() - 1; i >= 0; i--) {
+			if (str[i] != ' ') {
+				return false;
+			}
+		}
+
+	}
+	return true;
+}
+
+int Parser::getIndexOfFirstNonWhiteSpace(std::string str) {
+	return str.find_first_not_of(" ");
+}
+
+int Parser::getIndexOfFirstWhiteSpace(std::string str) {
+	return str.find_first_of(" ");
+}
+
+//This method separates the task name from the entire string of user input.
+std::string Parser::getTaskName(std::string &buffer) {
+	int TIndex;
+    std::string taskName;
+	TIndex = buffer.find("from:");
+
+	if (isValidIndex(TIndex)) {
+		taskName = buffer.substr(0, TIndex - 1);
+		buffer = buffer.substr(TIndex + 4);
+		return taskName;
+	} else {
+		TIndex = buffer.find("by:");
+	}
+
+	if (isValidIndex(TIndex)) {
+		taskName = buffer.substr(0, TIndex - 1);
+		buffer = buffer.substr(TIndex + 2);
+		TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+		buffer = buffer.substr(TIndex);
+		return taskName;
+	} else {
+		taskName = buffer;
+		return taskName;
+	}
+}
+
+//This method assigns the corresponding values to private attributes.
+void Parser:: assignDateTimeMonthAttributes(std::string startOrEnd, std::string &buffer, int date, MonthType month) {
+	if (startOrEnd == STRING_START) {
+		_startingDate = date; 
+		_startingMonth = month; 
+		_startingTime = getEventTime(buffer);
+	} else if (startOrEnd == STRING_END) {
+		_endingDate = date;
+		_endingMonth = month;
+		_endingTime = getEventTime(buffer);
+	} else {
+		return;
+	}
+}
+
+//This method gets all the details of timed events from user input.
+std::string Parser::addTimedEvent(std::string toDoList){
+	std:: string buffer = toDoList;
+	int date = DATE_NOT_ASSIGNED;
+	MonthType month = MONTHNOTASSIGNED;
+	_taskName = getTaskName(buffer);
+
+	if (buffer.size() == 1) {
+		return  INVALID_TIME_DATE_MONTH_MESSAGE;
+	} else {
+		replaceStringWithItsSubstring(buffer, 1);
+
+		if (isEmpty(buffer)) {
+			return  INVALID_TIME_DATE_MONTH_MESSAGE;
+		} else {
+			replaceStringWithItsSubstring(buffer, getIndexOfFirstNonWhiteSpace(buffer));
+		}
+	}
+
+	if (isAbleToGetEventDateAndMonth(buffer, date, month)) {
+		assignDateTimeMonthAttributes(STRING_START, buffer, date, month);
+		int Index = buffer.find_first_of("to:");
+
+		if (isValidIndex(Index)) {
+			replaceStringWithItsSubstring(buffer, Index + 2);
+
+			if (buffer.size() == 1) {
+				return INVALID_INPUT_MESSAGE;
+			} else {
+				replaceStringWithItsSubstring(buffer, 1);
+			}
+
+		} else {
+			return INVALID_INPUT_MESSAGE;
+		}
+
+	} else {
+			return  INVALID_TIME_DATE_MONTH_MESSAGE;
+	}
+
+	if (buffer.size() == 1) {
+		return  INVALID_TIME_DATE_MONTH_MESSAGE;
+	} else {
+		replaceStringWithItsSubstring(buffer, 1);
+		
+		if (isEmpty(buffer)) {
+			return  INVALID_TIME_DATE_MONTH_MESSAGE;
+		} else {
+			replaceStringWithItsSubstring(buffer, getIndexOfFirstNonWhiteSpace(buffer));
+		}
+	}
+
+	if (isAbleToGetEventDateAndMonth(buffer,date, month)) {
+		assignDateTimeMonthAttributes(STRING_END, buffer, date, month);
+		return VerifyAllAttributesAndCallLogic(ADDTIMEDEVENT);
+	} else {
+		return  INVALID_TIME_DATE_MONTH_MESSAGE;
+	}
+}
+
+//This method gets all the details of a dealine event from the user input.
+std::string Parser::addEventWithDeadline(std::string toDoList) {
+	std::string buffer = toDoList;
+	_taskName = getTaskName(buffer);
+	int date= DATE_NOT_ASSIGNED;
+	MonthType month= MONTHNOTASSIGNED;
+
+	if (buffer.size() == 1) {
+		return  INVALID_TIME_DATE_MONTH_MESSAGE;
+	}	else{
+		replaceStringWithItsSubstring(buffer, 1);
+
+		if (isEmpty(buffer)) {
+			return  INVALID_TIME_DATE_MONTH_MESSAGE;
+		} else {
+			replaceStringWithItsSubstring(buffer,getIndexOfFirstNonWhiteSpace(buffer));
+		}
+	}
+
+	if (isAbleToGetEventDateAndMonth(buffer,date, month)) {
+		assignDateTimeMonthAttributes(STRING_END, buffer, date, month);
+		return VerifyAllAttributesAndCallLogic(ADDEVENTWITHDEADLINE);
+	} else {
+		return  INVALID_TIME_DATE_MONTH_MESSAGE;
+	}
+}
+
+//This method gets the time of event from the user input.
+std::string Parser::getEventTime(std::string &buffer) {
+	std::string time;
+	int TIndex = getIndexOfFirstNonWhiteSpace(buffer);
+	replaceStringWithItsSubstring(buffer, TIndex);
+	TIndex = getIndexOfFirstWhiteSpace(buffer);
+
+	if (isValidIndex(TIndex)) {
+		time = buffer.substr(0, TIndex);
+		replaceStringWithItsSubstring(buffer, TIndex);
+	} else if (!isEmpty(buffer)) {
+		time = buffer;
+	}
+
+	return time;
+}
+
+std::string Parser::addFloatingEvent(std::string toDoList) {
+	std::string buffer = toDoList;
+	_taskName=getTaskName(buffer);
+	return VerifyAllAttributesAndCallLogic(ADDFLOATINGEVENT);
+}
+
+//This method final verifies the validity of all the details of the event and pass the values to logic to execute.
+std::string Parser::VerifyAllAttributesAndCallLogic(CommandType command) {
+
+	int integerStartingMonth = convertMonthTypeToInteger(_startingMonth);
+	int integerEndingMonth = convertMonthTypeToInteger(_endingMonth);
+	bool isTimeInteger = isStringAnInteger(_startingTime) && isStringAnInteger(_endingTime);
+	int integerStartingTime;
+	int integerEndingTime;
+
+	if (isTimeInteger) {
+		integerStartingTime = convertStringToInteger(_startingTime);
+		integerEndingTime = convertStringToInteger(_endingTime);
+	} else {
+		return  INVALID_TIME_DATE_MONTH_MESSAGE;
+	}
+	
+	Logic::CommandType _command;
+	_command = changeToLogicCommandType(command);
+	std::string feedback = EMPTY_STRING;
+
+	switch (command) {
+
+	case ADDTIMEDEVENT:
+
+		if (_verificationDateTimeMonth.isEndingLaterThanStarting(integerStartingTime, integerStartingMonth, _startingDate, integerEndingTime, integerEndingMonth, _endingDate)) {
+			feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
+			
+			assert( feedback != EMPTY_STRING );
+
+			resetAttributesValue();
+			return feedback;
+		} else {
+			return  INVALID_TIME_DATE_MONTH_MESSAGE;
+		}
+
+	case DELETE:
+
+	case DELETERECUR:
+
+	case UPDATERECURNAME:
+
+	case CLEARRECUREND:
+
+	case CLEARRECURSTART:
+
+	case UPDATENAME:
+
+	case UNDO:
+
+	case ADDFLOATINGEVENT:
+
+	case SEARCH:
+
+	case EXIT:
+
+	case HELP:
+
+	case CLEAR:
+		
+	case CLEAREND:
+		
+	case CHANGEDIRECTORY:
+
+	case CLEARSTART:
+
+	case DISPLAY:
+
+	case DISPLAYTODAY:
+		
+	case DISPLAYDONE:
+
+	case DISPLAYTOMORROW:
+
+	case DISPLAYALL:
+		
+	case REPEAT:
+		
+	case REPEATDONE:
+
+	case MARKASDONE:
+		feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
+		
+		assert( feedback != EMPTY_STRING );
+
+		resetAttributesValue();
+		return feedback;
+
+	case UPDATEENDINGTIME:
+
+	case UPDATERECURENDINGTIME:
+
+	case ADDEVENTWITHDEADLINE:
+		if (_verificationDateTimeMonth.isDateMonthTimeValid(_endingDate, integerEndingMonth, integerEndingTime)) { 
+			feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
+			
+			assert( feedback != EMPTY_STRING );
+
+			resetAttributesValue();
+			return feedback;
+		} else {
+			return  INVALID_TIME_DATE_MONTH_MESSAGE;
+		}
+
+	case UPDATERECURSTARTINGTIME:
+
+	case UPDATESTARTINGTIME:
+		if (_verificationDateTimeMonth.isDateMonthTimeValid(_startingDate, integerStartingMonth, integerStartingTime)) { 
+			feedback = _logic.executeCommand(_command , _taskName, _startingDate, integerStartingMonth,  integerStartingTime,_endingDate, integerEndingMonth, integerEndingTime, _taskNumberList);
+			
+			assert( feedback != EMPTY_STRING );
+
+			resetAttributesValue();
+			return feedback;
+		} else {
+			return  INVALID_TIME_DATE_MONTH_MESSAGE;
+		}
+
+	default:
+		resetAttributesValue();
+		return INVALID_INPUT_MESSAGE;
+	}
+}
+
+//This funtion is for unit test purpose. (Assign values to the private attributes)
+void Parser::setAttributes(std::string taskName, std::string startingTime, std::string endingTime, int startingDate, int endingDate, MonthType startingMonth, MonthType endingMonth, std::list<int> taskNumberList) {
+	_taskName = taskName;
+	_startingTime = startingTime;
+	_endingTime = endingTime;
+	_startingDate = startingDate;
+	_endingDate = endingDate;
+	_startingMonth = startingMonth;
+	_endingMonth = endingMonth;
+	_taskNumberList = taskNumberList;
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Paser\Parser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Paser\Parser.h
+	 */
+
+#pragma once
+
+#include <iostream>
+#include "Logic\logic.h"
+#include "VerificationDateTimeMonth.h"
+#include <string>
+#include <list>
+#include <string>
+
+enum MonthType {JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER,MONTHNOTASSIGNED};
+
+class Parser {
+
+private:
+	std::string _taskName;
+	std::string _startingTime;
+	std::string _endingTime;
+	int _startingDate;
+	int _endingDate;
+	MonthType _startingMonth;
+	MonthType _endingMonth;
+	std::list<int> _taskNumberList;
+	Logic _logic;
+	LogicBaseClass _logicBaseClass;
+	VerificationDateTimeMonth _verificationDateTimeMonth;
+
+public:
+	Parser(void);
+	~Parser(void);
+	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATERECURNAME, UPDATEENDINGTIME, UPDATERECURENDINGTIME, UPDATESTARTINGTIME, UPDATERECURSTARTINGTIME, DELETE, DELETERECUR, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, DISPLAYTOMORROW, DISPLAYALL, SEARCH, UNDO, CLEAR, CLEAREND, CLEARRECUREND, CLEARSTART, CLEARRECURSTART, CHANGEDIRECTORY, HELP, EXIT, REPEAT, REPEATDONE};
+    std::string VerifyAllAttributesAndCallLogic(CommandType);
+    std::string addEvent(std::string );
+    std::string addTimedEvent(std::string );
+	std::string addEventWithDeadline(std::string );
+	std::string addFloatingEvent(std::string );
+	std::string getTaskName(std::string &);
+	std::string getEventTime(std::string &);
+	std::string updateEvent(std::string, std::string );
+	std::string searchEvent(std::string );
+	std::string unDo();
+	std::string displayEvent(std::string );
+	std::string clearEvent();
+	std::string markAsDone(std::string );
+	std::string deleteEvent(std::string, std::string);
+	std::string changeDirectory(std::string );
+	std::string repeat(std::string, std::string);
+	std::string help();
+	std::string updateName(std::string );
+	std::string updateClear(std::string , std::string );
+	std::string updateEndingTime(std::string , std::string );
+	std::string updateStartingTime(std::string, std::string );
+	bool isAbleToGetEventDateAndMonth(std::string &, int &, MonthType &);
+    bool isTaskWithDeadline(std::string );
+	bool isTimedTask(std::string );
+	bool isStringAnInteger(std::string );
+	bool isEmpty(std::string);
+	bool isValidIndex(int );
+	bool isAbleToGetNumberList(std::string );
+	int convertMonthTypeToInteger(MonthType);
+	int getIndexOfFirstNonWhiteSpace(std::string );
+	int getIndexOfFirstWhiteSpace(std::string );
+	int convertStringToInteger(std::string str);
+	int getUpdatetaskNumber(std::string &);
+	Logic::CommandType changeToLogicCommandType(CommandType );
+	MonthType determineMonthType(std::string );
+	void resetAttributesValue();
+	void replaceStringWithItsSubstring(std::string &, int );
+	void  assignDateTimeMonthAttributes(std::string startOrEnd, std::string &, int , MonthType );
+	void setAttributes(std::string ,std::string ,std::string ,int ,int ,MonthType ,MonthType ,std::list<int> );
+};
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Paser\Parser.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Paser\VerificationDateTimeMonth.cpp
+	 */
+
+
+#include "VerificationDateTimeMonth.h"
+
+const int MAX_MINUTE = 60;
+const int MAX_HOUR = 23;
+const int MIN_MONTH = 1;
+const int MAX_MONTH = 12;
+const int MIN_DATE = 1;
+const int MAX_DATE = 31;
+const int MAX_TIME = 2359;
+const int MIN_TIME = 0000;
+const int DATE_29 = 29;
+const int DATE_30 = 30;
+
+VerificationDateTimeMonth::VerificationDateTimeMonth(void) {
+}
+
+VerificationDateTimeMonth::~VerificationDateTimeMonth(void) {
+}
+
+std::string VerificationDateTimeMonth::lowercaseMonth(std::string month) {
+	int n = month.size();
+
+	for (int i = 0; i < n; i ++) {
+		if (month[i] <= 'Z' && month[i] >= 'A') {
+			month[i] = month[i] - ('Z' - 'z');
+		}
+	}
+
+  return month;
+}
+
+//checking for timedtasks whether ending time is later than starting time.
+bool VerificationDateTimeMonth::isEndingLaterThanStarting (int startingTime, int startingMonth, int startingDate, int endingTime, int endingMonth, int endingDate) {
+	bool isEndingLaterThanStarting = false;
+	bool areValidMonths = false;
+	bool areValidDates = false;
+	bool areValidTime = false;
+	bool isStartingDateMonthTimeValid = isDateMonthTimeValid(startingDate, startingMonth, startingTime);
+	bool isEndingingDateMonthTimeValid = isDateMonthTimeValid(endingDate, endingMonth, endingTime);
+
+	if (!isStartingDateMonthTimeValid || !isEndingingDateMonthTimeValid) {
+		return false;
+	}
+
+	if (startingMonth <= endingMonth) {
+		areValidMonths = true;
+	} else {
+		areValidMonths = false;
+	}
+
+	if (areValidMonths && startingMonth == endingMonth) {
+
+		if (startingDate <= endingDate ) {
+			areValidDates = true;
+		} else {
+			areValidDates = false;
+		}
+
+	} else if (areValidMonths && startingMonth < endingMonth) {
+		areValidDates = true;
+		areValidTime = true;
+	}
+	
+	if (startingMonth == endingMonth && startingDate == endingDate) {
+		
+		if (startingTime < endingTime) {
+			areValidTime = true;
+		} else {
+			areValidTime = false;
+		}
+
+	} else if (startingMonth == endingMonth && startingDate < endingDate) {
+		areValidTime = true;
+	}
+
+	if (areValidDates && areValidMonths && areValidTime) {
+		isEndingLaterThanStarting = true;
+	} else {
+		isEndingLaterThanStarting = false;
+	}
+
+	return isEndingLaterThanStarting;
+}
+
+//check whether a single date, month and time input is valid
+bool VerificationDateTimeMonth::isDateMonthTimeValid(int date, int month, int time) {
+	bool isTMonthValid = isMonthValid(month);
+	bool isTDateValid = false; 
+	bool isTDateMonthTimeValid = false;
+
+	if (isTMonthValid) {
+		isTDateValid = isDateValid(date,month);
+	} else {
+		isTDateValid = false;
+	}
+	
+	bool isTTimeValid = isTimeValid(time);
+	
+	if (isTDateValid && isTMonthValid && isTTimeValid) {
+		isTDateMonthTimeValid = true;
+	} else {
+		isTDateMonthTimeValid = false;
+	}
+
+	return isTDateMonthTimeValid;
+}
+
+//This method checks whether the input time is valid.
+bool VerificationDateTimeMonth::isTimeValid(int time) {
+	bool isTimeValid = true;
+
+	if (!(time >= MIN_TIME && time <= MAX_TIME)) {
+		isTimeValid = false;
+	} else {
+
+		if (time / 10 == 0 ) {
+			isTimeValid = true;
+		} else if (time / 100 == 0 && time >= MAX_MINUTE) {
+			isTimeValid = false;
+		} else if ( time / 1000 == 0) {
+			int minute = time % 100;
+			
+			if (minute >= MAX_MINUTE) {
+				isTimeValid = false;
+			} else {
+				isTimeValid = true;
+			}
+
+		} else if(time / 10000 == 0) {
+			int minute = time % 100;
+			int hour = time / 100;
+
+			if (minute >= MAX_MINUTE || hour > MAX_HOUR) {
+				isTimeValid = false;
+			} else {
+				isTimeValid = true;
+			}
+
+		} else {
+			isTimeValid = false;
+		}
+
+	}
+
+	return isTimeValid;
+}
+
+bool VerificationDateTimeMonth::isMonthValid(int month) {
+	bool isMonthValid = false;
+
+	if (month >= MIN_MONTH && month <= MAX_MONTH) {
+		isMonthValid = true;
+	} else {
+		isMonthValid = false;
+	}
+
+	return isMonthValid;
+}
+
+bool VerificationDateTimeMonth::isDateValid(int date, int month) {
+    
+	switch (month) {
+	case 1:
+
+	case 3:
+
+	case 5:
+
+	case 7:
+
+	case 8:
+
+	case 10:
+
+	case 12:
+		if (date >= MIN_DATE && date <= MAX_DATE) {
+			return true;
+		} else {
+			return false;
+		}
+
+	case 2:
+		if (date >= MIN_DATE && date <= DATE_29) {
+			return true;
+		} else {
+			return false;
+		}
+		
+	case 4:
+
+	case 6:
+
+	case 9:
+
+	case 11:
+		if (date >= MIN_DATE && date <= DATE_30) {
+			return true;
+		} else {
+			return false;
+		}
+		
+	default:
+		return false;
+	}
+
+}
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Paser\VerificationDateTimeMonth.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Paser\VerificationDateTimeMonth.h
+	 */
+
+
+#ifndef VERIFICATIONDATETIMEMONTH_H
+#define VERIFICATIONDATETIMEMONTH_H
+#pragma once
+#include <string>
+
+class VerificationDateTimeMonth
+{
+public:
+	VerificationDateTimeMonth(void);
+	~VerificationDateTimeMonth(void);
+	bool isEndingLaterThanStarting(int , int , int , int , int , int );
+	bool isDateMonthTimeValid(int , int , int );
+	bool isTimeValid(int );
+	bool isMonthValid(int );
+	bool isDateValid(int, int );
+	std::string lowercaseMonth(std::string month);
+};
+
+#endif
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Paser\VerificationDateTimeMonth.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\UI\UI.cpp
+	 */
+
+
+//This class gets user command and calls Parser to get user input(details of the event/action keyed in by users).
+//Before calling Parser, the validity of user command is being checked by verification command.
+//We allow some flexible commands such as upper case or lower case command word.
+
+#include "UI.h"
+
+const static std::string STRING_ADD = "add";
+const static std::string STRING_DELETE = "delete";
+const static std::string STRING_UPDATE ="update" ;
+const static std::string STRING_UNDO = "undo";
+const static std::string STRING_DONE = "done";
+const static std::string STRING_DISPLAY = "display";
+const static std::string STRING_HELP = "help";
+const static std::string STRING_EXIT = "exit";
+const static std::string STRING_CLEAR = "clear";
+const static std::string STRING_DISPLAYDONE = "displaydone";
+const static std::string STRING_DISPLAYTODAY = "displaytoday";
+const static std::string STRING_SEARCH = "search";
+const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
+const static std::string STRING_REPEAT = "repeat";
+const static std::string STRING_DISPLAYALL = "displayall";
+const static std::string STRING_DISPLAYTOMORROW = "displaytomorrow";
+const static std::string STRING_REPEATDONE = "repeatdone";
+const static std::string STRING_UPDATERECUR = "updaterecur";
+const static std::string STRING_DELETERECUR = "deleterecur";
+const static std::string INVALID_INPUT_MESSAGE = "Invalid user input.\n\n";
+static const std::string WELCOME_MESSAGE = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n\n";
+static const std::string EMPTY_STRING = "";
+
+UI::UI() {
+	_commandWord=EMPTY_STRING;
+	_toDoList=EMPTY_STRING;
+}
+
+UI::~UI(void) {
+}
+
+void UI::setValueForAttributes(std::string commandWord, std::string toDoList) {
+	_commandWord = commandWord;
+	_toDoList = toDoList;
+}
+
+std::string UI::getToDoList() {
+	return _toDoList;
+}
+
+std::string UI::showWelcomeMessage() {
+	return WELCOME_MESSAGE;
+}
+
+bool UI:: readCommandAndVerifyCommand() {
+	bool isValid=true;
+	std::cin >> _commandWord;
+
+	if (_commandWord.empty()) {
+		isValid = false;
+	} else {
+		_commandWord = _verificationCommand.lowercaseCommandWord(_commandWord);
+		isValid = _verificationCommand.isValidCommandWord(_commandWord);
+	}
+
+	return isValid;
+}
+
+UI::CommandType UI::determineCommandType() {
+
+	if (_commandWord == STRING_ADD) {
+		return ADD;
+	} else if (_commandWord == STRING_DISPLAY) {
+		return DISPLAY;
+	} else if (_commandWord == STRING_DELETE) {
+		return DELETE;
+	} else if (_commandWord == STRING_UPDATE) {
+		return UPDATE;
+	} else if (_commandWord == STRING_EXIT) {
+		return EXIT;
+	} else if (_commandWord == STRING_DONE) {
+		return DONE;
+	} else if (_commandWord == STRING_DISPLAYDONE) {
+		return DISPLAYDONE;
+	} else if (_commandWord == STRING_DISPLAYTODAY) {
+		return DISPLAYTODAY;
+	} else if (_commandWord == STRING_UNDO) {
+		return UNDO;
+	} else if (_commandWord == STRING_CLEAR) {
+		return CLEAR;
+	} else if (_commandWord == STRING_SEARCH) {
+		return SEARCH;
+	} else if (_commandWord == STRING_CHANGEDIRECTORY) {
+		return CHANGEDIRECTORY;
+	} else if (_commandWord == STRING_REPEAT) {
+		return REPEAT;
+	} else if (_commandWord == STRING_REPEATDONE) {
+		return REPEATDONE;
+	} else if (_commandWord == STRING_HELP) {
+		return HELP;
+	} else if (_commandWord == STRING_DISPLAYALL) {
+		return DISPLAYALL;
+	} else if (_commandWord == STRING_DISPLAYTOMORROW){
+		return DISPLAYTOMORROW;
+	} else if (_commandWord == STRING_DELETERECUR) {
+		return DELETERECUR;
+	} else if (_commandWord == STRING_UPDATERECUR) {
+		return UPDATERECUR;
+	} else {
+		return HELP;
+	}
+}
+
+bool UI::isEmpty(std::string str) {
+	if (str.empty()) {
+		return true;
+	} else {
+		for (int i = str.size() - 1; i >=0; i--) {
+			if (str[i] != ' ') {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool UI::getToDoListAndCheckEmpty() {
+	getline(std::cin, _toDoList);
+	if (isEmpty(_toDoList)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+void UI:: getTheToDoListWithIndexZeroNotEmpty() {
+
+	int TIndex = _toDoList.find_first_not_of(" ");
+	_toDoList = _toDoList.substr(TIndex);
+}
+
+std::string UI::callToParser() {
+	CommandType typeOfCommand = determineCommandType();
+
+	switch (typeOfCommand)
+	{
+		case ADD:
+			try {
+				if (getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				} 
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.addEvent(_toDoList);		
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+		
+		case DISPLAY:
+			try {
+				if (!getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
+				return _Parser.displayEvent(STRING_DISPLAY);
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+		
+		case DISPLAYALL:
+			try {
+				if (!getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
+				return _Parser.displayEvent(STRING_DISPLAYALL);
+			}  catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+		
+		case DISPLAYTOMORROW:
+			try {
+				if (!getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
+				return _Parser.displayEvent(STRING_DISPLAYTOMORROW);
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+
+		case DELETERECUR:
+			try {
+				if (getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				} 
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.deleteEvent(STRING_DELETERECUR, _toDoList);	
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+
+		case DELETE:
+			try {
+				if (getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				} 
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.deleteEvent(STRING_DELETE,_toDoList);	
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+
+		case UPDATE:
+			try {
+				if( getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.updateEvent(STRING_UPDATE,_toDoList);		
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+
+		case UPDATERECUR:
+			try {
+				if( getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.updateEvent(STRING_UPDATERECUR,_toDoList);		
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+		
+		case DONE:
+			try {
+				if (getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				} 
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.markAsDone(_toDoList);
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+			
+		case DISPLAYDONE:
+			try {
+				if (!getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
+				return _Parser.displayEvent(STRING_DISPLAYDONE);
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+						
+		case DISPLAYTODAY:
+			try {
+				if (!getToDoListAndCheckEmpty()) {
+					throw INVALID_INPUT_MESSAGE;
+				}
+				return _Parser.displayEvent(STRING_DISPLAYTODAY);
+			} catch (std::string &exceptionMesssage) {
+				return exceptionMesssage;
+			}
+
+		case EXIT:
+			if (getToDoListAndCheckEmpty()) {
+				exit(0);
+			} else {
+				return INVALID_INPUT_MESSAGE;
+			}
+			
+		case UNDO:
+			if (getToDoListAndCheckEmpty()) {
+				return _Parser.unDo();
+			} else {
+				return INVALID_INPUT_MESSAGE;
+			}
+
+		case CLEAR:
+			if (getToDoListAndCheckEmpty()) {
+				return _Parser.clearEvent();
+			} else {
+				return INVALID_INPUT_MESSAGE;
+			}			
+
+		case SEARCH:
+			if (getToDoListAndCheckEmpty()) {
+				return INVALID_INPUT_MESSAGE;
+			} else {
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.searchEvent(_toDoList);
+			}
+
+		case CHANGEDIRECTORY:
+			if ( !getToDoListAndCheckEmpty()) {
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.changeDirectory(_toDoList);
+			} else {
+				return INVALID_INPUT_MESSAGE;
+			}
+
+		case HELP:
+			if (getToDoListAndCheckEmpty()) {
+				return _Parser.help();
+			} else {
+				return false;
+			}
+
+		case REPEAT:
+			if (getToDoListAndCheckEmpty()) {
+				return INVALID_INPUT_MESSAGE;
+			} else {
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.repeat(_toDoList, STRING_REPEAT);
+			}
+			
+		case REPEATDONE:
+			if (getToDoListAndCheckEmpty()) {
+				return INVALID_INPUT_MESSAGE;
+			} else {
+				getTheToDoListWithIndexZeroNotEmpty();
+				return _Parser.repeat(_toDoList, STRING_REPEATDONE);
+			}
+
+		default:
+			return INVALID_INPUT_MESSAGE;
+			break;
+			
+		}
+}
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\UI\UI.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\UI\UI.h
+	 */
+
+#pragma once
+
+#ifndef UI_H
+#define UI_H
+#include <cstring>
+#include <string>
+#include "Paser\Parser.h"
+#include "VerificationCommand.h"
+#include <ctype.h>
+#include <assert.h>
+#include <iostream>
+
+class UI {
+
+    private:
+		std::string _commandWord;
+		std::string _toDoList;
+		Parser _Parser;
+		VerificationCommand _verificationCommand;
+		
+    public:
+		UI(void);
+		~UI(void);
+		enum CommandType {ADD, DELETE, DISPLAY, UPDATE, EXIT, DONE, DISPLAYDONE, DISPLAYTODAY, UPDATERECUR, DELETERECUR, DISPLAYALL, DISPLAYTOMORROW, CHANGEDIRECTORY, SEARCH, UNDO, HELP, CLEAR, REPEAT, REPEATDONE};
+	    CommandType determineCommandType();
+		std::string callToParser();
+		bool isEmpty(std::string );
+		bool getToDoListAndCheckEmpty();
+		bool readCommandAndVerifyCommand();
+		void getTheToDoListWithIndexZeroNotEmpty();
+		std::string showWelcomeMessage();
+		void setValueForAttributes(std::string, std::string);
+		std::string getToDoList();
+};
+		
+#endif
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\UI\UI.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\UI\VerificationCommand.cpp
+	 */
+
+
+#include "VerificationCommand.h"
+
+const static std::string STRING_ADD = "add";
+const static std::string STRING_DELETE = "delete";
+const static std::string STRING_UPDATE ="update" ;
+const static std::string STRING_UNDO = "undo";
+const static std::string STRING_DONE = "done";
+const static std::string STRING_DISPLAY = "display";
+const static std::string STRING_HELP = "help";
+const static std::string STRING_EXIT = "exit";
+const static std::string STRING_CLEAR = "clear";
+const static std::string STRING_DISPLAYDONE = "displaydone";
+const static std::string STRING_DISPLAYTODAY = "displaytoday";
+const static std::string STRING_DISPLAYTOMORROW = "displaytomorrow";
+const static std::string STRING_DISPLAYALL = "displayall";
+const static std::string STRING_SEARCH = "search";
+const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
+const static std::string STRING_REPEAT = "repeat";
+const static std::string STRING_REPEATDONE = "repeatdone";
+const static std::string STRING_UPDATERECUR = "updaterecur";
+const static std::string STRING_DELETERECUR = "deleterecur";
+
+VerificationCommand::VerificationCommand(void) {
+}
+
+VerificationCommand::~VerificationCommand(void) {
+}
+
+//This method converts uppercase letter in command to lower case letter.
+std::string VerificationCommand::lowercaseCommandWord(std::string commandWord) {
+	int n = commandWord.size();
+
+	for (int i = 0; i < n; i++) {
+		if (commandWord[i] <= 'Z' && commandWord[i] >= 'A') {
+			commandWord[i] = commandWord[i] - ('Z' - 'z');
+		}
+	}
+
+  return commandWord;
+}
+
+//This method checks the validity of user command.
+bool VerificationCommand::isValidCommandWord(std::string commandWord) {
+	bool isValidCommandWord;
+	
+	if (commandWord == STRING_ADD || commandWord == STRING_DELETE || commandWord == STRING_UPDATE || commandWord == STRING_UNDO || commandWord == STRING_DONE || commandWord == STRING_DISPLAY  || commandWord == STRING_HELP|| commandWord ==STRING_EXIT || commandWord == STRING_CLEAR|| commandWord == STRING_DELETERECUR || commandWord == STRING_UPDATERECUR ||commandWord == STRING_DISPLAYDONE  || commandWord ==  STRING_DISPLAYTODAY || commandWord == STRING_SEARCH || commandWord == STRING_CHANGEDIRECTORY || commandWord == STRING_REPEAT || commandWord == STRING_REPEATDONE || commandWord == STRING_DISPLAYTOMORROW || commandWord == STRING_DISPLAYALL) {
+		isValidCommandWord = true;
+	} else {
+		isValidCommandWord = false;
+	}
+
+	return isValidCommandWord;
+}
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\UI\VerificationCommand.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\UI\VerificationCommand.h
+	 */
+
+
+#pragma once
+#ifndef VERIFICATIONCOMMAD_H
+#define VERIFICATIONCOMMAND_H
+#include <string>
+#include <cstring>
+#include <ctype.h>
+#include <assert.h>
+
+class VerificationCommand
+{
+public:
+	VerificationCommand(void);
+	~VerificationCommand(void);
+	std::string lowercaseCommandWord(std::string);
+	bool isValidCommandWord(std::string);
+};
+
+#endif
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\UI\VerificationCommand.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\ParserTest.cpp
+	 */
+
+#include "stdafx.h"
+#include "CppUnitTest.h"
+#include "Paser\Parser.h"
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+namespace ParserUnitTest
+{		
+	TEST_CLASS(ParserUnitTest)
+	{
+	private:
+		Parser parserObject;
+	public:
+
+		TEST_METHOD(getTaskName)
+		{
+			std::string deadlineEvent = "CS meeting by: 12 04 2013";
+			std::string expectedNameOne = "CS meeting";
+			std::string timedEvent = "IE2150 presentation from: 13 04 1000 to: 13 04 1030";
+			std::string expectedNameTwo = "IE2150 presentation";
+			std::string floatingEvent = "pay bill";
+			std::string expectedNameThree = "pay bill";
+			Assert::AreEqual(expectedNameOne, parserObject.getTaskName(deadlineEvent));
+			Assert::AreEqual(expectedNameTwo, parserObject.getTaskName(timedEvent));
+			Assert::AreEqual(expectedNameThree, parserObject.getTaskName(floatingEvent));
+		}
+
+		TEST_METHOD(isValidIndex)
+		{
+			string str = "No_White_Space_String.";
+			int invalidIndex = str.find_first_of(" ");
+			int validIndex = str.find_first_of("_");
+			Assert::IsTrue (parserObject.isValidIndex(validIndex));
+			Assert::IsFalse (parserObject.isValidIndex(invalidIndex));
+		}
+
+		TEST_METHOD(isStringAnInteger)
+		{
+			string integerString = "12345";
+			string nonIntegerString = "abcd";
+			Assert::IsTrue (parserObject.isStringAnInteger(integerString));
+			Assert::IsFalse (parserObject.isStringAnInteger(nonIntegerString));
+		}
+
+		TEST_METHOD(isAbleToGetNumberList)
+		{
+			string validStringNumberList = "1  2   3      ";
+			string invalidStringNumberList = "a b c";
+			Assert::IsTrue (parserObject.isAbleToGetNumberList(validStringNumberList));
+			Assert::IsFalse (parserObject.isAbleToGetNumberList(invalidStringNumberList));
+		}
+
+		TEST_METHOD(isTaskWithDeadline)
+		{
+			string taskWithDeadline = "finish report by: 22 03 2011";
+			string floatingTask = "finish report";
+			string timedTask = "meeting from: 02 03 1300 to: 02 03 1500 ";
+
+			Assert::IsTrue (parserObject.isTaskWithDeadline(taskWithDeadline));
+			Assert::IsFalse (parserObject.isTaskWithDeadline(floatingTask));
+			Assert::IsFalse (parserObject.isTaskWithDeadline(timedTask));
+		}
+
+		TEST_METHOD(isTimedTask)
+		{
+			string taskWithDeadline = "finish report by: 22 03 2011";
+			string floatingTask = "finish report";
+			string timedTask = "meeting from: 02 03 1300 to: 02 03 1500 ";
+
+			Assert::IsTrue (parserObject.isTimedTask(timedTask));
+			Assert::IsFalse (parserObject.isTimedTask(floatingTask));
+			Assert::IsFalse (parserObject.isTimedTask(taskWithDeadline));
+		}
+
+		TEST_METHOD(convertStringToInteger)
+		{
+			string str = "123";
+			int expected = 123;
+			int actual = parserObject.convertStringToInteger(str);
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(isAbleToGetEventDateAndMonth)
+		{
+			int date;
+			MonthType month;
+			string validString = "02 03 0000";
+			string invalidDateString = "second 03 0000";
+			string lackOfDateOrMonth = "02 0000  ";
+			Assert::IsTrue (parserObject.isAbleToGetEventDateAndMonth(validString, date, month));
+			Assert::IsFalse (parserObject.isAbleToGetEventDateAndMonth(invalidDateString, date, month));
+			Assert::IsFalse (parserObject.isAbleToGetEventDateAndMonth(lackOfDateOrMonth, date, month));
+		}
+
+		TEST_METHOD(VerifyAllAttributesAndCallLogic)
+		{
+			Parser::CommandType command = Parser::ADDEVENTWITHDEADLINE;
+			string notAssignedTime = "2400";
+			int notAssignedDate = 0;
+			int invalidDate_Dec = 32;
+			MonthType Month_Dec = DECEMBER;
+			list<int> emptyList;
+			string taskName = "meeting";
+			string validTime = "2359";
+			string invalidTime = "2400";
+			int validDate_Dec = 31;
+			string INVALID_MESSAGE = "Please check your user input time, date and month.\n\n";
+
+			parserObject.setAttributes(taskName, notAssignedTime, validTime, notAssignedDate, invalidDate_Dec, MONTHNOTASSIGNED, DECEMBER, emptyList);
+			Assert::AreEqual(INVALID_MESSAGE, parserObject.VerifyAllAttributesAndCallLogic(command));
+		    
+			parserObject.setAttributes(taskName, notAssignedTime, invalidTime, notAssignedDate, validDate_Dec, MONTHNOTASSIGNED, DECEMBER, emptyList);
+			Assert::AreEqual(INVALID_MESSAGE, parserObject.VerifyAllAttributesAndCallLogic(command));
+
+			parserObject.setAttributes(taskName, notAssignedTime, validTime, notAssignedDate, validDate_Dec, MONTHNOTASSIGNED, MONTHNOTASSIGNED, emptyList);
+			Assert::AreEqual(INVALID_MESSAGE, parserObject.VerifyAllAttributesAndCallLogic(command));
+
+			parserObject.setAttributes(taskName, notAssignedTime, validTime, notAssignedDate, validDate_Dec, MONTHNOTASSIGNED, DECEMBER, emptyList);
+			Assert::AreNotEqual(INVALID_MESSAGE, parserObject.VerifyAllAttributesAndCallLogic(command));
+		
+		}
+		TEST_METHOD(getIndexOfFirstNonWhiteSpace)
+		{
+			std::string emptyString = "";
+			int indexEmptyString = emptyString.find_first_not_of(" ");
+			Assert::AreEqual(indexEmptyString, parserObject.getIndexOfFirstNonWhiteSpace(emptyString));
+
+			std::string stringOne = "CS meeting";
+			int indexStringOne = stringOne.find_first_not_of(" ");
+			Assert::AreEqual(indexStringOne, parserObject.getIndexOfFirstNonWhiteSpace(stringOne));
+
+			std::string stringTwo = "  project due";
+			int indexStringTwo = stringTwo.find_first_not_of(" ");
+			Assert::AreEqual(indexStringTwo, parserObject.getIndexOfFirstNonWhiteSpace(stringTwo));
+		}
+
+		TEST_METHOD(getIndexOfFirstWhiteSpace)
+		{
+			std::string emptyString = "";
+			int indexEmptyString = emptyString.find_first_of(" ");
+			Assert::AreEqual(indexEmptyString, parserObject.getIndexOfFirstWhiteSpace(emptyString));
+
+			std::string stringOne = "CS meeting";
+			int indexStringOne = stringOne.find_first_of(" ");
+			Assert::AreEqual(indexStringOne, parserObject.getIndexOfFirstWhiteSpace(stringOne));
+
+			std::string stringTwo = "  project due";
+			int indexStringTwo = stringTwo.find_first_of(" ");
+			Assert::AreEqual(indexStringTwo, parserObject.getIndexOfFirstWhiteSpace(stringTwo));
+		}
+
+
+	};
+}
+
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\ParserTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\UITest.cpp
+	 */
+
+
+#include "stdafx.h"
+#include "CppUnitTest.h"
+#include "UI\UI.h"
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+
+const static std::string STRING_ADD = "add";
+const static std::string STRING_DELETE = "delete";
+const static std::string STRING_UPDATE ="update" ;
+const static std::string STRING_UNDO = "undo";
+const static std::string STRING_DONE = "done";
+const static std::string STRING_DISPLAY = "display";
+const static std::string STRING_HELP = "help";
+const static std::string STRING_EXIT = "exit";
+const static std::string STRING_CLEAR = "clear";
+const static std::string STRING_DISPLAYDONE = "displaydone";
+const static std::string STRING_DISPLAYTODAY = "displaytoday";
+const static std::string STRING_SEARCH = "search";
+const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
+const static std::string STRING_REPEAT = "repeat";
+const static std::string STRING_REPEATDONE = "repeatdone";
+std::string welcomemsg = "================================================\nWelcome to Minik!What would you like to do today?\n================================================\n\n";
+
+namespace UIUnitTest
+{		
+	TEST_CLASS(UnitTestUI)
+	{
+	private:
+
+		UI uiObject;
+
+	public:
+		
+		TEST_METHOD(isEmpty)
+		{
+			std::string emptyString = "";
+			std::string blankString = "  ";
+			std::string nonEmptyString = "This string is not empty.";
+
+			Assert::IsTrue (uiObject.UI::isEmpty(emptyString));
+			Assert::IsTrue (uiObject.UI::isEmpty(blankString));
+			Assert::IsFalse (uiObject.UI::isEmpty(nonEmptyString));
+		}
+		
+		TEST_METHOD(showWelcomeMessage)
+		{
+			Assert::AreEqual(welcomemsg, uiObject.UI::showWelcomeMessage());
+		}
+
+		TEST_METHOD(getTheToDoListWithIndexZeroNotEmpty)
+		{
+			std::string indexZeroWhiteSpaceString = "   Index Zero to Two are white space for this string.";
+			std::string expectedString = "Index Zero to Two are white space for this string.";
+			uiObject.UI::setValueForAttributes(STRING_ADD, indexZeroWhiteSpaceString);
+			uiObject.UI::getTheToDoListWithIndexZeroNotEmpty();
+			Assert::AreEqual(expectedString, uiObject.UI::getToDoList());
+		}
+
+		TEST_METHOD(determineCommandType)
+		{
+			int actualCommand;
+			int expectedCommand;
+			std::string emptyString = "";
+
+			expectedCommand = UI::ADD;
+			uiObject.UI::setValueForAttributes(STRING_ADD, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::DELETE;
+			uiObject.UI::setValueForAttributes(STRING_DELETE, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::UPDATE;
+			uiObject.UI::setValueForAttributes(STRING_UPDATE, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::DISPLAY;
+			uiObject.UI::setValueForAttributes(STRING_DISPLAY, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::CLEAR;
+			uiObject.UI::setValueForAttributes(STRING_CLEAR, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::EXIT;
+			uiObject.UI::setValueForAttributes(STRING_EXIT, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::DONE;
+			uiObject.UI::setValueForAttributes(STRING_DONE, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::DISPLAYDONE;
+			uiObject.UI::setValueForAttributes(STRING_DISPLAYDONE, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::DISPLAYTODAY;
+			uiObject.UI::setValueForAttributes(STRING_DISPLAYTODAY, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::UNDO;
+			uiObject.UI::setValueForAttributes(STRING_UNDO, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::SEARCH;
+			uiObject.UI::setValueForAttributes(STRING_SEARCH, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::CHANGEDIRECTORY;
+			uiObject.UI::setValueForAttributes(STRING_CHANGEDIRECTORY, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::REPEAT;
+			uiObject.UI::setValueForAttributes(STRING_REPEAT, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+			expectedCommand = UI::REPEATDONE;
+			uiObject.UI::setValueForAttributes(STRING_REPEATDONE, emptyString);
+			actualCommand = uiObject.UI::determineCommandType();
+			Assert::AreEqual(expectedCommand, actualCommand);
+
+		}
+	};
+}
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\UITest.cpp
+
+
+
+
+

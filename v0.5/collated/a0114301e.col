@@ -1,0 +1,1574 @@
+//@author: a0114301e
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdClear.cpp
+	 */
+
+#include "cmdClear.h"
+#include "Storage\Storage.h"
+const static std::string CLEAR_MESSAGE = "all tasks cleared\n\n";
+const static std::string LOG_CLEAR = "executed clear";
+const static std::string INFO = "Info";
+
+CmdClear::CmdClear(void) {
+}
+
+CmdClear::~CmdClear(void) {
+}
+
+//this function clears all events in the storage
+std::string CmdClear::executeClear(Storage& _storage) {
+	_storage.clearActiveEvent();
+	_storage.clearDoneEvent();
+	_storage.synchronizeDrive();
+	
+	//logging
+	Storage storage;
+	storage.writeToLogfile(INFO,LOG_CLEAR);
+	return CLEAR_MESSAGE;
+};
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdClear.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdClear.h
+	 */
+
+
+#pragma once
+#include "logicBaseClass.h"
+
+//This cmdClear class will clear all the tasks in the file
+class CmdClear : public LogicBaseClass {
+public:
+	CmdClear(void);
+	~CmdClear(void);
+	std::string executeClear(Storage&);
+};
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdClear.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDelete.cpp
+	 */
+
+#include "cmdDelete.h"
+#include "Storage\Storage.h"
+#include <assert.h>
+#include <sstream>
+
+const static std::string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.";
+const static std::string MESSAGE_DELETE_ONE_EVENT = "The following event is deleted: \n";
+const static std::string MESSAGE_DELETE_MUTIPLE_EVENTS = "The following events are deleted: \n";
+const static int ONE_EVENT = 1;
+const static std::string NEW_LINE = "\n";
+const static std::string LOG_DELETE = "executed delete";
+const static std::string RECURRING_EVENTS_DELETED = "Recurring events are deleted. \n\n";
+const static std::string INFO = "Info";
+
+CmdDelete::CmdDelete(void) {
+}
+
+CmdDelete::~CmdDelete(void) {
+}
+
+//delete one task or multiple tasks
+std::string CmdDelete::executecmdDelete(Storage& _storage) {
+	if (_commandWord == DELETERECUR) {
+		return deleteRecurringEvents(_taskNumberList, _storage);
+	}
+
+	int eventNumber = _taskNumberList.size();
+	assert (eventNumber >= 0);
+	Eventlist activeEvents = _storage.displayEvent();
+	try {
+		if (eventNumber>activeEvents.getTotalNumberOfEvents()) {
+			throw EXCEPTION_INVALID_INDEX;
+	}
+	_feedback = printFeedback(_taskNumberList, _storage);
+
+	//logging
+	_storage.deleteEvent(_taskNumberList);
+	_storage.synchronizeDrive();
+	Storage storage;
+	storage.writeToLogfile(INFO, LOG_DELETE);
+	return _feedback;
+
+	} catch(std::string EXCEPTION_INVALID_INDEX){
+		std::cout << EXCEPTION_INVALID_INDEX;
+		return NEW_LINE;
+	}
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDelete.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDelete.h
+	 */
+
+
+#pragma once
+#include "logicBaseClass.h"
+
+//This cmdDelete class will delete one task or multiple tasks
+class CmdDelete: public LogicBaseClass {
+public:
+	CmdDelete(void);
+	~CmdDelete(void);
+	std::string executecmdDelete(Storage& _storage);
+	std::string printFeedback(std::list<int>, Storage& _storage);
+	std::string deleteRecurringEvents(std::list<int>, Storage&);
+};
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDelete.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDisplay.cpp
+	 */
+
+//display completed events
+std::string CmdDisplay::cmdDisplayDone(Storage& _storage) {
+	Eventlist doneEvents = _storage.displayDoneEvent();
+	std::list<Event> currentList = doneEvents.returnAllEvent();
+	std::string feedback;
+	feedback = eventsToDisplay(currentList);
+	Storage storage;
+	storage.writeToLogfile(INFO,LOG_DISPLAY);
+	return feedback;
+}
+
+std::string CmdDisplay::cmdDisplayAll(Storage& _storage) {
+	Eventlist allTasks = _storage.displayEvent();
+	std::list<Event> allEventList = allTasks.returnAllEvent();
+	std::string feedback;
+	feedback = allEvents(allEventList);
+	Storage storage;
+	storage.writeToLogfile(INFO,LOG_DISPLAYALL);
+	return feedback;
+}
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDisplay.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDisplay.cpp
+	 */
+
+
+bool CmdDisplay::isEventTomorrow(int taskStartMonth, int taskStartDay, int taskEndMonth, int taskEndDay) {
+	bool isEventTomorrow = false;
+	
+	time_t t = time(0);
+	struct tm now;
+	localtime_s (&now, &t);
+	int currentMonth = now.tm_mon + 1;
+	int currentDay = now.tm_mday + 1;
+
+	if (((taskStartMonth == currentMonth) & (taskStartDay == currentDay)) || ((taskEndMonth == currentMonth) & (taskEndDay == currentDay))) {
+		isEventTomorrow = true;
+	}
+
+	return isEventTomorrow;
+}
+
+//set the number of tasks to be displayed to be 20
+std::string CmdDisplay::eventsToDisplay(std::list<Event> events) {
+	std::ostringstream display;
+	int i = 1;
+	std::list<Event>::iterator iter;
+	for (iter = events.begin(); iter != events.end() && i < NUMBER_OF_TASK_TO_DISPLAY; ++iter) {
+		display  << std::setw(3) << i << DOT << (*iter).displayEvent() << NEW_LINE;
+		i++;
+	}
+	display << NEW_LINE;
+
+	return display.str();
+}
+
+//display events due tomorrow or start from tomorrow
+std::string CmdDisplay::cmdDisplayTomorrow(Storage& _storage) {
+	std::string feedback;
+	std::list<Event> eventsTomorrow;
+	Eventlist events = _storage.displayEvent();
+	std::list<Event> allEvents = events.returnAllEvent();
+	int eventsNumber = events.getTotalNumberOfEvents();
+
+	std::list<Event>::iterator Tcount;
+
+	Event currentEvent;
+	int taskStartMonth;
+	int taskStartDay;
+	int taskEndMonth;
+	int taskEndDay;
+
+	for (Tcount = allEvents.begin(); Tcount != allEvents.end(); Tcount++){
+		currentEvent = *Tcount;
+		taskStartMonth = currentEvent.getStartMonth();
+		taskStartDay = currentEvent.getStartDate();
+	    taskEndMonth = currentEvent.getEndMonth();
+	    taskEndDay = currentEvent.getEndDate();
+
+		if (isEventTomorrow(taskStartMonth, taskStartDay, taskEndMonth, taskEndDay)){
+			eventsTomorrow.push_back(currentEvent);
+		}
+	}
+
+	if (eventsTomorrow.size() != 0){
+		feedback = eventsToDisplay(eventsTomorrow);
+	} else {
+		feedback = MESSAGE_NO_EVENT_TOMORROW;
+	}
+
+	return feedback;
+}
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDisplay.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDisplay.cpp
+	 */
+
+//all events
+std::string CmdDisplay::allEvents(std::list<Event> events) {
+	std::ostringstream display;
+	int i = 1;
+	std::list<Event>::iterator iter;
+	for (iter = events.begin(); iter != events.end(); ++iter) {
+		display  << std::setw(3) << i << DOT << (*iter).displayEvent() << NEW_LINE;
+		i++;
+	}
+	display << NEW_LINE;
+
+	return display.str();
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdDisplay.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdHelp.cpp
+	 */
+
+#include "cmdHelp.h"
+#include <sstream>
+
+const static std::string HELP_ADD = "[1] add <task name> by: date month time\ne.g. add submit report by: 2 mar 1211\n\n";
+const static std::string HELP_DELETE = "[2] delete <task no.(s)>\ne.g. delete 1   delete 1 2 3\n\n";
+const static std::string HELP_DISPLAY = "[3] display undone/done tasks: display/displaydone\n    today/tomorrow: displaytoday   displaytomorrow\n\n";
+const static std::string HELP_UPDATE = "[4] update <task no.> .name new name\ne.g update 1 .name collect homework\n\n";
+const static std::string HELP_UPDATE_START = "[5] update <task no.> .start new start time\ne.g. update 1 .start 1 Mar 1211\n\n";
+const static std::string HELP_UPDATE_CLEAR_START = "[6] update <task no.> .clear start\ne.g. update 2 .start 2 march 1211\n\n";
+const static std::string HELP_UPDATE_CLEAR_END = "[7] update <task no.> .clear end\ne.g. update 2 .end 2 02 1211\n\n";
+const static std::string HELP_UPDATE_END = "[8] update <task no.> .start new end time\ne.g. update 1 .end 1 mar 1211\n\n";
+const static std::string HELP_MARKASDONE = "[9] mark task(s) as done\ne.g. done 1   done 1 2 3\n\n";
+const static std::string HELP_UNDO = "[10] undo last action: undo\n\n";
+const static std::string HELP_SEARCH = "[11] search <key words>\ne.g. search homework\n\n";
+const static std::string HELP_RECURRING = "[12] repeat <task no.> <frequency> <no. of repetitions>\ne.g. repeat 1 weekly 13 except 8   repeat 2 monthly 2\n     repeat 3 every mon/Monday/monday\n\n";
+const static std::string HELP_DIRECTORY = "[13] change directory: changedirectory <new directory>\ne.g. changedirectory c:\desktop\n\n";
+const static std::string HELP_DELETERECUR = "[14] delete recurring task: deleterecur <task no.>\ne.g. deleterecur 1\n\n";
+const static std::string HELP_UPDATERECUR = "[15] update recurring task: updaterecur <task no.>\ne.g. updaterecur 1 .name   updaterecur 1 .start\n\n";
+const static std::string LINE = "================================================\n";
+const static std::string LOG_HELP = "executed help";
+const static std::string INFO = "info";
+
+CmdHelp::CmdHelp(void) {
+}
+
+CmdHelp::~CmdHelp(void) {
+}
+
+//display help for all functions 
+std::string CmdHelp::helpMessage() {
+	//logging
+	Storage storage;
+	storage.writeToLogfile(INFO,LOG_HELP);
+
+	return LINE+ HELP_ADD + HELP_DELETE + HELP_DISPLAY + HELP_UPDATE + HELP_UPDATE_START  
+		   + HELP_UPDATE_CLEAR_START + HELP_UPDATE_CLEAR_END + HELP_UPDATE_END + HELP_MARKASDONE + HELP_UNDO 
+		   + HELP_SEARCH + HELP_RECURRING + HELP_DIRECTORY + HELP_DELETERECUR + HELP_UPDATERECUR + LINE;
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdHelp.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdHelp.h
+	 */
+
+#pragma once
+#include "logicBaseClass.h"
+
+//This class displays help function for user to see all commands available
+class CmdHelp: public LogicBaseClass {
+private:
+	
+public:
+	CmdHelp(void);
+	~CmdHelp(void);
+	std::string helpMessage();
+};
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdHelp.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdMarkAsDone.cpp
+	 */
+
+#include "cmdMarkAsDone.h"
+#include "Storage\Storage.h"
+#include <sstream>
+
+const static std::string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.";
+const static int ONE_EVENT = 1;
+const static std::string MESSAGE_MarkDone_ONE_EVENT = "The following event is marked as done: \n";
+const static std::string MESSAGE_MarkDone_MUTIPLE_EVENTS = "The following events are marked as done: \n";
+const static std::string NEW_Line = "\n";
+const static std::string LOG_MARKASDONE = "executed mark as done";
+const static std::string LOG_PRINT_FEEDBACK = "executed print feedback";
+const static std::string INFO = "Info";
+
+CmdMarkAsDone::CmdMarkAsDone(void) {
+}
+
+
+CmdMarkAsDone::~CmdMarkAsDone(void) {
+}
+
+//mark one event or multiple tasks as done
+std::string CmdMarkAsDone::executeMarkAsDone(Storage& _storage) {
+	int eventNumber = _taskNumberList.size();
+	Eventlist activeEvents = _storage.displayEvent();
+
+	try {
+		if (eventNumber>activeEvents.getTotalNumberOfEvents()) {
+			throw EXCEPTION_INVALID_INDEX;
+	}
+	_feedback = printFeedback(_taskNumberList, _storage);
+	_storage.markEventAsDone(_taskNumberList);
+	_storage.synchronizeDrive();
+
+	//logging
+	Storage storage;
+	storage.writeToLogfile(INFO,LOG_MARKASDONE);
+	return _feedback;
+	} catch(std::string EXCEPTION_INVALID_INDEX){
+		std::cout << EXCEPTION_INVALID_INDEX;
+		return NEW_Line;
+	}
+}
+	
+std::string CmdMarkAsDone::printFeedback(std::list<int> taskNumberList, Storage& _storage) {
+	std::ostringstream feedback;
+	Event eventMarkedDone;
+	if (taskNumberList.size() == ONE_EVENT) {
+		eventMarkedDone = _storage.getEvent(taskNumberList.front());
+		feedback << MESSAGE_MarkDone_ONE_EVENT << eventMarkedDone.displayEvent() << NEW_Line;
+	} else {
+		feedback << MESSAGE_MarkDone_MUTIPLE_EVENTS;
+		while (!taskNumberList.empty()) {
+			eventMarkedDone = _storage.getEvent(taskNumberList.back());
+			feedback << eventMarkedDone.displayEvent() << NEW_Line;
+			taskNumberList.pop_back();
+		}
+	}
+	std::cout << feedback.str();
+
+	//logging
+	Storage storage;
+	storage.writeToLogfile(INFO, LOG_PRINT_FEEDBACK);
+	return NEW_Line;
+}
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdMarkAsDone.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdMarkAsDone.h
+	 */
+
+
+#pragma once
+#include "logicBaseClass.h"
+
+//This class marks one task or multiple classes as done
+//user input: done 1
+//done 1 2 3
+class CmdMarkAsDone : public LogicBaseClass {
+public:
+	CmdMarkAsDone(void);
+	~CmdMarkAsDone(void);
+	std::string executeMarkAsDone(Storage& _storage);
+	std::string printFeedback(std::list<int>, Storage& _storage);
+};
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdMarkAsDone.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdUndo.cpp
+	 */
+
+#include "cmdUndo.h"
+#include <assert.h>
+
+const static std::string UNDO_ERROR_MESSAGE = "There is no action to undo. Enter a command again.\n\n";
+const static std::string UNDO_MESSAGE = "Undo last action successfully\n\n";
+const static std::string UNDO_UNSUCCESSFUL_MESSAGE = "Undo unsuccessful\n\n";
+const static std::string STRING_ADD = "add";
+const static std::string STRING_DELETE = "delete";
+const static std::string STRING_UPDATE = "update";
+const static std::string STRING_CLEAR = "clear";
+const static std::string STRING_DONE = "done";
+const static std::string STRING_REPEAT = "update repeat";
+const static std::string STRING_UPDATE_RECUR = "update repeat";
+const static std::string STRING_DELETE_RECUR = "delete repeat";
+const static std::string STRING_DIRECTORY = "directory";
+
+CmdUndo::CmdUndo(void){
+	noOfCommand = 0;
+}
+
+CmdUndo::~CmdUndo(void){
+}
+
+std::string CmdUndo::printUndoMessage(){
+	return UNDO_MESSAGE;
+}
+
+//undo last command based on the last command word from the user
+//support undo for last two actions
+std::string CmdUndo::undo(Storage& _storage,std::vector<CommandType>& commandStored) {
+	CommandType lastCommand = commandStored.back();
+	if (commandStored.size() <= 1) {
+		return UNDO_UNSUCCESSFUL_MESSAGE;
+	}
+	commandStored.pop_back();
+	while ((lastCommand == UNDO  || lastCommand == DISPLAY || lastCommand == DISPLAYDONE) && commandStored.size() > 0) {
+		lastCommand = commandStored.back();
+		commandStored.pop_back();
+	}
+	std::string lastCommandString;
+	if (lastCommand == ADDEVENTWITHDEADLINE || lastCommand == ADDFLOATINGEVENT || lastCommand == ADDTIMEDEVENT) {
+		lastCommandString = STRING_ADD;
+	} else if (lastCommand == DELETE) {
+		lastCommandString = STRING_DELETE;
+	} else if (lastCommand == UPDATEENDINGTIME || lastCommand == UPDATENAME || lastCommand == UPDATESTARTINGTIME || lastCommand == CLEAREND || lastCommand == CLEARSTART) {
+		lastCommandString = STRING_UPDATE;
+	} else if (lastCommand == CLEAR) {
+		lastCommandString = STRING_CLEAR;
+	} else if (lastCommand == MARKASDONE) {
+		lastCommandString = STRING_DONE;
+	} else if (lastCommand == DISPLAY) {
+		std::cout<<UNDO_ERROR_MESSAGE;
+	} else if (lastCommand == HELP) {
+		std::cout<<UNDO_ERROR_MESSAGE;
+	} else if (lastCommand == REPEAT || lastCommand == REPEATDONE) {
+		lastCommandString = STRING_REPEAT;
+	} else if (lastCommand == DELETERECUR) {
+		lastCommandString = STRING_DELETE_RECUR;
+	} else if (lastCommand == UPDATERECURENDINGTIME || lastCommand == UPDATERECURSTARTINGTIME || lastCommand == UPDATERECURNAME){
+		lastCommandString = STRING_UPDATE_RECUR;
+	} else if (lastCommand == CHANGEDIRECTORY) {
+		lastCommandString = STRING_DIRECTORY;
+	} else {
+		return UNDO_UNSUCCESSFUL_MESSAGE;
+	}
+	try{
+	if (_storage.unDopreviousActions(lastCommandString)) {	
+		_storage.synchronizeDrive();
+		return printUndoMessage();
+	} 
+	}catch(...) {
+		throw UNDO_UNSUCCESSFUL_MESSAGE;
+	}
+}
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdUndo.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdUndo.h
+	 */
+
+
+//This undo class performs undo action, which allows user to 
+//recover last action (as long as there is action to undo)
+#pragma once
+#include "logicBaseClass.h"
+
+class CmdUndo :
+	public LogicBaseClass
+{
+public:
+	CmdUndo(void);
+	~CmdUndo(void);
+	std::string undo(Storage& _storage, std::vector<CommandType>&);
+	std::string printUndoMessage();
+};
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdUndo.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdUpdate.h
+	 */
+
+
+//This Update class updates tasks
+//attributes can be updated including:
+//task name, ending date&time, starting date&time, remove starting time,
+//remove ending time
+#pragma once
+#include "logicBaseClass.h"
+class CmdUpdate : public LogicBaseClass {
+public:
+	CmdUpdate(void);
+	~CmdUpdate(void);
+	std::string executecmdUpdate(Storage&);
+	std::string updateName(Event, int, Storage&);
+	std::string updateEndingTime(Event, int, Storage&);
+	std::string updateStartingTime(Event, int, Storage&);
+	std::string clearStartingTime(Event, int, Storage&);
+	std::string clearEndingTime(Event, int, Storage&);
+	std::string updateRecurringName(Event, int, Storage&);
+	std::string updateRecurringStartTime(int, Storage&);
+	std::string updateRecurringEndTime(int, Storage&);
+	std::string printFeedback(std::string, Event);
+	void updateStorage(Storage& _storage);
+};
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\cmdUpdate.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\logic.cpp
+	 */
+
+#include "logic.h"
+#include <assert.h>
+#include <iostream>
+const static std::string EXIT_MESSAGE = "Thank you for using Minik:)";
+const static std::string EXCEPTION_INVALID_INDEX = "ERROR: Invalid task number. Please enter a valid task number.";
+
+Logic::Logic() {
+	_storage.readFile();
+}
+
+Logic::Logic(CommandType command) {
+	_commandWord = command;
+	_storage.readFile();
+}
+
+Logic::~Logic() {
+}
+
+void Logic:: setCommand (std::string taskName, int startingDate, int startingMonth, int startingTime, int endingMonth, int endingDate, int endingTime, list<int> taskNumerlist) {
+	_taskName = taskName;
+	_startingDate = startingDate;
+	_startingMonth = startingMonth;
+	_startingTime = startingTime;
+	_endingDate = endingDate;
+	_endingMonth = endingMonth;
+	_endingTime = endingTime;
+	_taskNumberList = taskNumerlist;
+}
+
+//taes in command word and execute command
+std::string Logic::executeCommand(CommandType command ,string taskName, int startingDate, int startingMonth, int startingTime, int endingDate, int endingMonth, int endingTime, list<int> taskNumerlist) {
+	_commandWord = command;
+	assert(_commandWord == command);
+	vectorCommand.push_back(command);
+	if (command == ADDEVENTWITHDEADLINE || command == ADDFLOATINGEVENT || command == ADDTIMEDEVENT) {
+		_add.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+		return _add.executecmdAdd(_storage);
+	} else if (command == UPDATEENDINGTIME || command == UPDATENAME || command == UPDATESTARTINGTIME || command == CLEARSTART || command == CLEAREND || command == UPDATERECURNAME || command == UPDATERECURSTARTINGTIME || command == UPDATERECURENDINGTIME) {
+		_update.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+		return _update.executecmdUpdate(_storage);
+	} else if (command == DELETE || command == DELETERECUR) {
+		_delete.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+		return _delete.executecmdDelete(_storage);
+	} else if (command == UNDO) {
+		_undo.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+		return _undo.undo(_storage, vectorCommand);
+	} else if (command == CLEAR) {
+		_clear.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+		return _clear.executeClear(_storage);
+	} else if (command == SEARCH) {
+		_search.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+		return _search.executecmdSearch(_storage);
+	} else if (command == DISPLAY || command == DISPLAYTODAY || command == DISPLAYDONE || command == DISPLAYALL || command == DISPLAYTOMORROW ) {
+		_display.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+		return _display.executecmdDisplay(_storage);
+	} else if (command == MARKASDONE) {
+		_markAsDone.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+		return _markAsDone.executeMarkAsDone(_storage);
+	} else if (command == HELP) {
+		return _help.helpMessage();
+	} else if (command == CHANGEDIRECTORY) {
+		_changeDirectory.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+		return _changeDirectory.executecmdChangeDirectory(_storage);
+	} else if (command == REPEAT || REPEATDONE) {
+		_repeat.initialise(command, taskName, startingDate, startingMonth, startingTime, endingDate, endingMonth, endingTime, taskNumerlist);
+		return _repeat.executecmdRepeat(_storage);
+	}
+}
+
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\logic.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\logic.h
+	 */
+
+//logic.h
+#ifndef logic_H
+#define logic_H
+
+#include "cmdAdd.h"
+#include "cmdClear.h"
+#include "cmdDelete.h"
+#include "cmdDisplay.h"
+#include "cmdMarkAsDone.h"
+#include "cmdSearch.h"
+#include "cmdUndo.h"
+#include "cmdUpdate.h"
+#include "cmdHelp.h"
+#include "cmdChangeDirectory.h"
+#include "cmdRepeat.h"
+
+using namespace std;
+class Logic : public LogicBaseClass {
+private:	
+	CmdAdd _add;
+	CmdUpdate _update;
+	CmdDisplay _display;
+	CmdClear _clear;
+	CmdMarkAsDone _markAsDone;
+	cmdSearch _search;
+	CmdUndo _undo;
+	CmdDelete _delete;
+	CmdHelp _help;
+	CmdChangeDirectory _changeDirectory;
+	CmdRepeat _repeat;
+	//Storage _storage;
+
+public:
+
+	//METHODS
+	Logic();
+	Logic(CommandType commandWord);
+	~Logic();
+	//void logicStorage ();
+	void setCommand (std::string, int, int, int, int, int, int, list<int>);
+	std::string executeCommand(CommandType, std::string, int, int, int, int, int, int, list<int>);
+};
+#endif
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\logic.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\logicBaseClass.cpp
+	 */
+
+#include "logicBaseClass.h"
+#include <assert.h>
+
+LogicBaseClass::LogicBaseClass(void) {
+}
+
+LogicBaseClass::LogicBaseClass(Storage &storage) {
+
+}
+
+LogicBaseClass::~LogicBaseClass(void) {
+}
+
+
+void LogicBaseClass:: initialise(CommandType typeOfCommand, std::string taskName, int startingDate, int startingMonth, int startingTime, int endingDate, int endingMonth, int endingTime, std::list<int> taskNumerlist) {
+	_commandWord = typeOfCommand;
+	assert(_commandWord == typeOfCommand);
+	_taskName = taskName;
+	_startingDate = startingDate;
+	_startingMonth = startingMonth;
+	_startingTime = startingTime;
+	_endingDate = endingDate;
+	_endingMonth = endingMonth;
+	_endingTime = endingTime;
+	_taskNumberList = taskNumerlist;
+}
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\logicBaseClass.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\logicBaseClass.h
+	 */
+
+//This LogicBaseClass is the parent class for other classes in logic 
+//component to inherit
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include "Storage\Storage.h"
+
+#pragma once
+class LogicBaseClass {
+protected:
+	std::string _taskName;
+	int _startingTime;
+	int _endingTime;
+	int _startingDate;
+	int _endingDate;
+	int _startingMonth;
+	int _endingMonth;
+	std::list<int> _taskNumberList;
+	Storage _storage;
+	std::string _feedback;
+	int noOfCommand;
+
+public:
+	enum CommandType {ADDTIMEDEVENT, ADDEVENTWITHDEADLINE,ADDFLOATINGEVENT, UPDATENAME, UPDATERECURNAME, UPDATEENDINGTIME, UPDATERECURENDINGTIME, UPDATESTARTINGTIME, UPDATERECURSTARTINGTIME, DELETE, DELETERECUR, DISPLAY, MARKASDONE, DISPLAYDONE, DISPLAYTODAY, DISPLAYTOMORROW, DISPLAYALL, SEARCH, UNDO, CLEAR, CLEAREND, CLEARRECUREND, CLEARSTART, CLEARRECURSTART, CHANGEDIRECTORY, HELP, EXIT, REPEAT, REPEATDONE};
+	CommandType _commandWord;
+	std::vector<CommandType> vectorCommand;
+	void initialise (CommandType,std::string, int, int, int, int, int, int, std::list<int>);
+	LogicBaseClass(void);
+	LogicBaseClass(Storage &storage);
+	~LogicBaseClass(void);
+};
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Logic\logicBaseClass.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+	 */
+
+#include "stdafx.h"
+#include "CppUnitTest.h"
+#include "Logic\cmdAdd.h"
+#include "Storage\Storage.h"
+#include "Paser\Parser.h"
+#include "Logic\cmdRepeat.h"
+#include "Storage\Eventlist.h"
+#include "Logic\cmdRepeatParser.h"
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+const static std::string HELP_ADD = "[1] add <task name> by: date month time\ne.g. add submit report by: 2 mar 1211\n\n";
+const static std::string HELP_DELETE = "[2] delete <task no.(s)>\ne.g. delete 1   delete 1 2 3\n\n";
+const static std::string HELP_DISPLAY = "[3] display undone/done tasks: display/displaydone\n    today/tomorrow: displaytoday   displaytomorrow\n\n";
+const static std::string HELP_UPDATE = "[4] update <task no.> .name new name\ne.g update 1 .name collect homework\n\n";
+const static std::string HELP_UPDATE_START = "[5] update <task no.> .start new start time\ne.g. update 1 .start 1 Mar 1211\n\n";
+const static std::string HELP_UPDATE_CLEAR_START = "[6] update <task no.> .clear start\ne.g. update 2 .start 2 march 1211\n\n";
+const static std::string HELP_UPDATE_CLEAR_END = "[7] update <task no.> .clear end\ne.g. update 2 .end 2 02 1211\n\n";
+const static std::string HELP_UPDATE_END = "[8] update <task no.> .start new end time\ne.g. update 1 .end 1 mar 1211\n\n";
+const static std::string HELP_MARKASDONE = "[9] mark task(s) as done\ne.g. done 1   done 1 2 3\n\n";
+const static std::string HELP_UNDO = "[10] undo last action: undo\n\n";
+const static std::string HELP_SEARCH = "[11] search <key words>\ne.g. search homework\n\n";
+const static std::string HELP_RECURRING = "[12] repeat <task no.> <frequency> <no. of repetitions>\ne.g. repeat 1 weekly 13 except 8   repeat 2 monthly 2\n     repeat 3 every mon/Monday/monday\n\n";
+const static std::string HELP_DIRECTORY = "[13] change directory: changedirectory <new directory>\ne.g. changedirectory c:\desktop\n\n";
+const static std::string HELP_DELETERECUR = "[14] delete recurring task: deleterecur <task no.>\ne.g. deleterecur 1\n\n";
+const static std::string HELP_UPDATERECUR = "[15] update recurring task: updaterecur <task no.>\ne.g. updaterecur 1 .name   updaterecur 1 .start\n\n";
+const static std::string LINE = "================================================\n";
+const static std::string LOG_HELP = "executed help";
+const static std::string INFO = "info";
+
+namespace UnitTest1
+{		
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+	 */
+
+	/*
+	TEST_CLASS(UnitTest1)
+	{
+	public:
+
+		//test for adding a task with a deadline
+		
+		TEST_METHOD(addWithDeadline)
+		{
+			std::string _taskname = "task";
+			int _endingDay = 1;
+			int _endingMonth = 1;
+			int _endingTime = 1123;
+			Storage _storage;
+			CmdAdd _add;
+			Logic logic;
+			Event _newEvent(_taskname, _endingDay, _endingMonth,_endingTime);
+			std::string output = _add.addEventWithDeadline(_storage);
+			std::string expected = "\"[---------------------------] \" is added successfully.\n\n";
+			Assert::AreEqual(expected, output);
+		}
+
+		//test for adding a floating task
+		TEST_METHOD(addWithoutDeadline)
+		{
+			std::string _taskname = "task";
+			int _endingDay = 0;
+			int _endingMonth = 13;
+			int _endingTime = 2400;
+			Storage _storage;
+			CmdAdd _add;
+			Logic logic;
+			Event _newEvent(_taskname, _endingDay, _endingMonth,_endingTime);
+			std::string output = _add.addEventWithoutDeadline(_storage);
+			std::string expected = "\"[---------------------------] \" is added successfully.\n\n";;
+			Assert::AreEqual(expected, output);
+		}
+
+		TEST_METHOD(addTimedEvent)
+		{
+			std::string _taskname = "task";
+			int _endingDay = 0;
+			int _endingMonth = 13;
+			int _endingTime = 2400;
+			int _startingDay = 0;
+			int _startingMonth = 13;
+			int _startingTime = 2400;
+			Storage _storage;
+			CmdAdd _add;
+			Logic logic;
+			Event _newEvent(_taskname, _endingDay, _endingMonth,_endingTime);
+			std::string output = _add.addTimedEvent(_storage);
+			std::string expected = "\"[---------------------------] \" is added successfully.\n\n";;
+			Assert::AreEqual(expected, output);
+		}
+
+	};
+	*/
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+	 */
+
+	//test change directory function
+	TEST_CLASS(changeDirectoryTest)
+	{
+	public:
+		
+		TEST_METHOD(getFeedback)
+		{
+			CmdChangeDirectory changeDirectory;
+			string directory = "desktop";
+			std::string expected = "Directory is changed to: " + directory + "\n\n";
+			std::string actual = changeDirectory.getFeedback(directory);
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(executeChangeDdirectory)
+		{
+			CmdChangeDirectory changeDirectory;
+			Storage storage;
+			std::string expected = "Directory is changed to: \n\n";
+			std::string actual = changeDirectory.executecmdChangeDirectory(storage);
+			Assert::AreEqual(expected, actual);
+		};
+	};
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+	 */
+
+	//test help function
+	TEST_CLASS(helpTest)
+	{
+	public:
+		
+		TEST_METHOD(help)
+		{
+			CmdHelp help;
+			std::string expected = LINE+ HELP_ADD + HELP_DELETE + HELP_DISPLAY + HELP_UPDATE + HELP_UPDATE_START  
+		    + HELP_UPDATE_CLEAR_START + HELP_UPDATE_CLEAR_END + HELP_UPDATE_END + HELP_MARKASDONE + HELP_UNDO 
+		    + HELP_SEARCH + HELP_RECURRING + HELP_DIRECTORY + HELP_DELETERECUR + HELP_UPDATERECUR + LINE;
+
+			std::string actual = help.helpMessage();
+			Assert::AreEqual(expected, actual);
+		};
+	};
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+	 */
+
+	//test clear function
+	TEST_CLASS(clearTest)
+	{
+	public:
+		
+		TEST_METHOD(clear)
+		{
+			CmdClear clear;
+			Storage _storage;
+			Eventlist list;
+			clear.executeClear(_storage);
+			int expected = 0;
+			int actual = list.getTotalNumberOfEvents();
+			Assert::AreEqual(expected, actual);
+		};
+	};
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+	 */
+
+	TEST_CLASS(deleteTest)
+	{
+	public:
+		
+		TEST_METHOD(executecmdDelete)
+		{
+			CmdClear clear;
+			Storage _storage;
+			Eventlist list;
+			CmdDelete _delete;
+			CmdAdd _add;
+			int numberBeforeDelete = 1;
+			_delete.executecmdDelete(_storage);
+			int expected = numberBeforeDelete - 1;
+			int actual = list.getTotalNumberOfEvents();
+			Assert::AreEqual(expected, actual);
+		}
+	};
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+	 */
+
+	TEST_CLASS(undoTest)
+	{
+	public:
+		
+		TEST_METHOD(printUndoMessage)
+		{
+			CmdUndo undo;
+			string actual = undo.printUndoMessage();
+			string expected = "Undo last action successfully\n\n";
+			Assert::AreEqual(expected, actual);
+		};
+	};
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+	 */
+
+	TEST_CLASS(updateTest)
+	{
+	public:
+		
+		TEST_METHOD(printFeedback)
+		{
+			CmdUpdate update;
+			string tempt;
+			Event eventToUpdate;
+			string actual = update.printFeedback(tempt, eventToUpdate);
+			string UPDATE_MESSAGE = "\" is updated to ";
+			string expected = "\"" + UPDATE_MESSAGE + "\"" + eventToUpdate.displayEvent() +"\" \n\n";
+			Assert::AreEqual(expected, actual);
+		};
+	};
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+	 */
+
+	TEST_CLASS(repeatParserTest)
+	{
+	public:
+		//test if index is valid
+		//partition into two test cases: invalid(boundary case) and valid index
+		TEST_METHOD(isValidIndex)
+		{
+			CmdRepeatParser repeatParser;
+			bool actualValid = repeatParser.isValidIndex(9);
+			bool expectedValid = true;
+			Assert::AreEqual(expectedValid, actualValid);
+			bool actualInvalid = repeatParser.isValidIndex(-1);
+			bool expectedInvalid = false;
+			Assert::AreEqual(expectedInvalid, actualInvalid);
+		}
+
+		//test  if repeat type is any of the following:weekly, monthly, daily
+		//partition into valid case and invalid case
+		TEST_METHOD(isDailyWeeklyMonthly)
+		{
+			CmdRepeatParser repeatParser;
+			bool actualWeekly = repeatParser.isDailyWeeklyMonthly("weekly");
+			bool expectedWeekly = true;
+			Assert::AreEqual(expectedWeekly, actualWeekly);
+			bool actualMonthly = repeatParser.isDailyWeeklyMonthly("monthly");
+			bool expectedMonthly = true;
+			Assert::AreEqual(expectedMonthly, actualMonthly);
+			bool actualDaily = repeatParser.isDailyWeeklyMonthly("daily");
+			bool expectedDaily = true;
+			Assert::AreEqual(expectedDaily, actualDaily);
+			bool actualYearly = repeatParser.isDailyWeeklyMonthly("yearly");
+			bool expectedYearly = false;
+			Assert::AreEqual(expectedYearly, actualYearly);
+		}
+
+		//test if the repeat comand is "every"
+		//partion into valid and invalid case
+		TEST_METHOD(isCertainDayofWeek)
+		{
+			CmdRepeatParser repeatParser;
+			bool actualValid = repeatParser.isCertainDayOfAWeek("every");
+			bool expectedValid = true;
+			Assert::AreEqual(expectedValid, actualValid);
+			bool actualInvalid = repeatParser.isCertainDayOfAWeek("for");
+			bool expectedInvalid = false;
+			Assert::AreEqual(expectedInvalid, actualInvalid);
+		}
+
+		//partition into valid and inalid cases
+		TEST_METHOD(isStringAnInteger)
+		{
+			CmdRepeatParser repeatParser;
+			bool actual = repeatParser.isStringAnInteger("5");
+			bool expected = true;
+			Assert::AreEqual(expected, actual);
+			bool actualInvalid = repeatParser.isCertainDayOfAWeek("for");
+			bool expectedInvalid = false;
+			Assert::AreEqual(expectedInvalid, actualInvalid);
+		}
+
+		//test function converting upper case to lower case
+		TEST_METHOD(lowercaseRepeatDetail)
+		{
+			CmdRepeatParser repeatParser;
+			string actualOne = repeatParser.lowercaseRepeatDetail("WEEKLY");
+			string expectedOne = "weekly";
+			Assert::AreEqual(expectedOne, actualOne);
+			string actualTwo = repeatParser.lowercaseRepeatDetail("Weekly");
+			string expectedTwo = "weekly";
+			Assert::AreEqual(expectedTwo, actualTwo);
+		}
+	};
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+	 */
+
+	TEST_CLASS(cmdRepeatTest)
+	{
+	public:
+
+		//test if a given input is a valid weekday
+		//there are 7 valid cases in total
+		TEST_METHOD(isWeekday)
+		{
+			CmdRepeat repeat;
+			bool expectedOne = repeat.isWeekday("mon");
+			bool actualOne = true;
+			Assert::AreEqual(expectedOne, actualOne);
+			bool expectedTwo = repeat.isWeekday("monday");
+			bool actualTwo = true;
+			Assert::AreEqual(expectedTwo, actualTwo);
+			bool expectedThree = repeat.isWeekday("Mon");
+			bool actualThree = true;
+			Assert::AreEqual(expectedThree, actualThree);
+			bool expectedTue = repeat.determineWeekday("tuesday");
+			bool actualTue = true;
+			Assert::AreEqual(expectedTue, actualTue);
+			bool expectedWed = repeat.determineWeekday("wednesday");
+			bool actualWed = true;
+			Assert::AreEqual(expectedWed, actualWed);
+			bool expectedThur= repeat.determineWeekday("thursday");
+			bool actualThur = true;
+			Assert::AreEqual(expectedThur, actualThur);
+			bool expectedFri = repeat.determineWeekday("friday");
+			bool actualFri = true;
+			Assert::AreEqual(expectedFri, actualFri);
+			bool expectedSat = repeat.determineWeekday("saturday");
+			bool actualSat = true;
+			Assert::AreEqual(expectedSat, actualSat);
+			bool expectedSun = repeat.determineWeekday("sun");
+			bool actualSun = true;
+			Assert::AreEqual(expectedSun, actualSun);
+		}
+
+		//partition into one valid case and one invalid case
+		TEST_METHOD(isDefaultRepeatTimes)
+		{
+			CmdRepeat repeat;
+			bool actual = repeat.isDefaultRepeatTimes(3);
+			bool expected = false;
+			Assert::AreEqual(expected, actual);
+			bool actualValid = repeat.isDefaultRepeatTimes(0);
+			bool expectedValid = true;
+			Assert::AreEqual(expectedValid, actualValid);
+		}
+
+		//there are 7 valid cases in total
+		TEST_METHOD(determineWeekDay)
+		{
+			CmdRepeat repeat;
+			int expectedMonday = repeat.determineWeekday("monday");
+			int actualMonday = 0;
+			Assert::AreEqual(expectedMonday, actualMonday);
+			int expectedTue = repeat.determineWeekday("tuesday");
+			int actualTue = 1;
+			Assert::AreEqual(expectedTue, actualTue);
+			int expectedWed = repeat.determineWeekday("wednesday");
+			int actualWed = 2;
+			Assert::AreEqual(expectedWed, actualWed);
+			int expectedThur= repeat.determineWeekday("thursday");
+			int actualThur = 3;
+			Assert::AreEqual(expectedThur, actualThur);
+			int expectedFri = repeat.determineWeekday("friday");
+			int actualFri = 4;
+			Assert::AreEqual(expectedFri, actualFri);
+			int expectedSat = repeat.determineWeekday("saturday");
+			int actualSat = 5;
+			Assert::AreEqual(expectedSat, actualSat);
+			int expectedSun = repeat.determineWeekday("sun");
+			int actualSun = 6;
+			Assert::AreEqual(expectedSun, actualSun);
+		}
+
+		//three are 7 valid cases in total
+		TEST_METHOD(getExceptionTime)
+		{
+			CmdRepeat repeat;
+			int expectedTue = repeat.getExceptionTime("tuesday");
+			int actualTue = 1;
+			Assert::AreEqual(expectedTue, actualTue);
+			int expectedMon = repeat.getExceptionTime("mon");
+			int actualMon = 0;
+			Assert::AreEqual(expectedMon, actualMon);
+			int expectedWed = repeat.getExceptionTime("wed");
+			int actualWed = 2;
+			Assert::AreEqual(expectedWed, actualWed);
+			int expectedThur = repeat.getExceptionTime("thur");
+			int actualThur = 3;
+			Assert::AreEqual(expectedThur, actualThur);
+			int expectedFri = repeat.getExceptionTime("FRI");
+			int actualFri = 4;
+			Assert::AreEqual(expectedFri, actualFri);
+			int expectedSat = repeat.getExceptionTime("sat");
+			int actualSat = 5;
+			Assert::AreEqual(expectedSat, actualSat);
+			int expectedSun = repeat.getExceptionTime("sun");
+			int actualSun = 6;
+			Assert::AreEqual(expectedSun, actualSun);
+		}
+
+		//test the function that returns the number of days in any month of 2015
+		//there are 12 valid cases in total
+			TEST_METHOD(getNumberOfDays)
+		{
+			CmdRepeat repeat;
+			int expectedJan = repeat.getNumberOfDays(1,2015);
+			int actualJan = 31;
+			Assert::AreEqual(expectedJan, actualJan);
+			int expectedFeb= repeat.getNumberOfDays(2,2015);
+			int actualFeb = 28;
+			Assert::AreEqual(expectedFeb, actualFeb);
+			int expectedMar = repeat.getNumberOfDays(3,2015);
+			int actualMar = 31;
+			Assert::AreEqual(expectedMar, actualMar);
+			int expectedApr = repeat.getNumberOfDays(4,2015);
+			int actualApr = 30;
+			Assert::AreEqual(expectedApr, actualApr);
+			int expectedMay = repeat.getNumberOfDays(5,2015);
+			int actualMay = 31;
+			Assert::AreEqual(expectedMay, actualMay);
+			int expectedJun = repeat.getNumberOfDays(6,2015);
+			int actualJun = 30;
+			Assert::AreEqual(expectedJun, actualJun);
+			int expectedJul = repeat.getNumberOfDays(7,2015);
+			int actualJul = 31;
+			Assert::AreEqual(expectedJul, actualJul);
+			int expectedAug = repeat.getNumberOfDays(8,2015);
+			int actualAug = 31;
+			Assert::AreEqual(expectedAug, actualAug);
+			int expectedSep = repeat.getNumberOfDays(9,2015);
+			int actualSep = 30;
+			Assert::AreEqual(expectedSep, actualSep);
+			int expectedOct = repeat.getNumberOfDays(10,2015);
+			int actualOct = 31;
+			Assert::AreEqual(expectedOct, actualOct);
+			int expectedNov = repeat.getNumberOfDays(11,2015);
+			int actualNov = 30;
+			Assert::AreEqual(expectedNov, actualNov);
+			int expectedDec = repeat.getNumberOfDays(12,2015);
+			int actualDec = 31;
+			Assert::AreEqual(expectedDec, actualDec);
+		}
+
+			//partition into valid tests and invalid tests(including boundary cases)
+			TEST_METHOD(isValidDate)
+		{
+			CmdRepeat repeat;
+			bool actual = repeat.isValidDate(1,1,2015);
+			bool expected = true;
+			Assert::AreEqual(expected, actual);
+			bool actualInvalid = repeat.isValidDate(34,1,2015);
+			bool expectedInvalid = false;
+			Assert::AreEqual(expectedInvalid, actualInvalid);
+			bool actualTwo = repeat.isValidDate(0,1,2015);
+			bool expectedTwo = false;
+			Assert::AreEqual(expectedTwo, actualTwo);
+			bool actualJan = repeat.isValidDate(31,1,2015);
+			bool expectedJan = true;
+			Assert::AreEqual(expectedJan, actualJan);
+			bool actualFeb = repeat.isValidDate(29,2,2015);
+			bool expectedFeb = false;
+			Assert::AreEqual(expectedFeb, actualFeb);
+			bool actualFebValid = repeat.isValidDate(28,1,2015);
+			bool expectedFebValid = true;
+			Assert::AreEqual(expectedFebValid, actualFebValid);
+			bool actualLeap = repeat.isValidDate(29,2,2016);
+			bool expectedLeap = true;
+			Assert::AreEqual(expectedLeap, actualLeap);
+		}
+
+			TEST_METHOD(isExceptionDay)
+		{
+			CmdRepeat repeat;
+			bool actual = repeat.isExceptionDay(1,1,2015,0);
+			bool expected = false;
+			Assert::AreEqual(actual, expected);
+			bool actualTrue = repeat.isExceptionDay(1,1,2015,3);
+			bool expectedTrue = true;
+			Assert::AreEqual(actualTrue, expectedTrue);
+		}
+
+			//there are 7 valid cases in total
+			TEST_METHOD(changeWeekdayToInteger)
+		{
+			CmdRepeat repeat;
+			int actualMon = repeat.changeWeekdayToInteger("mon");
+			int expectedMon = 0;
+			Assert::AreEqual(actualMon, expectedMon);
+			int actualTue = repeat.changeWeekdayToInteger("Tue");
+			int expectedTue = 1;
+			Assert::AreEqual(actualTue, expectedTue);
+			int actualWed = repeat.changeWeekdayToInteger("wednesday");
+			int expectedWed = 2;
+			Assert::AreEqual(actualWed, expectedWed);
+			int actualThur = repeat.changeWeekdayToInteger("thur");
+			int expectedThur = 3;
+			Assert::AreEqual(actualThur, expectedThur);
+			int actualFri = repeat.changeWeekdayToInteger("FRIDAY");
+			int expectedFri = 4;
+			Assert::AreEqual(actualFri, expectedFri);
+			int actualSat = repeat.changeWeekdayToInteger("sat");
+			int expectedSat = 5;
+			Assert::AreEqual(actualSat, expectedSat);
+			int actualSun = repeat.changeWeekdayToInteger("sun");
+			int expectedSun = 6;
+			Assert::AreEqual(actualSun, expectedSun);
+		}
+
+			TEST_METHOD(getWeekdayToday)
+		{
+			CmdRepeat repeat;
+			int actual = repeat.getWeekdayToday(1,1,2015);
+			int expected = 3;
+			Assert::AreEqual(actual, expected);
+			int actualTwo = repeat.getWeekdayToday(2,1,2015);
+			int expectedTwo = 4;
+			Assert::AreEqual(actualTwo, expectedTwo);
+		}
+
+			TEST_METHOD(isLeapYear)
+		{
+			CmdRepeat repeat;
+			bool actual = repeat.isLeapYear(2016);
+			bool expected = true;
+			Assert::AreEqual(actual, expected);
+			bool actualInvalid = repeat.isLeapYear(2015);
+			bool expectedInvalid = false;
+			Assert::AreEqual(actualInvalid, expectedInvalid);
+			bool actualBoundary = repeat.isLeapYear(-1);
+			bool expectedBoundary = false;
+			Assert::AreEqual(actualBoundary, expectedBoundary);
+		}
+	};
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\logicTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\VerificationCommandTest.cpp
+	 */
+
+//unit testing for VerificationCommandTest class
+
+#include "stdafx.h"
+#include "CppUnitTest.h"
+#include "UI\VerificationCommand.h"
+#include "Paser\VerificationDateTimeMonth.h"
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+const static std::string STRING_ADD = "add";
+const static std::string STRING_DELETE = "delete";
+const static std::string STRING_UPDATE ="update" ;
+const static std::string STRING_UNDO = "undo";
+const static std::string STRING_DONE = "done";
+const static std::string STRING_DISPLAY = "display";
+const static std::string STRING_HELP = "help";
+const static std::string STRING_EXIT = "exit";
+const static std::string STRING_CLEAR = "clear";
+const static std::string STRING_DISPLAYDONE = "displaydone";
+const static std::string STRING_DISPLAYTODAY = "displaytoday";
+const static std::string STRING_SEARCH = "search";
+const static std::string STRING_CHANGEDIRECTORY = "changedirectory";
+const static std::string STRING_REPEAT = "repeat";
+const static std::string STRING_REPEATDONE = "repeatdone";
+namespace UnitTest1
+{
+	TEST_CLASS(VerificationCommandTest)
+	{
+	public:
+
+		//test if command input is valid
+		//partition into valid cases and invalid cases
+		TEST_METHOD(isValidCommandWord)
+		{
+			VerificationCommand verifyCommand;
+			bool expectedOne = true;
+			bool actualOne = verifyCommand.isValidCommandWord(STRING_ADD);
+			Assert::AreEqual(expectedOne, actualOne);
+			bool expectedTwo = true;
+			bool actualTwo = verifyCommand.isValidCommandWord(STRING_CHANGEDIRECTORY);
+			Assert::AreEqual(expectedTwo, actualTwo);
+			bool expectedThree = true;
+			bool actualThree = verifyCommand.isValidCommandWord(STRING_CLEAR);
+			Assert::AreEqual(expectedThree, actualThree);
+			bool expectedFour = true;
+			bool actualFour = verifyCommand.isValidCommandWord(STRING_DELETE);
+			Assert::AreEqual(expectedFour, actualFour);
+			bool expectedFive = true;
+			bool actualFive = verifyCommand.isValidCommandWord(STRING_DISPLAY);
+			Assert::AreEqual(expectedFive, actualFive);
+			bool expectedSix = true;
+			bool actualSix = verifyCommand.isValidCommandWord(STRING_DISPLAYDONE);
+			Assert::AreEqual(expectedSix, actualSix);
+			bool expectedSeven = true;
+			bool actualSeven  = verifyCommand.isValidCommandWord(STRING_DONE);
+			Assert::AreEqual(expectedSeven , actualSeven );
+			bool expectedEight = true;
+			bool actualEight = verifyCommand.isValidCommandWord(STRING_EXIT);
+			Assert::AreEqual(expectedEight, actualEight);
+			bool expectedNine = true;
+			bool actualNine  = verifyCommand.isValidCommandWord(STRING_HELP);
+			Assert::AreEqual(expectedNine , actualNine );
+			bool expectedTen = true;
+			bool actualTen = verifyCommand.isValidCommandWord(STRING_REPEAT);
+			Assert::AreEqual(expectedTen, actualTen);
+			bool expectedEleven = true;
+			bool actualEleven = verifyCommand.isValidCommandWord(STRING_REPEATDONE);
+			Assert::AreEqual(expectedEleven, actualEleven);
+			bool expectedTweleve = true;
+			bool actualTweleve  = verifyCommand.isValidCommandWord(STRING_SEARCH);
+			Assert::AreEqual(expectedTweleve, actualTweleve );
+			bool expectedThirteen = true;
+			bool actualThirteen = verifyCommand.isValidCommandWord(STRING_UNDO);
+			Assert::AreEqual(expectedThirteen, actualThirteen);
+			bool expectedFourteen = true;
+			bool actualFourteen = verifyCommand.isValidCommandWord(STRING_UPDATE);
+			Assert::AreEqual(expectedFourteen, actualFourteen);
+			bool actualFalse = verifyCommand.isValidCommandWord("test");
+			bool expectedFalse = false;
+			Assert::AreEqual(expectedFalse, actualFalse);
+		}
+
+		//test converting upper case into lower case
+		TEST_METHOD(lowerCaseCommandWord)
+		{
+			VerificationCommand verification;
+			std::string actualOne = verification.lowercaseCommandWord("ADD");
+			std::string expectedOne = "add";
+			Assert::AreEqual(expectedOne,actualOne);
+			std::string actualTwo = verification.lowercaseCommandWord("Delete");
+			std::string expectedTwo = "delete";
+			Assert::AreEqual(expectedTwo,actualTwo);
+			std::string actualThree = verification.lowercaseCommandWord("clear");
+			std::string expectedThree= "clear";
+			Assert::AreEqual(expectedThree,actualThree);
+
+		}
+
+	};
+
+TEST_CLASS(VerificationDateTimeMonthTest)
+	{
+	public:
+		
+		//test converting lower case for month to lower case
+		TEST_METHOD(lowerCaseMonth)
+		{
+			VerificationDateTimeMonth verify;
+			std::string actualOne = verify.lowercaseMonth("Jan");
+			std::string expectedOne = "jan";
+			Assert::AreEqual(actualOne, expectedOne);
+			std::string actualTwo = verify.lowercaseMonth("FEB");
+			std::string expectedTwo = "feb";
+			Assert::AreEqual(actualTwo, expectedTwo);
+			std::string actualThree = verify.lowercaseMonth("MArch");
+			std::string expectedThree = "march";
+			Assert::AreEqual(actualThree, expectedThree);
+			std::string actualFour = verify.lowercaseMonth("april");
+			std::string expectedFour = "april";
+			Assert::AreEqual(actualFour, expectedFour);
+			std::string actualFive = verify.lowercaseMonth("MaY");
+			std::string expectedFive = "may";
+			Assert::AreEqual(actualFive, expectedFive);
+			std::string actualSix = verify.lowercaseMonth("juNe");
+			std::string expectedSix = "june";
+			Assert::AreEqual(actualSix, expectedSix);
+			std::string actualSeven = verify.lowercaseMonth("jul");
+			std::string expectedSeven = "jul";
+			Assert::AreEqual(actualSeven, expectedSeven);
+			std::string actualEight = verify.lowercaseMonth("AugUST");
+			std::string expectedEight = "august";
+			Assert::AreEqual(actualEight, expectedEight);
+			std::string actualNine = verify.lowercaseMonth("SEP");
+			std::string expectedNine = "sep";
+			Assert::AreEqual(actualNine, expectedNine);
+			std::string actualTen = verify.lowercaseMonth("oct");
+			std::string expectedTen = "oct";
+			Assert::AreEqual(actualTen, expectedTen);
+			std::string actualEleven = verify.lowercaseMonth("NOv");
+			std::string expectedEleven = "nov";
+			Assert::AreEqual(actualEleven, expectedEleven);
+			std::string actualTweleve = verify.lowercaseMonth("Dec");
+			std::string expectedTweleve = "dec";
+			Assert::AreEqual(actualTweleve, expectedTweleve);
+		}
+
+};
+}
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\VerificationCommandTest.cpp
+
+
+
+
+

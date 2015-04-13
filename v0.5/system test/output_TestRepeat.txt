@@ -1,0 +1,161 @@
+================================================
+Welcome to Minik!What would you like to do today?
+================================================
+
+Command: all tasks cleared
+
+Command: Currently no active event. 
+
+Command: "[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting" is added successfully.
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[16 Apr 20:00 - 16 Apr 23:00] IE2130 meeting
+  3.[17 Apr 20:00 - 17 Apr 23:00] IE2130 meeting
+  4.[18 Apr 20:00 - 18 Apr 23:00] IE2130 meeting
+  5.[19 Apr 20:00 - 19 Apr 23:00] IE2130 meeting
+  6.[20 Apr 20:00 - 20 Apr 23:00] IE2130 meeting
+  7.[21 Apr 20:00 - 21 Apr 23:00] IE2130 meeting
+  8.[22 Apr 20:00 - 22 Apr 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[22 Apr 20:00 - 22 Apr 23:00] IE2130 meeting
+  3.[29 Apr 20:00 - 29 Apr 23:00] IE2130 meeting
+  4.[06 May 20:00 - 06 May 23:00] IE2130 meeting
+  5.[13 May 20:00 - 13 May 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[15 May 20:00 - 15 May 23:00] IE2130 meeting
+  3.[15 Jun 20:00 - 15 Jun 23:00] IE2130 meeting
+  4.[15 Jul 20:00 - 15 Jul 23:00] IE2130 meeting
+  5.[15 Aug 20:00 - 15 Aug 23:00] IE2130 meeting
+  6.[15 Sep 20:00 - 15 Sep 23:00] IE2130 meeting
+  7.[15 Oct 20:00 - 15 Oct 23:00] IE2130 meeting
+  8.[15 Nov 20:00 - 15 Nov 23:00] IE2130 meeting
+  9.[15 Dec 20:00 - 15 Dec 23:00] IE2130 meeting
+ 10.[15 Jan 20:00 Year: 2016 - 15 Jan 23:00 Year: 2016] IE2130 meeting
+ 11.[15 Feb 20:00 Year: 2016 - 15 Feb 23:00 Year: 2016] IE2130 meeting
+ 12.[15 Mar 20:00 Year: 2016 - 15 Mar 23:00 Year: 2016] IE2130 meeting
+ 13.[15 Apr 20:00 Year: 2016 - 15 Apr 23:00 Year: 2016] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[21 Apr 20:00 - 21 Apr 23:00] IE2130 meeting
+  3.[28 Apr 20:00 - 28 Apr 23:00] IE2130 meeting
+  4.[05 May 20:00 - 05 May 23:00] IE2130 meeting
+  5.[12 May 20:00 - 12 May 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[16 Apr 20:00 - 16 Apr 23:00] IE2130 meeting
+  3.[17 Apr 20:00 - 17 Apr 23:00] IE2130 meeting
+  4.[18 Apr 20:00 - 18 Apr 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[22 Apr 20:00 - 22 Apr 23:00] IE2130 meeting
+  3.[29 Apr 20:00 - 29 Apr 23:00] IE2130 meeting
+  4.[06 May 20:00 - 06 May 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[15 May 20:00 - 15 May 23:00] IE2130 meeting
+  3.[15 Jun 20:00 - 15 Jun 23:00] IE2130 meeting
+  4.[15 Jul 20:00 - 15 Jul 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[21 Apr 20:00 - 21 Apr 23:00] IE2130 meeting
+  3.[28 Apr 20:00 - 28 Apr 23:00] IE2130 meeting
+  4.[05 May 20:00 - 05 May 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[16 Apr 20:00 - 16 Apr 23:00] IE2130 meeting
+  3.[18 Apr 20:00 - 18 Apr 23:00] IE2130 meeting
+  4.[19 Apr 20:00 - 19 Apr 23:00] IE2130 meeting
+  5.[20 Apr 20:00 - 20 Apr 23:00] IE2130 meeting
+  6.[21 Apr 20:00 - 21 Apr 23:00] IE2130 meeting
+  7.[22 Apr 20:00 - 22 Apr 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[22 Apr 20:00 - 22 Apr 23:00] IE2130 meeting
+  3.[06 May 20:00 - 06 May 23:00] IE2130 meeting
+  4.[13 May 20:00 - 13 May 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[15 May 20:00 - 15 May 23:00] IE2130 meeting
+  3.[15 Jul 20:00 - 15 Jul 23:00] IE2130 meeting
+  4.[15 Aug 20:00 - 15 Aug 23:00] IE2130 meeting
+  5.[15 Sep 20:00 - 15 Sep 23:00] IE2130 meeting
+  6.[15 Oct 20:00 - 15 Oct 23:00] IE2130 meeting
+  7.[15 Nov 20:00 - 15 Nov 23:00] IE2130 meeting
+  8.[15 Dec 20:00 - 15 Dec 23:00] IE2130 meeting
+  9.[15 Jan 20:00 Year: 2016 - 15 Jan 23:00 Year: 2016] IE2130 meeting
+ 10.[15 Feb 20:00 Year: 2016 - 15 Feb 23:00 Year: 2016] IE2130 meeting
+ 11.[15 Mar 20:00 Year: 2016 - 15 Mar 23:00 Year: 2016] IE2130 meeting
+ 12.[15 Apr 20:00 Year: 2016 - 15 Apr 23:00 Year: 2016] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[21 Apr 20:00 - 21 Apr 23:00] IE2130 meeting
+  3.[05 May 20:00 - 05 May 23:00] IE2130 meeting
+  4.[12 May 20:00 - 12 May 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[16 Apr 20:00 - 16 Apr 23:00] IE2130 meeting
+  3.[18 Apr 20:00 - 18 Apr 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[22 Apr 20:00 - 22 Apr 23:00] IE2130 meeting
+  3.[06 May 20:00 - 06 May 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[15 May 20:00 - 15 May 23:00] IE2130 meeting
+  3.[15 Jul 20:00 - 15 Jul 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 
+Command:   1.[15 Apr 20:00 - 15 Apr 23:00] IE2130 meeting
+  2.[21 Apr 20:00 - 21 Apr 23:00] IE2130 meeting
+  3.[05 May 20:00 - 05 May 23:00] IE2130 meeting
+
+Command: Undo last action successfully
+
+Command: 

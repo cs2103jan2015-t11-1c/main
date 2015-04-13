@@ -1,0 +1,2388 @@
+//@author: a0116455h
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\Event.cpp
+	 */
+
+//This is the class used to store information about an Event.
+//All the functions here support retrieve, edit and display of
+//a single Event information.
+//By default the year stored is 2015.
+//If there is a change of year, changeYear functions must be used.
+//Display function will display year out if the year of event is not 2015.
+
+#include "Event.h"
+#include <assert.h>
+
+const std::string EMPTY_SPACE = " ";
+const std::string EMPTY_STRING = "";
+const std::string START_INfO_IDENTIFIER = "Starting Info: ";
+const std::string END_INFO_IDENTIFIER = "Ending Info: ";
+const std::string NIL_IDENTIFIER = "Nil";
+const std::string OPEN_SQUARE_BRACKET = "[";
+const std::string CLOSE_SQUARE_BRACKET = "]";
+const std::string DASH = "-";
+const std::string BY = "by";
+const std::string YEAR = "Year";
+const std::string COLON = ":";
+const std::string ZERO = "0";
+const std::string JANUARY = "Jan";
+const std::string FEBRUARY = "Feb";
+const std::string MARCH = "Mar";
+const std::string APRIL = "Apr";
+const std::string MAY = "May";
+const std::string JUNE = "Jun";
+const std::string JULY = "Jul";
+const std::string AUGUST = "Aug";
+const std::string SEPTEMBER = "Sep";
+const std::string OCTOBER = "Oct";
+const std::string NOVEMBER = "Nov";
+const std::string DECEMBER = "Dec";
+const std::string INVALID_MONTH = "Invalid Month";
+const std::string ERROR_YEAR = "Error: Setting year earlier than 2015 is not allowed. \n\n";
+const std::string RECURRING_NUMBER = "Recurring number: ";
+const int DEFAUlTYEAR = 2015;
+const int THOUSAND = 1000;
+const int HUNDRED = 100;
+const int TEN = 10;
+const int NUMBER_ZERO = 0;
+const int MIN_MONTH = 1;
+const int MAX_MONTH = 12;
+const int MIN_DATE = 1;
+const int MAX_DATE = 31;
+const int MAX_TIME = 2359;
+const int MIN_TIME = 0000;
+const int JANUARY_IN_NUMBER = 1;
+const int FEBRUARY_IN_NUMBER = 2;
+const int MARCH_IN_NUMBER = 3;
+const int APRIL_IN_NUMBER = 4;
+const int MAY_IN_NUMBER = 5;
+const int JUNE_IN_NUMBER = 6;
+const int JULY_IN_NUMBER = 7;
+const int AUGUST_IN_NUMBER = 8;
+const int SEPTEMBER_IN_NUMBER = 9;
+const int OCTOBER_IN_NUMBER = 10;
+const int NOVEMBER_IN_NUMBER = 11;
+const int DECEMBER_IN_NUMBER = 12;
+const int DAY_RANKING = 10000;
+const int MONTH_RANKING = 1000000;
+const int YEAR_RANKING = 100000000;
+const int NO_DUE_DATE_RANKING = 2000000000;
+const int NO_DUE_DATE_SPACING = 28;
+const int NO_START_TIME_DEFAULT_YEAR_SPACING = 13;
+const int NO_START_TIME_NON_DEFAULT_YEAR_SPACING = 24;
+const int DEFAUlT_START_NON_DEFAULT_END_YEAR_SPACING = 12;
+
+Event::Event(void) {	
+}
+
+
+Event::Event(std::string newTitle, int newDay, int newMonth, int newTime) {
+	assert(newTitle != EMPTY_STRING );
+	_title = newTitle;
+	_endDay = newDay;
+	_endMonth = newMonth;
+	_endTime = newTime;
+	_endYear = DEFAUlTYEAR;
+	_startYear = DEFAUlTYEAR;
+	updateDueRanking();
+	_durationEvent = false;
+	_recurringTaskSeries = 0;
+}
+
+Event::~Event(void) {
+}
+
+std::string Event::displayEvent() {
+	std::ostringstream Ostring;
+	Ostring << OPEN_SQUARE_BRACKET;
+	if (!isValidDateMonthTime()) {
+		Ostring << std::setfill('-') << std::setw(NO_DUE_DATE_SPACING);
+		Ostring << CLOSE_SQUARE_BRACKET;
+		Ostring << EMPTY_SPACE << _title; 
+	} else {
+		if (_durationEvent == false) {
+			Ostring << BY << EMPTY_SPACE << convertNumberToString(_endDay);
+			Ostring << EMPTY_SPACE << convertToMonth(_endMonth);
+			int hour = _endTime / HUNDRED;
+			int minute = _endTime % HUNDRED;
+			Ostring << EMPTY_SPACE << convertNumberToString(hour) << COLON; 
+			Ostring	<< convertNumberToString(minute);
+			if (_endYear != DEFAUlTYEAR) {
+				Ostring << EMPTY_SPACE << YEAR << COLON << EMPTY_SPACE << _endYear;
+				Ostring << std::setw(NO_START_TIME_NON_DEFAULT_YEAR_SPACING);
+				Ostring << CLOSE_SQUARE_BRACKET << EMPTY_SPACE << _title; 	
+			} else {
+				Ostring << std::setw(NO_START_TIME_DEFAULT_YEAR_SPACING); 
+				Ostring << CLOSE_SQUARE_BRACKET << EMPTY_SPACE;
+				Ostring << _title; 
+			}
+		} else {
+			Ostring << convertNumberToString(_startDay);
+			Ostring << EMPTY_SPACE << convertToMonth(_startMonth);
+			int hour = _startTime / HUNDRED;
+			int minute = _startTime % HUNDRED;
+			Ostring << EMPTY_SPACE << convertNumberToString(hour);
+			Ostring << COLON << convertNumberToString(minute);
+			if (_startYear != DEFAUlTYEAR) {
+				Ostring << EMPTY_SPACE << YEAR << COLON << EMPTY_SPACE;
+				Ostring << _startYear;
+			} 
+			Ostring << EMPTY_SPACE << DASH << EMPTY_SPACE;
+			Ostring << convertNumberToString(_endDay);
+			Ostring << EMPTY_SPACE << convertToMonth(_endMonth);
+			hour = _endTime / HUNDRED;
+			minute = _endTime % HUNDRED;
+			Ostring << EMPTY_SPACE << convertNumberToString(hour) << COLON; 
+			Ostring << convertNumberToString(minute);
+			if (_endYear != DEFAUlTYEAR) {
+				Ostring << EMPTY_SPACE << YEAR << COLON << EMPTY_SPACE; 
+				Ostring << _endYear; 
+			}
+			if (_startYear == DEFAUlTYEAR && _endYear != DEFAUlTYEAR) {
+				Ostring << std::setw(DEFAUlT_START_NON_DEFAULT_END_YEAR_SPACING);
+			}
+			Ostring << CLOSE_SQUARE_BRACKET << EMPTY_SPACE;
+			Ostring << _title;
+		}
+	}
+	return Ostring.str();
+}
+
+// Convert 1 or 2 digit number to 2 char string.
+std::string Event::convertNumberToString(int number) {
+	if (number / TEN == NUMBER_ZERO) {
+		std::string tempString;
+		tempString = std::to_string(number);
+		return ZERO + tempString;
+	} else { 
+		return std::to_string(number);
+	}
+}
+
+std::string Event::convertToMonth(int i) {
+	if (i == JANUARY_IN_NUMBER) {
+		return JANUARY; 
+	} else if (i == FEBRUARY_IN_NUMBER) {
+		return FEBRUARY; 
+	} else if (i == MARCH_IN_NUMBER) {
+		return MARCH;
+	} else if (i == APRIL_IN_NUMBER) {
+		return APRIL;
+	} else if (i == MAY_IN_NUMBER) {
+		return MAY;
+	} else if (i == JUNE_IN_NUMBER) {
+		return JUNE; 
+	} else if (i == JULY_IN_NUMBER) {
+		return JULY; 
+	} else if (i == AUGUST_IN_NUMBER) {
+		return AUGUST; 
+	} else if (i == SEPTEMBER_IN_NUMBER) {
+		return SEPTEMBER; 
+	} else if (i == OCTOBER_IN_NUMBER) {
+		return OCTOBER; 
+	} else if (i == NOVEMBER_IN_NUMBER) {
+		return NOVEMBER; 
+	} else if (i == DECEMBER_IN_NUMBER) {
+		return DECEMBER; 
+	}
+	return INVALID_MONTH;
+}
+
+//Convert time to a 4 char string.
+std::string Event::convertTimeToString(int number) {
+	std::string tempString;
+	tempString = std::to_string(number);
+	if (number /TEN == NUMBER_ZERO) {
+		return ZERO + ZERO + ZERO + tempString;
+	} else if (number/HUNDRED == NUMBER_ZERO) {
+		return  ZERO + ZERO + tempString;
+	} else if (number/THOUSAND == NUMBER_ZERO) {
+		return  ZERO + tempString;
+	}
+	return tempString;
+}
+
+//Display the deadline of a particular task.
+std::string Event::getDeadline() {	
+	std::string tempString = convertNumberToString(_endDay);
+	tempString = tempString + EMPTY_SPACE + convertToMonth(_endMonth);
+	tempString = tempString + EMPTY_SPACE + convertTimeToString(_endTime);
+	return tempString;
+}
+
+
+void Event::changeTitle(std::string newTitle) {	
+	assert(newTitle != EMPTY_STRING );
+	_title = newTitle; 
+}
+
+void Event::changeEndDay(int newDay) {	
+	_endDay = newDay;
+	updateDueRanking();
+}
+
+void Event::changeEndMonth (int newMonth) {
+	_endMonth = newMonth;
+	updateDueRanking();
+}
+
+void Event::changeEndTime (int newTime) {
+	_endTime = newTime;
+	updateDueRanking();
+}
+
+void Event::changeEndYear (int newYear) {
+	if (newYear < DEFAUlTYEAR) {
+		throw std::string(ERROR_YEAR);
+	}
+	_endYear = newYear;
+	updateDueRanking();
+}
+
+void Event::changeStartDay (int newDay) {
+	_startDay = newDay;
+	if (isTimedTask()) {
+		_durationEvent = true;
+	} else {
+		_durationEvent = false;
+	}
+}
+
+void Event::changeStartMonth (int newMonth) {
+	_startMonth = newMonth;
+	if (isTimedTask()) {
+		_durationEvent = true;
+	} else {
+		_durationEvent = false;
+	}
+}
+
+void Event::changeStartTime (int newTime) {
+	_startTime= newTime;
+	if (isTimedTask()) {
+		_durationEvent = true;
+	} else { 
+		_durationEvent = false;
+	}
+}
+
+void Event::changeStartYear (int newYear) {
+	if (newYear < DEFAUlTYEAR) {
+		throw std::string(ERROR_YEAR);
+	}
+	_startYear = newYear;
+}
+
+void Event::changeRecurringTaskSeries(int series) {
+	_recurringTaskSeries = series;
+}
+
+//For the purpose of sorting, arrange the events from earliest year and
+//then earliest month and then earliest endday and then earliest hour.
+//Events with no deadline are display first.
+void Event::updateDueRanking() {
+	if (!isValidDateMonthTime()) {
+		_dueRanking = NO_DUE_DATE_RANKING ;
+	} else {
+		_dueRanking = _endYear % 100 * YEAR_RANKING +_endMonth * MONTH_RANKING;
+		_dueRanking = _dueRanking + _endDay * DAY_RANKING + _endTime;
+	}
+}
+
+std::string Event::getTaskName() {
+	return _title;
+}
+
+int Event::getStartMonth() {
+	return _startMonth;
+}
+
+int Event::getStartDate() {
+	return _startDay;
+}
+
+int Event::getEndMonth() {
+	return _endMonth;
+}
+
+int Event::getEndDate() {
+	return _endDay;
+}
+
+int Event::getStartTime() {
+	return _startTime;
+}
+
+int Event::getEndTime() {
+	return _endTime;
+}
+
+int Event::getRecurringTaskSeries() {
+	return _recurringTaskSeries;
+}
+
+//Display all information of a Event out for saving data to local file.
+//Easier for advance user to change data in a local drive.
+std::string Event::saveEvent() {
+	std::ostringstream Ostring;
+	Ostring << _title << EMPTY_SPACE;
+	Ostring << START_INfO_IDENTIFIER;
+	if (!_durationEvent) {
+		Ostring << NIL_IDENTIFIER << EMPTY_SPACE;
+	} else {
+		Ostring << convertNumberToString(_startDay) << EMPTY_SPACE; 
+		Ostring << convertNumberToString(_startMonth) << EMPTY_SPACE;
+		Ostring << convertTimeToString(_startTime) << EMPTY_SPACE; 
+		Ostring << convertTimeToString(_startYear) << EMPTY_SPACE;
+	}
+	Ostring << END_INFO_IDENTIFIER ;
+	if (!isValidDateMonthTime()) {
+		Ostring << NIL_IDENTIFIER << EMPTY_SPACE;
+	} else {
+		Ostring << convertNumberToString(_endDay) << EMPTY_SPACE;
+		Ostring	<< convertNumberToString(_endMonth) << EMPTY_SPACE;
+		Ostring << convertTimeToString(_endTime) << EMPTY_SPACE;
+		Ostring << convertTimeToString(_endYear);
+	}
+	if (_recurringTaskSeries > 0) {
+		Ostring << EMPTY_SPACE << RECURRING_NUMBER << _recurringTaskSeries;
+	}
+	return Ostring.str();
+}
+
+bool Event::isTimedTask() {
+	bool isValid = true;
+	if (_startDay < MIN_DATE || _startDay > MAX_DATE) {
+		isValid = false;
+	}
+	if (_startMonth < MIN_MONTH || _startMonth > MAX_MONTH) {
+		isValid = false;
+	}
+	if (_startTime < MIN_TIME || _startTime > MAX_TIME) {
+		isValid = false;
+	}
+	return isValid;
+}
+
+int Event::getStartYear() {
+	return _startYear;
+}
+
+int Event::getEndYear() {
+	return _endYear;
+}
+
+bool Event::isValidDateMonthTime() {
+	bool isValid = true;
+	if (_endDay < MIN_DATE || _endDay > MAX_DATE) {
+		isValid = false;
+	}
+	if (_endMonth < MIN_MONTH || _endMonth > MAX_MONTH) {
+		isValid = false;
+	}
+	if (_endTime < MIN_TIME || _endTime > MAX_TIME) {
+		isValid = false;
+	}
+	return isValid;
+}
+
+bool Event::isFloatingTask() {
+	if (isValidDateMonthTime()) {
+		return false;
+	} else {
+		return true;
+	}
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\Event.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\Event.h
+	 */
+
+//The information of a particular event is all stored in this class.
+
+#pragma once
+
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+
+
+class Event {
+private:
+	std::string _title;
+	int _endDay;
+	int _endMonth;
+	int _endTime;
+	int _endYear;
+	int _startDay;
+	int _startMonth;
+	int _startTime;
+	int _startYear;
+	int _recurringTaskSeries;
+	bool _durationEvent;
+
+public:
+	int _dueRanking;
+	Event(void);
+	Event(std::string, int, int, int);
+	~Event(void);
+	void changeTitle(std:: string);
+	void changeStartDay(int);
+	void changeStartMonth(int);
+	void changeStartTime(int);
+	void changeStartYear(int);
+	void changeEndDay(int);
+	void changeEndMonth(int);
+	void changeEndTime(int);
+	void changeEndYear(int);
+	void changeRecurringTaskSeries(int);
+	void updateDueRanking();
+	int getStartMonth();
+	int getEndMonth();
+	int getStartDate();
+	int getEndDate();
+	int getStartTime();
+	int getEndTime();
+	int getStartYear();
+	int getEndYear();
+	int getRecurringTaskSeries();
+	bool isTimedTask();
+	bool isValidDateMonthTime();
+	bool isFloatingTask();
+	std::string getTaskName();
+	std::string convertToMonth(int);
+	std::string displayEvent();
+	std::string getDeadline();
+	std::string saveEvent();
+	std::string convertNumberToString(int);
+	std::string convertTimeToString(int);
+};
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\Event.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\Eventlist.cpp
+	 */
+
+//This class is used to store multiple Events.
+
+#include "Eventlist.h"
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <time.h>
+
+const int GO_TO_PREVIOUS = -1;
+const std::string ERROR_INDEX = "Error: index not valid.\n";
+
+Eventlist::Eventlist(void) {
+}
+
+
+Eventlist::~Eventlist(void) { 
+}
+
+void Eventlist::clearEventlist() { 
+	_allEvent.clear();
+}
+
+void Eventlist::addEvent(Event newEvent) {
+	_allEvent.push_back(newEvent); 
+}
+
+//Delete one Event from the list by searching from the front of the list.
+void Eventlist::deleteEvent(unsigned int index) {
+	if (index < 1 || index > _allEvent.size()) {
+		throw std::string(ERROR_INDEX);
+	}
+	std::list<Event>::iterator deleteposition = _allEvent.begin();
+	advance(deleteposition, index + GO_TO_PREVIOUS);
+	_allEvent.erase(deleteposition);
+}
+
+//Find the Event at the index position and return the Event.
+Event Eventlist::getEvent(unsigned int index) {	
+	if (index < 1 || index > _allEvent.size()) {
+		throw std::string(ERROR_INDEX);
+	}
+	std::list<Event>::iterator eventPosition = _allEvent.begin();
+	advance(eventPosition, index + GO_TO_PREVIOUS);
+	return *eventPosition;
+}
+
+//Replaced the index position Event with new event.
+void Eventlist::updateEvent (unsigned int index, Event newEvent) {
+	if (index < 1 || index > _allEvent.size()) {
+		throw std::string(ERROR_INDEX);
+	}
+	std::list<Event>::iterator eventPosition = _allEvent.begin();
+	advance(eventPosition, index + GO_TO_PREVIOUS);
+	*eventPosition = newEvent;
+}
+
+std::list<Event> Eventlist:: returnAllEvent() {
+	return _allEvent;
+}
+
+int Eventlist::getTotalNumberOfEvents (void) {	
+	return _allEvent.size();
+}
+
+//Sort the Event in Eventlist according to smallest month, day and time.
+//Event with no due time will be put to the end.
+void Eventlist::sortEvent(void) {  
+	_allEvent.sort([](const Event & a, const Event & b) { //given two event.
+	return a._dueRanking < b._dueRanking; });			  //compare their ranking.
+}
+
+//Make a copy of list, for undo delete Eventlist
+void Eventlist::copyFromNewList(std::list<Event> newList) {
+	_allEvent.assign(newList.begin(), newList.end());
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\Eventlist.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\Eventlist.h
+	 */
+
+//This is a class for storing multiple Event class.
+//When a particular event is needed, Eventlist class will find the
+//Event and perform respective functions.
+
+#pragma once
+#include "Event.h"
+#include <vector>
+#include <list>
+
+
+class Eventlist {
+private:
+	std::list <Event> _allEvent;
+public:
+	Eventlist(void);
+	~Eventlist(void);
+	void clearEventlist();
+	void addEvent(Event newEvent);
+	void deleteEvent(unsigned int index);
+	void copyFromNewList(std::list<Event> newList);
+	void updateEvent(unsigned int index, Event newEvent);
+	void sortEvent(void);
+	int getTotalNumberOfEvents(void);
+	std::list<Event> returnAllEvent();
+	bool compareDueRanking(const Event& firstEvent,const Event& secondEvent);
+	Event getEvent(unsigned int index);
+};
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\Eventlist.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\findNextDate.cpp
+	 */
+
+//This class will find the next date when given current day
+//and the number of days to the next date.
+//week number of the next date are calculated also.
+//week number is the number of days since Monday.
+//0 is Monday, 1 is Tuesday, and 6 is Sunday.
+//By default this class assume year is 2015.
+//If the year is not 2015, need to set the year to correct year
+//before calling calculate function. 
+#include "findNextDate.h"
+
+const std::string ERROR_DAY = "Day entered invalid";
+const std::string ERROR_MONTH = "Month entered invalid";
+const std::string ERROR_YEAR = "Error: Setting year earlier than 2015 is not allowed";
+const int MONTH[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+const int MONTH_LEAP[] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+const int STARTING_YEAR = 2015;
+const int THURSDAY = 3;
+const int NUMBER_OF_DAYS_IN_LEAP_YEAR = 366;
+const int NUMBER_OF_DAYS_IN_NON_LEAP_YEAR = 365;
+const int NUMBER_OF_DAYS_IN_A_WEEK = 7;
+const int MIN_MONTH = 1;
+const int MAX_MONTH = 12;
+const int MIN_DATE = 1;
+const int MAX_DATE = 31;
+const int PREVIOUS_OR_NEXT = 1;
+const int FOUR = 4;
+const int HUNDRED = 100;
+const int FOUR_HUNDRED = 400;
+const int ZERO = 0;
+
+//Assumption year is 2015 and the first day of 2015 is Thursday.
+//This program cannot used to calculate year earlier than 2015.
+findNextDate::findNextDate(void) {
+	_firstDayOfYear2015 = THURSDAY;
+	_year = STARTING_YEAR;
+}
+
+
+findNextDate::~findNextDate(void) {
+}
+
+//Calculate the next date when given current date and number of days
+//to next date. Week number of the next date is calculated too.
+void findNextDate::calculate(int day, int month, int numberOfDays) {	
+	if (day < MIN_DATE || day > MAX_DATE) {
+		throw std::string(ERROR_DAY);
+	}
+	if (month < MIN_MONTH || month > MAX_MONTH) {
+		throw std::string(ERROR_MONTH);
+	}
+	_currentDay = day;
+	_currentMonth = month;
+	_advanceNumberOfDays = numberOfDays;
+	calculateTheNextDate();
+	calculateTheWeekDay();
+}
+
+bool findNextDate:: isLeapYear(int year) {
+	if ((year % FOUR == ZERO) && (year % HUNDRED != ZERO)) {
+		return true;
+	} else { 
+		if (year % FOUR_HUNDRED == ZERO)
+			return true;
+	}
+	return false;
+}
+
+//Shift the number of days according to days in non leap year month.
+void findNextDate::advanceMonth() {
+	while (_day > MONTH[_month] && _month <= MAX_MONTH) {
+		_day = _day - MONTH[_month];
+		_month++;
+	} 
+	if (_month > MAX_MONTH) {
+		_month = _month - MAX_MONTH;
+		_year = _year + PREVIOUS_OR_NEXT;
+	}
+}
+
+//Shift the number of days according to days in leap year month.
+void findNextDate::advanceMonthLeapYear() {
+	while (_day > MONTH_LEAP[_month] && _month <= MAX_MONTH) {
+		_day = _day - MONTH_LEAP[_month];
+		_month++;
+	} 
+	if (_month > MAX_MONTH) {
+		_year = _year + PREVIOUS_OR_NEXT;
+		_month = _month - MAX_MONTH;
+	}
+}
+
+//Find out the next day and month and year.
+void findNextDate::calculateTheNextDate() {
+	_day = _currentDay + _advanceNumberOfDays;
+	_month = _currentMonth;
+	if (isLeapYear(_year)) {
+		advanceMonthLeapYear();
+	} else { 
+		advanceMonth(); 
+	}
+	calculateExtraLongDay();
+}
+
+//For extreme case that 2 dates are separated by more than 1 year.
+void findNextDate::calculateExtraLongDay() {
+	while (_day > MAX_DATE) {
+		if (isLeapYear(_year)) {
+			advanceMonthLeapYear();
+		} else { 
+			advanceMonth();
+		}
+	}
+}
+
+//Find the total number of days before a particular month in non leap year.
+int findNextDate::calculateDayInMonth() {
+	int monthFromJanuary = MIN_MONTH;
+	int numberOfDaysInMonth = _day;
+	while (monthFromJanuary < _month) {
+		numberOfDaysInMonth = numberOfDaysInMonth + MONTH[monthFromJanuary];
+		monthFromJanuary ++;
+	}
+	return numberOfDaysInMonth;
+}
+
+//Find the total number of days before a particular month in leap year.
+int findNextDate::calculateDayInMonthForLeapYear() {
+	int monthFromJanuary = MIN_MONTH;
+	int numberOfDaysInMonth = _day;
+	while (monthFromJanuary < _month) {
+		numberOfDaysInMonth = numberOfDaysInMonth + MONTH_LEAP[monthFromJanuary];
+		monthFromJanuary ++;
+	}
+	return numberOfDaysInMonth;
+}
+
+//Calculate the number of days in complete years from 2015 to a particular year.
+int findNextDate::calculateDayInYear() {
+	int year = _year;
+	int numberOfDaysInYear = ZERO;
+	while (year > STARTING_YEAR) {
+		year = year - PREVIOUS_OR_NEXT;
+		if (isLeapYear(year)) {
+			numberOfDaysInYear += NUMBER_OF_DAYS_IN_LEAP_YEAR;
+		} else {
+			numberOfDaysInYear += NUMBER_OF_DAYS_IN_NON_LEAP_YEAR;
+		}
+	}
+	return numberOfDaysInYear;
+}
+
+//Calculate the total number of days since 1 Jan 2015.
+int findNextDate::totalNumberOfDays() {
+	int numberOfDaysInMonth;
+	if (_year > STARTING_YEAR) {
+		if (isLeapYear(_year)) {
+			numberOfDaysInMonth = calculateDayInMonthForLeapYear();
+		} else {
+			numberOfDaysInMonth = calculateDayInMonth();
+		}
+		numberOfDaysInMonth += calculateDayInYear();
+	} else {
+		if (isLeapYear(_year)) {
+			numberOfDaysInMonth = calculateDayInMonthForLeapYear();
+		} else {
+			numberOfDaysInMonth = calculateDayInMonth();
+		}
+	}
+	return numberOfDaysInMonth;
+}
+
+//Weekday is the number of days since monday.
+//Calculate which weekday the current day is.
+void findNextDate::calculateTheWeekDay() {
+	int weekDay;
+	weekDay = _firstDayOfYear2015 + totalNumberOfDays() - PREVIOUS_OR_NEXT;
+	weekDay = weekDay % NUMBER_OF_DAYS_IN_A_WEEK;
+	_weekDay = weekDay;
+}
+
+int findNextDate::getDay() {
+	return _day;
+}
+
+int findNextDate::getMonth() {
+	return _month;
+}
+
+int findNextDate::getWeekDay() {
+	return _weekDay;
+}
+
+int findNextDate::getYear() {
+	return _year;
+}
+
+//When this class is used to calculate date beyond 2015.
+//This function must be called to change year before calculate functions.
+void findNextDate::changeDefaultYear(int year) {
+	if (year < STARTING_YEAR) {
+		throw std::string(ERROR_YEAR);
+	}
+	_year = year;
+}
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\findNextDate.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\findNextDate.h
+	 */
+
+//Calender used to find out the next date and which week day it is.
+#pragma once
+
+#include <stdio.h>
+#include <iostream>
+
+class findNextDate {
+private:
+	int _month;
+	int _day;
+	int _weekDay;
+	int _currentMonth;
+	int _currentDay;
+	int _advanceNumberOfDays;
+	int _firstDayOfYear2015;
+	int _year;
+
+public:
+	findNextDate(void);
+	~findNextDate(void);
+	bool isLeapYear(int);
+	int getMonth();
+	int getDay();
+	int getWeekDay();
+	int getYear();
+	int totalNumberOfDays();
+	void calculate(int, int, int);
+	void advanceMonthLeapYear();
+	void advanceMonth();
+	void calculateTheNextDate();
+	void calculateTheWeekDay();
+	void calculateExtraLongDay();
+	void changeDefaultYear(int);
+	int calculateDayInMonthForLeapYear();
+	int calculateDayInMonth();
+	int calculateDayInYear();
+
+};
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\findNextDate.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\Storage.cpp
+	 */
+
+//The Storage class will store all the data used in a program.
+//Every time changes are made, it will save the data to a local file.
+
+#include "Storage.h"
+#include "windows.h"
+#include <assert.h>
+
+const std::string LOGFILE = "log.txt";
+const std::string WARNING = "Warning";
+const std::string INFOMATION = "Info";
+const std::string WRONG = "Error";
+const std::string CLEAR_ACTIVE_EVENTLIST = "Delete all incomplete events.";
+const std::string CLEAR_DONE_EVENTLIST = "Delete all completed events.";
+const std::string UNDO_CLEAR_ACTIVE_EVENTLIST = "Undo deleted all incomplete events.";
+const std::string UNDO_CLEAR_DONE_EVENTLIST = "Undo deleted all completed events.";
+const std::string ADD_ACTIVE_EVENT = "added to incomplete events.";
+const std::string ADD_DONE_EVENT = "Event(s) has been marked as done.";
+const std::string REPEAT_EVENTS = "Recuring events added.";
+const std::string UNDO_REPEAT_EVENTS = "Undo recuring events";
+const std::string UNDO_ADD_ACTIVE_EVENT = "Undo add event.";
+const std::string UNDO_ADD_DONE_EVENT = "Undo mark event as done.";
+const std::string DELETE_ACTIVE_EVENT = "Incomplete event(s) has been deleted.";
+const std::string UNDO_DELETE_ACTIVE_EVENT = "Undo delete active event(s).";
+const std::string UPDATE_ACTIVE_EVENT = "Update active event.";
+const std::string UNDO_UPDATE_ACTIVE_EVENT = "Undo update active event.";
+const std::string WRITE_TO_FILE = "Save data to local drive.";
+const std::string READ_FROM_FILE = "Read data from local drive.";
+const std::string INCOMPLETE_TASK = "Incomplete tasks: ";
+const std::string DONE_TASK = "Done tasks: ";
+const std::string WRITEFILE = "Writefile.";
+const std::string SET_CURRENT_DIRECTORY = "Directory changed to: ";
+const std::string CHANGE_DIR = "changing directory";
+const std::string FRONT_TOKEN = " <";
+const std::string BACK_TOKEN = "> ";
+const std::string DEFAULT_FILE_NAME = "Minic.txt";
+const std::string CMD_ADD = "add";
+const std::string CMD_CLEAR = "clear";
+const std::string CMD_DELETE = "delete";
+const std::string CMD_UPDATE = "update";
+const std::string CMD_DONE = "done";
+const std::string CMD_CLEAR_DONE = "cleardone";
+const std::string CMD_CLEAR_ACTIVE = "clearactive";
+const std::string CMD_REPEAT = "repeat";
+const std::string CMD_UPDATE_REPEAT = "update repeat";
+const std::string CMD_DELETE_REPEAT = "delete repeat";
+const std::string CMD_DIRECTORY = "directory";
+const std::string LOG_BACK_SYMBOL = "> ";
+const std::string LOG_FRONT_SYMBOL = " <";
+const std::string EMPTY_SPACE = " ";
+const std::string START_INfO = "Starting Info: ";
+const std::string END_INFO = "Ending Info: ";
+const std::string NIL_IDENTIFIER = "Nil";
+const std::string DEFAULT_LOCATION_NAME = "Directory.txt";
+const std::string READ_A_EVENT = "analysing event from local file.";
+const std::string RECURRING_NUMBER = "Recurring number: ";
+const std::string NOT_RECURRING = "The event is not a recurring event.";
+const std::string UPDATE_RECURRING = "Update recurring events.";
+const std::string DELETE_RECURRING = "Recurring events deleted";
+const std::string UNDO_DELETE_RECURRING = "Undo delete recurring events";
+const std::string UNDO_UPDATE_RECURRING = "Undo update recurring events.";
+const int ZERO = 0;
+const int NUMBER_OF_DIGIT_FOR_DATE = 2;
+const int NUMBER_OF_DIGIT_FOR_TIME = 4;
+const int INVALID_NUMBER = -1;
+const int ONE = 1;
+char buffer[1000];
+const int bufferSize = MAX_PATH;
+
+
+Storage::Storage(void) {	
+	_filename = DEFAULT_FILE_NAME;
+	_locationFile = DEFAULT_LOCATION_NAME;
+	GetCurrentDirectory(bufferSize, _defaultDirectory);
+	getDirectory();
+	_numberOfRecuring = ZERO;
+}
+
+Storage::~Storage(void) {
+}
+
+//Take in the previous command and perform the necessary undo functions
+bool Storage::unDopreviousActions(std::string unDoCommand) {	
+	COMMAND_TYPE command = findCommandType(unDoCommand);
+	switch (command) {
+	case ADD:
+		unDoAddEvent();
+		return true;
+	case DONE:
+		unDomarkEventAsDone();
+		return true;
+	case DELETEEVENT:
+		unDoDeleteEvent();
+		return true;
+	case UPDATE:
+		unDoUpdateEvent();
+		return true;
+	case CLEARACTIVE:
+		unDoClearActiveEvent();
+		return true;
+	case CLEARDONE:
+		unDoClearDoneEvent();
+		return true;
+	case CLEAR:
+		unDoClearActiveEvent();
+		unDoClearDoneEvent();
+		return true;
+	case REPEAT:
+		unDoRepeatEvent();
+		return true;
+	case UPDATE_REPEAT:
+		undoUpdateRecurring();
+		return true;
+	case DELETE_REPEAT:
+		undoDeleteRecurring();
+		return true;
+	case DIRECTORY:
+		undoChangeDirectory();
+		return true;
+	case INVALID:
+		return false;
+		}
+	return false;
+}
+
+//Convert the command string to enum type.
+Storage::COMMAND_TYPE Storage::findCommandType(std::string currentCommand) {		
+	if (currentCommand == CMD_ADD) {
+		return ADD;
+	} else if (currentCommand == CMD_UPDATE) {
+		return UPDATE;
+	} else if (currentCommand == CMD_DELETE) {
+		return DELETEEVENT;
+	} else if (currentCommand == CMD_DONE) {
+		return DONE;
+	} else if (currentCommand == CMD_CLEAR_DONE) {
+		return CLEARDONE;
+	} else if (currentCommand == CMD_CLEAR_ACTIVE) {
+		return CLEARACTIVE;
+	} else if (currentCommand == CMD_CLEAR) {
+		return CLEAR;
+	} else if (currentCommand == CMD_REPEAT) {
+		return REPEAT;
+	} else if (currentCommand == CMD_UPDATE_REPEAT) {
+		return UPDATE_REPEAT;
+	} else if (currentCommand == CMD_DELETE_REPEAT) {
+		return DELETE_REPEAT;
+	} else if (currentCommand == CMD_DIRECTORY) {
+		return DIRECTORY;
+	} else {
+		return INVALID;
+	}
+}
+//When clear functions are called, current Eventlist is saved for undo purpose.
+void Storage::clearActiveEvent() {
+	saveCurrentActiveEventList();
+	_activeEvent = Eventlist();
+	writeToLogfile(INFOMATION, CLEAR_ACTIVE_EVENTLIST);
+}
+
+void Storage::clearDoneEvent() {	
+	saveCurrentDoneEventList();
+	_doneEvent = Eventlist();
+	writeToLogfile(INFOMATION, CLEAR_DONE_EVENTLIST);
+}
+
+void Storage::unDoClearActiveEvent() {	
+	changeToPreviousActiveEventList();
+	writeToLogfile(INFOMATION, UNDO_CLEAR_ACTIVE_EVENTLIST);
+}
+
+void Storage::unDoClearDoneEvent() {
+	changeToPreviousDoneEventList();
+	writeToLogfile(INFOMATION, UNDO_CLEAR_DONE_EVENTLIST);
+}
+
+void Storage::saveCurrentActiveEventList() {
+	_previousActiveEvent.push_back(_activeEvent);
+}
+
+void Storage::saveCurrentDoneEventList() {
+	_previousDoneEvent.push_back(_doneEvent);
+}
+
+void Storage::changeToPreviousActiveEventList() {
+	_activeEvent = _previousActiveEvent.back();
+	_previousActiveEvent.pop_back();
+}
+
+void Storage::changeToPreviousDoneEventList() {
+	_doneEvent = _previousDoneEvent.back();
+	_previousDoneEvent.pop_back();
+}
+
+void Storage::addEvent(Event newEvent) {
+	try {
+		saveCurrentActiveEventList();
+		_currentEvent = newEvent;
+		_activeEvent.addEvent(_currentEvent); 
+		std::string addInfomation;
+		addInfomation = _currentEvent.displayEvent() + EMPTY_SPACE;
+		addInfomation = addInfomation	+ ADD_ACTIVE_EVENT;
+		writeToLogfile(INFOMATION, addInfomation);
+	}
+	catch(...) {
+		std::cout << WRONG << EMPTY_SPACE << ADD_ACTIVE_EVENT;
+	}
+}
+
+void Storage::unDoAddEvent () {
+	changeToPreviousActiveEventList();
+	writeToLogfile(INFOMATION, UNDO_ADD_ACTIVE_EVENT);
+}
+
+void Storage::repeatEvent(std::list<Event> allEvents) {
+	saveCurrentActiveEventList();
+	int identifier = _numberOfRecuring + ONE;
+	try {
+		while (!allEvents.empty()) {
+		_currentEvent = allEvents.back();
+		_currentEvent.changeRecurringTaskSeries(identifier);
+		_activeEvent.addEvent(_currentEvent);
+		allEvents.pop_back();
+		}
+		writeToLogfile(INFOMATION, REPEAT_EVENTS);
+	}
+	catch(...) {
+		writeToLogfile(WRONG, REPEAT_EVENTS);
+		std::cout << WRONG << EMPTY_SPACE << REPEAT_EVENTS;
+	}
+	_numberOfRecuring = _numberOfRecuring + ONE;
+}
+
+void Storage::unDoRepeatEvent() {
+	changeToPreviousActiveEventList();
+	_numberOfRecuring = _numberOfRecuring - 1;
+	writeToLogfile(INFOMATION, UNDO_REPEAT_EVENTS);
+}
+
+//Transfer the list of index Events from active Eventlist to done Eventlist.
+void Storage::markEventAsDone (std::list<int> allIndex) {
+	saveCurrentActiveEventList();
+	saveCurrentDoneEventList();
+	int i;
+	try {
+		allIndex.sort();
+		while(!allIndex.empty()) {
+			i=allIndex.back();
+			_currentEvent = _activeEvent.getEvent(i);
+			_activeEvent.deleteEvent(i);
+			_doneEvent.addEvent(_currentEvent);
+			allIndex.pop_back();
+		}
+		writeToLogfile(INFOMATION, ADD_DONE_EVENT);
+	}
+	catch(...) {
+		writeToLogfile(WRONG, ADD_DONE_EVENT);
+		std::cout << WRONG << EMPTY_SPACE << ADD_DONE_EVENT;
+	}
+}
+
+void Storage::unDomarkEventAsDone() {	
+	changeToPreviousActiveEventList();
+	changeToPreviousDoneEventList();
+	writeToLogfile(INFOMATION, UNDO_ADD_DONE_EVENT);
+}
+
+//Delete Events from the back of the active Eventlist.
+void Storage::deleteEvent(std::list<int> allIndex) {	
+	saveCurrentActiveEventList();
+	int i;
+	try {
+		allIndex.sort();
+		while(!allIndex.empty()) {
+			i = allIndex.back();
+			_currentEvent = _activeEvent.getEvent(i);
+			_activeEvent.deleteEvent(i);
+			allIndex.pop_back();
+		}
+		writeToLogfile(INFOMATION, DELETE_ACTIVE_EVENT);
+	}
+	catch(...) {
+		writeToLogfile(WRONG, DELETE_ACTIVE_EVENT);
+		std::cout << WRONG << EMPTY_SPACE << DELETE_ACTIVE_EVENT;
+	}
+}
+
+void Storage::deleteRecurring(int inputIndex) {
+	std::list<Event> allEvents = _activeEvent.returnAllEvent();
+	std::list<Event>::iterator iter;
+	int index = ZERO;
+	_currentEvent = _activeEvent.getEvent(inputIndex);
+	int recurringNumber = _currentEvent.getRecurringTaskSeries();
+	if (recurringNumber == 0) {
+		throw std::string(NOT_RECURRING);
+	}
+	std::list<int> numbers;
+	for(iter = allEvents.begin(); iter != allEvents.end(); iter++) {
+		index = index + ONE;
+		if ((*iter).getRecurringTaskSeries() == recurringNumber) {
+			numbers.push_back(index);
+		}
+	}
+	deleteEvent(numbers);
+	writeToLogfile(INFOMATION, DELETE_RECURRING);
+}
+
+void Storage::unDoDeleteEvent() {	
+	changeToPreviousActiveEventList();
+	writeToLogfile(INFOMATION, UNDO_DELETE_ACTIVE_EVENT);
+}
+
+void Storage::undoDeleteRecurring(){
+	changeToPreviousActiveEventList();
+	writeToLogfile(INFOMATION, UNDO_DELETE_RECURRING);
+}
+
+Eventlist Storage::displayEvent(void) {	
+	return _activeEvent;
+}
+
+Eventlist Storage::displayDoneEvent (void) {	
+	return _doneEvent;
+}
+
+void Storage::updateEvent(int index, Event newEvent) {	
+	saveCurrentActiveEventList();
+	try {
+		_activeEvent.updateEvent(index,newEvent);
+		writeToLogfile(INFOMATION, UPDATE_ACTIVE_EVENT);
+	}
+	catch(...) {
+		writeToLogfile(WRONG, UPDATE_ACTIVE_EVENT);
+		std::cout << WRONG << EMPTY_SPACE << UPDATE_ACTIVE_EVENT;
+	}
+}
+
+void Storage::updateRecurring(int index, Event newEvent) {
+	saveCurrentActiveEventList();
+	std::list<Event> allEvents = _activeEvent.returnAllEvent();
+	std::list<Event>::iterator iter;
+	int indexForRecurring = ZERO;
+	_currentEvent = _activeEvent.getEvent(index);
+	int recurringNumber = _currentEvent.getRecurringTaskSeries();
+	if (recurringNumber == 0) {
+		throw std::string(NOT_RECURRING);
+	}
+	newEvent.changeRecurringTaskSeries(recurringNumber);
+	for(iter = allEvents.begin(); iter != allEvents.end(); iter++) {
+		indexForRecurring = indexForRecurring + ONE;
+		if ((*iter).getRecurringTaskSeries() == recurringNumber) {
+			_activeEvent.updateEvent(indexForRecurring, newEvent);
+		}
+	}
+	writeToLogfile(INFOMATION, UPDATE_RECURRING);
+}
+
+void Storage::updateRecurringStartTime(int index, int newStartTime) {
+	saveCurrentActiveEventList();
+	std::list<Event> allEvents = _activeEvent.returnAllEvent();
+	std::list<Event>::iterator iter;
+	int indexForRecurring = ZERO;
+	_currentEvent = _activeEvent.getEvent(index);
+	int recurringNumber = _currentEvent.getRecurringTaskSeries();
+	if (recurringNumber == 0) {
+		throw std::string(NOT_RECURRING);
+	}
+	for(iter = allEvents.begin(); iter != allEvents.end(); iter++) {
+		indexForRecurring = indexForRecurring + ONE;
+		if ((*iter).getRecurringTaskSeries() == recurringNumber) {
+			std::string title = (*iter).getTaskName();
+			int startDate = (*iter).getStartDate();
+			int startMonth = (*iter).getStartMonth();
+			int startYear = (*iter).getStartYear();
+			int endDate = (*iter).getEndDate();
+			int endMonth = (*iter).getEndMonth();
+			int endTime = (*iter).getEndTime();
+			int endYear = (*iter).getEndYear();
+			Event newEvent(title,endDate,endMonth,endTime);
+			newEvent.changeEndYear(endYear);
+			newEvent.changeStartDay(startDate);
+			newEvent.changeStartMonth(startMonth);
+			newEvent.changeStartTime(newStartTime);
+			newEvent.changeStartYear(startYear);
+			newEvent.changeRecurringTaskSeries(recurringNumber);
+			_activeEvent.updateEvent(indexForRecurring, newEvent);
+		}
+	}
+}
+
+void Storage::updateRecurringEndTime(int index, int newEndTime) {
+	saveCurrentActiveEventList();
+	std::list<Event> allEvents = _activeEvent.returnAllEvent();
+	std::list<Event>::iterator iter;
+	int indexForRecurring = ZERO;
+	_currentEvent = _activeEvent.getEvent(index);
+	int recurringNumber = _currentEvent.getRecurringTaskSeries();
+	if (recurringNumber == 0) {
+		throw std::string(NOT_RECURRING);
+	}
+	for(iter = allEvents.begin(); iter != allEvents.end(); iter++) {
+		indexForRecurring = indexForRecurring + ONE;
+		if ((*iter).getRecurringTaskSeries() == recurringNumber) {
+			std::string title = (*iter).getTaskName();
+			int startDate = (*iter).getStartDate();
+			int startMonth = (*iter).getStartMonth();
+			int startTime = (*iter).getStartTime();
+			int startYear = (*iter).getStartYear();
+			int endDate = (*iter).getEndDate();
+			int endMonth = (*iter).getEndMonth();
+			int endYear = (*iter).getEndYear();
+			Event newEvent(title,endDate,endMonth,newEndTime);
+			newEvent.changeEndYear(endYear);
+			newEvent.changeStartDay(startDate);
+			newEvent.changeStartMonth(startMonth);
+			newEvent.changeStartTime(startTime);
+			newEvent.changeStartYear(startYear);
+			newEvent.changeRecurringTaskSeries(recurringNumber);
+			_activeEvent.updateEvent(indexForRecurring, newEvent);
+		}
+	}
+}
+
+void Storage::unDoUpdateEvent() {   
+	changeToPreviousActiveEventList();
+	writeToLogfile(INFOMATION, UNDO_UPDATE_ACTIVE_EVENT);
+}
+
+void Storage::undoUpdateRecurring() {
+	changeToPreviousActiveEventList();
+	writeToLogfile(INFOMATION, UNDO_UPDATE_RECURRING);
+}
+
+Event Storage::getEvent(int index) {
+	return _activeEvent.getEvent(index);
+}
+
+Event Storage::getDoneEvent(int index) {
+	return _doneEvent.getEvent(index);
+}
+
+void Storage::sortActiveEventlist() {	
+	_activeEvent.sortEvent();
+}
+
+void Storage::sortDoneEventlist() {	
+	_doneEvent.sortEvent();
+}
+
+//Add the string to the system default file.
+void Storage::writeFile(std::string eventToFile) {	
+	try {
+		std::ofstream destination;
+		destination.open(_filename, std::ofstream::app);
+		destination << eventToFile << std::endl;
+		destination.close();
+	}
+	catch(...) {
+		writeToLogfile(WRONG, WRITE_TO_FILE);
+		std::cout << WRONG << EMPTY_SPACE << WRITEFILE;
+	}
+}
+
+//Save all the active Events to a local file.
+void Storage::saveActiveEventsToFile() {
+	std::list<Event> currentList = _activeEvent.returnAllEvent();
+	std::list<Event>::iterator iter;
+	for(iter = currentList.begin(); iter != currentList.end(); ++iter) { 
+		writeFile(INCOMPLETE_TASK + (*iter).saveEvent());
+	}
+}
+
+//Save all the done Events to a local file.
+void Storage::saveDoneEventsToFile() {
+	std::list<Event> currentList = _doneEvent.returnAllEvent();
+	std::list<Event>::iterator iter;
+	for(iter = currentList.begin(); iter != currentList.end(); ++iter) {
+		writeFile(DONE_TASK + (*iter).saveEvent());
+	}
+}
+
+//Synchonized storage data with the local file.
+void Storage::synchronizeDrive() {
+	clearLocalDrive();
+	saveDoneEventsToFile();
+	saveActiveEventsToFile();
+	writeToLogfile(INFOMATION, WRITE_TO_FILE);
+}
+
+//Empty a local file.
+void Storage::clearLocalDrive() {
+	std::ofstream outputFile;
+	outputFile.open(_filename);
+	outputFile.close();
+}
+
+//Transfer the data from a local file to Storage.
+void Storage::readFile() {
+	std::ifstream textFile;
+	std::string currentLine;
+	textFile.open(_filename);
+	while(getline(textFile,currentLine)) {
+		readEventsFromFile(currentLine);
+	}
+	textFile.close();
+	writeToLogfile(INFOMATION, READ_FROM_FILE);
+}
+
+void Storage::getDirectory() {
+	std::ifstream textFile;
+	std::string directory;
+	textFile.open(_locationFile);
+	getline(textFile,directory);
+	initialiseDirectory(directory.c_str());
+}
+
+//Retrieve the Event information from a local file
+//and store them in an Event then stored in the appropriate Eventlist.
+void Storage::readEventsFromFile(std::string line) {
+	std::string doneEventidentifier = DONE_TASK;
+	std::size_t foundDone = line.find(doneEventidentifier);
+	std::size_t startInfoFinder;
+	std::size_t endInfoFinder;
+	std::size_t recurringFinder;
+	std::string title;
+	std::string startday;
+	std::string startmonth;
+	std::string starttime;
+	std::string startyear;
+	std::string endday;
+	std::string endmonth;
+	std::string endtime;
+	std::string endyear;
+	std::string recurringNumber;
+	Event newEvent;
+	bool isActive = true;
+	bool isRecurring = false;
+	bool hasStartInfo = true;
+	bool hasEndInfo = true;
+
+	try {
+		if (foundDone < std::string::npos) {
+			line = line.substr(DONE_TASK.size());
+			isActive = false;
+		} else {
+			line = line.substr(INCOMPLETE_TASK.size());
+		}
+		startInfoFinder = line.find(START_INfO);
+		title = line.substr(ZERO,startInfoFinder - EMPTY_SPACE.size());
+		line = line.substr(startInfoFinder + START_INfO.size());
+		if (line.substr(ZERO,NIL_IDENTIFIER.size()) == NIL_IDENTIFIER) {
+			line = line.substr(NIL_IDENTIFIER.size() + EMPTY_SPACE.size());
+			hasStartInfo = false;
+		} else {
+			startday = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_DATE);
+			line = line.substr(NUMBER_OF_DIGIT_FOR_DATE + EMPTY_SPACE.size());
+			startmonth = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_DATE);
+			line = line.substr(NUMBER_OF_DIGIT_FOR_DATE + EMPTY_SPACE.size());
+			starttime = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
+			line = line.substr(NUMBER_OF_DIGIT_FOR_TIME + EMPTY_SPACE.size());
+			startyear = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
+		}
+		endInfoFinder = line.find(END_INFO);
+		line = line.substr(endInfoFinder + END_INFO.size());
+		if (line.substr(ZERO,NIL_IDENTIFIER.size()) == NIL_IDENTIFIER) {
+			line = line.substr(NIL_IDENTIFIER.size() + EMPTY_SPACE.size());
+			hasEndInfo = false;
+		} else {
+			endday = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_DATE);
+			line = line.substr(NUMBER_OF_DIGIT_FOR_DATE + EMPTY_SPACE.size());
+			endmonth = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_DATE);
+			line = line.substr(NUMBER_OF_DIGIT_FOR_DATE + EMPTY_SPACE.size());
+			endtime = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
+			line = line.substr(NUMBER_OF_DIGIT_FOR_TIME + EMPTY_SPACE.size());
+			endyear = line.substr(ZERO,NUMBER_OF_DIGIT_FOR_TIME);
+			line = line.substr(NUMBER_OF_DIGIT_FOR_TIME);
+		}
+		recurringFinder = line.find(RECURRING_NUMBER);
+		if (recurringFinder < std::string::npos) {
+			line = line.substr(RECURRING_NUMBER.size() + EMPTY_SPACE.size());
+			recurringNumber = line;
+			isRecurring = true;
+		}
+	}
+	catch(...) {
+		std::cout << WRONG << EMPTY_SPACE << READ_A_EVENT;
+	}
+	if (hasEndInfo) {
+		newEvent = Event(title,stoi(endday), stoi(endmonth),stoi(endtime));
+		newEvent.changeEndYear(stoi(endyear));
+	} else {
+		newEvent = Event(title,INVALID_NUMBER,INVALID_NUMBER,INVALID_NUMBER);
+	}
+	if (hasStartInfo) {	
+		newEvent.changeStartDay(stoi(startday));
+		newEvent.changeStartMonth(stoi(startmonth));
+		newEvent.changeStartTime(stoi(starttime));
+		newEvent.changeStartYear(stoi(startyear));
+	}
+	if (isRecurring) {
+		newEvent.changeRecurringTaskSeries(stoi(recurringNumber));
+		if (stoi(recurringNumber) > _numberOfRecuring) {
+			_numberOfRecuring = stoi(recurringNumber);
+		}
+	}
+	if (isActive) {	
+		_activeEvent.addEvent(newEvent);
+	} else { 
+		_doneEvent.addEvent(newEvent);
+	}
+}
+
+//Allow user to change the directory of the local file.
+void Storage::changeCurrentDirectory(const char* newDirectory) {
+	try {
+		const char* newDir = newDirectory;
+		char oldDirectory[MAX_PATH];
+		GetCurrentDirectory(bufferSize, oldDirectory);
+		_previousDirectory.push_back(oldDirectory);
+		SetCurrentDirectory(_defaultDirectory);
+		std::ofstream destination;
+		destination.open(_locationFile);
+		destination << newDir;
+		SetCurrentDirectory(newDir);
+		synchronizeDrive();
+		std::string messageForLog;
+		messageForLog = SET_CURRENT_DIRECTORY + newDir;
+		writeToLogfile(INFOMATION, messageForLog);
+	}
+	catch(...) {
+		writeToLogfile(WRONG, CHANGE_DIR);
+		std::cout << WRONG << EMPTY_SPACE << CHANGE_DIR;
+	}
+}
+
+void Storage::undoChangeDirectory() {
+	assert(!_previousDirectory.empty());
+	std::string oldDirectory = _previousDirectory.back();
+	_previousDirectory.pop_back();
+	SetCurrentDirectory(_defaultDirectory);
+	std::ofstream destination;
+	destination.open(_locationFile);
+	destination << oldDirectory;
+	SetCurrentDirectory(oldDirectory.c_str());
+	synchronizeDrive();
+}
+
+void Storage::initialiseDirectory(const char* newDirectory) {
+	SetCurrentDirectory(newDirectory);
+}
+
+
+void Storage::writeToLogfile(std::string type, std::string message) {
+	std::ofstream destination;
+	destination.open(LOGFILE,std::ofstream::app);
+	time_t rawtime;
+	struct tm  timeinfo;
+	rawtime = time (ZERO);
+	localtime_s(&timeinfo, &rawtime);
+	asctime_s(buffer,&timeinfo) ;
+	destination	<< buffer << LOG_FRONT_SYMBOL << type << LOG_BACK_SYMBOL;
+	destination	<< message << std::endl;
+}
+
+int Storage::getTotalNumberOfRecurringSeries() {
+	return _numberOfRecuring;
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\Storage.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\Storage.h
+	 */
+
+//The storage class support the storing of data in Eventlist and stored in a local files
+//Events are classified into incomplete and complete Events and stored in respective Eventlist.
+
+#pragma once
+#include "Eventlist.h"
+#include <fstream>
+
+const int MAX_PATH = 260;
+
+class Storage {
+private:
+	Event _currentEvent;
+	Eventlist _activeEvent;
+	Eventlist _doneEvent;
+	std::list<Eventlist> _previousActiveEvent;
+	std::list<Eventlist> _previousDoneEvent;
+	enum COMMAND_TYPE { ADD,UPDATE,DELETEEVENT,DONE,CLEARDONE,CLEARACTIVE,
+		CLEAR,REPEAT,UPDATE_REPEAT,DELETE_REPEAT,DIRECTORY,INVALID};
+	COMMAND_TYPE findCommandType(std::string currentCommand);
+	std::string _filename;
+	std::string _locationFile;
+	char _defaultDirectory[MAX_PATH];
+	std::list<std::string> _previousDirectory;
+	int _numberOfRecuring;
+
+public:
+	Storage(void);
+	~Storage(void);
+	void addEvent(Event);
+	void unDoAddEvent();
+	void repeatEvent(std::list<Event>);
+	void unDoRepeatEvent();
+	void deleteEvent(std::list<int>);
+	void unDoDeleteEvent();
+	void updateEvent(int, Event);
+	void unDoUpdateEvent();
+	void markEventAsDone(std::list<int>);
+	void unDomarkEventAsDone();
+	void clearActiveEvent();
+	void unDoClearActiveEvent();
+	void clearDoneEvent();
+	void unDoClearDoneEvent();
+	void sortActiveEventlist();
+	void sortDoneEventlist();
+	void writeFile(std::string);
+	void saveActiveEventsToFile();
+	void saveDoneEventsToFile();
+	void synchronizeDrive();
+	void clearLocalDrive();
+	void readFile();
+	void readEventsFromFile(std::string);
+	void changeCurrentDirectory(const char*);
+	void undoChangeDirectory();
+	void saveCurrentActiveEventList();
+	void saveCurrentDoneEventList();
+	void changeToPreviousActiveEventList();
+	void changeToPreviousDoneEventList();
+	void writeToLogfile(std::string, std::string);
+	void getDirectory();
+	void initialiseDirectory(const char* );
+	void deleteRecurring(int);
+	void undoDeleteRecurring();
+	void updateRecurring(int, Event);
+	void updateRecurringStartTime(int, int);
+	void updateRecurringEndTime(int, int);
+	void undoUpdateRecurring();
+	bool unDopreviousActions(std::string);
+	Eventlist displayEvent(void);
+	Eventlist displayDoneEvent (void);
+	Event getEvent(int);
+	Event getDoneEvent(int);
+	int getTotalNumberOfRecurringSeries();
+};
+
+
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\Minic\Storage\Storage.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\StorageUnitTest.cpp
+	 */
+
+
+#include "stdafx.h"
+#include "CppUnitTest.h"
+#include <assert.h>
+#include "Storage\Storage.h"
+#include "Storage\findNextDate.h"
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+namespace StorageTest {
+	TEST_CLASS(testEvent) {
+	public:
+		//All functions here are simple and straight forward
+		TEST_METHOD(createEvent) {
+			Event sampleEvent("FinishProject",13,04,2359);
+			std::string expected[1] = {	"FinishProject" };
+			sampleEvent.changeStartDay(01);
+			sampleEvent.changeStartMonth(02);
+			sampleEvent.changeStartTime(2222);
+			sampleEvent.changeStartYear(2016);
+			sampleEvent.changeEndYear(2017);
+			int number[8] = { 13, 04, 2359, 01, 02, 2222, 2016 ,2017 };
+			Assert::AreEqual(expected[0],sampleEvent.getTaskName());
+			Assert::AreEqual(number[0],sampleEvent.getEndDate());
+			Assert::AreEqual(number[1],sampleEvent.getEndMonth());
+			Assert::AreEqual(number[2],sampleEvent.getEndTime());
+			Assert::AreEqual(number[3],sampleEvent.getStartDate());
+			Assert::AreEqual(number[4],sampleEvent.getStartMonth());
+			Assert::AreEqual(number[5],sampleEvent.getStartTime());
+			Assert::AreEqual(number[6],sampleEvent.getStartYear());
+			Assert::AreEqual(number[7],sampleEvent.getEndYear());
+			Assert::AreEqual(number[0],sampleEvent.getEndDate());
+		}
+
+		//6 different format of display events are tested.
+		//Namely, floating task, deadline task, duration task
+		//deadline task with non default year, duration task with non default end year
+		//and duration task with non default start and end year.
+		TEST_METHOD(displayEvent) {
+			Event sampleEvent("FinishProject",13,04,2359);
+			std:: string expected[6] = {	"[by 13 Apr 23:59            ] FinishProject", 
+											"[by 13 Apr 23:59 Year: 2016                       ] FinishProject",
+											"[21 Mar 23:59 - 13 Apr 23:59] FinishProject",
+											"[21 Mar 23:59 - 13 Apr 23:59 Year: 2017           ] FinishProject",
+											"[21 Mar 23:59 Year: 2016 - 13 Apr 23:59 Year: 2017] FinishProject",
+											"[---------------------------] FinishProject",
+										};
+			Assert::AreEqual(expected[0],sampleEvent.displayEvent());
+			sampleEvent.changeEndYear(2016);
+			Assert::AreEqual(expected[1],sampleEvent.displayEvent());
+			sampleEvent.changeEndYear(2015);
+			sampleEvent.changeStartDay(21);
+			sampleEvent.changeStartMonth(03);
+			sampleEvent.changeStartTime(2359);
+			Assert::AreEqual(expected[2],sampleEvent.displayEvent());
+			sampleEvent.changeEndYear(2017);
+			Assert::AreEqual(expected[3],sampleEvent.displayEvent());
+			sampleEvent.changeStartYear(2016);
+			Assert::AreEqual(expected[4],sampleEvent.displayEvent());
+			Event sampleEvent1("FinishProject",-1,-1,-1);
+			Assert::AreEqual(expected[5],sampleEvent1.displayEvent());
+		}
+
+		//Check all 3 format of saveEvent
+		TEST_METHOD(saveEvent) {
+			Event sampleEvent("FinishProject",13,-1,2359);
+			std:: string expected[3] = {	"FinishProject Starting Info: Nil Ending Info: Nil ",
+											"FinishProject Starting Info: Nil Ending Info: 13 04 2359 2015",
+											"FinishProject Starting Info: 21 03 2359 2016 Ending Info: 13 04 2359 2017"
+										};
+			Assert::AreEqual(expected[0],sampleEvent.saveEvent());
+			sampleEvent.changeEndMonth(4);
+			Assert::AreEqual(expected[1],sampleEvent.saveEvent());
+			sampleEvent.changeStartDay(21);
+			sampleEvent.changeStartMonth(03);
+			sampleEvent.changeStartTime(2359);
+			sampleEvent.changeEndYear(2017);
+			sampleEvent.changeStartYear(2016);
+			Assert::AreEqual(expected[2],sampleEvent.saveEvent());
+		}
+
+		//Any of the day, month and time of the ending informatino must be valid
+		//to return true.
+		//Equivalent Partition for time { < 0}, {0 - 2359}, { > 2359}
+		//Equivalent Partition for day { < 1}, {1 - 31}, { >31}
+		//Equivalent Partition for month { < 1}, {1 - 12}, { > 12}
+		TEST_METHOD(isValidDateMonthTime) {
+			Event sampleEvent("FinishProject",13,04,2359);
+			bool expected = true;
+			Assert::AreEqual(expected, sampleEvent.isValidDateMonthTime());
+			sampleEvent.changeEndTime(0);
+			Assert::AreEqual(expected, sampleEvent.isValidDateMonthTime());
+			sampleEvent.changeEndMonth(1);
+			Assert::AreEqual(expected, sampleEvent.isValidDateMonthTime());
+			sampleEvent.changeEndMonth(12);
+			Assert::AreEqual(expected, sampleEvent.isValidDateMonthTime());
+			sampleEvent.changeEndDay(1);
+			Assert::AreEqual(expected, sampleEvent.isValidDateMonthTime());
+			sampleEvent.changeEndDay(31);
+			Assert::AreEqual(expected, sampleEvent.isValidDateMonthTime());
+			
+			expected = false;
+			sampleEvent.changeEndTime(2400);
+			Assert::AreEqual(expected, sampleEvent.isValidDateMonthTime());
+			sampleEvent.changeEndTime(-1);
+			Assert::AreEqual(expected, sampleEvent.isValidDateMonthTime());
+			sampleEvent.changeEndTime(2100);
+			sampleEvent.changeEndMonth(0);
+			Assert::AreEqual(expected, sampleEvent.isValidDateMonthTime());
+			sampleEvent.changeEndMonth(13);
+			Assert::AreEqual(expected, sampleEvent.isValidDateMonthTime());
+			sampleEvent.changeEndMonth(11);
+			sampleEvent.changeEndDay(0);
+			Assert::AreEqual(expected, sampleEvent.isValidDateMonthTime());
+			sampleEvent.changeEndDay(32);
+			Assert::AreEqual(expected, sampleEvent.isValidDateMonthTime());
+		}
+
+		//Any of the day, month and time of the starting informatino must be valid
+		//to return true.
+		//Equivalent Partition for time { < 0}, {0 - 2359}, { > 2359}
+		//Equivalent Partition for day { < 1}, {1 - 31}, { >31}
+		//Equivalent Partition for month { < 1}, {1 - 12}, { > 12}
+		TEST_METHOD(isTimedEvent) {
+			Event sampleEvent("FinishProject",13,04,2359);
+			bool expected = false;
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+			expected = true;
+			sampleEvent.changeStartDay(1);
+			sampleEvent.changeStartMonth(1);
+			sampleEvent.changeStartTime(1);
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+			sampleEvent.changeStartDay(31);
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+			sampleEvent.changeStartMonth(1);
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+			sampleEvent.changeStartMonth(12);
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+			sampleEvent.changeStartTime(0);
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+			sampleEvent.changeStartTime(2359);
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+
+			expected = false;
+			sampleEvent.changeStartDay(0);
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+			sampleEvent.changeStartDay(32);
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+			sampleEvent.changeStartDay(31);
+			sampleEvent.changeStartMonth(0);
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+			sampleEvent.changeStartMonth(13);
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+			sampleEvent.changeStartMonth(12);
+			sampleEvent.changeStartTime(-1);
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+			sampleEvent.changeStartTime(2400);
+			Assert::AreEqual(expected, sampleEvent.isTimedTask());
+		}
+
+		//2 different cases to consider {1 digit number}, {2 digit number},
+		//all should return a 2 char string.
+		TEST_METHOD(convertToTwoCharSting) {
+			Event sampleEvent("FinishProject",01,04,0001);
+			std::string output = sampleEvent.convertNumberToString(1);
+			std::string expected = "01";
+			Assert::AreEqual(output, expected);
+		}
+
+		//4 different cases to consider {1 digit number}, {2 digit number},
+		//{3 digit number}, {4 digit number}
+		//all should return a 4 char string.
+		TEST_METHOD(convertToFourCharSting) {
+			Event sampleEvent("FinishProject",01,04,0001);
+			std::string output = sampleEvent.convertTimeToString(1);
+			std::string expected = "0001";
+			Assert::AreEqual(output, expected);
+			output = sampleEvent.convertTimeToString(10);
+			expected = "0010";
+			Assert::AreEqual(output, expected);
+			output = sampleEvent.convertTimeToString(100);
+			expected = "0100";
+			Assert::AreEqual(output, expected);
+			output = sampleEvent.convertTimeToString(1000);
+			expected = "1000";
+			Assert::AreEqual(output, expected);
+		}
+
+		TEST_METHOD(getDeadLine) {
+			Event sampleEvent("FinishProject",13,04,2359);
+			std:: string expected[3] = {	"13 Apr 2359",
+											"13 Apr 0000",
+											"01 Apr 0000" };
+			Assert::AreEqual(expected[0],sampleEvent.getDeadline());
+			sampleEvent.changeEndTime(0);
+			Assert::AreEqual(expected[1],sampleEvent.getDeadline());
+			sampleEvent.changeEndDay(1);
+			Assert::AreEqual(expected[2],sampleEvent.getDeadline());
+		}
+
+		//test 12 different month test.
+		TEST_METHOD(convertToMonth) {
+			Event sampleEvent("FinishProject",13,04,2359);
+			int i = 1;
+			std::string expected[12] = {	"Jan",
+											"Feb",
+											"Mar",
+											"Apr",
+											"May",
+											"Jun",
+											"Jul",
+											"Aug",
+											"Sep",
+											"Oct",
+											"Nov",
+											"Dec" };
+			for(i = 1; i <13 ; i++) {
+				int index = i - 1;
+				Assert::AreEqual(expected[index],sampleEvent.convertToMonth(i));
+			}
+		}
+	};
+
+	TEST_CLASS(testEventlist) {
+	
+	public:
+		TEST_METHOD(addEvent) {
+			Event sampleEvent("FinishProject",13,04,2359);
+			Eventlist sampleEventList;
+			sampleEventList.addEvent(sampleEvent);
+			Event expectedEvent;
+			expectedEvent = sampleEventList.getEvent(1);
+			std:: string expected[1] = { "[by 13 Apr 23:59            ] FinishProject", };
+			Assert::AreEqual(expected[0],expectedEvent.displayEvent());
+		}
+
+		TEST_METHOD(addMultipleEvent) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Eventlist sampleEventList;
+			sampleEventList.addEvent(sampleEvent1);
+			sampleEventList.addEvent(sampleEvent2);
+			Assert::AreEqual(2,sampleEventList.getTotalNumberOfEvents());
+		}
+
+		TEST_METHOD(deleteEventFromEventlist) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Eventlist sampleEventList;
+			sampleEventList.addEvent(sampleEvent1);
+			sampleEventList.addEvent(sampleEvent2);
+			Event expectedEvent;
+			expectedEvent = sampleEventList.getEvent(2);
+			std:: string expected[1] = { "[by 13 Apr 23:59            ] FinishProject" };
+			Assert::AreEqual(expected[0],expectedEvent.displayEvent());
+			sampleEventList.deleteEvent(1);
+			expectedEvent = sampleEventList.getEvent(1);
+			Assert::AreEqual(expected[0],expectedEvent.displayEvent());
+		}
+
+		TEST_METHOD(updateEventlist) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Eventlist sampleEventList;
+			sampleEventList.addEvent(sampleEvent1);
+			sampleEventList.updateEvent(1,sampleEvent2);
+			Event expectedEvent;
+			expectedEvent = sampleEventList.getEvent(1);
+			std:: string expected[1] = { "[by 13 Apr 23:59            ] FinishProject" };
+			Assert::AreEqual(expected[0],expectedEvent.displayEvent());
+		}
+
+		// floating task should rank first and other task depend on the ending info.
+		TEST_METHOD(sortEventlist) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Event sampleEvent3("Floating Task",00,00,0001);
+			Eventlist sampleEventList;
+			sampleEventList.addEvent(sampleEvent2);
+			sampleEventList.addEvent(sampleEvent1);
+			sampleEventList.addEvent(sampleEvent3);
+			Event expected = sampleEventList.getEvent(1);
+			Assert::AreEqual(expected.displayEvent(),sampleEvent2.displayEvent());
+			sampleEventList.sortEvent();
+			expected = sampleEventList.getEvent(1);
+			Assert::AreEqual(expected.displayEvent(),sampleEvent1.displayEvent());
+			expected = sampleEventList.getEvent(3);
+			Assert::AreEqual(expected.displayEvent(),sampleEvent3.displayEvent());
+			
+		}
+
+		TEST_METHOD(getAllEvent) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Eventlist sampleEventList;
+			sampleEventList.addEvent(sampleEvent1);
+			sampleEventList.addEvent(sampleEvent2);
+			std::list<Event> result = sampleEventList.returnAllEvent();
+			Event expected = result.back();
+			Assert::AreEqual(expected.displayEvent(),sampleEvent2.displayEvent());
+			result.pop_back();
+			expected = result.back();
+			Assert::AreEqual(expected.displayEvent(),sampleEvent1.displayEvent());
+			int numberOfEvent = result.size();
+			Assert::AreEqual(1,numberOfEvent);
+		}
+
+		TEST_METHOD(copyNewList) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			std::list<Event> result;
+			result.push_back(sampleEvent1);
+			result.push_back(sampleEvent2);
+			Eventlist sampleEventList;
+			sampleEventList.copyFromNewList(result);
+			Event expected = sampleEventList.getEvent(2);
+			Assert::AreEqual(expected.displayEvent(),sampleEvent2.displayEvent());
+		}
+	};
+
+	TEST_CLASS(testStorage) {
+
+	public:
+		TEST_METHOD(addEvent) {
+			Event sampleEvent("IncompleteProject",02,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent);
+			Event expected = sampleStorage.getEvent(1);
+			Assert::AreEqual(expected.displayEvent(),sampleEvent.displayEvent());
+		}
+
+		TEST_METHOD(updateEvent) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			sampleStorage.updateEvent(1,sampleEvent2);
+			Event expected = sampleStorage.getEvent(1);
+			Assert::AreEqual(expected.displayEvent(),sampleEvent2.displayEvent());
+		}
+
+		TEST_METHOD(markEventAsDone) {
+			Event sampleEvent("IncompleteProject",02,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent);
+			std::list<int> index;
+			index.push_back(1);
+			sampleStorage.markEventAsDone(index);
+			Event output = sampleStorage.getDoneEvent(1);
+			Assert::AreEqual(sampleEvent.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(undoMarkEventAsDone) {
+			Event sampleEvent("IncompleteProject",02,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent);
+			std::list<int> index;
+			index.push_back(1);
+			sampleStorage.markEventAsDone(index);
+			sampleStorage.unDopreviousActions("done");
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(deleteEvent) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			sampleStorage.addEvent(sampleEvent2);
+			std::list<int> index;
+			index.push_back(1);
+			sampleStorage.deleteEvent(index);
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+		}
+
+		//Test the 6 different saving and display format.
+		//As format has been tested, one done case is sufficient.
+		TEST_METHOD(readEventFromFile) {
+			std:: string input[7] = {	"Incomplete tasks: FinishProject Starting Info: Nil Ending Info: Nil ",
+										"Incomplete tasks: FinishProject Starting Info: Nil Ending Info: 13 04 2359 2015",
+										"Incomplete tasks: FinishProject Starting Info: Nil Ending Info: 13 04 2359 2016",
+										"Incomplete tasks: FinishProject Starting Info: 21 03 2359 2015 Ending Info: 13 04 2359 2015",
+										"Incomplete tasks: FinishProject Starting Info: 21 03 2359 2015 Ending Info: 13 04 2359 2017",
+										"Incomplete tasks: FinishProject Starting Info: 21 03 2359 2016 Ending Info: 13 04 2359 2017",
+										"Done tasks: FinishProject Starting Info: Nil Ending Info: Nil "
+										};
+			std:: string expected[6] = {	"[---------------------------] FinishProject",
+											"[by 13 Apr 23:59            ] FinishProject", 
+											"[by 13 Apr 23:59 Year: 2016                       ] FinishProject",
+											"[21 Mar 23:59 - 13 Apr 23:59] FinishProject",
+											"[21 Mar 23:59 - 13 Apr 23:59 Year: 2017           ] FinishProject",
+											"[21 Mar 23:59 Year: 2016 - 13 Apr 23:59 Year: 2017] FinishProject"
+										};
+			Storage sampleStorage;
+			int i;
+			for (i = 0; i < 6; i++) {
+				sampleStorage.readEventsFromFile(input[i]);
+				Event output = sampleStorage.getEvent(i+1);
+				Assert::AreEqual(expected[i],output.displayEvent());
+			}
+			sampleStorage.readEventsFromFile(input[i]);
+			Event output = sampleStorage.getDoneEvent(1);
+			Assert::AreEqual(expected[0],output.displayEvent());
+		}
+
+		TEST_METHOD(repeatEvent) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+			output = sampleStorage.getEvent(2);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			Eventlist sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(2,sampleEventList.getTotalNumberOfEvents());
+			Assert::AreEqual(sampleStorage.getTotalNumberOfRecurringSeries(),1);
+		}
+
+		TEST_METHOD(undoAdd) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			sampleStorage.addEvent(sampleEvent2);
+			Eventlist sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(2,sampleEventList.getTotalNumberOfEvents());
+			sampleStorage.unDopreviousActions("add");
+			sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(1,sampleEventList.getTotalNumberOfEvents());
+		}
+
+		TEST_METHOD(undoMarkAsDone) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			sampleStorage.addEvent(sampleEvent2);
+			std::list<int> sampleList;
+			sampleList.push_back(1);
+			sampleStorage.markEventAsDone(sampleList);
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+			output = sampleStorage.getDoneEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			sampleStorage.unDopreviousActions("done");
+			output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(undoDelete) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			sampleStorage.addEvent(sampleEvent2);
+			std::list<int> sampleList;
+			sampleList.push_back(1);
+			sampleStorage.deleteEvent(sampleList);
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+			sampleStorage.unDopreviousActions("delete");
+			output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(undoUpdate) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			sampleStorage.updateEvent(1,sampleEvent2);
+			sampleStorage.unDopreviousActions("update");
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+		}
+		
+		TEST_METHOD(undoClearActive) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			Eventlist sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(1,sampleEventList.getTotalNumberOfEvents());
+			sampleStorage.clearActiveEvent();
+			sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(0,sampleEventList.getTotalNumberOfEvents());
+			sampleStorage.unDopreviousActions("clearactive");
+			sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(1,sampleEventList.getTotalNumberOfEvents());
+		}
+
+		TEST_METHOD(undoClearDone) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Storage sampleStorage;
+			sampleStorage.addEvent(sampleEvent1);
+			std::list<int> index;
+			index.push_back(1);
+			sampleStorage.markEventAsDone(index);
+			Eventlist sampleEventList = sampleStorage.displayDoneEvent();
+			Assert::AreEqual(1,sampleEventList.getTotalNumberOfEvents());
+			sampleStorage.clearDoneEvent();
+			sampleEventList = sampleStorage.displayDoneEvent();
+			Assert::AreEqual(0,sampleEventList.getTotalNumberOfEvents());
+			sampleStorage.unDopreviousActions("cleardone");
+			sampleEventList = sampleStorage.displayDoneEvent();
+			Assert::AreEqual(1,sampleEventList.getTotalNumberOfEvents());
+		}
+
+		TEST_METHOD(undoRecurringEvent) {
+			Event sampleEvent1("IncompleteProject",02,04,2359);
+			Event sampleEvent2("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			Eventlist sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(2,sampleEventList.getTotalNumberOfEvents());
+			sampleStorage.unDopreviousActions("repeat");
+			sampleEventList = sampleStorage.displayEvent();
+			Assert::AreEqual(0,sampleEventList.getTotalNumberOfEvents());
+		}
+
+		TEST_METHOD(updateRecurringEndTime) {
+			Event sampleEvent1("IncompleteProject",03,04,2359);
+			Event sampleEvent2("IncompleteProject",04,04,2359);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			sampleStorage.sortActiveEventlist();
+			sampleStorage.updateRecurringEndTime(1,1200);
+			Event output = sampleStorage.getEvent(1);
+			sampleEvent1.changeEndTime(1200);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			output = sampleStorage.getEvent(2);
+			sampleEvent2.changeEndTime(1200);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+			Assert::AreEqual(1,output.getRecurringTaskSeries());
+		}
+
+		TEST_METHOD(undoUpdateRecurringEndTime) {
+			Event sampleEvent1("IncompleteProject",03,04,2359);
+			Event sampleEvent2("IncompleteProject",04,04,2359);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			sampleStorage.sortActiveEventlist();
+			sampleStorage.updateRecurringEndTime(1,1200);
+			sampleStorage.unDopreviousActions("update repeat");
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			output = sampleStorage.getEvent(2);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(updateRecurringStartTime) {
+			Event sampleEvent1("IncompleteProject",03,04,2359);
+			Event sampleEvent2("IncompleteProject",04,04,2359);
+			sampleEvent1.changeStartDay(1);
+			sampleEvent1.changeStartMonth(4);
+			sampleEvent1.changeStartTime(1200);
+			sampleEvent2.changeStartDay(2);
+			sampleEvent2.changeStartMonth(4);
+			sampleEvent2.changeStartTime(1200);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			sampleStorage.sortActiveEventlist();
+			sampleStorage.updateRecurringStartTime(1,1800);
+			sampleEvent1.changeStartTime(1800);
+			sampleEvent2.changeStartTime(1800);
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			output = sampleStorage.getEvent(2);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(undoUpdateRecurringStartTime) {
+			Event sampleEvent1("IncompleteProject",03,04,2359);
+			Event sampleEvent2("IncompleteProject",04,04,2359);
+			sampleEvent1.changeStartDay(1);
+			sampleEvent1.changeStartMonth(4);
+			sampleEvent1.changeStartTime(1200);
+			sampleEvent2.changeStartDay(2);
+			sampleEvent2.changeStartMonth(4);
+			sampleEvent2.changeStartTime(1200);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			sampleStorage.sortActiveEventlist();
+			sampleStorage.updateRecurringStartTime(1,1800);
+			sampleStorage.unDopreviousActions("update repeat");
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			output = sampleStorage.getEvent(2);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(undoUpdateRecurringEvent) {
+			Event sampleEvent1("IncompleteProject",03,04,2359);
+			Event sampleEvent2("IncompleteProject",04,04,2359);
+			Event sampleEvent3("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			sampleStorage.sortActiveEventlist();
+			sampleStorage.updateRecurring(1,sampleEvent3);
+			sampleStorage.unDopreviousActions("update repeat");
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			output = sampleStorage.getEvent(2);
+			Assert::AreEqual(sampleEvent2.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(deleteRecurringEvent) {
+			Event sampleEvent1("IncompleteProject",03,04,2359);
+			Event sampleEvent2("IncompleteProject",04,04,2359);
+			Event sampleEvent3("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			sampleStorage.addEvent(sampleEvent3);
+			sampleStorage.sortActiveEventlist();
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			output = sampleStorage.getEvent(3);
+			Assert::AreEqual(sampleEvent3.displayEvent(),output.displayEvent());
+			sampleStorage.deleteRecurring(1);
+			output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent3.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(unDoDeleteRecurringEvent) {
+			Event sampleEvent1("IncompleteProject",03,04,2359);
+			Event sampleEvent2("IncompleteProject",04,04,2359);
+			Event sampleEvent3("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			sampleStorage.addEvent(sampleEvent3);
+			sampleStorage.sortActiveEventlist();
+			sampleStorage.deleteRecurring(1);
+			sampleStorage.unDopreviousActions("delete repeat");
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+		}
+
+		TEST_METHOD(updateRecurringEvent) {
+			Event sampleEvent1("IncompleteProject",03,04,2359);
+			Event sampleEvent2("IncompleteProject",04,04,2359);
+			Event sampleEvent3("FinishProject",13,04,2359);
+			Storage sampleStorage;
+			std::list<Event> sampleList;
+			sampleList.push_back(sampleEvent1);
+			sampleList.push_back(sampleEvent2);
+			sampleStorage.repeatEvent(sampleList);
+			sampleStorage.addEvent(sampleEvent3);
+			sampleStorage.sortActiveEventlist();
+			Event output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent1.displayEvent(),output.displayEvent());
+			output = sampleStorage.getEvent(3);
+			Assert::AreEqual(sampleEvent3.displayEvent(),output.displayEvent());
+			sampleStorage.deleteRecurring(1);
+			output = sampleStorage.getEvent(1);
+			Assert::AreEqual(sampleEvent3.displayEvent(),output.displayEvent());
+		}
+	};
+
+	TEST_CLASS(testfindNextDate) {
+
+	public:
+		//Equivalent partition {divisible by 400}, {divisible by 4 not divisible by 100}
+		//{others}
+		TEST_METHOD(isLeapYear) {
+			findNextDate finder;
+			bool expected[2] = {	true,
+									false};
+			bool output = finder.isLeapYear(2015);
+			Assert::AreEqual(expected[1],output);
+			output = finder.isLeapYear(2016);
+			Assert::AreEqual(expected[0],output);
+			output = finder.isLeapYear(2100);
+			Assert::AreEqual(expected[1],output);
+			output = finder.isLeapYear(2400);
+			Assert::AreEqual(expected[0],output);
+		}
+		//Equivalent partition {month with 31 days}, {28 days}
+		//{month with 30 days}
+		TEST_METHOD(calculateDateInNonLeapYear) {
+			findNextDate finder;
+			finder.calculate(1,1,1);
+			Assert::AreEqual(2,finder.getDay());
+			Assert::AreEqual(1,finder.getMonth());
+			Assert::AreEqual(4,finder.getWeekDay());
+			finder.calculate(31,1,1);
+			Assert::AreEqual(1,finder.getDay());
+			Assert::AreEqual(2,finder.getMonth());
+			Assert::AreEqual(6,finder.getWeekDay());
+			finder.calculate(22,2,7);
+			Assert::AreEqual(1,finder.getDay());
+			Assert::AreEqual(3,finder.getMonth());
+			Assert::AreEqual(6,finder.getWeekDay());
+			finder.calculate(28,2,62);
+			Assert::AreEqual(1,finder.getDay());
+			Assert::AreEqual(5,finder.getMonth());
+			Assert::AreEqual(4,finder.getWeekDay());
+			finder.calculate(1,1,732);
+			Assert::AreEqual(2,finder.getDay());
+			Assert::AreEqual(1,finder.getMonth());
+			Assert::AreEqual(0,finder.getWeekDay());
+			Assert::AreEqual(2017,finder.getYear());
+		}
+
+		//Equivalent partition {month with 31 days}, {29 days}
+		//{month with 30 days}
+		TEST_METHOD(calculateDateInLeapYear) {
+			findNextDate finder;
+			finder.changeDefaultYear(2016);
+			finder.calculate(27,2,2);
+			Assert::AreEqual(29,finder.getDay());
+			Assert::AreEqual(2,finder.getMonth());
+			Assert::AreEqual(0,finder.getWeekDay());
+			finder.calculate(1,1,32);
+			Assert::AreEqual(2,finder.getDay());
+			Assert::AreEqual(2,finder.getMonth());
+			Assert::AreEqual(1,finder.getWeekDay());
+			finder.calculate(1,1,300);
+			Assert::AreEqual(27,finder.getDay());
+			Assert::AreEqual(10,finder.getMonth());
+			Assert::AreEqual(3,finder.getWeekDay());
+		}
+	};
+}
+	// End of segment: C:\Users\Pang Yuwei\Desktop\v0.5\MinicUnitTesting\StorageUnitTest.cpp
+
+
+
+
+

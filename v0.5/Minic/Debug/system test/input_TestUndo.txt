@@ -1,0 +1,11 @@
+clear
+display
+add cs meeting from: 02 05 2011 to: 02 05 2300
+update 1 .name IE project
+repeat 1 daily 3
+deleteRecur 1
+undo
+undo
+undo
+undo
+exit

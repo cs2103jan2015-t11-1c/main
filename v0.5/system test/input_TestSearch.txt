@@ -1,0 +1,10 @@
+clear
+display
+add homework 1
+add homework 2
+add CS presentation from: 16 04 1100 to: 16 04 1130
+display
+search homework
+search CS
+display
+exit

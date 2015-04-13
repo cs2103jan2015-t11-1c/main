@@ -1,0 +1,109 @@
+================================================
+Welcome to Minik!What would you like to do today?
+================================================
+
+Command: all tasks cleared
+
+Command: Currently no active event. 
+
+Command: "[13 Apr 08:00 - 13 Apr 23:00] CS meeting" is added successfully.
+
+Command: "[by 14 Apr 09:00            ] IE2130 meeting" is added successfully.
+
+Command: "[---------------------------] homework1" is added successfully.
+
+Command:   1.[13 Apr 08:00 - 13 Apr 23:00] CS meeting
+  2.[by 14 Apr 09:00            ] IE2130 meeting
+  3.[---------------------------] homework1
+
+Command: "[13 Apr 08:00 - 13 Apr 23:00] CS meeting" is updated to "[13 Apr 08:00 - 13 Apr 23:00] IE meeting" 
+
+Command:   1.[13 Apr 08:00 - 13 Apr 23:00] IE meeting
+  2.[by 14 Apr 09:00            ] IE2130 meeting
+  3.[---------------------------] homework1
+
+Command: "[13 Apr 08:00 - 13 Apr 23:00] IE meeting" is updated to "[13 Apr 09:00 - 13 Apr 23:00] IE meeting" 
+
+Command:   1.[13 Apr 09:00 - 13 Apr 23:00] IE meeting
+  2.[by 14 Apr 09:00            ] IE2130 meeting
+  3.[---------------------------] homework1
+
+Command: "[13 Apr 09:00 - 13 Apr 23:00] IE meeting" is updated to "[13 Apr 09:00 - 14 Apr 23:00] IE meeting" 
+
+Command:   1.[by 14 Apr 09:00            ] IE2130 meeting
+  2.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  3.[---------------------------] homework1
+
+Command: "[by 14 Apr 09:00            ] IE2130 meeting" is updated to "[by 14 Apr 09:00            ] IE2130 meeting" 
+
+Command:   1.[by 14 Apr 09:00            ] IE2130 meeting
+  2.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  3.[---------------------------] homework1
+
+Command: "[by 14 Apr 09:00            ] IE2130 meeting" is updated to "[---------------------------] IE2130 meeting" 
+
+Command:   1.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  2.[---------------------------] IE2130 meeting
+  3.[---------------------------] homework1
+
+Command: "[---------------------------] IE2130 meeting" is updated to "[---------------------------] IE meeting" 
+
+Command:   1.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  2.[---------------------------] IE meeting
+  3.[---------------------------] homework1
+
+Command: "[---------------------------] IE meeting" is updated to "[---------------------------] IE meeting" 
+
+Command:   1.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  2.[---------------------------] IE meeting
+  3.[---------------------------] homework1
+
+Command: "[---------------------------] IE meeting" is updated to "[13 Apr 09:00 - 14 Apr 23:00] IE meeting" 
+
+Command:   1.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  2.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  3.[---------------------------] homework1
+
+Command: "[13 Apr 09:00 - 14 Apr 23:00] IE meeting" is updated to "[by 14 Apr 23:00            ] IE meeting" 
+
+Command:   1.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  2.[by 14 Apr 23:00            ] IE meeting
+  3.[---------------------------] homework1
+
+Command: "[by 14 Apr 23:00            ] IE meeting" is updated to "[---------------------------] IE meeting" 
+
+Command:   1.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  2.[---------------------------] IE meeting
+  3.[---------------------------] homework1
+
+Command: "[---------------------------] homework1" is updated to "[---------------------------] IE meeting" 
+
+Command:   1.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  2.[---------------------------] IE meeting
+  3.[---------------------------] IE meeting
+
+Command: "[---------------------------] IE meeting" is updated to "[---------------------------] IE meeting" 
+
+Command:   1.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  2.[---------------------------] IE meeting
+  3.[---------------------------] IE meeting
+
+Command: "[---------------------------] IE meeting" is updated to "[13 Apr 09:00 - 14 Apr 23:00] IE meeting" 
+
+Command:   1.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  2.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  3.[---------------------------] IE meeting
+
+Command: "[---------------------------] IE meeting" is updated to "[---------------------------] IE meeting" 
+
+Command:   1.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  2.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  3.[---------------------------] IE meeting
+
+Command: "[---------------------------] IE meeting" is updated to "[---------------------------] IE meeting" 
+
+Command:   1.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  2.[13 Apr 09:00 - 14 Apr 23:00] IE meeting
+  3.[---------------------------] IE meeting
+
+Command: 

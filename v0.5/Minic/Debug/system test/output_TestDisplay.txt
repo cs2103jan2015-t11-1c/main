@@ -1,0 +1,141 @@
+================================================
+Welcome to Minik!What would you like to do today?
+================================================
+
+Command: all tasks cleared
+
+Command: Currently no active event. 
+
+Command: "[13 Apr 08:00 - 13 Apr 23:00] CS meeting" is added successfully.
+
+Command: "[14 Apr 09:00 - 14 Apr 23:00] IE2130 meeting" is added successfully.
+
+Command: "[---------------------------] write report" is added successfully.
+
+Command: "[---------------------------] homework1" is added successfully.
+
+Command: "[---------------------------] homework2" is added successfully.
+
+Command: "[---------------------------] homework3" is added successfully.
+
+Command: "[---------------------------] homework4" is added successfully.
+
+Command: "[---------------------------] homework5" is added successfully.
+
+Command: "[---------------------------] homework6" is added successfully.
+
+Command: "[---------------------------] homework7" is added successfully.
+
+Command: "[---------------------------] homework8" is added successfully.
+
+Command: "[---------------------------] homework9" is added successfully.
+
+Command: "[---------------------------] homework10" is added successfully.
+
+Command: "[---------------------------] homework11" is added successfully.
+
+Command: "[---------------------------] homework12" is added successfully.
+
+Command: "[---------------------------] homework13" is added successfully.
+
+Command: "[---------------------------] homework14" is added successfully.
+
+Command: "[---------------------------] homework15" is added successfully.
+
+Command: "[---------------------------] homework16" is added successfully.
+
+Command: "[---------------------------] homework17" is added successfully.
+
+Command: "[---------------------------] homework18" is added successfully.
+
+Command: "[---------------------------] homework19" is added successfully.
+
+Command: "[---------------------------] homework20" is added successfully.
+
+Command: "[---------------------------] homework21" is added successfully.
+
+Command:   1.[13 Apr 08:00 - 13 Apr 23:00] CS meeting
+  2.[14 Apr 09:00 - 14 Apr 23:00] IE2130 meeting
+  3.[---------------------------] write report
+  4.[---------------------------] homework1
+  5.[---------------------------] homework2
+  6.[---------------------------] homework3
+  7.[---------------------------] homework4
+  8.[---------------------------] homework5
+  9.[---------------------------] homework6
+ 10.[---------------------------] homework7
+ 11.[---------------------------] homework8
+ 12.[---------------------------] homework9
+ 13.[---------------------------] homework10
+ 14.[---------------------------] homework11
+ 15.[---------------------------] homework12
+ 16.[---------------------------] homework13
+ 17.[---------------------------] homework14
+ 18.[---------------------------] homework15
+ 19.[---------------------------] homework16
+ 20.[---------------------------] homework17
+ 21.[---------------------------] homework18
+ 22.[---------------------------] homework19
+ 23.[---------------------------] homework20
+ 24.[---------------------------] homework21
+
+Command:   1.[13 Apr 08:00 - 13 Apr 23:00] CS meeting
+  2.[14 Apr 09:00 - 14 Apr 23:00] IE2130 meeting
+  3.[---------------------------] write report
+  4.[---------------------------] homework1
+  5.[---------------------------] homework2
+  6.[---------------------------] homework3
+  7.[---------------------------] homework4
+  8.[---------------------------] homework5
+  9.[---------------------------] homework6
+ 10.[---------------------------] homework7
+ 11.[---------------------------] homework8
+ 12.[---------------------------] homework9
+ 13.[---------------------------] homework10
+ 14.[---------------------------] homework11
+ 15.[---------------------------] homework12
+ 16.[---------------------------] homework13
+ 17.[---------------------------] homework14
+ 18.[---------------------------] homework15
+ 19.[---------------------------] homework16
+ 20.[---------------------------] homework17
+ 21.[---------------------------] homework18
+ 22.[---------------------------] homework19
+ 23.[---------------------------] homework20
+ 24.[---------------------------] homework21
+
+Command:   1.[13 Apr 08:00 - 13 Apr 23:00] CS meeting
+  2.[14 Apr 09:00 - 14 Apr 23:00] IE2130 meeting
+  3.[---------------------------] write report
+  4.[---------------------------] homework1
+  5.[---------------------------] homework2
+  6.[---------------------------] homework3
+  7.[---------------------------] homework4
+  8.[---------------------------] homework5
+  9.[---------------------------] homework6
+ 10.[---------------------------] homework7
+ 11.[---------------------------] homework8
+ 12.[---------------------------] homework9
+ 13.[---------------------------] homework10
+ 14.[---------------------------] homework11
+ 15.[---------------------------] homework12
+ 16.[---------------------------] homework13
+ 17.[---------------------------] homework14
+ 18.[---------------------------] homework15
+ 19.[---------------------------] homework16
+ 20.[---------------------------] homework17
+
+Command:   1.[13 Apr 08:00 - 13 Apr 23:00] CS meeting
+
+Command:   1.[13 Apr 08:00 - 13 Apr 23:00] CS meeting
+
+Command:   1.[14 Apr 09:00 - 14 Apr 23:00] IE2130 meeting
+
+Command:   1.[14 Apr 09:00 - 14 Apr 23:00] IE2130 meeting
+
+Command: The following event is marked as done: 
+[---------------------------] homework17
+
+Command:   1.[---------------------------] homework17
+
+Command: 
