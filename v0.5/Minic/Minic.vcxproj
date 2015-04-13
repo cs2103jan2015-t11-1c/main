@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C3EEEF04-F487-4A52-A470-5E65A07A1032}</ProjectGuid>
+    <RootNamespace>Minic</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Xiaokai\Documents\main\v0.5\Minic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\Users\Xiaokai\Documents\main\v0.5\Minic;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Logic\cmdAdd.h" />
+    <ClInclude Include="Logic\cmdChangeDirectory.h" />
+    <ClInclude Include="Logic\cmdClear.h" />
+    <ClInclude Include="Logic\cmdDelete.h" />
+    <ClInclude Include="Logic\cmdDisplay.h" />
+    <ClInclude Include="Logic\cmdHelp.h" />
+    <ClInclude Include="Logic\cmdMarkAsDone.h" />
+    <ClInclude Include="Logic\cmdRepeat.h" />
+    <ClInclude Include="Logic\cmdRepeatParser.h" />
+    <ClInclude Include="Logic\cmdSearch.h" />
+    <ClInclude Include="Logic\cmdUndo.h" />
+    <ClInclude Include="Logic\cmdUpdate.h" />
+    <ClInclude Include="Logic\logic.h" />
+    <ClInclude Include="Logic\logicBaseClass.h" />
+    <ClInclude Include="Paser\Parser.h" />
+    <ClInclude Include="Paser\VerificationDateTimeMonth.h" />
+    <ClInclude Include="Storage\Event.h" />
+    <ClInclude Include="Storage\Eventlist.h" />
+    <ClInclude Include="Storage\findNextDate.h" />
+    <ClInclude Include="Storage\Storage.h" />
+    <ClInclude Include="UI\UI.h" />
+    <ClInclude Include="UI\VerificationCommand.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Logic\cmdAdd.cpp" />
+    <ClCompile Include="Logic\cmdChangeDirectory.cpp" />
+    <ClCompile Include="Logic\cmdClear.cpp" />
+    <ClCompile Include="Logic\cmdDelete.cpp" />
+    <ClCompile Include="Logic\cmdDisplay.cpp" />
+    <ClCompile Include="Logic\cmdHelp.cpp" />
+    <ClCompile Include="Logic\cmdMarkAsDone.cpp" />
+    <ClCompile Include="Logic\cmdRepeat.cpp" />
+    <ClCompile Include="Logic\cmdRepeatParser.cpp" />
+    <ClCompile Include="Logic\cmdSearch.cpp" />
+    <ClCompile Include="Logic\cmdUndo.cpp" />
+    <ClCompile Include="Logic\cmdUpdate.cpp" />
+    <ClCompile Include="Logic\logic.cpp" />
+    <ClCompile Include="Logic\logicBaseClass.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Paser\Parser.cpp" />
+    <ClCompile Include="Paser\VerificationDateTimeMonth.cpp" />
+    <ClCompile Include="Storage\Event.cpp" />
+    <ClCompile Include="Storage\Eventlist.cpp" />
+    <ClCompile Include="Storage\findNextDate.cpp" />
+    <ClCompile Include="Storage\Storage.cpp" />
+    <ClCompile Include="UI\UI.cpp" />
+    <ClCompile Include="UI\VerificationCommand.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
