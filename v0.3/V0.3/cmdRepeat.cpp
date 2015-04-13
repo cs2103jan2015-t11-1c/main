@@ -28,10 +28,12 @@ const int FIVE = 5;
 const int SIX = 6;
 const int HUNDRED = 100;
 const int FOUR_HUNDRED = 400;
-const int INVALID_DAY = 7;
+const int INVALID_EXCEPTION_INDICATOR = 0;
+const std::string EMPTY_STRING = "";
 const std::string INVALID_REPEATING_EVENT_TYPE = "The event you want to repeat has no deadline!\n\n";
 const std::string INVALID_REPEATING_TYPE = "Invalid Repeating Type.\n\n";
 const std::string INVALID_DAY_MESSAGE = "Invalid day entered.\n\n";
+const std::string INVALID_EXCEPTION_MESSAGE = "Invalid exception day entered.\n\n";
 const std::string STRING_DAILY = "daily";
 const std::string STRING_WEEKLY = "weekly";
 const std::string STRING_MONTHLY = "monthly";
@@ -65,6 +67,9 @@ std::string CmdRepeat::executecmdRepeat(Storage& _storage){
 	}
 	determineEventNumber();
 	determineRepeatType();
+	if (_type == INVALID) {
+		return INVALID_REPEATING_TYPE;
+	}
 
 	if (isDefaultRepeatTimes(_repeatTimes)) {
 	_repeatTimes = determineDefaultRepeatTimes(_repeatTimes);
@@ -81,11 +86,10 @@ std::string CmdRepeat::executecmdRepeat(Storage& _storage){
 		if (repeatingEvent.isFloatingTask()) {
 			throw INVALID_REPEATING_EVENT_TYPE;
 		}
-
 		if (repeatingEvent.isTimedTask()) {
-			repeatTimedTask(repeatingEvent, _storage);
+			_feedback = repeatTimedTask(repeatingEvent, _storage);
 		} else {
-			repeatDeadlineTask(repeatingEvent, _storage);
+			_feedback = repeatDeadlineTask(repeatingEvent, _storage);
 		}
 	} catch (std::string& exceptionalMessage) {
 		return exceptionalMessage;
@@ -94,7 +98,7 @@ std::string CmdRepeat::executecmdRepeat(Storage& _storage){
  	_storage.repeatEvent(_events);
 	updateStorage(_storage);
 	_events.clear();
-	return NEW_LINE;
+	return _feedback;
 }
 
 //convert repeat type to DAILY, WEEKLY, MONTHLY, EVERYWEEKDAY
@@ -108,7 +112,7 @@ CmdRepeat::repeatType CmdRepeat::determineRepeatType(){
 	} else if (isWeekday(_repeatCommand)) {
 		_type = EVERYWEEKDAY;
 	} else {
-		throw INVALID_REPEATING_TYPE;
+		_type = INVALID;
 	}
 	return _type;
 }
@@ -172,7 +176,7 @@ int CmdRepeat::determineInterval(int month, int year){
 	}
 }
 
-void CmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
+std::string CmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 	int Tcount;	
 	std::string eventTitle = repeatingEvent.getTaskName();
 	int date = repeatingEvent.getEndDate();
@@ -191,6 +195,9 @@ void CmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 	int exception;
 	if (_hasException) {
 		exception = getExceptionTime(_exceptionDetails);
+		if (exception == INVALID_EXCEPTION_INDICATOR) {
+			return INVALID_EXCEPTION_MESSAGE;
+		}
 	}
 
 	for (Tcount = 1; Tcount <= _repeatTimes; Tcount++) {
@@ -210,9 +217,10 @@ void CmdRepeat::repeatDeadlineTask(Event repeatingEvent, Storage& _storage){
 		}
 		getNextDate(newDate, newMonth, newYear);
 	}
+	return NEW_LINE;
 }
 
-void CmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
+std::string CmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 	int Tcount;	
 	std::string eventTitle = repeatingEvent.getTaskName();
 	int startDate = repeatingEvent.getStartDate();
@@ -240,6 +248,9 @@ void CmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 	int exception;
 	if (_hasException) {
 		exception = getExceptionTime(_exceptionDetails);
+		if ( exception == INVALID_EXCEPTION_INDICATOR) {
+			return INVALID_EXCEPTION_MESSAGE;
+		}
 	}
 
 	for(Tcount = 1; Tcount <= _repeatTimes; Tcount++){
@@ -266,9 +277,10 @@ void CmdRepeat::repeatTimedTask(Event repeatingEvent, Storage& _storage){
 		getNextDate(newStartDate, newStartMonth, newStartYear);
 		getNextDate(newEndDate, newEndMonth, newEndYear);
 	}
+	return NEW_LINE;
 }
 
-void CmdRepeat::getStartingRepeatDate(int date, int month, int year, int& newDate, int& newMonth, int& newYear){
+std::string CmdRepeat::getStartingRepeatDate(int date, int month, int year, int& newDate, int& newMonth, int& newYear){
 	_findNextDate.changeDefaultYear(newYear);
 	if (_type  == EVERYWEEKDAY) {
 		getTheStartingDate(date, month, year, newDate, newMonth);
@@ -283,6 +295,7 @@ void CmdRepeat::getStartingRepeatDate(int date, int month, int year, int& newDat
 		newMonth = _findNextDate.getMonth();
 		newYear = _findNextDate.getYear();
 	}
+	return EMPTY_STRING;
 }
 
 void CmdRepeat::getNextDate(int& newDate, int& newMonth, int& newYear){
@@ -324,12 +337,9 @@ bool CmdRepeat::isExceptionDay(int day, int month, int year, int exceptionDay){
 
 int CmdRepeat::determineWeekday(std::string repeatCommand){
 	std::string weekdayWord = repeatCommand;
-	int _weekday;
-	if (!isWeekday(weekdayWord)) { 
-		return INVALID_DAY;
-	}
-	_weekday = changeWeekdayToInteger(weekdayWord);
-	return _weekday;
+	int weekday;
+	weekday = changeWeekdayToInteger(weekdayWord);
+	return weekday;
 }
 
 std::string CmdRepeat::lowercaseCommandWord(std::string commandWord){
@@ -376,35 +386,42 @@ int CmdRepeat::getWeekdayToday(int date, int month, int year){
 	return weekdayToday;
 }
 
-std::string CmdRepeat::getTheStartingDate(int date, int month, int year, int& newDate, int& newMonth){
+void CmdRepeat::getTheStartingDate(int date, int month, int year, int& newDate, int& newMonth){
 	int weekdayToday = getWeekdayToday(date, month, year);
 	int repeatingWeekday = determineWeekday(_repeatCommand);
 
-	try {
-	if (repeatingWeekday == INVALID_DAY) {
-		throw INVALID_DAY_MESSAGE;
+	int interval;
+	if (weekdayToday < repeatingWeekday) {
+		interval = repeatingWeekday - weekdayToday;
+	} else {
+		interval = repeatingWeekday + WEEK - weekdayToday;
 	}
-		int interval;
-		if (weekdayToday < repeatingWeekday) {
-			interval = repeatingWeekday - weekdayToday;
-		} else {
-			interval = repeatingWeekday + WEEK - weekdayToday;
-		}
 
-		_findNextDate.calculate(date, month, interval);
-		newDate = _findNextDate.getDay();
-		newMonth = _findNextDate.getMonth();
-	} catch (std::string& invalid) {
-		return invalid;
-	}
+	_findNextDate.calculate(date, month, interval);
+	newDate = _findNextDate.getDay();
+	newMonth = _findNextDate.getMonth();
 }
 
 int CmdRepeat::getExceptionTime(std::string exceptionDetails){
 	if (isWeekday(exceptionDetails)) {
 		return changeWeekdayToInteger(exceptionDetails);
-	} else {
+	} else if (isNumber(exceptionDetails)) {
 		return std::stoi(exceptionDetails);
+	} else {
+		return INVALID_EXCEPTION_INDICATOR;
 	}
+}
+
+bool CmdRepeat::isNumber(std::string details) {
+	bool isNumber = true;
+	int stringSize = details.size();
+	int Temp;
+	for ( Temp = 0; Temp != stringSize; Temp++) {
+		if (!isdigit(details[Temp])) {
+			isNumber = false;
+		}
+	}
+	return isNumber;
 }
 
 int CmdRepeat::getNumberOfDays(int month, int year){
