@@ -8,7 +8,7 @@ namespace RepeatUnitTest
 	TEST_CLASS(UnitTest1)
 	{
 	public:
-		cmdRepeat _repeat;
+		CmdRepeat _repeat;
 		TEST_METHOD(isWeekday)
 		{
 			std::string repeatCommand1 = "MONDAY";

@@ -18,7 +18,7 @@ private:
 	CmdRepeatParser _parser;
 	std::string _repeatDetails;
 	std::string _repeatCommand;
-	enum repeatType{DAILY, WEEKLY, MONTHLY, EVERYWEEKDAY};
+	enum repeatType{DAILY, WEEKLY, MONTHLY, EVERYWEEKDAY, INVALID};
 	repeatType _type;
 	int _repeatTimes;
 	int _eventNumber;
@@ -31,9 +31,9 @@ public:
 	CmdRepeat(void);
 	~CmdRepeat(void);
 	std::string executecmdRepeat(Storage&);
-	void repeatTimedTask(Event, Storage&);
-	void repeatDeadlineTask(Event, Storage&);
-	void getStartingRepeatDate(int, int, int, int&, int&, int&);
+	std::string repeatTimedTask(Event, Storage&);
+	std::string repeatDeadlineTask(Event, Storage&);
+	std::string getStartingRepeatDate(int, int, int, int&, int&, int&);
 	void getNextDate(int&, int&, int&);
 	bool isWeekday(std::string);
 	int determineWeekday(std::string);
@@ -44,7 +44,7 @@ public:
 	int determineDefaultRepeatTimes(int);
 	int determineEventNumber();
 	int determineInterval(int, int);
-	std::string getTheStartingDate(int, int, int, int&, int&);
+	void getTheStartingDate(int, int, int, int&, int&);
 	int getExceptionTime(std::string);
 	int getNumberOfDays(int, int);
 	bool isExceptionDay(int, int, int, int);
@@ -53,4 +53,5 @@ public:
 	bool isLeapYear(int);
 	std::string lowercaseCommandWord(std::string);
 	void updateStorage(Storage& _storage);
+	bool isNumber(std::string details);
 };
