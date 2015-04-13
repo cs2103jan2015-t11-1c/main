@@ -366,3 +366,171 @@ Mon Apr 13 21:19:43 2015
  <Info> Save data to local drive.
 Mon Apr 13 21:19:43 2015
  <Info> executed clear
+Mon Apr 13 21:34:23 2015
+ <Info> Save data to local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Directory changed to: 
+Mon Apr 13 21:34:23 2015
+ <info> executed help
+Mon Apr 13 21:34:23 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Delete all completed events.
+Mon Apr 13 21:34:23 2015
+ <Info> Save data to local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> executed clear
+Mon Apr 13 21:34:23 2015
+ <Info> Incomplete event(s) has been deleted.
+Mon Apr 13 21:34:23 2015
+ <Info> Save data to local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> executed delete
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 31 Dec 23:59            ] meeting added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Save data to local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 02 Apr 23:59            ] IncompleteProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 02 Apr 23:59            ] IncompleteProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Update active event.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 02 Apr 23:59            ] IncompleteProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Event(s) has been marked as done.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 02 Apr 23:59            ] IncompleteProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Event(s) has been marked as done.
+Mon Apr 13 21:34:23 2015
+ <Info> Undo mark event as done.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 02 Apr 23:59            ] IncompleteProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 13 Apr 23:59            ] FinishProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Incomplete event(s) has been deleted.
+Mon Apr 13 21:34:23 2015
+ <Info> Recuring events added.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 02 Apr 23:59            ] IncompleteProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 13 Apr 23:59            ] FinishProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Undo add event.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 02 Apr 23:59            ] IncompleteProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 13 Apr 23:59            ] FinishProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Event(s) has been marked as done.
+Mon Apr 13 21:34:23 2015
+ <Info> Undo mark event as done.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 02 Apr 23:59            ] IncompleteProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 13 Apr 23:59            ] FinishProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Incomplete event(s) has been deleted.
+Mon Apr 13 21:34:23 2015
+ <Info> Undo delete active event(s).
+Mon Apr 13 21:34:23 2015
+ <Info> [by 02 Apr 23:59            ] IncompleteProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Update active event.
+Mon Apr 13 21:34:23 2015
+ <Info> Undo update active event.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 02 Apr 23:59            ] IncompleteProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Delete all incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Undo deleted all incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 02 Apr 23:59            ] IncompleteProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Event(s) has been marked as done.
+Mon Apr 13 21:34:23 2015
+ <Info> Delete all completed events.
+Mon Apr 13 21:34:23 2015
+ <Info> Undo deleted all completed events.
+Mon Apr 13 21:34:23 2015
+ <Info> Recuring events added.
+Mon Apr 13 21:34:23 2015
+ <Info> Undo recuring events
+Mon Apr 13 21:34:23 2015
+ <Info> Recuring events added.
+Mon Apr 13 21:34:23 2015
+ <Info> Recuring events added.
+Mon Apr 13 21:34:23 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 21:34:23 2015
+ <Info> Recuring events added.
+Mon Apr 13 21:34:23 2015
+ <Info> Recuring events added.
+Mon Apr 13 21:34:23 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 21:34:23 2015
+ <Info> Recuring events added.
+Mon Apr 13 21:34:23 2015
+ <Info> Update recurring events.
+Mon Apr 13 21:34:23 2015
+ <Info> Undo update recurring events.
+Mon Apr 13 21:34:23 2015
+ <Info> Recuring events added.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 13 Apr 23:59            ] FinishProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Incomplete event(s) has been deleted.
+Mon Apr 13 21:34:23 2015
+ <Info> Recurring events deleted
+Mon Apr 13 21:34:23 2015
+ <Info> Recuring events added.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 13 Apr 23:59            ] FinishProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Incomplete event(s) has been deleted.
+Mon Apr 13 21:34:23 2015
+ <Info> Recurring events deleted
+Mon Apr 13 21:34:23 2015
+ <Info> Undo delete recurring events
+Mon Apr 13 21:34:23 2015
+ <Info> Recuring events added.
+Mon Apr 13 21:34:23 2015
+ <Info> [by 13 Apr 23:59            ] FinishProject added to incomplete events.
+Mon Apr 13 21:34:23 2015
+ <Info> Incomplete event(s) has been deleted.
+Mon Apr 13 21:34:23 2015
+ <Info> Recurring events deleted
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.
+Mon Apr 13 21:34:23 2015
+ <Info> Read data from local drive.

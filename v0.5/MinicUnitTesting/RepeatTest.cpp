@@ -1,4 +1,3 @@
-//@author A0115429H
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "Logic\cmdRepeat.h"
